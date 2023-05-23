@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { orderBy, process, SortDescriptor } from '@progress/kendo-data-query';
 import { PurchasingService } from '../purchasing.service';
-import { ModuleNames, ErrorMessages } from '../../../../core/constant';
-import { ErrorHandlerService } from '../../../../core/services';
+import { ModuleNames, ErrorMessages } from '../../../../../app/core/constant';
+import { ErrorHandlerService } from '../../../../../app/core/services';
 
 @Component({
   selector: 'app-PurchaseOrderHistory',
-  templateUrl: './PurchaseOrderHistory.component.html',
-  styleUrls: ['./PurchaseOrderHistory.component.scss'],
+  templateUrl: './PurchaseOrderhistory.component.html',
+  styleUrls: ['./PurchaseOrderhistory.component.scss'],
 })
 export class PurchaseOrderHistoryComponent implements OnInit {
   history: any[];
