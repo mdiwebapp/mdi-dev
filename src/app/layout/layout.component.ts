@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DrawerSelectEvent } from '@progress/kendo-angular-layout';
 import { VendorFooterComponent } from './logistics/vendor/vendor-footer/vendor-footer.component';
-import { FleetFooterComponent } from './admin/it/paul/fleet/fleet-footer/fleet-footer.component';
+import { FleetFooterComponent } from './admin/IT/paul/fleet/fleet-footer/fleet-footer.component';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
 import { PartfooterComponent } from './logistics/parts/partfooter/partfooter.component';
