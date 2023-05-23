@@ -4,14 +4,13 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Setup Node
-        uses: actions/checkout@v1
+        uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: 16
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       
       - name:  Build
         run: npm run build
