@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 16.14.2
       - name: Install Dependencies
-        run: npm install --force
+        run: npm install --legacy-peer-deps
       
       - name:  Build
         run: npm run build
