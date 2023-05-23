@@ -1,0 +1,151 @@
+<kendo-tabstrip (tabSelect)="onTabSelect($event)" #tabstrip [keepTabContent]="true">
+    <kendo-tabstrip-tab class="text-success" [title]="'FUEL/IOL'" [selected]="true">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllFilled" class="text-danger iconSize"></kendo-icon>
+            FUEL/IOL
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-fuel-oil-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-fuel-oil-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'COOLING'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllCoolFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllCoolFilled" class="text-danger iconSize"></kendo-icon>
+            COOLING
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-cooling-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-cooling-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'BATTERY'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllBattryFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllBattryFilled" class="text-danger iconSize"></kendo-icon>
+            BATTERY
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-battery-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-battery-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'ELECTRICAL'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllElectFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllElectFilled" class="text-danger iconSize"></kendo-icon>
+            ELECTRICAL
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-electrical-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-electrical-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'ENGINE/ PANEL'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllEngineFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllEngineFilled" class="text-danger iconSize"></kendo-icon>
+            ENGINE/ PANEL
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-engine-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-engine-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'CENTRIFUGAL PUMP'" *ngIf="!isGenerator">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllCentriFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllCentriFilled" class="text-danger iconSize"></kendo-icon>
+            CENTRIFUGAL PUMP
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-centalpump-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-centalpump-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'COMPRESSOR'" *ngIf="!isGenerator">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllCompFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllCompFilled" class="text-danger iconSize"></kendo-icon>
+            COMPRESSOR
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-compressor-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-compressor-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'COUPLER/ALIGN/CHECK VALVE'" *ngIf="!isGenerator">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllCouplerFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllCouplerFilled" class="text-danger iconSize"></kendo-icon>
+            COUPLER/ALIGN/CHECK VALVE
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-coupler-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-coupler-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'ENVIRON BOX/SUCTION SPOOL'" *ngIf="!isGenerator">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllEnvironFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllEnvironFilled" class="text-danger iconSize"></kendo-icon>
+            ENVIRON BOX/SUCTION SPOOL
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-environbox-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-environbox-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'EXHAUST/VAC TEST'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllExhaustFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllExhaustFilled" class="text-danger iconSize"></kendo-icon>
+            EXHAUST/VAC TEST
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-exhaust-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-exhaust-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'TRAILER'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllTrailerFilled" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllTrailerFilled" class="text-danger iconSize"></kendo-icon>
+            TRAILER
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-trailer-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-trailer-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab class="text-success" [title]="'COMMENTS'">
+        <ng-template kendoTabTitle>
+            <kendo-icon [name]="'check'" *ngIf="isAllCommentsField" class="text-success iconSize"></kendo-icon>
+            <kendo-icon [name]="'information'" *ngIf="!isAllCommentsField" class="text-danger iconSize"></kendo-icon>
+            COMMENTS
+        </ng-template>
+        <ng-template kendoTabContent>
+            <app-comments-techcheck (techCheckSave)="saveTechcheck($event)" (checkAllFields)="checkFields($event)">
+            </app-comments-techcheck>
+        </ng-template>
+    </kendo-tabstrip-tab>
+</kendo-tabstrip>
+
+<div class="row col-md-12">
+    <div class="col-md-6 p-1">
+        <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()" kendoButton>TECHNICIAN APPROVAL
+        </button>
+    </div>
+    <div class="col-md-6 p-1">
+        <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()" kendoTooltip
+            kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+        </button>
+        <kendo-combobox *ngIf="!displaySupervisorApproval" [(ngModel)]="supervisorApprovalData" (valueChange)="onSave()"
+            [suggest]="true" placeholder="Select SUPERVISOR" [disabled]="!techComplete"
+            class="form-control form-control-round" [textField]="'name'" [valuePrimitive]="true"
+            [data]="supervisorApprovalList" [valueField]="'eeid'">
+        </kendo-combobox>
+    </div>
+</div>

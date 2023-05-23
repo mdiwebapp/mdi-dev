@@ -1,0 +1,108 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>COUPLER - <span class="pl-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="changeMarkAll($event)">
+                            </kendo-switch>
+                            Mark All N/A
+                        </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBotsBtn" class="w-100" (click)="onBots()" kendoTooltip
+                                kendoRippleContainer kendoButton>BOLTS/SET SCREWS: {{f.bolts.value}}
+                            </button> --><label class="col-form-label">BOLTS/SET SCREWS:</label>
+                            <kendo-combobox *ngIf="!displayBotsBtn" [suggest]="true" (valueChange)="onBots()"
+                                placeholder="Select Screen" class="form-control form-control-round"
+                                [valuePrimitive]="true" [textField]="'value'" [data]="botsList" [valueField]="'value'"
+                                formControlName="bolts">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                *ngIf="form.get('bolts').hasError('required') && form.get('bolts').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayElectricalConditionBtn" class="w-100" (click)="onElecticalCondition()"
+                                kendoTooltip kendoRippleContainer kendoButton>ELEMENTS: {{f.elements.value}}
+                            </button> --><label class="col-form-label">ELEMENTS:</label>
+                            <kendo-combobox *ngIf="!displayElectricalConditionBtn" formControlName="elements"
+                                [suggest]="true" placeholder="Select Screen" (valueChange)="onElecticalCondition()"
+                                class="form-control form-control-round" [textField]="'value'" [valuePrimitive]="true"
+                                [data]="electricalConditionList" [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('elements').hasError('required') && form.get('elements').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayHubs" class="w-100" kendoTooltip kendoRippleContainer kendoButton
+                                (click)="onHubs()">HUB
+                                FLANGES: {{f.flanges.value}}
+                            </button> --><label class="col-form-label">HUB
+                                FLANGES:</label>
+                            <kendo-combobox *ngIf="!displayHubs" formControlName="flanges" [suggest]="true"
+                                placeholder="Select Screen" class="form-control form-control-round"
+                                [valuePrimitive]="true" [textField]="'value'" [valueField]="'value'" [data]="hubsList"
+                                (valueChange)="onHubs()">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('flanges').hasError('required') && form.get('flanges').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>CHECK VALVE</legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFlapperValve" class="w-100" (click)="onFlapperValve()" kendoTooltip
+                                kendoRippleContainer kendoButton>FLAPPER VALVE: {{f.flapperValve.value}}
+                            </button> --><label class="col-form-label">FLAPPER VALVE:</label>
+                            <kendo-combobox *ngIf="!displayFlapperValve" [suggest]="true" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="flapperValvesList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="flapperValve"
+                                (valueChange)="onFlapperValve()">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('flapperValve').hasError('required') && form.get('flapperValve').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFlapperWight" class="w-100" (click)="onFlapperWeight()" kendoTooltip
+                                kendoRippleContainer kendoButton>FLAPPER WEIGHT: {{f.flapperWeight.value}}
+                            </button> --><label class="col-form-label">FLAPPER WEIGHT:</label>
+                            <kendo-combobox *ngIf="!displayFlapperWight" formControlName="flapperWeight"
+                                [suggest]="true" placeholder="Select Screen" class="form-control form-control-round"
+                                [textField]="'value'" [data]="flapperWeightList" [valueField]="'value'"
+                                [valuePrimitive]="true" (valueChange)="onFlapperWeight()">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('flapperWeight').hasError('required') && form.get('flapperWeight').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displaysealPlate" class="w-100" kendoTooltip kendoRippleContainer kendoButton
+                                (click)="onSealPlate()">SEAL PLATE: {{f.sealPlate.value}}
+                            </button> --><label class="col-form-label">SEAL PLATE:</label>
+                            <kendo-combobox *ngIf="!displaysealPlate" formControlName="sealPlate" [suggest]="true"
+                                placeholder="Select Screen" class="form-control form-control-round"
+                                [textField]="'value'" [valueField]="'value'" [data]="sealPlatesList"
+                                [valuePrimitive]="true" (valueChange)="onSealPlate()">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('sealPlate').hasError('required') && form.get('sealPlate').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+            </div>
+        </div>
+    </form>
+</div>

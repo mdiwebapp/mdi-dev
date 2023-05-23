@@ -1,0 +1,163 @@
+<div class="card mb-1 p-1 content">
+   <div class="card-block table-border-style p-0">
+      <div id="header" class="row position-header-dash">
+         <div class="col-sm">
+            <h4>Statistics</h4>
+            <h5>Feb 23, 2021 - May 23, 2021</h5>
+         </div>
+         <div class="col-sm text-sm-rightp-sm-3">
+            <kendo-buttongroup [selection]="'single'">
+               <button kendoRippleContainer kendoButton [togglable]="true" [selected]="true">3 Months</button>
+               <button kendoRippleContainer kendoButton [togglable]="true">6 Months</button>
+               <button kendoRippleContainer kendoButton [togglable]="true">1 Year</button>
+            </kendo-buttongroup>
+         </div>
+
+      </div>
+      <div class="">
+         <div class="row">
+            <div class="col-12 padding-md">
+               <div class="card card-chart">
+                  <div class="card-header ">
+                     <div class="row">
+                        <div class="col-sm-12 text-left">
+                           <h5 class="card-category">Total Shipments</h5>
+
+                        </div>
+
+                     </div>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <div class="chart-area">
+                        <kendo-chart>
+                           <kendo-chart-title text="Units sold"></kendo-chart-title>
+
+                           <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item
+                                 [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']"
+                                 [title]="{ text: 'Months' }">
+                              </kendo-chart-category-axis-item>
+                           </kendo-chart-category-axis>
+
+                           <kendo-chart-series-defaults [highlight]="{ inactiveOpacity: 0.3 }">
+                           </kendo-chart-series-defaults>
+
+                           <kendo-chart-series>
+                              <kendo-chart-series-item type="area" [data]="[123, 276, 310, 212, 240, 156, 98]">
+                              </kendo-chart-series-item>
+                              <kendo-chart-series-item type="area" [data]="[165, 210, 287, 144, 190, 167, 212]">
+                              </kendo-chart-series-item>
+                              <kendo-chart-series-item type="area" [data]="[56, 140, 195, 46, 123, 78, 95]">
+                              </kendo-chart-series-item>
+                           </kendo-chart-series>
+                        </kendo-chart>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-lg-4 padding-md">
+               <div class="card card-chart">
+                  <div class="card-header">
+                     <h5 class="card-category">Total Shipments</h5>
+                     <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <div class="chart-area">
+                        <kendo-chart>
+                           <kendo-chart-series>
+                              <kendo-chart-series-item type="donut" [data]="data" categoryField="kind" field="share">
+                                 <kendo-chart-series-item-labels [content]="labelContent" color="#fff"
+                                    background="none">
+                                 </kendo-chart-series-item-labels>
+                              </kendo-chart-series-item>
+                           </kendo-chart-series>
+                           <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 padding-md">
+               <div class="card card-chart">
+                  <div class="card-header">
+                     <h5 class="card-category">Daily Sales</h5>
+                     <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> 3,500€</h3>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <div class="chart-area">
+                        <kendo-chart>
+                           <kendo-chart-title text="Units sold"></kendo-chart-title>
+                           <kendo-chart-category-axis>
+                              <kendo-chart-category-axis-item
+                                 [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']"
+                                 [title]="{ text: 'Months' }">
+                              </kendo-chart-category-axis-item>
+                           </kendo-chart-category-axis>
+                           <kendo-chart-series>
+                              <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212, 240, 156, 98]">
+                              </kendo-chart-series-item>
+                              <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144, 190, 167, 212]">
+                              </kendo-chart-series-item>
+                              <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46, 123, 78, 95]">
+                              </kendo-chart-series-item>
+                           </kendo-chart-series>
+                        </kendo-chart>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 padding-md">
+               <div class="card card-chart">
+                  <div class="card-header">
+                     <h5 class="card-category">Completed Tasks</h5>
+                     <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> 12,100K</h3>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <div class="chart-area">
+                        <kendo-dropdownlist [data]="['normal', 'step', 'smooth']" [(ngModel)]="style">
+                        </kendo-dropdownlist>
+                        <kendo-chart>
+                           <kendo-chart-series>
+                              <kendo-chart-series-item [style]="style" type="line" [data]="[
+                  20, 1, 18, 3, 15, 5, 10, 6, 9, 6, 10, 5, 13, 3, 16, 1, 19, 1, 20, 2,
+                  18, 5, 12, 7, 10, 8
+                ]" [markers]="{ visible: false }">
+                              </kendo-chart-series-item>
+                           </kendo-chart-series>
+                        </kendo-chart>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-lg-6 col-md-12 padding-md">
+               <div class="card card-tasks">
+                  <div class="card-header">
+                     <h5 class="card-category">Treeview</h5>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <div class="table-responsive">
+                        <kendo-treeview [nodes]="datatreeview" textField="text" kendoTreeViewExpandable
+                           kendoTreeViewSelectable kendoTreeViewHierarchyBinding childrenField="items">
+                        </kendo-treeview>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-6 col-md-12 padding-md">
+               <div class="card ">
+                  <div class="card-header">
+                     <h4 class="card-title"> Text Editor</h4>
+                  </div>
+                  <div class="card-body padding-md-card">
+                     <kendo-editor [value]="valueEditor" style="height: 370px;"></kendo-editor>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,171 @@
+<form>
+    <div class="card">
+        <!-- <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Payroll Interface</h4>
+            </div>
+        </div> -->
+        <div style="max-height: 80vh; overflow: auto;">
+            <div class="row justify-content-center m-3 no-gutters">
+                <div class="col-md-8">
+                    <div class="card">
+                        <h4 class="text-center mt-3">Payroll Interface</h4>
+                        <hr>
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-md-6 d-flex justify-content-center">
+                                <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                    (click)="onHandleOperation('time_report')">Uanpproved Time
+                                    From
+                                    {{startDate | date: 'MM/dd/yyyy'}} through {{endDate | date: 'MM/dd/yyyy'}}
+
+                                </button>
+                            </div>
+                        </div>
+                        <div style="max-height: 80vh;">
+                            <div class="row justify-content-center mt-3 no-gutters">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="row no-gutters">
+                                            <kendo-grid kendoGridExpandGroupBy [data]="branches" kendoGridSelectBy
+                                                [selectable]="true" [navigable]="true" [resizable]="true"
+                                                [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                (selectionChange)="onSelectionChange($event)" [data]="" [sort]="sort"
+                                                (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                                [selectedKeys]="selections" [sortable]="true"
+                                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                                [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+                                                (groupChange)="groupChange()" [groupable]="false">
+                                                <kendo-grid-column *ngFor="let column of branchcolumns"
+                                                    [width]="column.width" field="{{column.Name}}"
+                                                    title="{{column.Text}}">
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <span *ngIf="column.Name=='timeIn'">
+                                                            {{dataItem.timeIn | date :'MM-dd-yyyy HH:mm'}}
+                                                        </span>
+                                                        <span
+                                                            *ngIf="column.Name!='timeIn'">
+                                                            {{dataItem[column.Name]}}
+                                                        </span>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+
+                                                <kendo-grid-column title="Am" [width]="40">
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <div class="text-center"><input class="text-center"
+                                                                type="checkbox" kendoCheckBox /></div>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                                <kendo-grid-column title="Admin" [width]="40">
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <div class="text-center"><input class="text-center"
+                                                                type="checkbox" kendoCheckBox />
+                                                        </div>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                                <ng-template kendoGridToolbarTemplate>
+                                                    <!-- <div class="example-config">
+                                                        <a #anchor (click)="onToggleFilter()">
+                                                            <span class="k-icon k-i-more-vertical"></span>
+                                                        </a>
+                                                    </div> -->
+                                                    <input placeholder="Search in all columns..." kendoTextBox
+                                                        class="col-md-9" (input)="onFilter($event.target.value)" />
+                                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                                    <span> Total :{{totalData}}</span>
+                                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                                </ng-template>
+                                            </kendo-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-12">
+                                <!-- <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%"
+                                        aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div> -->
+                                <kendo-progressbar [value]="value" style="width: 100%;"></kendo-progressbar>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-3">
+                                <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                    (click)="onHandleOperation('exception_report')"> Exception Report
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                 (click)="onHandleOperation('create_interfacefile')"> Create Interface
+                                    Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select Date Range for Report" *ngIf="isTimeReportVisible"
+    (close)="onHandleOperation('time_report')" [minWidth]="250" [height]="350" [width]="550">
+    <div class="row mb-2 text-center">
+        <div class="col-md-12">
+            <h4>Select Date Range for Report</h4>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">From</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic" [(ngModel)]="startDate">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">To</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic" [(ngModel)]="endDate">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 justify-content-end d-flex">
+            <button class="k-button w-50" type="button" (click)="onHandleOperation('submit')">Submit</button>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<!-- <kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog> -->
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogOkVisible" (close)="onHandleOperation('confirm_ok')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm_ok')">No</button>
+        <button kendoButton (click)="onHandleOperation('confirm_ok')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

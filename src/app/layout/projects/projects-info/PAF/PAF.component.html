@@ -1,0 +1,526 @@
+<div>
+  <form [formGroup]="form" class="cust-form height-form">
+    <div class="row no-gutters m-2">
+      <div class="col-md-12 text-center">
+        <label class="k-checkbox-label mb-2">
+          <input
+            type="checkbox"
+            kendoCheckBox
+            [disabled]="isDisabled"
+            formControlName="pafComplete"
+          />
+          Project Activation Form is COMPLETE
+        </label>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>PIF CONTACT INFORMATION</legend>
+          <div class="row no-gutters m-2">
+            <div class="col-md-6 mb-1">
+              <div class="row">
+                <div class="col-md-4 text-right"><label>Name</label></div>
+                <div class="col-md-8">
+                  <kendo-textbox
+                    class="form-control form-control-round h-30"
+                    [disabled]="isDisabled"
+                    formControlName="pciName"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row">
+                <div class="col-md-4 text-right"><label>Title</label></div>
+                <div class="col-md-8">
+                  <kendo-textbox
+                    class="form-control form-control-round h-30"
+                    [disabled]="isDisabled"
+                    formControlName="pciTitle"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row mb-1">
+                <div class="col-md-4 text-right"><label>Email</label></div>
+                <div class="col-md-8">
+                  <kendo-textbox
+                    class="form-control form-control-round h-30"
+                    [disabled]="isDisabled"
+                    formControlName="pciEmail"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row mb-1">
+                <div class="col-md-4 text-right"><label>Phone</label></div>
+                <div class="col-md-8">
+                  <kendo-maskedtextbox
+                    class="form-control form-control-round h-30"
+                    [disabled]="isDisabled" [mask]="mask"
+                    formControlName="pciPhone"
+                  >
+                  </kendo-maskedtextbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row mb-1">
+                <div class="col-md-4 text-right"><label>Tax Exempt</label></div>
+                <div class="col-md-8">
+                  <kendo-switch
+                    onLabel="Yes"
+                    offLabel="No"
+                    class=""
+                    style="width: auto"
+                    [disabled]="isDisabled"
+                    formControlName="taxExemptType"
+                    (valueChange)="onTaxExempt($event)"
+                  >
+                  </kendo-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>TYPE OF JOB</legend>
+          <div class="row no-gutters pt-1 displayFlex">
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label" [for]="publicfederal"
+                >Public - Federal</label
+              >
+              <input
+                type="radio"
+                name="jobType"
+                value="PUBLIC Federal"
+                #publicfederal
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="publicState"
+                >Public - State</label
+              >
+              <input
+                type="radio"
+                name="jobType"
+                value="PUBLIC STATE"
+                #publicState
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="publicCity"
+                >Public - City</label
+              >
+              <input
+                type="radio"
+                name="jobType"
+                value="PUBLIC CITY"
+                #publicCity
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="publicmdot"
+                >Public - MDOT</label
+              >
+              <input
+                type="radio"
+                name="jobType"
+                value="PUBLIC MDOT"
+                #publicmdot
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="publicprivate">Private</label>
+              <input
+                type="radio"
+                name="jobType"
+                value="PRIVATE"
+                #publicprivate
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label" [for]="consignment">Consignment</label>
+              <input
+                type="radio"
+                name="jobType"
+                value="CONSIGNMENT"
+                #consignment
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="jobType"
+              />
+            </span>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>CUSTOMER TYPE</legend>
+          <div class="row no-gutters pt-1 displayFlex">
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label" [for]="owner">Owner</label>
+              <input
+                type="radio"
+                name="custType"
+                value="OWNER"
+                #owner
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="custType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="prime">Prime</label>
+              <input
+                type="radio"
+                name="custType"
+                value="PRIME"
+                #prime
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="custType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="sub">Sub</label>
+              <input
+                type="radio"
+                name="custType"
+                value="SUB"
+                #sub
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="custType"
+              />
+            </span>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>EMPLOYEE GROUP</legend>
+          <div class="row no-gutters pt-1 displayFlex">
+            <div class="col-md-6 mb-1">
+              <span class="p-2 pl-3 pr-3">
+                <label class="k-label" [for]="union">Union</label>
+                <input
+                  type="radio"
+                  name="empGroupt"
+                  value="UNION"
+                  [disabled]="isDisabled"
+                  #union
+                  kendoRadioButton
+                  formControlName="empGroupt"
+                />
+              </span>
+              <span class="p-2 pl-3 pr-3">
+                <label class="k-label ml-2" [for]="nonUnion">Non - Union</label>
+                <input
+                  type="radio"
+                  name="empGroupt"
+                  value="NON UNION"
+                  [disabled]="isDisabled"
+                  #nonUnion
+                  kendoRadioButton
+                  formControlName="empGroupt"
+                />
+              </span>
+            </div>
+            <div class="col-md-3 mb-1">
+              <div *ngIf="displayUnicodeDrp">
+                <button
+                  kendoTooltip
+                  kendoRippleContainer
+                  kendoButton
+                  (click)="onUnicodes()"
+                  [disabled]="isDisabled"
+                >
+                {{form.value.uniCoedType}}  
+                </button>
+              </div>
+              <!--Click here for union codes <div *ngIf="!displayUnicodeDrp">
+                                <kendo-combobox formControlName="uniCoedType" [suggest]="true" [disabled]="isDisabled"
+                                    placeholder="Choose a union Code" class="form-control w-100 form-control-round"
+                                    [textField]="'value'" [data]="unicodeData" [valueField]="'value'"
+                                    [filterable]="true" [valuePrimitive]="true">
+                                </kendo-combobox>
+                            </div> -->
+            </div>
+            <div class="col-md-3 mb-1 pl-3 pr-2">
+              <label class="k-checkbox-label">Pipeline: </label>
+              <kendo-switch
+                onLabel="Yes"
+                offLabel="No"
+                class=""
+                style="width: auto"
+                [disabled]="isDisabled"
+                formControlName="displayPipeLine"
+                (valueChange)="onDisplayPipeline($event)"
+              >
+              </kendo-switch>
+            </div>
+            <div class="col-md-12 m-1 mb-2 text-center">
+              <div class="row no-gutters m-0">
+                <div class="col-md-3 text-left pl-2">
+                  <label class="k-checkbox-label">OCIP: </label>
+                  <kendo-switch
+                    onLabel="Yes"
+                    offLabel="No"
+                    class=""
+                    style="width: auto"
+                    [disabled]="isDisabled"
+                    formControlName="checkOCIP"
+                    (valueChange)="onOCIP($event)"
+                  >
+                  </kendo-switch>
+                </div>
+                <div class="col-md-3 text-left">
+                  <label class="k-checkbox-label">Mine/Quarry: </label>
+                  <kendo-switch
+                    onLabel="Yes"
+                    offLabel="No"
+                    class=""
+                    style="width: auto"
+                    [disabled]="isDisabled"
+                    formControlName="checkMine"
+                    (valueChange)="onMineQuarry($event)"
+                  >
+                  </kendo-switch>
+                </div>
+                <div class="col-md-3 text-left">
+                  <label class="k-checkbox-label">Certified Payroll: </label>
+                  <kendo-switch
+                    onLabel="Yes"
+                    offLabel="No"
+                    class=""
+                    style="width: auto"
+                    [disabled]="isDisabled"
+                    formControlName="checkCertifying"
+                    (valueChange)="onCertifiedPayroll($event)"
+                  >
+                  </kendo-switch>
+                </div>
+                <div class="col-md-3 text-left">
+                  <label class="k-checkbox-label"> Prevailing Wage: </label>
+                  <kendo-switch
+                    onLabel="Yes"
+                    offLabel="No"
+                    class=""
+                    style="width: auto"
+                    [disabled]="isDisabled"
+                    formControlName="checkPrivailing"
+                    (valueChange)="onPrevailingWage($event)"
+                  >
+                  </kendo-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>PAPERWORK</legend>
+          <div class="row no-gutters pt-1 displayFlex">
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label" [for]="purchaseOrder"
+                >Purchase Order</label
+              >
+              <input
+                type="radio"
+                name="paperWorkType"
+                value="PURCHASE ORDER"
+                #purchaseOrder
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="paperWorkType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="subContractCustomer"
+                >Subcontract from Customer</label
+              >
+              <input
+                type="radio"
+                name="paperWorkType"
+                value="SUBCONTRACT"
+                #subContractCustomer
+                [disabled]="isDisabled"
+                kendoRadioButton
+                formControlName="paperWorkType"
+              />
+            </span>
+            <span class="p-2 pl-3 pr-3">
+              <label class="k-label ml-2" [for]="mersinoProposal"
+                >Mersino Proposal</label
+              >
+              <input
+                type="radio"
+                name="paperWorkType"
+                value="PROPOSAL"
+                #mersinoProposal
+                kendoRadioButton
+                [disabled]="isDisabled"
+                formControlName="paperWorkType"
+              />
+            </span>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-12">
+        <fieldset>
+          <legend>OWNER INFO</legend>
+          <div class="row no-gutters p-1 displayFlex">
+            <div class="col-md-3 mb-1">
+              <label>Owner Name</label>
+            </div>
+            <div class="col-md-9 mb-1">
+              <kendo-textbox
+                class="form-control form-control-round h-30"
+                formControlName="ownerName"
+                [disabled]="isDisabled"
+              >
+              </kendo-textbox>
+            </div>
+            <div class="col-md-3 mb-1">
+              <label>Street Address</label>
+            </div>
+            <div class="col-md-9 mb-1">
+              <kendo-textbox
+                class="form-control form-control-round h-30"
+                formControlName="streetAdd"
+                [disabled]="isDisabled"
+              >
+              </kendo-textbox>
+            </div>
+            <div class="col-md-3 mb-1">
+              <label>City, State, Zip</label>
+            </div>
+            <div class="col-md-9">
+              <div class="row mb-1">
+                <div class="col-md-5">
+                  <kendo-textbox
+                    class="form-control form-control-round h-30"
+                    formControlName="city"
+                    [disabled]="isDisabled"
+                  >
+                  </kendo-textbox>
+                </div>
+                <div class="col-md-4 p-0">
+                  <kendo-combobox
+                    formControlName="state"
+                    [suggest]="true"
+                    placeholder="Select State"
+                    [disabled]="isDisabled"
+                    class="form-control form-control-round"
+                    [textField]="'value'"
+                    [data]="stateList"
+                    [valueField]="'value'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                  >
+                  </kendo-combobox>
+                </div>
+                <div class="col-md-3">
+                  <kendo-textbox
+                    class="form-control form-control-round h-30"
+                    [disabled]="isDisabled"
+                    formControlName="zipCode"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-1">
+              <label>Telephone</label>
+            </div>
+            <div class="col-md-9 mb-1">
+              <kendo-textbox
+                class="form-control form-control-round h-30"
+                formControlName="telephone"
+                [disabled]="isDisabled"
+              >
+              </kendo-textbox>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </form>
+  <div class="row no-gutters m-2">
+    <div class="col-md-1"></div>
+    <div class="col-md-2 text-center">
+      <button
+        kendoTooltip
+        kendoRippleContainer
+        kendoButton
+        (click)="onEdit()"
+        [disabled]="isEditDisabled"
+      >
+        Edit
+      </button>
+    </div>
+    <div class="col-md-2 text-center">
+      <button
+        kendoTooltip
+        kendoRippleContainer
+        kendoButton
+        (click)="onCancel()"
+        [disabled]="isSaveDisabled"
+      >
+        Cancel
+      </button>
+    </div>
+    <div class="col-md-2 text-center">
+      <button
+        kendoTooltip
+        kendoRippleContainer
+        kendoButton
+        (click)="onSaveClick()"
+        [disabled]="isSaveDisabled"
+      >
+        Save
+      </button>
+    </div>
+    <div class="col-md-2 text-center">
+      <button
+        kendoTooltip
+        kendoRippleContainer
+        kendoButton
+        (click)="exportToExcel()"
+        [disabled]="isEditDisabled"
+      >
+        Print
+      </button>
+    </div>
+    <div class="col-md-2 text-center">
+      <button kendoTooltip kendoRippleContainer kendoButton (click)="onBack()">
+        Back
+      </button>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>

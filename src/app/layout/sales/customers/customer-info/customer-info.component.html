@@ -1,0 +1,221 @@
+<form [formGroup]="form" class="cust-form">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <div class="row">
+    <div class="col-md-7">
+
+      <div class="register-box box-shadow-none card mb-0">
+        <div class="card-block p-0">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">
+                    Cust. Name<em>*</em>:
+                  </label>
+                </div>
+                <div class="col-md-9">
+
+                  <kendo-textbox class="form-control form-control-round" name="fname" formControlName="customerName"
+                    placeholder="Enter Customer Name">
+                  </kendo-textbox>
+                  <div class="required-text"
+                    *ngIf="form.get('customerName').hasError('required') && form.get('customerName').touched">
+                    This field is required!
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Address Pop up modal implmentation - DO NOT REMOVE -->
+            <!-- <div class="col-lg-12">
+      <div class="form-group row no-gutters">
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-10">
+          <button type="submit"
+            class="mt-2 btn btn-primary btn-sm btn-block waves-effect waves-light text-center"
+            data-toggle="modal" data-target="#myModal">Address</button>
+        </div>
+      </div>
+    </div> -->
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Address:</label>
+                </div>
+                <div class="col-md-9">
+                  <kendo-expansionpanel [expanded]="isExpanded">
+                    <ng-template kendoExpansionPanelTitleDirective>
+                      <div class="header-content">
+                        <span>{{!fullAdressLable?' -- Enter an address below --':fullAdressLable}} </span>
+                      </div>
+                    </ng-template>
+                    <div class="row">
+                      <div class="col-md-12 mb-2">
+                        <div class="row no-gutters">
+                          <div class="col-md-3 text-right">
+                            <label class="col-form-label">Address:</label>&nbsp;
+                          </div>
+                          <div class="col-md-9">
+                            <app-google-map-address [text]="fullAddress" [isDisabled]="this.isDisabled"
+                              (getAddress)="GetAddress($event)">
+                            </app-google-map-address>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-2">
+                        <div class="row no-gutters">
+                          <div class="col-md-3 text-right">
+                            <label class="col-form-label">Address 2:</label>&nbsp;
+                          </div>
+                          <div class="col-md-9">
+                            <input type="hidden" formControlName="address">
+                            <kendo-textbox formControlName="address2" class="form-control form-control-round"
+                              placeholder="Address 2">
+                            </kendo-textbox>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="row no-gutters pb-2">
+                          <div class="col-md-3 text-right">
+                            <label class="col-form-label">City:</label>&nbsp;
+                          </div>
+                          <div class="col-md-9">
+                            <kendo-textbox formControlName="city" class="form-control form-control-round"
+                              placeholder="City">
+                            </kendo-textbox>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-2">
+                        <div class="row no-gutters">
+                          <div class="col-md-3 text-right">
+                            <label class="col-form-label">State:</label>&nbsp;
+                          </div>
+                          <div class="col-md-9">
+                            <kendo-combobox class="form-control form-control-round" [data]="stateList"
+                              [textField]="'value'" formControlName="state" [valueField]="'value'" [filterable]="true"
+                              [valuePrimitive]="true">
+                            </kendo-combobox>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="row no-gutters">
+                          <div class="col-md-3 text-right">
+                            <label class="col-form-label">ZIP:</label>&nbsp;
+                          </div>
+                          <div class="col-md-9">
+                            <div class="row no-gutters">
+                              <kendo-textbox formControlName="zip" class="form-control form-control-round"
+                                placeholder="ZIP">
+                              </kendo-textbox>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </kendo-expansionpanel>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Phone:</label>
+                </div>
+                <div class="col-md-9">
+
+                  <kendo-textbox class="form-control form-control-round" name="Phone" placeholder="Phone"
+                    formControlName="phone">
+                  </kendo-textbox>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Fax:</label>
+                </div>
+                <div class="col-md-9">
+
+                  <kendo-textbox class="form-control form-control-round" name="Fax" placeholder="Fax"
+                    formControlName="fax">
+                  </kendo-textbox>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Web:</label>
+                </div>
+                <div class="col-md-9">
+                  <kendo-textbox class="form-control form-control-round" name="Web" placeholder="Web"
+                    formControlName="website">
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-5 text-center cinfo-buttons-block">
+
+      <div class="form-group row no-gutters">
+        <div class="col-md-3 text-right">
+          <label class="col-form-label pr-2">Branch:</label>
+        </div>
+        <div class="col-md-9">
+
+          <kendo-combobox [data]="branchList" [suggest]="true" [valueField]="'code'" [textField]="'value'"
+            [filterable]="true" placeholder="All Branches" (filterChange)="branchesHandleFilter($event)"
+            class="kendodropdownlist m-b-20" [valuePrimitive]="true" formControlName="branch">
+          </kendo-combobox>
+
+        </div>
+      </div>
+
+
+      <div class="form-group row no-gutters">
+        <div class="col-md-3 text-right">
+          <label class="col-form-label pr-2">Customer Type:</label>
+        </div>
+        <div class="col-md-9">
+
+          <kendo-combobox [data]="customerTypes" [suggest]="true" [filterable]="true" [textField]="'value'"
+            [valueField]="'value'" [valuePrimitive]="true" formControlName="customerType" placeholder="All Customer"
+            class="kendodropdownlist m-b-20" [filterable]="true" (filterChange)="customerTypesHandleFilter($event)"
+            [value]="'Agricultural'">
+          </kendo-combobox>
+
+        </div>
+      </div>
+
+
+      <div class="form-group row no-gutters">
+        <div class="col-md-3 text-right">
+          <label class="col-form-label pr-2">Employee:</label>
+        </div>
+        <div class="col-md-9">
+
+          <kendo-combobox [data]="employeeList" [suggest]="true" [valueField]="'id'" [textField]="'name'"
+            [filterable]="true" placeholder="All Account Manager" (filterChange)="employeeHandleFilter($event)"
+            class="kendodropdownlist m-b-20" [valuePrimitive]="true" formControlName="employeeNumber">
+          </kendo-combobox>
+
+        </div>
+      </div>
+      <div>
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+</form>

@@ -1,0 +1,48 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>ADDITIONAL ITEMS - <span class="pl-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="changeMarkAll($event)">
+                            </kendo-switch>
+                            Mark All N/A
+                        </span>
+                    </legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayExaustNoLeaks" class="w-100"
+                                (click)="onHandleOperations('exaust_no_leaks')" kendoTooltip kendoRippleContainer
+                                kendoButton>EXAUST NO-LEAKS: {{f.exaustNoLeaks.value}}
+                            </button> --><label class="col-form-label">EXAUST NO-LEAKS:</label> 
+                            <kendo-combobox *ngIf="!displayExaustNoLeaks" [suggest]="true"
+                                (valueChange)="onHandleOperations('exaust_no_leaks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="exaustNoLeaks">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('exaustNoLeaks').hasError('required') && form.get('exaustNoLeaks').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayRotateTires" class="w-100"
+                                (click)="onHandleOperations('rotate_tires')" kendoTooltip kendoRippleContainer
+                                kendoButton>ROTATE TIRES: {{f.rotateTires.value}}
+                            </button> --><label class="col-form-label">ROTATE TIRES:</label> 
+                            <kendo-combobox *ngIf="!displayRotateTires" [suggest]="true"
+                                (valueChange)="onHandleOperations('rotate_tires')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="rotateTires">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('rotateTires').hasError('required') && form.get('rotateTires').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

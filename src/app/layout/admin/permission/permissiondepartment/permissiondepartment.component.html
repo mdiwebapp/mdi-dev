@@ -1,0 +1,19 @@
+<kendo-grid [data]="department" [height]="533" [navigable]="true" [resizable]="true" [reorderable]="true"
+    [sort]="gridState.sort" [sortable]="true" (dataStateChange)="onStateChange($event)" (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+    (add)="addHandler($event)" [navigable]="true">
+    <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand title="Add" id="btnAdd" class="btn_icon"></button>
+    </ng-template>
+    <kendo-grid-column field="departmentName" editor="text" width="140" title="Department Name"></kendo-grid-column>
+    <kendo-grid-command-column title="" width="100">
+        <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridEditCommand  [primary]="true" title="Edit"  id="btnEdit" class="btn_icon">
+            </button>
+            <button kendoGridSaveCommand title="Save" id="btnSave" class="btn_icon" filter="button">
+            </button>
+            <button kendoGridCancelCommand title="Cancel" id="btnCancel" class="btn_icon" filter="button">
+            </button>
+        </ng-template>
+    </kendo-grid-command-column>
+</kendo-grid>

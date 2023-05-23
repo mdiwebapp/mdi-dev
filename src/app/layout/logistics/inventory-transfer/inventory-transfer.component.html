@@ -1,0 +1,444 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="">Inventory Transfer</h4>
+            <div *ngIf="menuService.isAddRight && isAdd" class="wp-50 p-l-10 p-r-10">
+                <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" *ngIf="!disabledRowAdd"
+                    (click)="addHandler()">
+                </button>
+            </div>
+            <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+                <button kendoTooltip id="btnCancel" title="Cancel" class="btn_icon" filter="button"
+                    *ngIf="disabledRowAdd" (click)="addHandler()">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="menuService.isAddRight || menuService.isEditRight">
+                <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="disabledRowAdd"
+                    (click)="addTransfer()">
+                </button>
+            </div>
+        </div>
+        <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+            <div class="form-control1 displayFlex alignFlexEnd">
+                <div  class="p-r-20">
+                    <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button" (click)="onFolderToggle()">
+                    </button>
+                    <!-- <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button" >
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style pane-content">
+        <form [formGroup]="form" class="cust-form">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="row m-0 mt-3">
+                        <div class="col-md-4  p-0">
+                            <label class="col-form-label">Status:</label>
+                            <kendo-switch onLabel="Open" offLabel="All" class="ml-2" [ngModel]="status"
+                                [ngModelOptions]="{standalone: true}" (valueChange)="filterStatus($event)" kendoTooltip
+                                [disabled]="disabledRowAdd"  title="Click to view all transfers or just open transfer" style="width: 70px;">
+                            </kendo-switch>
+                        </div>
+                        <!-- <div class="col-md-8 p-0">
+                            <label class="col-form-label">Branches:</label>
+                            <kendo-switch onLabel="" offLabel="All" class="ml-2" kendoTooltip
+                                title="Click to view  transfers at all branches or just your location"
+                                formControlName="branchStatus">
+                            </kendo-switch>
+                        </div> -->
+                    </div>
+                    <div class="row pt-2 mb-2">
+                        <div class="col-md-12">
+                            <kendo-grid [data]="invTransferData" (selectionChange)='onGridSelection($event)'
+                                [selectable]="true" [sort]="sort" (sortChange)="sortChange($event)"
+                                [(selectedKeys)]="mySelection" [sortable]="{allowUnsort: false}" [sortable]="true"
+                                kendoTooltip
+                                title="This is the list of the all transfers.By default, it is filtered to view only open transfers in your branch."
+                                kendoGridSelectBy [navigable]="true" [resizable]="true" [reorderable]="true"
+                                style="height: 60vh;">
+                                <ng-template kendoGridToolbarTemplate>
+                                    <!-- <div class="example-config">
+                                        <a #anchor (click)="onToggle()">
+                                            <span class="k-icon k-i-more-vertical"></span>
+                                        </a>
+                                    </div> -->
+                                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                                        (keydown.enter)="onFilter()" [(ngModel)]="searchText"
+                                        [ngModelOptions]="{standalone: true}" />
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                    <i class="fa fa-search" (click)="onFilter();"></i>
+                                    <span> Total : {{headerTotalData}}</span>
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                </ng-template>
+                                <kendo-grid-column field="invTransferNumber" title="Inv Transfer Number #">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <label>{{dataItem.invTransferNumber}}</label>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="status" title="Status" width="150">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <label>{{dataItem.status}}</label>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="fromBranch" title="From">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <label
+                                            *ngIf="dataItem.fromBranch != null||dataItem.fromBranch != ''">{{dataItem.fromBranch}}</label>
+                                        <kendo-combobox class="form-control form-control-round" placeholder=""
+                                            formControlName="fromBranch" (valueChange)="checkBranch($event)"
+                                            *ngIf="dataItem.fromBranch == null||dataItem.fromBranch == ''"
+                                            [data]="fromBranchList" [suggest]="true" [textField]="'value'"
+                                            [valueField]="'id'" [filterable]="true" [valuePrimitive]="true">
+                                        </kendo-combobox>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="toBranch" title="To">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <label
+                                            *ngIf="dataItem.toBranch != null||dataItem.toBranch != ''">{{dataItem.toBranch}}</label>
+                                        <kendo-combobox class="form-control form-control-round" placeholder=""
+                                            *ngIf="dataItem.toBranch == null||dataItem.toBranch == ''"
+                                            formControlName="toBranch" [data]="toBranchList" [suggest]="true"
+                                            [textField]="'value'" [valueField]="'id'" [filterable]="true"
+                                            (valueChange)="checkBranch($event)" [valuePrimitive]="true">
+                                        </kendo-combobox>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                            <kendo-datapager [total]="headerTotalData" [pageSize]="pageSize" [skip]="skip"
+                                style="width: 100% !important;" (pageChange)="onHeaderPageChange($event)">
+                                <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                    let-currentPage="currentPage">
+                                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                    </kendo-datapager-numeric-buttons>
+                                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                                </ng-template>
+                            </kendo-datapager>
+                        </div>
+                    </div>
+                    <div class="row  no-gutters m-0">
+                        <div class="col-md-2 p-0">
+                            <button class="btn w-100 p-2 text-center" type="button" (click)="openTransferConfirmation()"
+                                [disabled]="disabledSend" kendoRippleContainer kendoButton>Send</button>
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2 p-0" *ngIf="menuService.isOverride">
+                            <button class="btn w-100 p-2 text-center" type="button" kendoRippleContainer
+                                [disabled]="disabledOverride" (click)="SetInvTransferService()"
+                                kendoButton>Override</button>
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2 p-0">
+                            <button class="btn w-100 p-2 text-center" type="button" (click)="openReceive()"
+                                [disabled]="disabledReceive" kendoRippleContainer kendoButton>Receive</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-1 mt-5 pl-1 pt-3 pr-5">
+                    <button class="btn w-100 p-3 mt-5 text-center d-block" type="button" kendoRippleContainer
+                        (click)="addSwap()" kendoButton>
+                        <i class="fa fa-exchange fa-rotate-90"></i>
+                    </button>
+                </div> -->
+                <div class="col-md-7">
+                    <div class="row m-0 mt-3">
+                        <div class="col-md-8 p-0">
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-8 p-0">
+                                    <label><b>Created By : </b> <span
+                                            class="text-bold">{{selectedRow?.createdBy}}</span></label>
+                                </div>
+                                <div class="col-md-4 p-0">
+                                    <label><b>Date : </b> <span class="text-bold">{{selectedRow?.createdDate |
+                                            date:'MM/dd/yyyy'}}</span></label>
+                                </div>
+                                <div class="col-md-8 p-0">
+                                    <label><b>Sent By : </b> <span
+                                            class="text-bold">{{selectedRow?.sentBy}}</span></label>
+                                </div>
+                                <div class="col-md-4 p-0">
+                                    <label><b>Date : </b> <span class="text-bold">{{selectedRow?.sentDate |
+                                            date:'MM/dd/yyyy'}}</span></label>
+                                </div>
+                                <div class="col-md-8 p-0">
+                                    <label><b>Received By : </b> <span
+                                            class="text-bold">{{selectedRow?.receivedBy}}</span></label>
+                                </div>
+                                <div class="col-md-4 p-0">
+                                    <label><b>Date : </b> <span class="text-bold">{{selectedRow?.receivedDate |
+                                            date:'MM/dd/yyyy'}}</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 p-0">
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-12 p-0">
+                                    <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer
+                                        kendoTooltip kendoButton [disabled]="disabledRowAdd"
+                                        title="Click to view and print the transfer's bill of Landing(BOL) in Excel" (click)="exportToExcel()">BOL</button>
+                                </div>
+                                <div class="col-md-12 p-0 pt-2">
+                                    <label class=" col-form-label">Receive Qty:</label>
+                                    <kendo-switch onLabel="All" offLabel="None" class="ml-2" style="width: 70px;"
+                                        (valueChange)="setReceiveQty($event)" formControlName="receiveQty">
+                                    </kendo-switch>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2 pt-1">
+                        <div class="col-md-12">
+                            <kendo-grid [data]="invTransferData1" kendoGridSelectBy [navigable]="true" kendoTooltip
+                                (sortChange)="sortChange1($event)" [sort]="sort1" [(selectedKeys)]="mySelection1"
+                                [sortable]="{allowUnsort: false}" [sortable]="true"
+                                (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+                                title="List the inventory items and quantities for the selected transfers."
+                                style="height: 60vh;" [resizable]="true" [reorderable]="true">
+                                <kendo-grid-column field="invType" title="Inventory Type" editor="text">
+                                </kendo-grid-column>
+                                <kendo-grid-column title="Inv#" width="175">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <kendo-combobox class="form-control form-control-round"
+                                            [value]="dataItem.invNumber"
+                                            *ngIf="dataItem.invNumberList && dataItem.serialized && selectedRow.status == 'NEW'"
+                                            (valueChange)="changeInvNumber(dataItem,$event)" style="width: 150px;"
+                                            [data]="dataItem.invNumberList.toString().split(',')" [suggest]="true"
+                                            (filterChange)="handleFilter($event,dataItem)" [filterable]="true">
+                                        </kendo-combobox>
+                                        <div
+                                            *ngIf="dataItem.serialized==false || (dataItem.serialized==true && selectedRow.status != 'NEW')">
+                                            {{dataItem.invNumber}} </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <!-- <kendo-grid-column field="invNumber" title="Inv #"></kendo-grid-column> -->
+                                <kendo-grid-column field="description" title="Description">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="quantity" title="Quantity" width="100"></kendo-grid-column>
+                                <kendo-grid-column field="recQty" title="RecQty" width="100">
+                                    <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                                        <label *ngIf="!displaySendRecQty" for="recQty">{{dataItem.recQty}}</label>
+                                        <kendo-numerictextbox class="form-control form-control-round" [decimals]="'0'"
+                                            *ngIf="displaySendRecQty" formControlName="receiveQty" placeholder="Qty"
+                                            format="n2" min="0">
+                                        </kendo-numerictextbox>
+                                    </ng-template> -->
+                                </kendo-grid-column>
+                                <kendo-grid-column field="available" title="Available" width="100"
+                                    *ngIf="selectedRow && selectedRow.status == 'NEW'">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="action" title="Action" [width]="80"
+                                    *ngIf="selectedRow && selectedRow.status == 'NEW'">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <i class="fa fa-2x fa-trash mr-2" (click)="removeItem(dataItem)"></i>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+                    <div class="row  no-gutters m-0">
+                        <div class="col-md-6  p-1 ">
+                            <button class="btn w-100 p-2 text-center" type="button" kendoRippleContainer kendoButton
+                                [disabled]="disabledSend" (click)="onItem()">Select an item
+                            </button>
+                        </div>
+                        <div class="col-md-4 p-1">
+                        </div>
+                        <div class="col-md-2 p-1">
+                            <!-- <button class="btn w-100 p-2 text-center" type="button" (click)="openAddNote()"
+                                [disabled]="disabledRowAdd" kendoRippleContainer kendoButton>Add
+                                Note</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="backdrop" [style.display]="diplayitemDrp ? 'block' : 'none'" style="z-index: 333333;">
+            </div>
+            <div class="custom_slider_popup" *ngIf="diplayitemDrp" style="width: 800px !important;">
+                <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+                    <!-- <div class="content">
+                    <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+                </div> -->
+                    <div class="row m-0">
+                        <kendo-grid [data]="gridView" [pageSize]="20" [sortable]="true" [selectable]="true"
+                            kendoGridSelectBy [selectedKeys]="mySelectionItem" [height]="400" [navigable]="true"
+                            [sort]="sortInv" [resizable]="true" [reorderable]="true" [columnMenu]="{ filter: true }"
+                            (selectionChange)="selectionchange($event)"  (sortChange)="invSortChange($event)">
+                            <ng-template kendoGridToolbarTemplate>
+                                <input placeholder="Search in all columns..." kendoTextBox class="col-md-8"
+                                    (keydown.enter)="GetInventoryTransferSelectItem()"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchInvText"
+                                    (input)="onFilter1($event.target.value)" />
+                                <i class="fa fa-search" (click)="GetInventoryTransferSelectItem();"></i>
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                                <span> Total : {{totalData}}</span>
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                            </ng-template>
+                            <kendo-grid-column field="invType" kendoTooltip title="Inventory Type" [width]="150">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="description" kendoTooltip title="Description">
+                            </kendo-grid-column>
+                            
+                        </kendo-grid>
+                        <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                            style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                            <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                let-currentPage="currentPage">
+                                <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                </kendo-datapager-numeric-buttons>
+                                <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                            </ng-template>
+                        </kendo-datapager>
+                    </div>
+                    <div class="row ml-2">
+                        <div class="k-actions k-actions-end">
+                            <div class="k-columnmenu-actions">
+                                <kendo-numerictextbox class="col-md-6" formControlName="quantity" placeholder="Qty"
+                                    [min]="0" [decimals]="'0'" [format]="'n0'">
+                                </kendo-numerictextbox>
+                                <button class="k-button" type="button" (click)="AddItem()">Add</button>
+                                <button class="k-button k-primary" (click)="closePopup()" type="button">Close</button>
+                                <label *ngIf="isAvailable" style="color: red;">There is not enough inventory.</label>
+                            </div>
+                        </div>
+                    </div>
+                </kendo-popup>
+            </div>
+            <kendo-dialog title="Quantity Needed" *ngIf="opened" (close)="close('Cancel')" [minWidth]="250"
+                [width]="450">
+                <p style="margin: 30px; text-align: center;" class="fs-16">
+                    You must enter a Quantity.
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="close('Ok')" themeColor="primary">OK</button>
+                    <button kendoButton (click)="close('cancel')">Cancel</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Invalid" *ngIf="openedAddLineInvalid" (close)="closeAddLineInvalid('Cancel')"
+                [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;" class="fs-16">
+                    You have not selected an Inventory Type.
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeAddLineInvalid('Ok')" themeColor="primary">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Add Notes" *ngIf="displayAddNote" (close)="closeAddNote('Cancel')" [minWidth]="250"
+                [width]="450">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-12">
+                        <p>Add notes for Transfer TR8162 here.</p>
+                    </div>
+                    <div class="col-md-12">
+                        <kendo-textbox formControlName="NotesText" class="form-control form-control-round"
+                            placeholder="">
+                        </kendo-textbox>
+                    </div>
+                </div>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeAddNote('Ok')" themeColor="primary">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Enter Quantity Received" *ngIf="displayReceive" (close)="closeReceive('Cancel')"
+                [minWidth]="250" [width]="450">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-12">
+                        <p>Please enter the received quantities.</p>
+                    </div>
+                </div>
+                <kendo-dialog-actions>
+                    <button class="k-button" type="button" (click)="closeReceive('Ok')" themeColor="primary">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Transfer Confirmation" *ngIf="displayTransferConfirm"
+                (close)="closeTransferConfirmation('Cancel')" [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;" class="fs-16">
+                    Are you sure you want to send these items?
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeTransferConfirmation('Ok')" themeColor="primary">Ok</button>
+                    <button kendoButton (click)="closeTransferConfirmation('cancel')">Cancel</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Transfer Sent" *ngIf="displayTransferConfirmSent"
+                (close)="closeTransferConfirmationSent('Cancel')" [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;" class="fs-16">
+                    1 Item(s) Sent to Global Pump Mfg
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeTransferConfirmationSent('Ok')" themeColor="primary">Ok</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Picture Needed" *ngIf="displayTransferPicture" (close)="closeTransferPicture('Cancel')"
+                [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;" class="fs-16">
+                    Please take picture(s) of items listed on the transfer.
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeTransferPicture('Ok')" themeColor="primary">Ok</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+        </form>
+    </div>
+</div>
+<div class="backdrop" [style.display]="show ? 'block' : 'none'" style="z-index: 333333;">
+</div>
+<div class="custom_slider_popup" *ngIf="show" style="width: 800px !important;">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <div class="content">
+            <h5 class="k-window-titlebar k-dialog-titlebar">Advanced Filters</h5>
+        </div>
+        <div class="row no-gutters mr-2">
+            <div class="col-md-8 p-0" style="border-right: 1px solid lightgray;">
+                <div class="row no-gutters mr-2">
+                    <div class="col-md-5 pr-0 pl-3">
+                        <label class="col-form-label ">Inventory Transfer Number<em></em>:</label>
+                    </div>
+                    <div class="col-md-7">
+                        <kendo-combobox class="form-control form-control-round" [data]="inventoryData" [suggest]="true"
+                            placeholder="Select Inventory Transfer Number" [textField]="'value'"
+                            [(ngModel)]="inventoryDataType" [valueField]="'value'" [filterable]="true"
+                            [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+            <div class="col-md-4 p-0">
+                <div class="waves-effect waves-light" style="padding: 0px 5px; border-radius: 5px;">
+                    <div *ngFor="let column of viewColumns" class="col-xs-12 example-col">
+                        <input type="checkbox" id="{{ column.Name }}" class="k-checkbox" [disabled]="column.isDisable"
+                            [checked]="column.isCheck" [(ngModel)]="column.isCheck" (change)="hideColumn()" />
+                        <label class="k-checkbox-label" for="{{ column.Name }}">{{ column.Text
+                            }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row ml-2">
+            <div class="k-actions k-actions-end">
+                <div class="k-columnmenu-actions">
+
+                    <button class="k-button" (click)="columnApply()" type="button">Apply</button>
+                    <button class="k-button" type="button" (click)="resetPopup1()">Reset</button>
+                    <button class="k-button k-primary" (click)="closePopup1()" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </kendo-popup>
+   
+</div>
+<div class="custom_slider_popup" *ngIf="showFolder" style="width: 90% !important;height: 650px;">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <div class="content" style="float: right;">
+            <i class="fa fa-2x fa-close mr-2" (click)="showFolder=false;"></i>
+        </div>
+        <!--    <div class="row m-0"> -->
+        <app-networkdirectry></app-networkdirectry>
+        <!-- </div> -->
+    </kendo-popup>
+</div>

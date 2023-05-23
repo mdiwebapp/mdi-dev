@@ -1,0 +1,249 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Last Invoiced</h4>
+        </div>
+        <div class="form-control1 displayFlex alignFlexEnd">
+            <button kendoTooltip title="Excel" id="btnPrint" class="btn_icon" filter="button"  (click)="exportToExcel()">
+            </button>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <label class="col-form-label">Account Manager:</label>
+                    </div>
+                    <div class="col-md-6">
+                        <kendo-combobox [data]="customer" [suggest]="true"  [textField]="'name'" [valueField]="'employeeNumber'"
+                        (filterChange)="employeehandleFilter($event)"  [filterable]="true" [valuePrimitive]="true" value="All"  (valueChange)="onAMValueChange($event)">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <label class="col-form-label">Branch:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <kendo-combobox [data]="branch" [suggest]="true" [textField]="'value'" [valueField]="'code'"
+                        (filterChange)="branchHandleFilter($event)" [filterable]="true" [valuePrimitive]="true" value="All" (valueChange)="onBranchValueChange($event)">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="lastInvoicedForm">
+            <div class="col-md-12">
+                <kendo-textbox class="form-control form-control-round" formControlName="description" placeholder="Type to filter">
+                </kendo-textbox>
+            </div>
+            <div  class="col-md-1 p-2 ">
+                <!-- <i class="fa fa-search fa-2x" (click)="onSearchClick();"></i> -->
+            </div>
+            </form>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-search fa-2x" (click)="onSearchClick();"></i> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" kendoCheckBox (change)="onGroupChange($event)" />
+                            <label class="col-form-label pl-2">Expand All</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true"
+                    [reorderable]="true" (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event)"
+                    [data]="jobs" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                    [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                    [skip]="skip" style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [group]="state.group"
+                    [(expandedGroupKeys)]="expandedGroupKeys" (groupChange)="groupChange()" [groupable]="false">
+                    <!-- <kendo-grid-column *ngFor="let column of jobsColums" [width]="column.width" field="{{column.Name}}"
+                        title="{{column.Text}}">
+                    </kendo-grid-column> -->
+                    <kendo-grid-column field="projectNumber" title="Project Number">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.projectNumber}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="projectStatus" title="Project Status">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.projectStatus}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="custName" title="Customer Name">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.custName}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="projectName" title="Project Name">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.projectName}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="branchName" title="Branch">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.branchName}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="accountManager" title="Account Manager">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.accountManager}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="jobValue" title="Job Value">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>${{dataItem.jobValue | number : '1.2-2':"en-US"}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="lastInvoiced" title="Last Invoiced">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div *ngIf="dataItem.days > 30 && dataItem.days < 60 " style="background-color: yellow;">
+                                <lable>{{dataItem.lastInvoiced | date: 'MM/dd/yyyy'}}</lable>
+                            </div>
+                            <div *ngIf="dataItem.days > 60" style="background-color: lightgreen;">
+                                <lable>{{dataItem.lastInvoiced | date: 'MM/dd/yyyy'}}</lable>
+                            </div>
+                            <div   *ngIf="dataItem.days< 30 && dataItem.days < 60"  >
+                                <lable>{{dataItem.lastInvoiced | date: 'MM/dd/yyyy'}}</lable>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="lastInvoicedAmount" title="Last Invoiced Amount">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                           
+                            <lable>${{dataItem.lastInvoicedAmount | number : '1.2-2':"en-US"}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="totalInvoicedAmount" title="Total Invoice Amount">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>${{dataItem.totalInvoicedAmount | number : '1.2-2':"en-US"}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="dateActivated" title="Activated Date">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.dateActivated}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="column1" title="Last Worked Date">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.column1 | date: 'MM/dd/yyyy'}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="laborCost" title="Labor Cost">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>${{dataItem.laborCost | number : '1.2-2':"en-US"}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="laborToRev" title="Labor To Rev">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div *ngIf="dataItem.laborToRev > 25" style="background-color: lightcoral;" >
+                                <lable>{{dataItem.laborToRev}}</lable>
+                            </div>
+                            <div  *ngIf="dataItem.laborToRev<25 || dataItem.laborToRev==25" >
+                                <lable>{{dataItem.laborToRev}}</lable>
+                            </div>
+                          
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="jobType" title="Project Type">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.jobType}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="type" [hidden]="true">
+                        <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                            {{value}}
+                        </ng-template>
+                    </kendo-grid-column>
+                </kendo-grid>
+                <kendo-datapager
+                [total]="totalData"
+                [pageSize]="pageSize"
+                [skip]="skip"
+                style="width: 100% !important"
+                (pageChange)="onPageChange($event)"
+              >
+                <ng-template
+                  kendoDataPagerTemplate
+                  let-totalPages="totalPages"
+                  let-currentPage="currentPage"
+                >
+                  <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                  <kendo-datapager-numeric-buttons [buttonCount]="5">
+                  </kendo-datapager-numeric-buttons>
+                  <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                  <kendo-dropdownlist
+                    class="form-control form-control-round"
+                    style="width: 16% !important"
+                    [data]="pageSizeList"
+                    [(ngModel)]="pageSize"
+                    [ngModelOptions]="{ standalone: true }"
+                    (valueChange)="onPageSizechange($event)"
+                    [valuePrimitive]="true"
+                    [textField]="'value'"
+                    [valueField]="'value'"
+                  >
+                  </kendo-dropdownlist>
+                  <!-- <kendo-datapager-info></kendo-datapager-info>
+                                    Current page: {{currentPage}} -->
+                </ng-template>
+              </kendo-datapager>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-8 p-2">
+                    <kendo-textbox class="form-control form-control-round" placeholder=""
+                        value="Last Invoiced Date > 30" disabled="true" style="background-color: yellow;">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-8 p-2">
+                    <kendo-textbox class="form-control form-control-round" placeholder=""
+                        value="Last Invoiced Date > 60" disabled="true" style="background-color: lightgreen;">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-8 p-2">
+                    <kendo-textbox class="form-control form-control-round" placeholder="" value="Labor to Rev> 25"
+                        disabled="true" style="background-color: lightcoral;">
+                    </kendo-textbox>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+            <!-- <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-10 p-2 mt-5 mb-2">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<div
+  class="overlay"
+  style="background-color: #f0f8ff52; z-index: 9999"
+  [hidden]="!visible"
+>
+  <kendo-loader
+    class="spinner"
+    [type]="'converging-spinner'"
+    [themeColor]="'error'"
+    [size]="'large'"
+  >
+  </kendo-loader>
+</div>

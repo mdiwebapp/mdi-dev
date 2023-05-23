@@ -1,0 +1,236 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Assign Components</h4>
+    </div>
+    <!-- <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button">
+          </button>
+          <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button">
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="card-block table-border-style pane-content">
+
+    <div class="row no-gutters ">
+      <div class="col-md-5">
+        <div class="row m-0 mt-3">
+          <div class="col-md-4  p-0">
+            <label class="col-form-label">Status:</label>
+            <kendo-switch onLabel="Active" offLabel="All" class="ml-2" [(ngModel)]="componentStatus"
+              (click)="filterbyStatus();" style="width: 80PX;">
+            </kendo-switch>
+          </div>
+          <!-- <div class="col-md-5 p-0">
+            <label class="k-checkbox-label ml-2" for="viewMissingComp">View Missing Component:</label>
+            <kendo-switch onLabel="Yes" offLabel="No" class="ml-2" style="width: auto;"
+              formControlName="viewMissingComp">
+            </kendo-switch>
+          </div> -->
+          <div class="col-md-4 p-0 text-right pt-2 pr-2">
+            Branch:
+          </div>
+          <div class="col-md-4 p-0">
+            <kendo-combobox [(ngModel)]="branchCode" [suggest]="true" placeholder="Select Branch"
+              (valueChange)="branchChange();" class="form-control form-control-round" [textField]="'value'"
+              [data]="branch" [valuePrimitive]="true" [valueField]="'code'">
+            </kendo-combobox>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <kendo-grid [data]="swapDataList2" kendoGridSelectBy class="h-grid" [navigable]="true" [resizable]="true"
+              [selectedKeys]="mySelectionitem" (selectionChange)='onGridSelectionChangeRemove($event)' [sort]="sort"
+              (sortChange)="sortChangeList2($event)" [sortable]="true" [reorderable]="true"
+              (columnReorder)="reorderColumns($event)" (columnResize)="resizeColumns($event)">
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoButton title="Select Unit" #anchor (click)="onToggle()">Select Unit</button>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <b style="font-size: 25px;"> {{invenNumber}}</b>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <span> Total : {{swapDataList2.length}}</span>
+              </ng-template>
+              <kendo-grid-column *ngFor="let column of viewColumns" [width]="column.width" field="{{column.Name}}"
+                title="{{column.Text}}">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem)"
+                    *ngIf="column.Name=='branchLocation'">
+                    {{ dataItem.branchLocation }}
+                  </span>
+                  <span *ngIf="column.Name!='branchLocation'">{{dataItem[column.Name]}}</span>
+
+                </ng-template>
+              </kendo-grid-column>
+              <!-- <kendo-grid-column field="branchLocation" title="Branch">
+              </kendo-grid-column>
+              <kendo-grid-column field="invType" title="Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="invNumber" title="Inventory Number">
+              </kendo-grid-column> -->
+            </kendo-grid>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 mt-5">
+        <div class="row m-5" *ngIf="showCrossBranch">
+          <button *ngIf="showAddRemove" class="btn w-100 p-3 text-center mt-5 d-block" type="button"
+            (click)="confirmSwap('add')" kendoRippleContainer kendoButton [disabled]="!invenNumber">
+            <b>Add</b>
+            <br />
+            <i class="fa fa-chevron-left"></i>
+          </button>
+          <br />
+          <button *ngIf="showAddRemove" class="btn w-100 p-3 text-center mt-2 d-block" type="button"
+            (click)="removeSwap()" kendoRippleContainer kendoButton [disabled]="!invenNumber">
+            <b>Remove</b>
+            <br />
+            <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="row no-gutters">
+          <div class="col-md-2 pt-2">
+            Component Type:
+          </div>
+          <div class="col-md-4">
+            <kendo-dropdownlist class="form-control form-control-round" [data]="listCompType"
+              [(ngModel)]="componentType" (valueChange)="loadItems()" [valuePrimitive]="true" [textField]="'value'"
+              [valueField]="'value'">
+            </kendo-dropdownlist>
+          </div>
+          <div class="col-md-4">
+            <div *ngIf="showCrossBranch" class="mb-0 row no-gutters">
+              <div class="col-md-9 text-right">
+                <label class="col-form-label pr-2">Cross Swap:</label>
+              </div>
+              <div class="col-md-3" style="margin-top: 3px;">
+                <kendo-switch onLabel="Yes" offLabel="No" class="" (click)="loadItems();" [(ngModel)]="crossSwap">
+                </kendo-switch>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="p-1 col-md-3" *ngFor="let item of listCompType" (click)="loadItems(item.value)">
+            <input type="radio" name="componentType" [value]="item.value" #pumpend kendoRadioButton
+              [(ngModel)]="componentType" />
+            <label class="k-label ml-1" [for]="pumpend">{{item.value}}</label>
+          </div> -->
+          <!-- <div class="p-1 col-md-3">
+            <input type="radio" name="componentType" value="gearBox" #gearBox kendoRadioButton
+              [(ngModel)]="componentType" />
+            <label class="k-label ml-1" [for]="gearBox">Gear Box</label>
+          </div>
+          <div class="p-1 col-md-3">
+            <input type="radio" name="componentType" value="messenger" #messenger kendoRadioButton
+              [(ngModel)]="componentType" />
+            <label class="k-label ml-1" [for]="messenger">Messenger</label>
+          </div>
+          <div class="p-1 col-md-3">
+            <input type="radio" name="componentType" value="all" #all kendoRadioButton [(ngModel)]="componentType" />
+            <label class="k-label ml-1" [for]="all">All</label>
+          </div> -->
+        </div>
+
+        <!-- <div class="row">
+          <div class="col-md-12">
+            <kendo-textbox class="form-control form-control-round w-100" formControlName="componentTypeSearch"
+              placeholder="">
+            </kendo-textbox>
+          </div>
+        </div> -->
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <kendo-grid [data]="swapDataList1" kendoGridSelectBy class="h-grid" [navigable]="true" [resizable]="true"
+              [sort]="sort" (sortChange)="sortChangeList1($event)" [sortable]="true" [reorderable]="true"
+              [selectedKeys]="mySelectionList1" (selectionChange)='onGridSelectionChange($event)'>
+              <ng-template kendoGridToolbarTemplate>
+                <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                  (keydown.enter)="loadItems()" [(ngModel)]="filterCollection.searchText" />
+                <!-- (input)="onItemFilter($event.target.value)" -->
+                <i class="fa fa-search" (click)="loadItems();"></i>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <span> Total : {{totalData}}</span>
+              </ng-template>
+              <kendo-grid-column *ngFor="let column of viewColumns" [width]="column.width" field="{{column.Name}}"
+                title="{{column.Text}}">
+              </kendo-grid-column>
+              <!-- <kendo-grid-column field="branchLocation" title="Branch">
+              </kendo-grid-column>
+              <kendo-grid-column field="invType" title="Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="invNumber" title="Inventory Number">
+              </kendo-grid-column> -->
+            </kendo-grid>
+            <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+              (pageChange)="onPageChange($event)">
+              <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                <kendo-datapager-numeric-buttons [buttonCount]="5">
+                </kendo-datapager-numeric-buttons>
+                <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                  [data]="pageSizeList" [(ngModel)]="pageSize" (valueChange)="onPageSizechange($event)"
+                  [valuePrimitive]="true" [textField]="'value'" [valueField]="'value'">
+                </kendo-dropdownlist>
+                <!-- <kendo-datapager-info></kendo-datapager-info>
+                                                Current page: {{currentPage}} -->
+              </ng-template>
+            </kendo-datapager>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<kendo-dialog [anchor]="anchor" (close)="closepopup()" *ngIf="show" [minWidth]="650" title="Inventory Type"
+  [width]="650">
+  <!-- <div class="content">
+      <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+  </div> -->
+  <div class="row m-0">
+    <kendo-grid [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true" [sortable]="true" [selectable]="true"
+      kendoGridSelectBy [selectedKeys]="mySelection" [height]="400" [resizable]="true" [sort]="sort"
+      (sortChange)="sortChange($event)" [sortable]="true"
+      (selectionChange)="OnChangeUnit($event)" [columnMenu]="{ filter: true }">
+      <ng-template kendoGridToolbarTemplate>
+        <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)" />
+
+      </ng-template>
+      <kendo-grid-column field="invNumber" title="Inventory Number">
+      </kendo-grid-column>
+      <kendo-grid-column field="description" title="Description">
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+  <div class="row">
+    <div class="k-actions k-actions-end">
+      <div class="k-columnmenu-actions">
+        <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</kendo-dialog>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('close')"
+  [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    {{confirm_message}}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onHandleOperation('close')">No</button>
+    <button kendoButton (click)="onHandleOperation('confirm')" primary="true">Yes</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

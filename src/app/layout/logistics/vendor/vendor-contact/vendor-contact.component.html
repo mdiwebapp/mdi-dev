@@ -1,0 +1,237 @@
+<form [formGroup]="form" class="cust-form">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <div class="register-box box-shadow-none card mb-0">
+        <div class="card-block p-0">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="55%">
+                            <div class="pane-content" style="height: 62vh !important;">
+                                <div class="">
+                                    <div class="col-md-12">
+                                        <div class="border-right">
+                                            <div class="table-responsive">
+                                                <kendo-grid [selectable]="true"
+                                                    (selectionChange)="editContactClick($event.selectedRows[0].dataItem)"
+                                                    [data]="data" [sort]="sort" (sortChange)="sortChange($event)"
+                                                    [sortable]="true" [skip]="skip" kendoGridSelectBy
+                                                    [selectedKeys]="mySelection"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <ng-template kendoGridToolbarTemplate>
+                                                        <input placeholder="Search in all columns..." kendoTextBox
+                                                            style="max-width: 50%;" class="col-md-9"
+                                                            (input)="onFilter($event.target.value)" />
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="wp-50 p-l-10 p-r-10">
+                                                                <button kendoTooltip title="Add" id="btnAdd"
+                                                                    class="btn_icon" filter="button" (click)="btnAdd()"
+                                                                    *ngIf="!isAdd && isAddRight">
+                                                                </button>
+                                                            </div>
+                                                            <div class="wp-50 p-l-10 p-r-10">
+                                                                <button kendoTooltip title="Edit" id="btnEdit"
+                                                                    class="btn_icon" filter="button" (click)="btnEdit()"
+                                                                    *ngIf="!isEdit">
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="wp-50 p-l-10 p-r-10">
+                                                                <button kendoTooltip title="Cancel" id="btnCancel"
+                                                                    class="btn_icon" filter="button"
+                                                                    (click)="btnCancel();" *ngIf="!isCancel">
+                                                                </button>
+                                                            </div>
+                                                            <div class="wp-50 p-l-10 p-r-10">
+                                                                <button kendoTooltip title="Save" id="btnSave"
+                                                                    class="btn_icon" filter="button" (click)="onSave();"
+                                                                    *ngIf="!isSave">
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span> Total : {{data?.length}}</span>
+                                                        <kendo-grid-spacer></kendo-grid-spacer>
+                                                    </ng-template>
+                                                    <kendo-grid-column field="firstName" title="Name" [width]="130">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>
+                                                                {{dataItem.firstName}} {{dataItem.lastName}}
+                                                            </lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="cellPhone" title="Cell Phone"
+                                                        [width]="130">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>
+                                                                {{dataItem.cellPhone ==
+                                                                ''?dataItem.office:dataItem.cellPhone}}
+                                                            </lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="email" title="Email" [width]="130">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>
+                                                                {{dataItem.email}}
+                                                            </lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+                                                <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane>
+                            <div class="pane-content" style="height: auto !important;">
+                                <div class="">
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">First Name<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="firstName"
+                                                    class="form-control form-control-round" placeholder="First Name">
+                                                </kendo-textbox>
+                                                <div class="required-text"
+                                                    *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched">
+                                                    This field is required!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Last Name<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="lastName"
+                                                    class="form-control form-control-round" placeholder="Last Name">
+                                                </kendo-textbox>
+                                                <div class="required-text"
+                                                    *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched">
+                                                    This field is required!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Title<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="title"
+                                                    class="form-control form-control-round" placeholder="Title">
+                                                </kendo-textbox>
+                                                <div class="required-text"
+                                                    *ngIf="form.get('title').hasError('required') && form.get('title').touched">
+                                                    This field is required!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Cell:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-maskedtextbox formControlName="cellPhone"
+                                                    class="form-control form-control-round" [mask]="mask">
+                                                </kendo-maskedtextbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Office:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="office"
+                                                    class="form-control form-control-round" placeholder="Office">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Email:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="email" style="width: 87% !important;"
+                                                    class="form-control form-control-round" placeholder="Email">
+                                                </kendo-textbox>
+                                                <a href="mailto:{{form.value.email}}" id="hlEmail">
+                                                    <i class="k-icon k-i-email m-10 align-self-center"
+                                                        style="font-size: 20px;margin-left: 10px;margin-top: 15px;"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Location:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="location"
+                                                    class="form-control form-control-round" placeholder="Location">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 text-right">
+                                                <label class="col-form-label pr-2">Notes:</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <kendo-textbox formControlName="note"
+                                                    class="form-control form-control-round" placeholder="Notes">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="viewActive" style="position: absolute;bottom: 0;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-10 text-right">
+                                        <label class="col-form-label pr-2">
+                                            Active<em></em>:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <kendo-switch class="" [(ngModel)]="isActive" formControlName="active"
+                                            onLabel="Yes" offLabel="No">
+                                        </kendo-switch>
+                                    </div>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+            <hr>
+
+        </div>
+    </div>
+</form>
+<ng-template #template let-anchor>
+    <span>Add</span>
+</ng-template>
+<ng-template #template2 let-anchor>
+    <span>Edit</span>
+</ng-template>
+<ng-template #template3 let-anchor>
+    <span>Cancel</span>
+</ng-template>
+<ng-template #template4 let-anchor>
+    <span>Save</span>
+</ng-template>

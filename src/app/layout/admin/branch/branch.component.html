@@ -1,0 +1,391 @@
+<div class="card">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <form [formGroup]="form" name="loginForm">
+    <div class="card-header d-flex flex-row justify-content-start">
+      <div class="d-flex justify-content-between">
+        <h4 class="p-r-10">Maintain Branches</h4>
+        <div *ngIf="menuService.isAddRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" *ngIf="!isAdd" filter="button"
+            (click)="btnAdd();">
+          </button>
+        </div>
+        <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" *ngIf="!isEdit" filter="button"
+            (click)="btnEdit();">
+          </button>
+        </div>
+
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="btnCancel();"
+            *ngIf="!isCancel">
+          </button>
+        </div>
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+            (click)="onSave();">
+          </button>
+        </div>
+
+      </div>
+      <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+        <div>
+          <label class="label label-primary label-mersino" *ngIf="branchName">{{branchName}}</label>
+          <label class="label label-primary label-mersino">Branch # {{id}}</label>
+          <label class="label label-primary  label-mersino">Date Created : {{cdate | date}}</label>
+        </div>
+
+        <div class="form-control1 displayFlex alignFlexEnd">
+
+          <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+            <!-- <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"> -->
+              <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+            <!-- </button> -->
+            <!-- <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button"> -->
+              <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+            <!-- </button> -->
+          </div>
+          <label>Active</label>
+          <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="isDisabled"
+            formControlName="active">
+          </kendo-switch>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-block table-border-style pb-0">
+
+
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="30%">
+              <div class="col-md-12 pane-content">
+                <div class="table-responsive">
+                  <!-- Grid bind here -->
+
+                  <app-branchlist (EditClick)="editClick($event)" [isEdit]="isEdit" [branchId]="id"
+                  (backButtonEvent)="backButtonEvent($event)" [onChange]="SaveChange"></app-branchlist>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <div class="col-md-12 pane-content">
+
+                <div class="row my-3">
+                  <div class="col-md-12">
+                    <div class="register-box box-shadow-none card mb-0">
+                      <div class="card-block p-0">
+                        <div class="row no-gutters">
+                          <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Branch Code<em>*</em>:</label>
+                              </div>
+                              <div class="col-md-8">
+                                <div class="">
+                                  <kendo-textbox formControlName="branchCode" class="form-control form-control-round"
+                                    placeholder="Branch Code"></kendo-textbox>
+                                  <div class="required-text"
+                                    *ngIf="form.get('branchCode').hasError('required') && form.get('branchCode').touched">
+                                    This field is required!
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Branch Name<em>*</em>:</label>
+                              </div>
+                              <div class="col-md-8">
+                                <kendo-textbox formControlName="branchName" class="form-control form-control-round"
+                                  placeholder="Branch Name"></kendo-textbox>
+                                <div class="required-text"
+                                  *ngIf="form.get('branchName').hasError('required')  && form.get('branchName').touched">
+                                  <!-- && form.get('branchName').touched -->
+                                  This field is required!
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Employer:</label>
+                              </div>
+                              <div class="col-md-8">
+                                <kendo-textbox formControlName="employer" class="form-control form-control-round"
+                                placeholder="Employer"></kendo-textbox>
+                              <div class="required-text"
+                                *ngIf="form.get('employer').hasError('required')  && form.get('employer').touched">
+                                <!-- && form.get('branchName').touched -->
+                                This field is required!
+                              </div>
+                                <!-- <label class="col-form-label pr-2">{{selectedBranch}}</label> -->
+                                <!-- <kendo-combobox class="form-control form-control-round" [data]="employerList"
+                                  [suggest]="true" [textField]="'value'" formControlName="employer"
+                                  [valueField]="'value'" [filterable]="true" (filterChange)="handleFilter($event)"
+                                  [valuePrimitive]="true">
+                                </kendo-combobox> -->
+                                <!-- <kendo-dropdownlist class="form-control form-control-round" [data]="employerList"
+                                  [filterable]="true" formControlName="employer" [valuePrimitive]="true"
+                                  [textField]="'value'" [valueField]="'value'" (filterChange)="handleFilter($event)">
+                                  <ng-template kendoDropDownListNoDataTemplate>
+                                    <div>
+                                      No data found.
+                                      <ng-container *ngIf="filter">Do you want to add new item - "{{ filter }}" ?
+                                      </ng-container>
+                                      <br />
+                                      <button *ngIf="filter" class="k-button" (click)="addNew()">
+                                        Add new item
+                                      </button>
+                                    </div>
+                                  </ng-template>
+                                </kendo-dropdownlist> -->
+                                <!-- <div class="required-text"
+                                  *ngIf="form.get('employer').hasError('required')  && form.get('employer').touched"> -->
+                                  <!-- && form.get('branchName').touched -->
+                                  <!-- This field is required!
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6  mb-3">
+                            <div class="mb-0 row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Nick Name:</label>
+                              </div>
+                              <div class="col-md-8">
+                                <kendo-textbox formControlName="nickName" class="form-control form-control-round"
+                                  placeholder="Nick Name">
+                                </kendo-textbox>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <div class="row no-gutters">
+                              <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2" style="padding: 16px 0px;">Address:</label>
+                              </div>
+                              <div class="col-md-4">
+                                <!-- subtitle="{{subTitleText}}" (action)="onAction($event)" -->
+                                <kendo-expansionpanel [expanded]="isExpanded">
+                                  <ng-template kendoExpansionPanelTitleDirective>
+                                    <div class="header-content">
+                                      <span>{{!fullAdressLable?' -- Enter an address below --':fullAdressLable}} </span>
+                                    </div>
+                                  </ng-template>
+                                  <div class="row">
+                                    <div class="col-md-12 mb-2">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 text-right">
+                                          <label class="col-form-label">Address<em>*</em>:</label>&nbsp;
+                                        </div>
+                                        <div class="col-md-9">
+                                          <app-google-map-address [text]="fullAddress" [isDisabled]="this.isDisabled"
+                                            (getAddress)="GetAddress($event)">
+                                          </app-google-map-address>
+                                          <div class="required-text"
+                                            *ngIf="form.get('address').hasError('required')  && form.get('address').touched">
+                                            This field is required!
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 text-right">
+                                          <label class="col-form-label">Address 2:</label>&nbsp;
+                                        </div>
+                                        <div class="col-md-9">
+
+                                          <kendo-textbox formControlName="address2"
+                                            class="form-control form-control-round" placeholder="Address 2">
+                                          </kendo-textbox>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                      <div class="row no-gutters pb-2">
+                                        <div class="col-md-3 text-right">
+                                          <label class="col-form-label">City:</label>&nbsp;
+                                        </div>
+                                        <div class="col-md-9">
+                                          <kendo-textbox formControlName="city" class="form-control form-control-round"
+                                            placeholder="City">
+                                          </kendo-textbox>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 text-right">
+                                          <label class="col-form-label">State:</label>&nbsp;
+                                        </div>
+                                        <div class="col-md-9">
+                                          <kendo-combobox class="form-control form-control-round" [textField]="'value'" [valueField]="'value'"
+                                          (filterChange)="statehandleFilter($event)" [suggest]="true" [filterable]="true"
+                                          [data]="stateList" formControlName="state" [valuePrimitive]="true">
+                                      </kendo-combobox>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                      <div class="row no-gutters">
+                                        <div class="col-md-3 text-right">
+                                          <label class="col-form-label">ZIP:</label>&nbsp;
+                                        </div>
+                                        <div class="col-md-9">
+                                          <div class="row no-gutters">
+                                            <kendo-textbox formControlName="zip" class="form-control form-control-round"
+                                              placeholder="ZIP">
+                                            </kendo-textbox>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </kendo-expansionpanel>
+                                <input type="hidden" formControlName="address">
+                              </div>
+                              <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">QB Name:</label>
+                              </div>
+                              <div class="col-md-4">
+                                <kendo-textbox formControlName="qbName" class="form-control form-control-round"
+                                  placeholder="QB Name">
+                                </kendo-textbox>
+                              </div>
+
+
+                              <!-- <div class="col-md-2">
+                                <button class="ml-2 mt-1 btn btn-outline-primary btn-custom " data-toggle="modal"
+                                  data-target="#myModal">
+                                  View More
+                                </button>
+                              </div> -->
+                            </div>
+
+                          </div>
+
+
+
+
+
+                          <!-- <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">QB Branch:</label>
+                              </div>
+                              <div class="col-md-8">
+                                <kendo-textbox formControlName="qbBranch" class="form-control form-control-round"
+                                  placeholder="QB Branch">
+                                </kendo-textbox>
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <div class="col-md-6 mt-3 mb-3">
+                            <div class="mb-0 row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Metric:</label>
+                              </div>
+                              <div class="col-md-8" style="margin-top: 3px;">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                  formControlName="metric">
+                                </kendo-switch>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mt-3 mb-3">
+                            <div class="mb-0 row no-gutters">
+                              <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Pricing:</label>
+                              </div>
+                              <div class="col-md-8" style="margin-top: 3px;">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                  formControlName="pricing" (valueChange)="OnPricingChange($event)">
+                                </kendo-switch>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3" *ngIf="id==0 || isPricing">
+                            <div class="row no-gutters">
+                              <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Price List:</label>
+                              </div>
+                              <div class="col-md-4">
+                                <kendo-combobox class="form-control form-control-round" [data]="branchList"
+                                  [suggest]="true" [textField]="'value'" formControlName="pricelist"
+                                  [valueField]="'code'" [filterable]="true" [valuePrimitive]="true"
+                                  (filterChange)="branchhandleFilter($event)">
+                                </kendo-combobox>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <kendo-textbox class="form-control form-control-round" style="visibility: hidden;"
+                      formControlName="address" placeholder="Address"></kendo-textbox> -->
+
+                    <div class="modal" id="myModal">
+                      <div class="modal-dialog modal-dialog-centered" style="max-width:700px">
+                        <div class="modal-content">
+
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Address</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <!-- Modal body -->
+                          <div class="modal-body">
+
+                          </div>
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <div class="col-lg-12">
+                              <div class="form-group mb-0 row no-gutters">
+                                <div class="col-lg-3">&nbsp;</div>
+                                <div class="col-lg-9 displayFlex">
+                                  <button class="btn btn-outline-primary  btn-custom" type="button"
+                                    data-dismiss="modal">
+                                    <img src="assets/images/PNG-48/Save.png" width="23" alt="" class="img-responsive">
+                                    OK
+                                  </button>
+                                  <button class="btn btn-outline-primary  btn-custom" type="button"
+                                    data-dismiss="modal">
+                                    <img src="assets/images/PNG-48/Delete.png" width="23" alt="" class="img-responsive">
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+
+      </kendo-splitter>
+
+    </div>
+
+  </form>
+</div>
+
+
+
+<!--Branch Address Modal -->

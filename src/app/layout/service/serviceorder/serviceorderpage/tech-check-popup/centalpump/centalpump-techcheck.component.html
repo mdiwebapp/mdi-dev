@@ -1,0 +1,211 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 60vh;">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <fieldset>
+                <legend>CENTRIFUGAL PUMP - <span class="pl-1">
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                        [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                        (valueChange)="changeMarkAll($event)">
+                    </kendo-switch>
+                    Mark All N/A
+                </span></legend>
+                <div class="row no-gutters pl-2 pb-2 pr-2">
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>WEAR RING CLEARANCE</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onWRC()"   style="width:96% !important" formControlName="txtWRC" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <h3 class="mb-0">"</h3>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>WEAR RING GAP BEFORE</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onWRGB()"   style="width:96% !important" formControlName="txtWRGB" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <h3 class="mb-0">"</h3>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>WEAR RING GAP AFTER</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onWRGA()"   style="width:96% !important" formControlName="txtWRGA" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <h3 class="mb-0">"</h3>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayFootMountsBtn" class="w-100" (click)="onFootMounts()" kendoTooltip
+                            kendoRippleContainer kendoButton>FOOT MOUNTS: {{f.footMountsData.value}}
+                        </button> --><label class="col-form-label">FOOT MOUNTS:</label>
+                        <kendo-combobox *ngIf="!displayFootMountsBtn" formControlName="footMountsData"
+                            (valueChange)="onFootMounts()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="footMountsList"
+                            [valuePrimitive]="true"   [valueField]="'value'">
+                        </kendo-combobox>  <div class="required-text"
+                        *ngIf="form.get('footMountsData').hasError('required') && form.get('footMountsData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayImpellerScrewCapBtn" class="w-100" (click)="onImpellerScrewCap()"
+                            kendoTooltip kendoRippleContainer kendoButton>IMPELLER SCREW CAP : {{f.impellerScrewCapData.value}}
+                        </button> -->
+                        <label class="col-form-label">IMPELLER SCREW CAP:</label>
+                        <kendo-combobox *ngIf="!displayImpellerScrewCapBtn" formControlName="impellerScrewCapData"
+                            (valueChange)="onImpellerScrewCap()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="impellerScrewList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('impellerScrewCapData').hasError('required') && form.get('impellerScrewCapData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayGlandLipSealBtn" class="w-100" (click)="onGlandLipSeal()" kendoTooltip
+                            kendoRippleContainer kendoButton>GLAND LIP SEAL : {{f.glandLipSealData.value}}
+                        </button> -->
+                        <label class="col-form-label">GLAND LIP SEAL:</label>
+                        <kendo-combobox *ngIf="!displayGlandLipSealBtn" formControlName="glandLipSealData"
+                            (valueChange)="onGlandLipSeal()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="glandLipSealList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('glandLipSealData').hasError('required') && form.get('glandLipSealData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayImpellerBtn" class="w-100" (click)="onImpeller()" kendoTooltip
+                            kendoRippleContainer kendoButton>IMPELLER : {{f.impellerData.value}}
+                        </button> --><label class="col-form-label">IMPELLER:</label>
+                        <kendo-combobox *ngIf="!displayImpellerBtn" formControlName="impellerData"
+                            (valueChange)="onImpeller()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="impellerList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('impellerData').hasError('required') && form.get('impellerData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displaySealReservoirBtn" class="w-100" (click)="onSealReservoir()" kendoTooltip
+                            kendoRippleContainer kendoButton>SEAL RESERVOIR : {{f.sealReservoirData.value}}
+                        </button> --><label class="col-form-label">SEAL RESERVOIR:</label>
+                        <kendo-combobox *ngIf="!displaySealReservoirBtn" formControlName="sealReservoirData"
+                            (valueChange)="onSealReservoir()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="sealReservoirList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('sealReservoirData').hasError('required') && form.get('sealReservoirData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayReservoirLevelBtn" class="w-100" (click)="onReservoirLevel()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT SEAL RESERVOIR LEVEL : {{f.reservoirLevelData.value}}
+                        </button> --><label class="col-form-label">SELECT SEAL RESERVOIR LEVEL:</label>
+                        <kendo-combobox *ngIf="!displayReservoirLevelBtn" formControlName="reservoirLevelData"
+                            (valueChange)="onReservoirLevel()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="sealReservoirList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('reservoirLevelData').hasError('required') && form.get('reservoirLevelData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayWearRingBtn" class="w-100" (click)="onWearRing()" kendoTooltip
+                            kendoRippleContainer kendoButton>WEAR RING : {{f.wearRingData.value}}
+                        </button> --><label class="col-form-label">WEAR RING:</label>
+                        <kendo-combobox *ngIf="!displayWearRingBtn" formControlName="wearRingData"
+                            (valueChange)="onWearRing()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wearRingList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('wearRingData').hasError('required') && form.get('wearRingData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayBearingBtn" class="w-100" (click)="onBearings()" kendoTooltip
+                            kendoRippleContainer kendoButton>BEARINGS : {{f.bearingData.value}}
+                        </button> --><label class="col-form-label">BEARINGS:</label>
+                        <kendo-combobox *ngIf="!displayBearingBtn" formControlName="bearingData"
+                            (valueChange)="onBearings()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="bearingList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('bearingData').hasError('required') && form.get('bearingData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayGasketsSealsBtn" class="w-100" (click)="onGasketsSeals()" kendoTooltip
+                            kendoRippleContainer kendoButton>GASKETS/SEALS : {{f.gasketsSealsData.value}}
+                        </button> --><label class="col-form-label">GASKETS/SEALS:</label>
+                        <kendo-combobox *ngIf="!displayGasketsSealsBtn" formControlName="gasketsSealsData"
+                            (valueChange)="onGasketsSeals()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="gasketsSealsList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('gasketsSealsData').hasError('required') && form.get('gasketsSealsData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayBallValueBtn" class="w-100" (click)="onBallValue()" kendoTooltip
+                            kendoRippleContainer kendoButton>BALL VALUE : {{f.ballValueData.value}}
+                        </button> --><label class="col-form-label">BALL VALUE:</label>
+                        <kendo-combobox *ngIf="!displayBallValueBtn" formControlName="ballValueData"
+                            (valueChange)="onBallValue()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="ballValueList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('ballValueData').hasError('required') && form.get('ballValueData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- <div class="row col-md-12">
+                <div class="col-md-6 p-1">
+                    <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()"
+                        kendoButton>TECHNICIAN APPROVAL
+                    </button> 
+                </div>
+                <div class="col-md-6 p-1">
+                    <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()"
+                        kendoTooltip kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+                    </button>
+                    <kendo-combobox *ngIf="!displaySupervisorApproval" 
+                        (click)="onSupervisorApproval()" [suggest]="true" placeholder="Select SUPERVISOR"
+                        class="form-control form-control-round" [textField]="'value'" [valuePrimitive]="true"
+                        [data]="supervisorApprovalList" [valueField]="'value'">
+                    </kendo-combobox>
+                </div>
+            </div> -->
+        </div>
+    </form>
+</div>

@@ -1,0 +1,205 @@
+<form>
+  <div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+      <div class="d-flex justify-content-between">
+        <h4 class="p-r-10">Admin Call Log</h4>
+        <div *ngIf="menuService.isAddRight">
+          <button kendoTooltip title="Add" id="btnAdd" class="btn_icon m-l-10 m-r-10" filter="button" (click)="onAdd()"
+            *ngIf="selectedTab === 'Call Log' && disable"></button>
+        </div>
+        <div *ngIf="menuService.isEditRight">
+          <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon m-l-10 m-r-10" filter="button"
+            (click)="onEdit()"
+            *ngIf="selectedTab === 'Resolution' && !resolutionForm.get('closed').value && disable"></button>
+        </div>
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+          <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon m-l-10 m-r-10" filter="button"
+            *ngIf="!disable" (click)="onCancel()"></button>
+        </div>
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+          <button kendoTooltip title="Save" id="btnSave" class="btn_icon m-l-10 m-r-10" filter="button" *ngIf="!disable"
+            (click)="onSaveData()"></button>
+        </div>
+      </div>
+    </div>
+    <div class="card-block table-border-style">
+      <div class="row">
+        <kendo-splitter orientation="vertical">
+          <kendo-splitter-pane>
+            <kendo-splitter>
+              <kendo-splitter-pane [collapsible]="true" size="35%">
+                <form [formGroup]="filterForm">
+                  <div class="pane-content">
+                    <div class="col-md-12 mb-3">
+                      <div class="row m-0">
+                        <div class="col-md-6 p-2">
+                          <button class="k-button w-100" type="button" style="font-size: 12px" *ngIf="!isLogVisible"
+                            (click)="onHandleFilters('logBy')" [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                            Log By: {{ filterForm.get("logBy").value || "All" }}
+                          </button>
+                          <kendo-combobox placeholder="Log By" [suggest]="true" [textField]="'logBy'"
+                            [valueField]="'logBy'" [valuePrimitive]="true" formControlName="logBy" [data]="logs"
+                            *ngIf="isLogVisible" (valueChange)="onValueChange('logBy')"
+                            [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                          </kendo-combobox>
+                        </div>
+                        <div class="col-md-6 p-2">
+                          <button class="k-button w-100" type="button" *ngIf="!isEmployeeVisible"
+                            style="font-size: 12px" (click)="onHandleFilters('employees')"
+                            [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                            Employees:
+                            {{
+                            getEmployeeNameById(filterForm.get("employee").value) || "All"
+                            }}
+                          </button>
+                          <kendo-combobox placeholder="Employees" [suggest]="true" [textField]="'value'"
+                            [valueField]="'id'" [valuePrimitive]="true" formControlName="employee" [data]="employees"
+                            *ngIf="isEmployeeVisible" (valueChange)="onValueChange('employee', $event)"
+                            [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                          </kendo-combobox>
+                        </div>
+                        <div class="col-md-6 p-2">
+                          <button class="k-button w-100" type="button" style="font-size: 12px" *ngIf="!isBranchVisible"
+                            (click)="onHandleFilters('branch')" [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                            Branch:
+                            {{ filterForm.get("branchName").value || "All" }}
+                          </button>
+                          <kendo-combobox placeholder="Branch" [suggest]="true" [textField]="'value'"
+                            [valueField]="'code'" [valuePrimitive]="true" formControlName="branch" [data]="branches"
+                            *ngIf="isBranchVisible" (valueChange)="onValueChange('branch', $event)"
+                            [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                          </kendo-combobox>
+                        </div>
+                        <div class="col-md-6 p-2">
+                          <button class="k-button w-100" type="button" *ngIf="!isStatusVisible" style="font-size: 12px"
+                            (click)="onHandleFilters('status')" [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                            Status:
+                            {{ filterForm.get("status").value || "All" }}
+                          </button>
+                          <kendo-combobox placeholder="Status" [suggest]="true" [textField]="'label'"
+                            [valueField]="'value'" [valuePrimitive]="true" formControlName="status" [data]="statusData"
+                            *ngIf="isStatusVisible" (valueChange)="onValueChange('status', $event)"
+                            [ngClass]="disable == true ? '' : 'k-state-disabled'">
+                          </kendo-combobox>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row no-gutters">
+                      <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" [ngClass]="disable == true ? '' : 'k-state-disabled'"
+                        (selectionChange)="onSelectionChange($event)" [data]="data" [sort]="adminSort"
+                        (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                        [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 60vh"
+                        (dataStateChange)="onDataStateChange($event)" [sortable]="{
+                          allowUnsort: false,
+                          mode: multiple ? 'multiple' : 'single'
+                        }">
+                        <ng-template kendoGridToolbarTemplate>
+                          <kendo-textbox class="col-md-9" placeholder="Search in all columns..."
+                            (keydown.enter)="onLoadAdminCalllog()" formControlName="searchText"></kendo-textbox>
+                          <kendo-grid-spacer></kendo-grid-spacer>
+                          <span> Total : {{ totalLogs }}</span>
+                          <kendo-grid-spacer></kendo-grid-spacer>
+                        </ng-template>
+
+                        <kendo-grid-column *ngFor="let column of columns" [width]="column.width"
+                          field="{{ column.Name }}" title="{{ column.Text }}">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="logDate" title="Log Date" [width]="100">
+                          <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>
+                              {{ dataItem.logDate | date : "MM/dd/yyyy" }}
+                            </lable>
+                          </ng-template>
+                        </kendo-grid-column>
+                      </kendo-grid>
+                      <kendo-datapager [total]="totalLogs" [pageSize]="pageSize" [skip]="skip"
+                        style="width: 100% !important" (pageChange)="onPageChange($event)">
+                        <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                          <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                          <kendo-datapager-numeric-buttons [buttonCount]="5">
+                          </kendo-datapager-numeric-buttons>
+                          <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                          <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important"
+                            [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{ standalone: true }"
+                            (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+                            [valueField]="'value'">
+                          </kendo-dropdownlist>
+                        </ng-template>
+                      </kendo-datapager>
+                    </div>
+                  </div>
+                </form>
+              </kendo-splitter-pane>
+              <kendo-splitter-pane>
+                <div class="col-md-12">
+                  <hr />
+                  <kendo-tabstrip class="custom mt-2" (tabSelect)="onTabChange($event)" style="height: 73vh">
+                    <kendo-tabstrip-tab class="text-success" [title]="'Call Log'" [selected]="true"
+                      *ngIf="!isCallLogTab && !isTab1" [disabled]="disableCallLogTab">
+                      <ng-template kendoTabContent *ngIf="!formsTypes.includes(selectedLogBy)">
+                        <app-call-logs-info [selectedLog]="selectedCallLog" [disable]="disable"
+                          [allEmployees]="allEmployees" [stateList]="states" [form]="userForm" [isSaveCallLogs]="isSaveCallLogs"
+                          [validation]="formCustomValidation">
+                        </app-call-logs-info>
+                      </ng-template>
+                      <ng-template kendoTabContent *ngIf="selectedLogBy === 'MDIWEBIMPORT'">
+                        <app-call-log-web-info [selectedLog]="selectedCallLog" [disable]="disable"
+                          [allEmployees]="allEmployees" [form]="webContactForm">
+                        </app-call-log-web-info>
+                      </ng-template>
+                      <ng-template kendoTabContent *ngIf="selectedLogBy === 'MDIWEBIMPORT4'">
+                        <app-call-log-pump-info [selectedLog]="selectedCallLog" [disable]="disable"
+                          [allEmployees]="allEmployees" [form]="webGlobalPumpForm">
+                        </app-call-log-pump-info>
+                      </ng-template>
+                      <ng-template kendoTabContent *ngIf="selectedLogBy === 'MDIWEBRFQCRIMPORT2'">
+                        <app-call-log-rfq-request-info [selectedLog]="selectedCallLog" [disable]="disable"
+                          [form]="rfqCenterRequestForm" [allEmployees]="allEmployees">
+                        </app-call-log-rfq-request-info>
+                      </ng-template>
+                      <ng-template kendoTabContent *ngIf="selectedLogBy === 'MDIWEBRFQPQIMPORT'">
+                        <app-call-log-pump-quote [selectedLog]="selectedCallLog" [disable]="disable"
+                          [form]="rfqCenterRequestPumpQuoteForm" [allEmployees]="allEmployees">
+                        </app-call-log-pump-quote>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Resolution'" [disabled]="disableResolutionTab" *ngIf="!isTab2">
+                      <ng-template kendoTabContent>
+                        <app-call-logs-resolution [selectedLog]="selectedCallLog" [selectedLogBy]="selectedLogBy"
+                          [selectedEmployeeName]="selectedEmployeeName" [disable]="disable" [actiondisable]="disable"
+                          [allEmployees]="allEmployees" [form]="resolutionForm" [isSaveResolution]="isSaveResolution"
+                          (closeButtonEvent)="closeButtonEvent($event)">
+                        </app-call-logs-resolution>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                  </kendo-tabstrip>
+                </div>
+              </kendo-splitter-pane>
+            </kendo-splitter>
+          </kendo-splitter-pane>
+        </kendo-splitter>
+      </div>
+    </div>
+  </div>
+</form>
+
+<kendo-dialog title="Resolution" *ngIf="isConfirmationDialog" (close)="onToggleConfirm()" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    Is this call resolved ?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onConfirmResolution()" primary="true">Yes</button>
+    <button kendoButton (click)="onCancelConfirmResolution()">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog [title]="alertTitle" *ngIf="isAlertDialog" (close)="onToggleConfirm()" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    {{alertMessage}}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onToggleAlert()" primary="true">OK</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,34 @@
+<h5>Part used in following BOMs</h5>
+<div class="row no-gutters">
+    <kendo-grid [selectable]="true" [data]="bomList" [sort]="sort" kendoGridSelectBy [selectedKeys]="mySelection"
+        [sortable]="true" [skip]="skip" style="height: 40vh;" (sortChange)="sortChange($event)" [resizable]="true"
+        [reorderable]="true" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+            <input class="col-md-9" placeholder="Search in all columns..." [(ngModel)]="filterText" kendoTextBox
+                (input)="onFilter($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{bomList?.length}}</span>
+        </ng-template>
+        <kendo-grid-column title="Parent Part" [width]="50" field="parentPart">
+            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.parentPart}}</lable>
+            </ng-template> -->
+        </kendo-grid-column>
+        <kendo-grid-column title="Description" [width]="250" field="description">
+            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.description}}</lable>
+            </ng-template> -->
+        </kendo-grid-column>
+        <!-- <kendo-grid-column title="BOM Status">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.vendorName}}</lable>
+            </ng-template>
+        </kendo-grid-column> -->
+        <kendo-grid-column title="Qty" [width]="50" field="quantity">
+            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.quantity}}</lable>
+            </ng-template> -->
+        </kendo-grid-column>
+    </kendo-grid>
+    <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+</div>

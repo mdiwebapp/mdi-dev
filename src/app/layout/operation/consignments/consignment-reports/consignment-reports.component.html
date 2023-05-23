@@ -1,0 +1,148 @@
+<div class="card">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleDialog('messenger')">Run Messenger Report </button>
+            </div>
+            <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleDialog('invoice')">Run Invoiced vs Engine </button>
+            </div> -->
+            <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleDialog('run-invoice')">Run Need Invoicing
+                </button>
+            </div>
+            <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleDialog('messengerreport')">Run Day-by-Day Messenger
+                    Report
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleDialog('run-inventory')">Run Inventory Movement
+                    Report</button>
+            </div> -->
+            <div class="col-md-11 p-2">
+                <button class="k-button w-100" type="button" style="font-size: 12px;" (click)="getOffRentReport()">
+                    Run Off Rent On Job</button>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<kendo-dialog title="Select Date Range" *ngIf="isMessengerVisible" (close)="onHandleDialog('messenger')"
+    [minWidth]="250" [height]="350" [width]="550">
+    <div class="row mb-2 text-center">
+        <div class="col-md-12">
+            <h4>Select Date Range for Report</h4>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">From</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">To</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 justify-content-end d-flex">
+            <button class="k-button w-50" type="button">Submit</button>
+        </div>
+    </div>
+
+
+</kendo-dialog>
+
+<kendo-dialog title="Select Date Range" *ngIf="isInvoiceVisible" (close)="onHandleDialog('invoice')" [minWidth]="250"
+    [height]="350" [width]="550">
+    <div class="row mb-2 text-center">
+        <div class="col-md-12">
+            <h4>Select Date Range for Report</h4>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">From</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">To</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 justify-content-end d-flex">
+            <button class="k-button w-50" type="button">Submit</button>
+        </div>
+    </div>
+
+</kendo-dialog>
+
+<kendo-dialog title="Select Date Range" *ngIf="isMessengerReportVisible" (close)="onHandleDialog('messengerreport')"
+    [minWidth]="250" [height]="350" [width]="550">
+    <div class="row mb-2 text-center">
+        <div class="col-md-12">
+            <h4>Select Date Range for Report</h4>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">From</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic" [(value)]="fromDate" [(ngModel)]="fromDate">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label justify-content-end d-flex">To</label>
+        <div class="col-sm-10">
+            <kendo-datepicker class="form-control form-control-round" calendarType="classic" [(value)]="toDate" [(ngModel)]="toDate">
+            </kendo-datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-12 justify-content-end d-flex">
+            <button class="k-button w-50" type="button" (click)="onRunDayByDayMessenger()">Submit</button>
+        </div>
+    </div>
+
+
+</kendo-dialog>
+
+<kendo-dialog title="Run Report" *ngIf="isrunInvoiceVisible" (close)="onHandleDialog('run-report')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Do you want to run report to be green row for the current job({{jobNumber}}) or all jobs? Select YES for current job, NO
+        for all jobs. {{selectedEmployee}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onRunNeedInvoice('YES')" primary="true">Yes</button>
+        <button kendoButton (click)="onRunNeedInvoice('NO')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="ERROR" *ngIf="isrunInventoryVisible" (close)="onHandleDialog('run-inventory')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Excel Template not Found Contact IT.
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onRunInventoryConfirm()">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

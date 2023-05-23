@@ -1,0 +1,213 @@
+<div class="card">
+    <form [formGroup]="customerForm">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Maintain Customers</h4>
+                <div class="wp-50 p-l-10 p-r-10">
+                    <div *ngIf="menuService.isAddRight">
+                        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+                            *ngIf="disableCustomer && selectedTab !== 'Notes' && selectedTab !== 'History'"
+                            (click)="onHandleOperation('new')">
+                        </button>
+                    </div>
+
+                    <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+                        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                            *ngIf="!disableCustomer" (click)="onHandleOperation('cancel')">
+                        </button>
+                    </div>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10">
+                    <div *ngIf="menuService.isEditRight">
+                        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                            *ngIf="disableCustomer && selectedTab !== 'Notes' && selectedTab !== 'History'" 
+                            (click)="onHandleOperation('edit')">
+                        </button>
+                    </div>
+                    <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+                        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                            *ngIf="!disableCustomer" (click)="onHandleOperation('save')">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex ml-auto mt-1" style="width: 70%;">
+                <div *ngIf="selectedCustomer">
+                    <label class="label label-primary label-mersino">Cust # {{selectedCustomer?.id}}</label>
+                    <label class="label label-primary  label-mersino">Date Created :
+                        {{selectedCustomer?.createdDate | date: 'MM/dd/yyyy'}}</label>
+                </div>
+                <div class="form-control1 displayFlex alignFlexEnd">
+                    <label>Active</label>
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="disableCustomer"
+                        formControlName="active">
+                    </kendo-switch>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="card-block table-border-style">
+        <kendo-splitter orientation="vertical">
+            <kendo-splitter-pane>
+                <kendo-splitter>
+                    <kendo-splitter-pane [collapsible]="true" size="35%">
+                        <div class="pane-content">
+                            <form [formGroup]="filterForm">
+                                <div class="row">
+                                    <div class="col-md-4 mb-1">
+                                        <label>Branch</label>
+                                        <kendo-dropdownlist class="form-control form-control-round" [data]="branches"
+                                            [valueField]="'code'" [textField]="'value'" [filterable]="true"
+                                            [valuePrimitive]="true" formControlName="branch"
+                                            [disabled]="!disableCustomer" (valueChange)="filterCustomerData()"
+                                            [kendoDropDownFilter]="customerInfoFilterOptions">
+                                        </kendo-dropdownlist>
+                                    </div>
+                                    <div class="col-md-4 mb-1">
+                                        <label>Collection</label>
+                                        <kendo-dropdownlist class="form-control form-control-round"
+                                            placeholder="Select Collection" [data]="collections" [textField]="'value'"
+                                            [valueField]="'id'" [valuePrimitive]="true" formControlName="collection"
+                                            [disabled]="!disableCustomer" (valueChange)="filterCustomerData()">
+                                        </kendo-dropdownlist>
+                                    </div>
+                                    <div class="col-md-4 mb-1">
+                                        <label>Status</label>
+                                        <kendo-dropdownlist class="form-control form-control-round"
+                                            placeholder="Select Status" [data]="statusData" [textField]="'value'"
+                                            [valueField]="'id'" [valuePrimitive]="true" formControlName="status"
+                                            [disabled]="!disableCustomer" (valueChange)="filterCustomerData()">
+                                        </kendo-dropdownlist>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label> Account Managers</label>
+                                        <kendo-dropdownlist class="form-control form-control-round"
+                                            [data]="accountManagers" [valueField]="'id'" [textField]="'value'"
+                                            [filterable]="true" [valuePrimitive]="true" formControlName="employeeNumber"
+                                            [disabled]="!disableCustomer" (valueChange)="filterCustomerData()"
+                                            [kendoDropDownFilter]="customerInfoFilterOptions">
+                                        </kendo-dropdownlist>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label> Customer Type</label>
+                                        <kendo-dropdownlist class="form-control form-control-round"
+                                            [data]="customerTypes" [valueField]="'value'" [textField]="'text'"
+                                            [filterable]="true" [valuePrimitive]="true" formControlName="customerType"
+                                            [disabled]="!disableCustomer" (valueChange)="filterCustomerData()"
+                                            [kendoDropDownFilter]="customerInfoFilterOptions">
+                                        </kendo-dropdownlist>
+                                    </div>
+                                </div>
+                            </form>
+                            <kendo-grid class="mt-2" [selectable]="true" [navigable]="true" [resizable]="true"
+                                [reorderable]="true" [ngClass]="selectable ? '':'k-state-disabled'"
+                                (columnResize)="onResizeColumn($event)"
+                                (selectionChange)="onSelectionChange($event, 'customer')" [data]="customers"
+                                [sort]="customerSort" (sortChange)="onSortChange($event, 'customer')" kendoGridSelectBy
+                                [selectedKeys]="customerSelection" [sortable]="true"
+                                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 60vh;"
+                                (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                <ng-template kendoGridToolbarTemplate>
+                                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText"
+                                        (keydown.enter)="filterCustomerData()" />
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                    <i class="fa fa-search" (click)="filterCustomerData();"></i>
+                                    <span> Total : {{totalCustomers}}</span>
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                </ng-template>
+
+                                <kendo-grid-column *ngFor="let column of customerColumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                            </kendo-grid>
+                            <kendo-datapager [total]="totalCustomers" [pageSize]="pageSize" [skip]="skip"
+                                style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                                <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                    let-currentPage="currentPage">
+                                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                    </kendo-datapager-numeric-buttons>
+                                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                                    <kendo-dropdownlist class="form-control form-control-round"
+                                        style="width: 16% !important;" [data]="pageSizeList" [(ngModel)]="pageSize"
+                                        [ngModelOptions]="{standalone: true}" (valueChange)="onPageSizechange($event)"
+                                        [valuePrimitive]="true" [textField]="'value'" [valueField]="'value'">
+                                    </kendo-dropdownlist>
+                                </ng-template>
+                            </kendo-datapager>
+                        </div>
+                    </kendo-splitter-pane>
+                    <kendo-splitter-pane>
+                        <kendo-tabstrip class="custom mt-2" style="height:50vh;" (tabSelect)="onTabChange($event)" [keepTabContent]="true">
+                            <kendo-tabstrip-tab class="text-success" [title]="'Customer Info'"
+                                [selected]="selectedTab === 'Customer Info'" *ngIf="isTab1"
+                                [disabled]="selectedTab === 'Contacts' && !disableCustomer">
+                                <ng-template kendoTabContent>
+                                    <app-customer-details [form]="customerForm" [disableCustomer]="disableCustomer"
+                                        [allBranches]="allBranches" [customerTypes]="customerTypes"
+                                        [accountManagers]="accountManagers" [selectedCustomer]="selectedCustomer">
+                                    </app-customer-details>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab class="text-success" [title]="'Other Info'"
+                                [disabled]="selectedTab === 'Contacts' && !disableCustomer" *ngIf="isTab2"
+                                [selected]="selectedTab === 'Other Info'">
+                                <ng-template kendoTabContent>
+                                    <app-other-info [form]="otherForm" [disableCustomer]="disableCustomer"
+                                        [selectedCustomer]="selectedCustomer" [action]="action">
+                                    </app-other-info>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab class="text-success" [title]="'Contacts'"
+                                [disabled]="(selectedTab === 'Customer Info' || 'Other Info') && !disableCustomer"
+                                *ngIf="isTab3" [selected]="selectedTab === 'Contacts'">
+                                <ng-template kendoTabContent>
+                                    <app-contacts-details [form]="contactForm" [disableCustomer]="disableCustomer"
+                                        [selectedCustomer]="selectedCustomer" [contacts]="contacts"
+                                        [selectedContact]="selectedContact">
+                                    </app-contacts-details>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab class="text-success" [title]="'Notes'"
+                                [disabled]="(selectedTab === 'Customer Info' || 'Other Info') && !disableCustomer"
+                                *ngIf="isTab4" [selected]="selectedTab === 'Notes'">
+                                <ng-template kendoTabContent>
+                                    <app-customer-notes [selectedCustomer]="selectedCustomer"></app-customer-notes>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab class="text-success" [title]="'History'"
+                                [disabled]="(selectedTab === 'Customer Info' || 'Other Info') && !disableCustomer"
+                                *ngIf="isTab5" [selected]="selectedTab === 'History'">
+                                <ng-template kendoTabContent>
+                                    <app-customer-history [selectedCustomer]="selectedCustomer"></app-customer-history>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                        </kendo-tabstrip>
+                        <kendo-tabstrip class="custom mt-2" style="height: 35vh;" *ngIf="isTab6">
+                            <kendo-tabstrip-tab class="text-success" [title]="'Activity'" [selected]="true">
+                                <ng-template kendoTabContent>
+                                    <app-activity [selectedCustomer]="selectedCustomer"></app-activity>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab class="text-success" [title]="'Collections'" *ngIf="isTab7">
+                                <ng-template kendoTabContent>
+                                    <app-collections [selectedCustomer]="selectedCustomer"></app-collections>
+                                </ng-template>
+                            </kendo-tabstrip-tab>
+                        </kendo-tabstrip>
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </kendo-splitter-pane>
+        </kendo-splitter>
+    </div>
+</div>
+<kendo-dialog [title]="'Validation'" *ngIf="isAlertDialog" (close)="onToggleAlert()" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+      {{"There is no contacts to edit."}}
+    </p>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="onToggleAlert()" primary="true">OK</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>

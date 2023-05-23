@@ -1,0 +1,243 @@
+<div class="card-body">
+    <form [formGroup]="timeApprovalForm">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Employee Name:</label></div>
+                        <div><label class="col-form-label">{{timeApprovalForm.get('employeeName').value}}</label></div>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Date In:</label></div>
+                        <kendo-datepicker formControlName="dateIn"  class="form-control form-control-round"
+                        (valueChange)="getDayDiff()">
+                        </kendo-datepicker>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Time In:</label></div>
+
+                        <kendo-timepicker  class="form-control form-control-round"  
+                        [(value)]="valueIn"  (valueChange)="handleChange($event,'timeIn')">
+                        </kendo-timepicker>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Date Out:</label></div>
+                        <kendo-datepicker formControlName="dateOut"  class="form-control form-control-round" 
+                        (valueChange)="getDayDiff()">
+                        </kendo-datepicker>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Time Out:</label></div>
+                        <kendo-timepicker  class="form-control form-control-round" 
+                        [(value)]="valueOut"  (valueChange)="handleChange($event,'timeOut')">
+                        </kendo-timepicker>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Hours:</label></div>
+                        <div><label class="col-form-label">{{timeApprovalForm.get('hours').value}}</label></div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Labor Type:</label></div>
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                            (click)="onHandleOperations('labor_type')">{{timeApprovalForm.get('laborType').value ||
+                            'Labor
+                            Type'}}</button>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Job Number:</label></div>
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                            [disabled]="jobNumberDisable"
+                            (click)="onHandleOperations('job_number')">{{timeApprovalForm.get('jobNumber').value || 'Job
+                            Number'}}</button>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Union Code:</label></div>
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                            [disabled]="unionCodeDisable"
+                            (click)="onHandleOperations('union_code')">{{timeApprovalForm.get('unionCode').value ||
+                            'Union
+                            Code'}}</button>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Union Class:</label></div>
+                        <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+                            [disabled]="unionClassDisable"
+                            (click)="onHandleOperations('union_class')">{{timeApprovalForm.get('unionClass').value ||
+                            'Union
+                            Class'}}</button>
+                    </div>
+                    <div class="col-md-2">
+                        <div><label class="col-form-label">Union Rate:</label></div>
+                        <div><label class="col-form-label">{{timeApprovalForm.get('unionRate').value}}</label></div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                            (click)="onHandleOperations('cancel')">Cancel</button>
+                    </div>
+                    <div class="col-md-3">
+
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                          (click)="openDeleteApproval()" >Delete</button>
+                    </div>
+                    <div class="col-md-3">
+
+                        <button class="k-button col-md-9 w-100" type="button" style="font-size: 12px;"
+                            (click)="onHandleOperations('add_punch')"> {{button_name}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<kendo-dialog title="Select Labor Type" *ngIf="isLaborTypeVisible" (close)="onHandleOperations('labor_type')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'labor_type')"
+                [data]="laborTypes" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="laborTypesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of laborTypesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                    <!-- <div class="col-md-2">
+                        Search
+                    </div>
+                    <div class="col-md-6">
+                        <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                            placeholder="">
+                        </kendo-textbox>
+                    </div> -->
+                    <div class="col-md-3 text-right">
+                        Count: {{laborTypes.length}}
+                    </div>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Job" *ngIf="isJobNumberVisible" (close)="onHandleOperations('job_number')"
+    [minWidth]="250" [height]="600" [width]="600">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'job_number')"
+                [data]="jobNumbers" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="jobNumbersSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" >
+                <!-- <kendo-grid-column *ngFor="let column of jobNumbersColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column> -->
+                <kendo-grid-column field="jobNumber" title="Job Number">
+                </kendo-grid-column>
+                <kendo-grid-column field="jobName" title="Job Name">
+                </kendo-grid-column>
+                <kendo-grid-column field="branch" title="Branch">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate> 
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round col-md-9"
+                    (keydown.enter)="getJobData()" [(ngModel)]="filterCollection.searchText" placeholder="">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <i class="fa fa-search" (click)="getJobData();"></i>
+                    <span> Total : {{totalJob}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+            </kendo-grid>
+            <kendo-datapager [total]="totalJob" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+                (pageChange)="onPageChange($event)">
+                <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                    </kendo-datapager-numeric-buttons>
+                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                </ng-template>
+            </kendo-datapager>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Union Code" *ngIf="isUnionCodeVisible" (close)="onHandleOperations('union_code')"
+    [minWidth]="250" [height]="550" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'union_code')"
+                [data]="unionCodes" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="unionCodesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" >
+                <kendo-grid-column *ngFor="let column of unionCodesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>                    
+                        <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round  col-md-9"
+                        (input)="onFilter($event.target.value)" placeholder="Search">
+                        </kendo-textbox>
+                        <kendo-grid-spacer></kendo-grid-spacer>
+                        <span> Total : {{unionCodes.length}}</span>
+                        <kendo-grid-spacer></kendo-grid-spacer>                    
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Union Class" *ngIf="isUnionClassVisible" (close)="onHandleOperations('union_class')"
+    [minWidth]="250" [height]="550" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'union_class')"
+                [data]="unionClasses" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="unionClassesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" >
+                <kendo-grid-column *ngFor="let column of unionClassesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                   
+                    <div class="col-md-3 text-right">
+                        Count: {{unionClasses.length}}
+                    </div>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirmDialogHeader}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperations('close')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirmDialogMessage}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperations('close')">No</button>
+        <button kendoButton (click)="onHandleOperations('confirm')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{errorDialogHeader}}" *ngIf="isErrorVisible" (close)="onHandlesOperations('error')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{errorDialogMessage}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperations('error')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

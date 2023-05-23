@@ -1,0 +1,565 @@
+<div class="register-box box-shadow-none card mb-0 tab-scrollable h-70vh">
+  <form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0">
+      <div class="row no-gutters">
+        <div class="col-md-12">
+          <div class="row mb-3">
+            <div class="col-md-2">
+              <label class="">Change Orders</label>
+            </div>
+            <div class="col-md-2">
+              <kendo-combobox formControlName="changeNumber" [suggest]="true" class="form-control form-control-round"
+                [textField]="'changeNumber'" [data]="orderTypeData" [valueField]="'changeNumber'" [filterable]="true"
+                [valuePrimitive]="true" kendoTooltip (valueChange)="onValueChange($event)"
+                title="Select to change/view change orders for the selected project.">
+              </kendo-combobox>
+            </div>
+            <div class="col-md-1">
+              <button class="btn w-100 mb-2 p-2" kendoTooltip title="Click to create a new Change Order."
+                kendoRippleContainer kendoButton (click)="onNewOrder()">
+                New
+              </button>
+            </div>
+            <div class="col-md-1">
+              <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton kendoTooltip
+                title="Click Copy to copy the selected quote to a new Change Order. To view the copied Change Order, click the Change Order list and select the last Change Order listed."
+                (click)="onCopyOrder()">
+                Copy
+              </button>
+            </div>
+            <div class="col-md-1" *ngIf="isvisible && isQuoteTypeVisible==false">
+              <label *ngIf="qoutesDetails.quoteType == 'S'" class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton>
+                Sales
+              </label>
+
+              <label *ngIf="qoutesDetails.quoteType == 'R' && isvisible " class="btn w-100 mb-2 p-2"
+                kendoRippleContainer kendoButton kendoTooltip title="Rental to create a Rental/Sales quote.">
+                Rental
+              </label>
+            </div>
+            <div class="col-md-2" *ngIf="isQuoteTypeVisible">
+              <kendo-combobox [(ngModel)]="selectedQuoteType" [suggest]="true" placeholder="Select Quote type"
+                  class="form-control form-control-round" [textField]="'value'" [data]="quoteTypeData" [valueField]="'id'"
+                  [filterable]="true" [valuePrimitive]="true" kendoTooltip   [ngModelOptions]="{standalone: true}"
+                  (valueChange)="onQuoteTypeChange($event)">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-2" *ngIf="qoutesDetails.quoteType == 'R' && isvisible ">
+              <div *ngIf="!displayMonthly">
+                <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton kendoTooltip
+                  title="Select the display the Daily/Weekly/Monthly rental rate for the items listed on the qyote."
+                  (click)="onMonthly()">
+                  {{period}}
+                </button>
+              </div>
+              <div *ngIf="displayMonthly">
+                <kendo-combobox formControlName="monthlyType" [suggest]="true" placeholder="Select Type"
+                  class="form-control form-control-round" [textField]="'value'" [data]="monthlyData" [valueField]="'id'"
+                  [filterable]="true" [valuePrimitive]="true" kendoTooltip
+                  title="Select to change/view change orders for the selected project."
+                  (valueChange)="onPeriodChange($event)">
+                </kendo-combobox>
+              </div>
+            </div>
+          </div>
+          <div class="row border-top" *ngIf="isvisible">
+            <div class="col-md-2">
+              <div>
+                <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton (click)="onItem()"
+                  [disabled]="isDisabled">
+                  {{ itemCodeNumber || "Item Code" }}
+                </button>
+              </div>
+
+              <!-- <div *ngIf="diplayitemDrp">
+                                <kendo-combobox formControlName="itemType" [suggest]="true" (click)="onItem()"
+                                    placeholder="Select an Item" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="monthlyData" [valueField]="'value'"
+                                    [filterable]="true" [valuePrimitive]="true"
+                                    title="Select to change/view change orders for the selected project.">
+                                </kendo-combobox>
+                            </div> -->
+            </div>
+            <div class="col-md-2" *ngIf="isvisible">
+              <kendo-numerictextbox class="form-control form-control-round h-30" formControlName="itemCode" kendoTooltip
+                title="Type the quantity needed for the quote." [spinners]="false">
+              </kendo-numerictextbox>
+            </div>
+            <div class="col-md-1" *ngIf="isvisible">
+              <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton kendoTooltip
+                title="Click to ad the selected item and quantity to the quote. Once added, you can modify the quantity and rate,if needed."
+                (click)="onAddItem()" [disabled]="isDisabled">
+                Add
+              </button>
+            </div>
+            <div class="col-md-2" *ngIf="hasUsage">
+              <!-- <button
+                class="btn w-100 mb-2 p-2"
+                kendoRippleContainer
+                kendoButton
+                (click)="addItem()"
+              >
+                Add Kit
+              </button> -->
+              <div *ngIf="!displayContinuous">
+                <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton kendoTooltip
+                  title="Select the display the Daily/Weekly/Monthly rental rate for the items listed on the qyote."
+                  (click)="onContinous()">
+                  {{shift}}
+                </button>
+              </div>
+              <div lass="col-md-2" *ngIf="displayContinuous && isvisible">
+                <kendo-combobox [suggest]="true" placeholder="Select Screen" class="form-control form-control-round"
+                  [textField]="'value'" [data]="shiftdata" [valueField]="'value'" [filterable]="true"
+                  [ngModelOptions]="{standalone: true}"  [(ngModel)]="qoutesDetails.shiftType"  [valuePrimitive]="true" kendoTooltip (valueChange)="onShiftStatus($event)">
+                </kendo-combobox>
+              </div>
+            </div>
+
+
+            <div class="col-md-1 text-right" *ngIf="isvisible">
+              <label *ngIf="qoutesDetails.quoteType == 'S'">Multiplier</label>
+            </div>
+            <div class="col-md-1">
+              <kendo-numerictextbox *ngIf="qoutesDetails.quoteType == 'S'" class="form-control form-control-round h-30"
+                formControlName="multiplier" [disabled]="isDisabled" [spinners]="false" placeholder="">
+              </kendo-numerictextbox>
+            </div>
+            <div class="col-md-2" *ngIf="isvisible">
+              <button *ngIf="qoutesDetails.quoteType == 'S'" kendoRippleContainer kendoButton class="btn w-100 mb-2 p-2"
+                [disabled]="isDisabled" (click)="onApply()">
+                Apply
+              </button>
+            </div>
+            <div class="col-md-1" >
+              <button  kendoRippleContainer kendoButton class="btn w-100 mb-2 p-2"
+              (click)="onPrintQuote()" [disabled]="isDisabled"  >
+                Print
+              </button>
+            </div>
+          </div>
+          <div class="row mb-4 mt-4">
+            <div class="col-md-9">
+              <div class="card" *ngIf="isvisible">
+                <kendo-grid [data]="projectQuotesData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                  [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                  [selectedKeys]="mySelection" [sortable]="true" style="height: 68vh" [sortable]="{
+                    allowUnsort: false,
+                    mode: multiple ? 'multiple' : 'single'
+                  }">
+                  <!-- <kendo-grid-column
+                    *ngFor="let column of viewColumns"
+                    kendoTooltip
+                    title="This is the inventory listed on the selected quote."
+                    [width]="column.width"
+                    field="{{ column.Name }}"
+                    title="{{ column.Text }}"
+                  >
+                  </kendo-grid-column> -->
+                  <kendo-grid-column field="inventoryType" title="Inventory">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <lable>{{ dataItem.inventoryType }}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="description" title="Description">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <lable>{{ dataItem.description }}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="qty" title="Qty">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <lable>{{ dataItem.qty }}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="rate" title="Rate">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <lable>${{ dataItem.rate | number : '1.2-2':"en-US" }}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="total" title="Total">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <lable>${{ dataItem.total | number : '1.2-2':"en-US"}}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                </kendo-grid>
+              </div>
+            </div>
+            <div class="col-md-3 mt-5">
+              <hr />
+              <button *ngIf="isDwQuoteTool" class="btn w-100 mb-2 p-2" kendoTooltip
+                title="Click to access the Deep Well budgeting tool.Use this tool to enter the applicable Deep Well information for the project. Once complete, you can create a through Deep Well quote using the criteria entered with the click of a button."
+                kendoRippleContainer kendoButton (click)="onDeepWellBudget()">
+                Deep Well Budget
+              </button>
+              <button *ngIf="isWpQuoteTool" class="btn w-100 mb-2 p-2" kendoTooltip
+                title="Click to access the Wellpoint budgeting tool.Use this tool to enter the applicable Wellpoint information for the project. Once complete, you can create a through Wellpoint quote using the criteria entered with the click of a button."
+                kendoRippleContainer kendoButton (click)="onWellpointBudget()">
+                Wellpoint Budget
+              </button>
+              <button *ngIf="isBPQuoteTool" class="btn w-100 mb-2 p-2" kendoTooltip
+                title="Click to access the Bypass budgeting tool.Use this tool to enter the applicable Bypass information for the project. Once complete, you can create a through Bypass quote using the criteria entered with the click of a button."
+                kendoRippleContainer kendoButton (click)="onBypassBudget()">
+                Bypass Budget
+              </button>
+              <button class="btn w-100 mb-2 p-2" kendoTooltip
+                title="Click to access the Bypass budgeting tool.Use this tool to enter the applicable Bypass information for the project. Once complete, you can create a through Bypass quote using the criteria entered with the click of a button."
+                kendoRippleContainer kendoButton (click)="onTrenchingBudget()">
+                Trenching Budget
+              </button>
+
+              <kendo-combobox formControlName="proposalType" kendoTooltip
+                title="Click to view and print the quote's Terms and Conditions" [suggest]="true" [data]="proposalData"
+                placeholder="Select Proposal Templates" class="form-control form-control-round mb-2"
+                [textField]="'name'" [valueField]="'id'" [filterable]="true" [valuePrimitive]="true"
+                (valueChange)="onProposalStatus($event)">
+              </kendo-combobox>
+              <a link target="_blank">
+                <button class="btn w-100 mb-2 p-2" kendoRippleContainer kendoButton (click)="onTermsNConditions()">
+
+                  Terms & Conditions
+                </button></a>
+              <hr />
+            </div>
+          </div>
+          <div class="row mb-3" *ngIf="isvisible">
+            <div class="col-md-4">
+              <label class="col-form-label pr-2" style="padding: 12px">
+                <input type="checkbox" kendoCheckBox [ngModelOptions]="{standalone: true}" [(ngModel)]="printNotes" [disabled]="isDisabled" />
+                Print Note 
+              </label>
+              <kendo-textbox class="form-control form-control-round" kendoTooltip [disabled]="isDisabled" 
+                title="Type any notes regarding the quote in the box provided.You can select whether you want this information to display on the printed quote."
+                placeholder="" [ngModelOptions]="{ standalone: true }" [(ngModel)]="note">
+              </kendo-textbox>
+             
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-form-label"><b>Total Equipment </b></label>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-form-label"><b> ${{ totalEquipment }}</b>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-form-label"> <b>Total Other </b></label>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-form-label"><b>${{ totalOther }}</b>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="qoutesDetails.quoteType == 'S'">
+                <div class="col-md-6">
+                  <label class="col-form-label"> <b>Sales Tax</b></label>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-form-label"><b>${{
+                      salesTaxPerc | number: "1.2-2"
+                      }}</b>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mt-3" *ngIf="qoutesDetails.quoteType == 'S'">
+                <label class="col-form-label pr-2" value="qoutesDetails.complete" style="padding: 12px">
+                  <input type="checkbox" kendoCheckBox [disabled]="isDisabled" />
+                  QUOTE APPROVED
+                </label>
+              </div>
+              <div class="mt-3" *ngIf="qoutesDetails.quoteType == 'R'">
+                <label class="col-form-label pr-2" style="padding: 12px">
+                  <input type="checkbox" kendoCheckBox [disabled]="isDisabled" />
+                  Completed
+                </label>
+              </div>
+              <div>
+                <label class="col-form-label pr-2" style="padding: 12px">
+                  <input type="checkbox" kendoCheckBox [disabled]="isDisabled" />
+                  <b> Show Prices</b>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" [style.display]="diplayitemDrp ? 'block' : 'none'" style="z-index: 333333"></div>
+    <div class="custom_slider_popup" *ngIf="diplayitemDrp" style="width: 800px !important">
+      <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+        <!-- <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+            </div> -->
+        <div class="row m-0">
+          <kendo-grid [data]="gridView" [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true"
+            [sortable]="true" [selectable]="true" kendoGridSelectBy [selectedKeys]="itemCodeSelection" [height]="400"
+            [navigable]="true" [resizable]="true" [reorderable]="true" [columnMenu]="{ filter: true }"
+            (selectionChange)="itemCodeClick($event.selectedRows[0].dataItem)">
+            <ng-template kendoGridToolbarTemplate>
+              <input class="form-control form-control-round col-md-10" placeholder="Search in all columns..."
+                formControlName="description" kendoTextBox />
+              <div class="col-md-1 p-2">
+                <i class="fa fa-search fa-2x" (click)="onSearchClick()"></i>
+              </div>
+            </ng-template>
+            <kendo-grid-column field="invType" kendoTooltip title="Inventory Type" [width]="150">
+            </kendo-grid-column>
+            <kendo-grid-column field="description" kendoTooltip title="Description">
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+        <div class="row ml-2">
+          <div class="k-actions k-actions-end">
+            <div class="k-columnmenu-actions">
+
+              <button class="k-button k-primary" (click)="closepopup()" type="button">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </kendo-popup>
+    </div>
+  </form>
+</div>
+
+<div class="backdrop" [style.display]="displaydeepWellBudget ? 'block' : 'none'" style="z-index: 333333"></div>
+<div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displaydeepWellBudget" style="height: 90%;overflow: scroll;">
+  <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+    <div class="content p-3">
+      <div class="row">
+        <div class="col-md-10">
+          <h5>Deep Well Quote Machine</h5>
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+            (click)="onDeepWellBudget()" kendoRippleContainer kendoButton>
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-deep-well-budget [detailJobNumber]="jobNumber" [detailBranch]="qoutebranch"
+      (backButtonEvent)="backButtonEvents($event)"></app-deep-well-budget>
+  </kendo-popup>
+</div>
+<div class="backdrop" [style.display]="displayWellpointBudget ? 'block' : 'none'" style="z-index: 333333"></div>
+<div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displayWellpointBudget" style="height: 90%;overflow: scroll;">
+  <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+    <div class="content p-3">
+      <div class="row">
+        <div class="col-md-10">
+          <h5>Wellpoint Quote Machine</h5>
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+            (click)="onWellpointBudget()" kendoRippleContainer kendoButton>
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-wellpoint-budget [detailJobNumber]="jobNumber" [detailBranch]="qoutebranch"
+      (backButtonEvent)="backButtonWellPOint($event)"></app-wellpoint-budget>
+  </kendo-popup>
+</div>
+<div class="backdrop" [style.display]="displayBypassBudget ? 'block' : 'none'" style="z-index: 333333"></div>
+<div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displayBypassBudget">
+  <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+    <div class="content p-3">
+      <div class="row">
+        <div class="col-md-10">
+          <h5>Bypass Budget</h5>
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+            (click)="onBypassBudget()" kendoRippleContainer kendoButton>
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-bypass-budget></app-bypass-budget>
+  </kendo-popup>
+</div>
+<!-- <div class="backdrop" [style.display]="displayPropsalTemplatesBudget ? 'block' : 'none'" style="z-index: 333333;">
+</div> -->
+<!-- <div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displayPropsalTemplatesBudget">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <div class="content p-3">
+            <div class="row">
+                <div class="col-md-10">
+                    <h5>Proposal Templates</h5>
+                </div>
+                <div class="col-md-2 text-right pr-0">
+                    <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+                        (click)="onProposalTemplatesBudget()" kendoRippleContainer kendoButton>X</button>
+                </div>
+            </div>
+        </div>
+        <app-proposal-templates></app-proposal-templates>
+    </kendo-popup>
+</div> -->
+<!-- <div class="backdrop" [style.display]="displayTermsNConditionsBudget ? 'block' : 'none'" style="z-index: 333333;">
+</div> -->
+<!-- <div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displayTermsNConditionsBudget">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <div class="content p-3">
+            <div class="row">
+                <div class="col-md-10">
+                    <h5>Terms and COnditions</h5>
+                </div>
+                <div class="col-md-2 text-right pr-0">
+                    <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+                        (click)="onTermsNConditions()" kendoRippleContainer kendoButton>X</button>
+                </div>
+            </div>
+        </div>
+        <app-proposal-templates></app-proposal-templates>
+    </kendo-popup>
+</div> -->
+
+<kendo-dialog title="Verify Change New Order" *ngIf="isCreateOrder" (close)="close('No')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    Create a new change order?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="createNewOrder('yes')" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="createNewOrder('No')">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Copy Change Order" *ngIf="copyOpened" (close)="closeCopyorder('cancel')" [minWidth]="250"
+  [width]="450">
+  <div class="text-center" class="fs-16">
+    <h5>Select Change Order to Copy:</h5>
+    <kendo-combobox formControlName="orderList" [suggest]="true" placeholder="" class="form-control form-control-round"
+      [textField]="'changeNumber'" [data]="orderTypeData" [valueField]="'changeNumber'" [filterable]="true"
+      [valuePrimitive]="true" (valueChange)="onChangeOrderValueChange($event)">
+    </kendo-combobox>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeCopyorder('copy')">Copy</button>
+    <button kendoButton (click)="closeCopyorder('yes')" themeColor="primary">
+      Back
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Verify Change New Order" *ngIf="copyChange" (close)="closeCopyChangeorder('cancel')"
+  [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    Are you sure you want to copy Change Order #1
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeCopyChangeorder('yes')" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="closeCopyChangeorder('no')">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Add Kit" *ngIf="displayAddKit" (close)="addItem()" [minWidth]="250" [width]="550">
+  <app-kit></app-kit>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="addItem()">Add</button>
+    <button kendoButton (click)="addItem()">Cancel</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Multiplier" *ngIf="openedAdd" (close)="closeAdd('cancel')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    {{ errorMessage }}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeAdd('yes')" themeColor="primary" class="w-100">
+      OK
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Mulitplier" *ngIf="openedMultilier" (close)="closeMultilier('cancel')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    {{ errorMessage }}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeMultilier('yes')" class="w-100" themeColor="primary">
+      OK
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Mulitplier" *ngIf="isOpenMultiplier" (close)="onApplyMultuplierClick('cancel')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    {{ errorMessage }}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onApplyMultuplierClick('yes')" class="w-100" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="onApplyMultuplierClick('No')" class="w-100" themeColor="primary">
+      No
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="New Change Order" *ngIf="isNewOrder" (close)="onNewOrderYesClick()" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    New Change Order {{newChangeOrderNumber}} has been created.
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onNewOrderYesClick()" class="w-100" themeColor="primary">
+      OK
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Mulitplier" *ngIf="isOverWritePeriod" (close)="onOverWritePeriodChange('No')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    All your rate will be overwritten,do you want to continue?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onOverWritePeriodChange('yes')" class="w-100" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="onOverWritePeriodChange('No')" class="w-100" themeColor="primary">
+      No
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="New proposal" *ngIf="isCreateProposal" (close)="createProp('No')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    Create new proposal?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="createProp('yes')" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="createProp('No')">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="PIF" *ngIf="isPrintPIF" (close)="createPrintPIF('Close')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    Print the Project Info Sheet(PIF) along with rental agreement?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="createPrintPIF('yes')" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="createPrintPIF('No')">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

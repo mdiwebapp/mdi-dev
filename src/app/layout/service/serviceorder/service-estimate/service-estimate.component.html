@@ -1,0 +1,308 @@
+<form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0 tab-div-panel-h">
+        <div class="row no-gutters">
+            <div class="col-md-12 mb-2">
+                <fieldset>
+                    <!-- kendoTooltip
+                        title="MODEL #: 0000000000 | SERIAL #:00000  Created By: John Preston" -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2  text-right">
+                                    <label class="col-form-label"><b>Customer:</b></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <b>{{customerName}}</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 text-right">
+                                    <label class="col-form-label"><b>Address:</b></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="address"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2 mt-2">
+                                </div>
+                                <div class="col-md-8 mt-2">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="address2"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2 mt-2">
+
+                                </div>
+                                <div class="col-md-2 mt-2 text-right">
+                                    <label class="col-form-label"><b>City:</b></label>
+                                </div>
+                                <div class="col-md-2 mt-2">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="city"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2 mt-2">
+                                    <!-- <button *ngIf="!displayState" (click)="onState()" class="btn w-100 p-2"
+                                        kendoRippleContainer kendoButton>State:
+                                        MI</button> -->
+                                    <kendo-combobox [data]="stateList" [suggest]="true" formControlName="state"
+                                        placeholder=" Select State" class="form-control form-control-round"
+                                        [textField]="'value'" [valuePrimitive]="true" [valueField]="'value'">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-2  mt-2 text-right">
+                                    <label class="col-form-label"><b>Zip:</b></label>
+                                </div>
+                                <div class="col-md-2 mt-2">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="zip"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="row  m-0 ">
+                                <div class="col-md-4">
+                                    <button class="btn w-100 p-2" kendoRippleContainer kendoButton
+                                        [disabled]="isDisabled" (click)="onItem()">Item
+                                        Code</button>
+                                </div>
+
+                                <div class="backdrop" [style.display]="displayItemDrp ? 'block' : 'none'"
+                                    style="z-index: 333333;">
+                                </div>
+                                <div class="custom_slider_popup" *ngIf="displayItemDrp"
+                                    style="width: 800px !important; position: fixed !important">
+                                    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+                                        <!-- <div class="content">
+                                <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+                            </div> -->
+                                        <div class="row m-0">
+                                            <kendo-grid [kendoGridBinding]="gridView" [data]="viewData"
+                                                [sortable]="true" [selectable]="true" [sort]="sort" kendoGridSelectBy
+                                                [selectedKeys]="mySelection" [height]="400" style="width: 100%;"
+                                                [navigable]="true" [resizable]="true" [reorderable]="true"
+                                                [columnMenu]="{ filter: true }">
+                                                <ng-template kendoGridToolbarTemplate>
+                                                    <input placeholder="Search in all columns..." kendoTextBox
+                                                        class="col-md-8" [(ngModel)]="partSearch"
+                                                        (keydown.enter)="$event.preventDefault();partList();"
+                                                        [ngModelOptions]="{standalone: true}" />
+                                                    <!-- <kendo-grid-spacer></kendo-grid-spacer> -->
+                                                    <i class="fa fa-search" (click)="partList();"></i>
+                                                </ng-template>
+                                                <kendo-grid-column field="invType" title="Inventory Type" [width]="150">
+                                                </kendo-grid-column>
+                                                <kendo-grid-column field="description" title="Description">
+                                                </kendo-grid-column>
+                                                <!-- <kendo-grid-column field="partNumber" title="Part Number">
+                                                </kendo-grid-column> -->
+                                            </kendo-grid>
+                                            <kendo-datapager [total]="partTotal" [pageSize]="partPageSize"
+                                                [skip]="partSkip" style="width: 100% !important;"
+                                                (pageChange)="onPartPageChange($event)">
+                                                <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                                    let-currentPage="currentPage">
+                                                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                                    </kendo-datapager-numeric-buttons>
+                                                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+
+                                                </ng-template>
+                                            </kendo-datapager>
+                                        </div>
+                                        <div class="row ml-2">
+                                            <div class="k-actions k-actions-end">
+                                                <div class="k-columnmenu-actions">
+                                                    <kendo-label [for]="qty" text="Quantity:"></kendo-label>
+                                                    <kendo-numerictextbox #qty class="col-md-6" [(ngModel)]="quantity"
+                                                        (input)="checkValue($event)" [min]="0"
+                                                        [ngModelOptions]="{standalone: true}" placeholder="Qty"
+                                                        [decimals]="'0'" [format]="'n0'">
+                                                    </kendo-numerictextbox>
+
+                                                    <button class="k-button" type="button"
+                                                        (click)="AddItem()">Add</button>
+                                                    <button class="k-button k-primary" (click)="closePopup()"
+                                                        type="button">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </kendo-popup>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2">
+                                    <!-- <button class="btn w-100 p-2" kendoRippleContainer kendoButton>Add item</button> -->
+                                </div>
+                                <!-- <div class="col-md-2">
+                                    <label class="col-form-label"><b>List Price: </b></label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label"><b>$ </b></label>
+                                </div> -->
+                            </div>
+                        </div>
+                        <kendo-dialog title="Invalid Quantity" *ngIf="displayItemDialog" (close)="closeItem('Cancel')"
+                            [minWidth]="250" [width]="450">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>You must enter Quantity.</label>
+                                </div>
+                            </div>
+                            <kendo-dialog-actions class="text-right">
+                                <button kendoButton (click)="closeItem('OK')" class="w-auto">OK</button>
+                            </kendo-dialog-actions>
+                        </kendo-dialog>
+                        <div class="col-md-12 mt-5">
+                            <div class="row  m-0 ">
+                                <div class="col-md-12">
+                                    <kendo-grid [data]="serviceEstimateData" kendoGridSelectBy [navigable]="true"
+                                        [resizable]="true" [reorderable]="true" [sort]="sort"
+                                        (sortChange)="sortChange($event)" kendoGridSelectBy
+                                        [selectedKeys]="mySelection1" [sortable]="true" [rowClass]="rowClass"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                        (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)">
+                                        <kendo-grid-column field="quantity" title="Qty" [width]="80">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="itemCode" title="Item Code" [width]="150">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="description" title="Description">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="cost" title="Line price" [width]="100">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                ${{dataItem.cost==null ? 0.00 : (dataItem.cost | number : '1.2-2')}}
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column field="total" title="Total" [width]="100">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                ${{dataItem.total | number : '1.2-2'}}
+                                            </ng-template>
+                                        </kendo-grid-column>
+
+                                        <kendo-grid-column field="action" title="" [width]="50">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <i class="fa fa-2x fa-trash mr-2"
+                                                    (click)="deleteItem(dataItem.pk,dataItem.id)"></i>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-5">
+                            <div class="row no-gutters p-2">
+                                <div class="col-md-4">
+                                    <label class="col-form-label"><b>Notes</b></label>
+                                    <kendo-textarea class="form-control form-control-round" formControlName="notes"
+                                        rows="7" cols="50" placeholder="">
+                                    </kendo-textarea>
+                                </div>
+                                <div class="col-md-8 p-2">
+                                    <fieldset>
+
+                                        <div class="row p-2 m-0">
+                                            <div class="col-md-6">
+                                                <div class="row  no-gutters m-0">
+                                                    <div class="col-md-5">
+                                                        <label>Tax Exempt: </label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="isTaxExempt">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters m-0">
+                                                    <div class="col-md-5 p-1">
+                                                        <label>Rate:</label>
+                                                    </div>
+                                                    <div class="col-md-7 p-1">
+                                                        <!-- <kendo-textbox class="form-control form-control-round"
+                                                            (valueChange)="setTotalLabour()" formControlName="txtRate"
+                                                            placeholder="">
+                                                        </kendo-textbox> -->
+                                                        <kendo-numerictextbox class="form-control form-control-round"
+                                                            (valueChange)="setTotalLabour()" formControlName="txtRate"
+                                                            placeholder="" [min]="0" format="c2">
+                                                        </kendo-numerictextbox>
+                                                        <div class="required-text"
+                                                            *ngIf="form.get('txtRate').hasError('minError') && form.get('txtRate').touched">
+                                                            This field cannot be negative!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters m-0">
+                                                    <div class="col-md-5 p-1">
+                                                        <label>Hours:</label>
+                                                    </div>
+                                                    <div class="col-md-7 p-1">
+                                                        <kendo-numerictextbox class="form-control form-control-round"
+                                                            (valueChange)="setTotalLabour()" formControlName="txtHours"
+                                                            placeholder="" [min]="1" [autoCorrect]="true">
+                                                        </kendo-numerictextbox>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters m-0">
+                                                    <div class="col-md-5 p-1">
+                                                        <label>Sales Tax:</label>
+                                                    </div>
+                                                    <div class="col-md-7 p-1">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="isSalesTax">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters m-0">
+                                                    <div class="col-md-5 p-1">
+                                                        <label>Show Price:</label>
+                                                    </div>
+                                                    <div class="col-md-7 p-1">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            [ngModelOptions]="{standalone: true}" style="width: auto;"
+                                                            [(ngModel)]="isShowPrice">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-6"> <label class="col-form-label"><b>Total
+                                                                Equipment:</b></label></div>
+                                                    <div class="col-md-6 text-right"> <label class="col-form-label"><b>$
+                                                                {{sumItemTotal | number : '1.2-2'}}</b></label></div>
+                                                    <div class="col-md-6"> <label class="col-form-label"><b>Sales
+                                                                Tax:</b></label></div>
+                                                    <div class="col-md-6 text-right"> <label class="col-form-label"><b>$
+                                                                {{salesTax | number :'1.2-2'}}</b></label></div>
+                                                    <div class="col-md-6"> <label
+                                                            class="col-form-label"><b>Labor:</b></label></div>
+                                                    <div class="col-md-6 text-right"> <label class="col-form-label"><b>$
+                                                                {{totalLabour | number :'1.2-2'}}</b></label></div>
+                                                    <div class="col-md-6"> <label class="col-form-label"><b>Total:
+                                                            </b></label></div>
+                                                    <div class="col-md-6 text-right"> <label class="col-form-label"><b>$
+                                                                {{total | number :
+                                                                '1.2-2'}}</b></label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

@@ -1,0 +1,268 @@
+<form [formGroup]="employeeRequisitonForm">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Employee Hiring</h4>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="card">
+                <div class="row justify-content-center m-3">
+                    <div class="col-md-8">
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-3">
+                                <label class="col-form-label"> First Name </label>
+                                <kendo-textbox formControlName="firstName"></kendo-textbox>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label"> Last Name</label>
+                                <kendo-textbox formControlName="lastName"></kendo-textbox>
+                            </div>
+                            <div class="col-md-6 mt-3 d-flex justify-content-between align-items-center">
+                                <button class="k-button w-50 mr-2" type="submit" style="font-size: 12px;"
+                                    (click)="onHandleOperation('select_title')">Select
+                                    Title:{{employeeRequisitonForm.get('selectTitle').value}}
+                                </button>
+                                <button class="k-button w-50 mr-2" type="submit" style="font-size: 12px;"
+                                    (click)="onHandleOperation('select_branch')">Select
+                                    Branch:{{employeeRequisitonForm.get('selectBranch').value}}
+                                </button>
+                                <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon"
+                                    (click)="onHandleOperation('cancel')"></button>
+                            </div>
+
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-12 text-center">
+                                <label class="col-form-label"> Please select the equipment and access this employee will need:</label>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-4">
+                                <div>
+                                    <label class="col-form-label">Computer/Phone</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="PC" />
+                                    <label class="col-form-label pl-2">PC is available (previous user)</label>
+                                    <kendo-textbox formControlName="computerphone"></kendo-textbox>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Laptop" />
+                                    <label class="col-form-label pl-2">Need a Laptop Ordered</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="LaptopAccesorries" />
+                                    <label class="col-form-label pl-2">Laptop Accessories(Bag Mouse)</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Desktop" />
+                                    <label class="col-form-label pl-2">Needs a Desktop Ordered</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="CellPhone" />
+                                    <label class="col-form-label pl-2">Cell phone</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="CellCarCharger" />
+                                    <label class="col-form-label pl-2">Needs Cell Phone ordered</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="HotSpot" />
+                                    <label class="col-form-label pl-2">HotSpot</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="BusinessCards" />
+                                    <label class="col-form-label pl-2">Business cards</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Uniforms" />
+                                    <label class="col-form-label pl-2">Uniforms</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <fieldset>
+                                        <legend>Driver</legend>
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="NonDriver" formControlName="drive"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2"> Non Driver</label>
+                                            </span>
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="NonDotDriver" formControlName="drive"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2"> Non DOT Driver</label>
+                                            </span>
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="DotDriver" formControlName="drive"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2">DOT Driver</label>
+                                            </span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="FuelCard" />
+                                    <label class="col-form-label pl-2">Fuel Card</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="FuelPin" />
+                                    <label class="col-form-label pl-2">Fuel Pin</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="CreditCard" />
+                                    <label class="col-form-label pl-2">Credit card</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="DoorCode" />
+                                    <label class="col-form-label pl-2">Door/Alarm Code</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="GateCode" />
+                                    <label class="col-form-label pl-2">Gate Code</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Keys" />
+                                    <label class="col-form-label pl-2">Keys</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label class="col-form-label">System Accessories</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="MDI" />
+                                    <label class="col-form-label pl-2">MDI Login</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Quickbooks" />
+                                    <label class="col-form-label pl-2">Quickbooks Login</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="Remote" />
+                                    <label class="col-form-label pl-2">Remote Access</label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label">Email (if required)</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="EmailMersino" />
+                                    <label class="col-form-label pl-2">email@mersino.com</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" kendoCheckBox formControlName="EmailGlobal" />
+                                    <label class="col-form-label pl-2">email@globalpump.com</label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label">Projected Start Date:</label>
+                                </div>
+                                <div>
+                                    <kendo-datepicker calendarType="classic" formControlName="projectDate">
+                                    </kendo-datepicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Special Instructions:</label>
+                                <kendo-textarea [cols]="100" [rows]="6" class="form-control form-control-round w-100"
+                                    formControlName="specialInstruction">
+                                </kendo-textarea>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-4 d-flex justify-content-center">
+                                <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                *ngIf="menuService.isAddRight"    (click)="onHandleOperation('submit')">Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select Title" *ngIf="isSelectTitleVisible" (close)="onHandleOperation('select_title')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (input)="onFilterTitle($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{selectTitleData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'select_title')"
+                [data]="selectTitleData" [sort]="sortTitle" (sortChange)="sortTitleChange($event)" kendoGridSelectBy
+                [selectedKeys]="titleSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                 (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="false">
+                <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.title}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Branch" *ngIf="isSelectBranchVisible" (close)="onHandleOperation('select_branch')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (input)="onFilterBranch($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{selectBranchData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'select_branch')"
+                [data]="selectBranchData" [sort]="sortBranch" (sortChange)="sortBranchChange($event)" kendoGridSelectBy
+                [selectedKeys]="branchSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="false">
+                <kendo-grid-column *ngFor="let column of branchColumn" [width]="column.width" field="{{ column.Name }}"
+          title="{{ column.Text }}">
+        </kendo-grid-column>
+            </kendo-grid>
+            
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,34 @@
+export class ServiceOrderModel {
+    id: number;
+    userName: string;
+    user_PK: number;
+    serviceNumber: string;
+    customerNumber: string;
+    job: string;
+    branch: string;
+    type: string;
+    modelNumber: string;
+    serialNumber: string;
+    invNumber: string;
+    miles: string;
+    hours: string;
+    mechanic: string;
+    dateRepaired: string;
+    fullService: boolean;
+    fullServiceDate: Date;
+    fullServiceBy: string;
+    problem: string;
+    note: string;
+    refurb: boolean;
+    salesTax: boolean;
+    status: string;
+    pitTest: string;
+    mechanicChecklist: boolean;
+    mechanicChecklistDate: Date;
+    mechanicChecklistBy: string;
+    closed: boolean;
+    closedDate: Date;
+    closedBy: string;
+    items: any = [];
+    refurbList: any = [];
+}

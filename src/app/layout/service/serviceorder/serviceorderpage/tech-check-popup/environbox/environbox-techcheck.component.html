@@ -1,0 +1,131 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>ENVIRONMENTAL BOX</legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayBollValueBtn" class="w-100" (click)="onBots()" kendoTooltip
+                                    kendoRippleContainer kendoButton>HOSE AND BALL VALVES: {{f.bollValueLevel.value}}
+                                </button> -->  <label class="col-form-label">HOSE AND BALL VALVES:</label>
+                                <kendo-combobox *ngIf="!displayBollValueBtn" formControlName="bollValueLevel"
+                                    (valueChange)="onBots()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="ballValueList"
+                                    [valuePrimitive]="true"  [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                *ngIf="form.get('bollValueLevel').hasError('required') && form.get('bollValueLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayFloatBtn" class="w-100" (click)="onFloat()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CONDITION OF THE FLOATS: {{f.floatLevel.value}}
+                                </button> --> <label class="col-form-label">CONDITION OF THE FLOATS:</label>
+                                <kendo-combobox *ngIf="!displayFloatBtn" formControlName="floatLevel" [suggest]="true"
+                                    (valueChange)="onFloat()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="floatList"
+                                    [valuePrimitive]="true"  [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('floatLevel').hasError('required') && form.get('floatLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayFloatValueBtn" class="w-100" (click)="onFloatValue()" kendoTooltip
+                                    kendoRippleContainer kendoButton>FLOAT VALUE: {{f.floatValueLevel.value}}
+                                </button> --> <label class="col-form-label">FLOAT VALUE:</label>
+                                <kendo-combobox *ngIf="!displayFloatValueBtn" formControlName="floatValueLevel"
+                                    (valueChange)="onFloatValue()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true"   [data]="floatValueList" [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('floatValueLevel').hasError('required') && form.get('floatValueLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaySizeFloatBtn" class="w-100" (click)="onSizeFloat()" kendoTooltip
+                                    kendoRippleContainer kendoButton>SIZE OF THE FLOATS: {{f.sizeFloatLevel.value}}
+                                </button> --> <label class="col-form-label">SIZE OF THE FLOATS:</label>
+                                <kendo-combobox *ngIf="!displaySizeFloatBtn" formControlName="sizeFloatLevel"
+                                    (valueChange)="onSizeFloat()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="sizeFloatList"
+                                    [valuePrimitive]="true"  [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('sizeFloatLevel').hasError('required') && form.get('sizeFloatLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>SUCTION SPOOL</legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaySpoolScreenBtn" class="w-100" (click)="onSpoolScreen()"
+                                    kendoTooltip kendoRippleContainer kendoButton>SUCTION
+                                    SPOOL SCREEN: {{f.spoolScreenLevel.value}}
+                                </button> --> <label class="col-form-label">SUCTION
+                                    SPOOL SCREEN:</label>
+                                <kendo-combobox *ngIf="!displaySpoolScreenBtn" formControlName="spoolScreenLevel"
+                                    (valueChange)="onSpoolScreen()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true"  [data]="spoolScreenList" [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('spoolScreenLevel').hasError('required') && form.get('spoolScreenLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaySpoolBallBtn" class="w-100" (click)="onSpoolBall()" kendoTooltip
+                                    kendoRippleContainer kendoButton>SPOOL BALL VALUE: {{f.spoolBallLevel.value}}
+                                </button> --> <label class="col-form-label">SPOOL BALL VALUE:</label>
+                                <kendo-combobox *ngIf="!displaySpoolBallBtn" formControlName="spoolBallLevel"
+                                    (valueChange)="onSpoolBall()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="spoolBallList"
+                                    [valuePrimitive]="true"   [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('spoolBallLevel').hasError('required') && form.get('spoolBallLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayVaccumGuage" class="w-100" (click)="onVaccumGuage()" kendoTooltip
+                                    kendoRippleContainer kendoButton>VACCUM GAUGE: {{f.vaccumGuageLevel.value}}
+                                </button> --> <label class="col-form-label">VACCUM GAUGE:</label>
+                                <kendo-combobox *ngIf="!displayVaccumGuage" formControlName="vaccumGuageLevel"
+                                    (valueChange)="onVaccumGuage()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true"   [data]="vaccumGuageList" [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('vaccumGuageLevel').hasError('required') && form.get('vaccumGuageLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaySpoolGasketsBtn" class="w-100" (click)="onSpoolGaskets()"
+                                    kendoTooltip kendoRippleContainer kendoButton>SUCTION
+                                    SPOOL GASKETS: {{f.spoolGasketsLevel.value}}
+                                </button> --> <label class="col-form-label">SUCTION
+                                    SPOOL GASKETS:</label>
+                                <kendo-combobox *ngIf="!displaySpoolGasketsBtn" formControlName="spoolGasketsLevel"
+                                    (valueChange)="onSpoolGaskets()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true"  [data]="spoolGasketsList" [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('spoolGasketsLevel').hasError('required') && form.get('spoolGasketsLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

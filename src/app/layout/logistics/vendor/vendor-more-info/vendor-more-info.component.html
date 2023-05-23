@@ -1,0 +1,151 @@
+<form [formGroup]="form" name="loginForm" class="cust-form">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup>  -->
+    <div class="register-box box-shadow-none card mb-0">
+        <div class="card-block p-0">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">
+                                Account
+                                Number<em></em>:
+                            </label>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <kendo-textbox formControlName="accountNumber"
+                                        class="form-control form-control-round" placeholder="Account Number">
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('accountNumber').hasError('required') && form.get('accountNumber').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">
+                                                Portal Info<em></em>:
+                                            </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox formControlName="portalInfo"
+                                                class="form-control form-control-round" placeholder="Portal Info">
+                                            </kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Credit Limit<em></em>:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="creditLimit"
+                                        placeholder="Credit Limit">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">Terms<em></em>:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round"
+                                                formControlName="terms" placeholder="Terms">
+                                            </kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">PO Submitted Via<em></em>:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <kendo-combobox placeholder="PO Submitted Via" formControlName="poSubmittedVia"
+                                        class="form-control form-control-round">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">
+                                                Default
+                                                Shipper<em></em>:
+                                            </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-combobox class="form-control form-control-round"
+                                                [data]="shippingData" [textField]="'value'"
+                                                formControlName="defaultShipper" [valueField]="'value'"
+                                                [filterable]="true" [valuePrimitive]="true">
+                                            </kendo-combobox>
+                                            <!-- <kendo-dropdowntree kendoDropDownTreeExpandable
+                                                [kendoDropDownTreeHierarchyBinding]="shippingData" textField="text"
+                                                valueField="id" childrenField="items" class="furniture">
+                                            </kendo-dropdowntree> -->
+                                            <!-- <kendo-textbox class="form-control form-control-round"
+                                                formControlName="defaultShipper" placeholder="Default Shipper">
+                                            </kendo-textbox> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Shipped From<em></em>:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round"
+                                formControlName="shippedFrom" placeholder="Shipped From">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row col-md-4 mx-0 mt-2 mb-2 actionItemsContainer">
+                <button class="btn btn-outline-primary btn-custom" [disabled]="isEdit" kendoTooltip filter="button"
+                        (click)="btnEdit();" [tooltipTemplate]="template2">
+                    <img src="assets/images/PNG-48/Modify.png"
+                         width="25px" alt="" class="img-responsive">
+                </button>
+                <button class="btn btn-outline-primary  btn-custom" kendoTooltip filter="button" (click)="btnCancel();"
+                        [disabled]="isCancel" [tooltipTemplate]="template3">
+                    <img src="assets/images/PNG-48/Delete.png" width="25px" alt="" class="img-responsive">
+                </button>
+                <button class="btn btn-outline-primary  btn-custom" kendoTooltip filter="button" (click)="onSave();"
+                        [disabled]="(form.invalid || form.pristine) || isSave" [tooltipTemplate]="template4">
+                    <img src="assets/images/PNG-48/Save.png" width="25px" alt="" class="img-responsive">
+                </button>
+            </div> -->
+        </div>
+    </div>
+</form>
+<ng-template #template2 let-anchor>
+    <span>Edit</span>
+</ng-template>
+<ng-template #template3 let-anchor>
+    <span>Cancel</span>
+</ng-template>
+<ng-template #template4 let-anchor>
+    <span>Save</span>
+</ng-template>

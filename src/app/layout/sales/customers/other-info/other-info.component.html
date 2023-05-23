@@ -1,0 +1,115 @@
+<form [formGroup]="form" class="cust-form">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="register-box box-shadow-none card mb-0">
+        <div class="card-block p-0">
+          <div class="row">
+            <div class="col-md-12">
+              <h5>
+                Customer Checklist<em>*</em></h5>
+              <hr>
+            </div>
+          </div>
+          <div class="checkbox-fade fade-in-primary d-block mr-0">
+
+            <kendo-combobox [data]="creditAppData" [valueField]="'value'" [textField]="'text'" [filterable]="true"
+              placeholder="All Branches" class="kendodropdownlist m-b-20" [valuePrimitive]="true"
+              formControlName="creditAppStatus">
+            </kendo-combobox>
+            <div class="required-text"
+              *ngIf="form.get('creditAppStatus').hasError('required') && form.get('creditAppStatus').touched"
+              formControlName="creditAppStatus">
+              This field is required!
+            </div>
+          </div>
+          <hr>
+          <div class="form-control1 mb-2">
+            <!-- <label class="mb-0 d-flex justify-content-between">
+                <span class="d-block w-100">Tax Exempt: N/A</span>
+                <input type="checkbox" [checked]="taxExempt" (change)="taxExempt = !taxExempt" value="">
+                <label class="cr float-right m-0">
+                  <i class="cr-icon fa fa-check"></i>
+                </label>
+              </label> -->
+
+            <div class="displayFlex m-t-20">
+              <label>Tax Exempt: N/A</label>
+              <kendo-switch onLabel="Yes" offLabel="No" class="widthAuto" formControlName="taxExempt" name="TaxExempt">
+              </kendo-switch>
+            </div>
+          </div>
+          <hr>
+          <div class="checkbox-fade fade-in-primary mr-0 col-lg-12 p-0">
+            <div class="form-group mb-0">
+              <div class="input-group date mb-0 d-flex align-items-center">
+                <label class="d-block col-lg-2 mb-0">COI</label>
+
+                <kendo-switch onLabel="Yes" offLabel="No" class="widthAuto" formControlName="coi">
+                </kendo-switch>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 cinfo-buttons-block">
+      <div>
+        <div class="form-control1 mb-2">
+          <div class="form-control1 displayFlex m-t-20">
+            <label>Credit Card / Pre-Pay</label>
+            <kendo-switch onLabel="Yes" offLabel="No" formControlName="prePayment" class="widthAuto">
+            </kendo-switch>
+          </div>
+        </div>
+        <hr>
+        <div class="form-control1 mb-2">
+          <!-- <label class="dist-table-td bg-success availble-credit-label ">Credit Limit:
+            $200,000.00</label> -->
+          <!-- Do not remove this changes -->
+          <div class="row">
+            <div class="col-lg-4 pt-2">
+              <label>Credit Limit $:</label>
+            </div>
+            <div class="col-lg-8">
+              <kendo-numerictextbox class="form-control form-control-round" formControlName="creditLimit"
+                [ngClass]="CreditLimitValue>0?'creditLimitEnabled':'creditLimitDisabled'"
+                (valueChange)="onValueChange($event)" placeholder="Enter Credit Limit" [value]="CreditLimitValue"
+                min="0">
+              </kendo-numerictextbox>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="form-control1 mb-2">
+          <div class="displayFlex m-t-20">
+            <label>Credit Risk </label>
+            <kendo-switch onLabel="Yes" formControlName="creditRisk" offLabel="No" class="widthAuto">
+            </kendo-switch>
+          </div>
+        </div>
+        <hr>
+        <div class="form-control1">
+          <div class="displayFlex m-t-20">
+            <label>Credit Override</label>
+            <kendo-switch onLabel="Yes" formControlName="creditOverride" offLabel="No" class="widthAuto">
+            </kendo-switch>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div>
+        <div class="form-group text-left">
+          <label class="col-form-label text-left">Credit
+            Note:</label>
+          <kendo-textarea [cols]="170" [rows]="3" formControlName="creditNote" class="form-control form-control-round"
+            formControlName="creditNote" placeholder="Credit Note">
+          </kendo-textarea>
+          <!-- <textarea name="domain" placeholder="Credit Note" class="form-control"></textarea> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

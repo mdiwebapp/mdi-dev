@@ -1,0 +1,1427 @@
+<nav class="navbar header-navbar pcoded-header bg-white">
+  <div class="navbar-wrapper">
+    <div class="navbar-logo" style="width: 100% !important">
+      <kendo-appbar [position]="'top'" style="width: 100% !important">
+        <kendo-appbar-section>
+          <button class="k-button k-button-clear" (click)="viewMenu = !viewMenu">
+            <kendo-icon [name]="'menu'"></kendo-icon>
+          </button>
+        </kendo-appbar-section>
+
+        <kendo-appbar-section>
+          <a [routerLink]="['/dashboard']" *ngIf="typeMediator == 'no'">
+            <img class="img-fluid" src="assets/images/logo-white.png" alt="Theme-Logo" style="width: 125px" />
+          </a>
+          <a *ngIf="typeMediator == 'yes'">
+            <img class="img-fluid" src="assets/images/logo-white.png" alt="Theme-Logo" style="width: 125px" />
+          </a>
+        </kendo-appbar-section>
+
+        <kendo-appbar-spacer [width]="'32px'"></kendo-appbar-spacer>
+
+        <kendo-appbar-section>
+          <ul *ngFor="let item of menuList">
+            <li style="text-transform: uppercase" *ngIf="typeMediator == 'no'">
+              <a (click)="redirectOnPage(item.subMenuName)" style="color: white">{{item.title}}</a>
+             
+            </li>
+          </ul>
+          <ul *ngFor="let item of menuList">
+            <li style="text-transform: uppercase" *ngIf="
+                (item.subMenuName == 'vendor' ||
+                  item.subMenuName == 'Vendor') &&
+                typeMediator == 'yes'
+              ">
+              <a (click)="redirectOnPage(item.subMenuName)" style="color: white">{{
+                item.subMenuName}}</a>
+            </li>
+          </ul>
+        </kendo-appbar-section>
+        <kendo-appbar-spacer></kendo-appbar-spacer>
+        <kendo-multiselect class="form-control form-control-round" [data]="userBranch" [(ngModel)]="selectedBranch"
+          textField="value" [kendoMultiSelectSummaryTag]="1" (ngModelChange)="dedicatedBranchChanges($event)"
+          #multiselect style="width: 380px;padding: 0px;height: 35px;" placeholder="Dedicated Branch"
+          [tagMapper]="tagMapper" valueField="id">
+          <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+            {{ dataItems.length }} more
+          </ng-template>
+        </kendo-multiselect>
+
+        <kendo-appbar-section>
+          <div>
+            Welcome : {{ usermodel.userName == null ? "" : usermodel.userName }}
+          </div>
+        </kendo-appbar-section>
+        <kendo-appbar-section>
+          <a href="#!" class="waves-effect waves-light" data-toggle="dropdown">
+            <kendo-avatar class="waves-effect waves-light" [imageSrc]="kendokaAvatar" [shape]="'circle'"
+              [width]="'26px'" [height]="'26px'"></kendo-avatar>
+          </a>
+          <ul class="show-notification profile-notification dropdown-menu">
+            <li></li>
+            <li [routerLink]="['/changepassword/']" class="waves-effect waves-light">
+              <a> <i class="fa fa-key"></i> Change Password</a>
+            </li>
+            <li class="waves-effect waves-light">
+              <a href="javascript:void(0);" class="profileMenu">
+                <i class="fa fa-user-o"></i> Profile</a>
+            </li>
+            <li class="waves-effect waves-light">
+              <a (click)="logOut()"> <i class="fa fa-sign-out"></i> Logout</a>
+            </li>
+          </ul>
+        </kendo-appbar-section>
+      </kendo-appbar>
+      <nav class="navbar mobile-menu" id="mobile-collapse" *ngIf="viewMenu">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="nav navbar-nav">
+            <li *ngIf="typeMediator == 'no'">
+              <a href="javascript:void(0)" [routerLink]="['/dashboard']">
+                <i class="fa fa-2x fa-tachometer custom_icon"></i>
+                <span>Dashboard </span>
+              </a>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no'  && displayMenu(3)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-briefcase custom_icon"></i>
+                <span>Operation</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="secound_dropdown">
+                <ul class="nav navbar-nav">
+                  <li *ngIf="displaySubMenu(43)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(40)">
+                        <span>Consignment</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('Operation', 'consignment','40','Consignment')">
+                        <i *ngIf="!GetFavoriteMenuStatus(40)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(40)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(46)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(85)">
+                        <span>Municipality Emergency Forms</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('Operation', 'municipality-emergency-forms','85','Municipality Emergency Forms')">
+                        <i *ngIf="!GetFavoriteMenuStatus(85)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(85)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(45)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(84)">
+                        <span>Pipeline Correct</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('Operation', 'pipeline-correct','84','Pipeline Correct')">
+                        <i *ngIf="!GetFavoriteMenuStatus(84)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(84)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(29)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(19)">
+                        <span>Projects</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'projects', '19','Projects')">
+                        <i *ngIf="!GetFavoriteMenuStatus(19)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(19)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(44)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(72)">
+                        <span>Safety</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('Operation', 'safety','72','Safety')">
+                        <i *ngIf="!GetFavoriteMenuStatus(72)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(72)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(47)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a (click)="openpopup()">
+                        <span>Schedule Board</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('Operation', 'schedule-board','94','Schedule Board')">
+                        <i *ngIf="!GetFavoriteMenuStatus(94)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(94)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no'  && displayMenu(1)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-cog custom_icon"></i>
+                <span>Admin</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="secound_dropdown">
+                <ul class="nav navbar-nav">
+                  <li *ngIf="displaySubMenu(25)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(36)">
+                        <span>Admin Call Log</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'calllog', '36','Admin Call Log')">
+                        <i *ngIf="!GetFavoriteMenuStatus(36)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(36)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('company forms')" *ngIf="displaySubMenu(4)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(6)">
+                        <span>Company Forms</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'company forms', '6','Company Forms')">
+                        <i *ngIf="!GetFavoriteMenuStatus(6)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(6)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(36)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(73)">
+                        <span>Job Descriptions</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'jobdescription', '73','Job Descriptions')">
+                        <i *ngIf="!GetFavoriteMenuStatus(73)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(73)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <!-- <li *ngIf="displaySubMenu(39)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(82)">
+                        <span>Memos</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'memos', '82')">
+                        <i *ngIf="!GetFavoriteMenuStatus(82)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(82)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li *ngIf="displaySubMenu(40)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(90)">
+                        <span>On Call Rotation</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'on-call-rotation', '90','On Call Rotation')">
+                        <i *ngIf="!GetFavoriteMenuStatus(90)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(90)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(37)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(74)">
+                        <span>Org Charts</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'orgcharts', '74','Org Charts')">
+                        <i *ngIf="!GetFavoriteMenuStatus(74)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(74)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(35)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(51)">
+                        <span>Per Diem Entry</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'per-diem-entry', '51','Per Diem Entry')">
+                        <i *ngIf="!GetFavoriteMenuStatus(51)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(51)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <!-- <li *ngIf="displaySubMenu(28)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(26)">
+                        <span>Personal Day Calender</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'personal day calender', '26')">
+                        <i *ngIf="!GetFavoriteMenuStatus(26)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(26)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li *ngIf="displaySubMenu(38)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(75)">
+                        <span>Policies And Procedures</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'policiesProcedures', '75','Policies And Procedures')">
+                        <i *ngIf="!GetFavoriteMenuStatus(75)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(75)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(33)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(47)">
+                        <span>Time Approval</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'time-approval', '47','Time Approval')">
+                        <i *ngIf="!GetFavoriteMenuStatus(47)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(47)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(34)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(48)">
+                        <span>Time Tracking Edit/Entry</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'time-tracking-edit-entry', '48','Time Tracking Edit/Entry')">
+                        <i *ngIf="!GetFavoriteMenuStatus(48)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(48)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="secound_menu" *ngIf="displayMenu(2)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-truck custom_icon"></i>
+                <span>Logistics</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="logistics">
+                <ul class="nav navbar-nav">
+                  <!-- <li (click)="checkRights('Maintain Bins')" *ngIf="displaySubMenu(18) && typeMediator == 'no'">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(11)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(11)">
+                        <span>Bins</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('logistics', 'bins', '11')">
+                        <i *ngIf="!GetFavoriteMenuStatus(11)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(11)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <!-- <li *ngIf="displaySubMenu(41)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(50)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(50)">
+                        <span>Building Tickets</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'building-tickets', '50')">
+                        <i *ngIf="!GetFavoriteMenuStatus(50)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(50)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li *ngIf="displaySubMenu(20)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(21)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(21)">
+                        <span>Component Swap</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'component swap', '21','Component Swap')">
+                        <i *ngIf="!GetFavoriteMenuStatus(21)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(21)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="typeMediator == 'no'&& displaySubMenu(10)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(14)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(14)">
+                        <span>Components</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('logistics', 'components', '14','Components')">
+                        <i *ngIf="!GetFavoriteMenuStatus(14)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(14)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(21)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(23)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(23)">
+                        <span>Cycle Count</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'cycle count', '23','Cycle Count')">
+                        <i *ngIf="!GetFavoriteMenuStatus(23)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(23)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(25)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(29)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(29)">
+                        <span>Fleet</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'fleet', '29','Fleet')">
+                        <i *ngIf="!GetFavoriteMenuStatus(29)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(29)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(24)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(27)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(27)">
+                        <span>Inventory Transfer</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'inventory transfer', '27','Inventory Transfer')">
+                        <i *ngIf="!GetFavoriteMenuStatus(27)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(27)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(19)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(22)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(22)">
+                        <span>Inventory View</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'inventory view', '22','Inventory View')">
+                        <i *ngIf="!GetFavoriteMenuStatus(22)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(22)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="typeMediator == 'no' && displaySubMenu(11)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(12)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(12)">
+                        <span>Parts</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('logistics', 'parts', '12','Parts')">
+                        <i *ngIf="!GetFavoriteMenuStatus(12)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(12)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(22)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(24)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(24)">
+                        <span>Physical Inventory</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'physical inventory', '24','Physical Inventory')">
+                        <i *ngIf="!GetFavoriteMenuStatus(24)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(24)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <!-- <li *ngIf="displaySubMenu(42)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(91)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(91)">
+                        <span>Physical Inventory Barcode</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'physical-inventory-barcode', '91')">
+                        <i *ngIf="!GetFavoriteMenuStatus(91)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(91)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li *ngIf="displaySubMenu(26)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(35)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(35)">
+                        <span>Purchasing</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'purchasing', '35','Purchasing')">
+                        <i *ngIf="!GetFavoriteMenuStatus(35)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(35)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('Vehicle')" *ngIf="displaySubMenu(6)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(10)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(10)">
+                        <span>Vehicles</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('logistics', 'vehicles', '10','Vehicles')">
+                        <i *ngIf="!GetFavoriteMenuStatus(10)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(10)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('vendor')" *ngIf="displaySubMenu(5)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(4)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(4)">
+                        <span>Vendors</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('logistics', 'vendor', '4','Vendors')">
+                        <i *ngIf="!GetFavoriteMenuStatus(4)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(4)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no' && displayMenu(5)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-briefcase custom_icon"></i>
+                <span>Service</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="secound_dropdown">
+                <ul class="nav navbar-nav">
+                  <li *ngIf="displaySubMenu(55)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(53)">
+                        <span>Cranes</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'cranes', '53','Cranes')">
+                        <i *ngIf="!GetFavoriteMenuStatus(53)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(53)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(68)">
+                        <span>Field Failures</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'field-failure', '68','Field Failures')">
+                        <i *ngIf="!GetFavoriteMenuStatus(68)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(68)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(69)">
+                        <span>Field Notes</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('service', 'fieldnotes', '69','Field Notes')">
+                        <i *ngIf="!GetFavoriteMenuStatus(69)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(69)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(92)">
+                        <span>Service Docs</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('service', 'servicedocs', '92','Service Docs')">
+                        <i *ngIf="!GetFavoriteMenuStatus(92)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(92)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(30)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(20)">
+                        <span>Service</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'service order', '20','Service')">
+                        <i *ngIf="!GetFavoriteMenuStatus(20)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(20)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(23)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(28)">
+                        <span>Spare Parts</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'spare parts', '28','Spare Parts')">
+                        <i *ngIf="!GetFavoriteMenuStatus(28)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(28)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a (click)="downloadWarrantyLog()">
+                        <span>Warranty Log</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('service', 'warranty-log', '96','Warranty Log')">
+                        <i *ngIf="!GetFavoriteMenuStatus(96)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(96)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no'&& displayMenu(4)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-address-book-o custom_icon"></i>
+                <span>Sales</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="sales">
+                <ul class="nav navbar-nav">
+                  <li *ngIf="displaySubMenu(50)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(77)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(77)">
+                        <span>Branding</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'branding', '77','Branding')">
+                        <i *ngIf="!GetFavoriteMenuStatus(77)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(77)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(48)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(25)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(25)">
+                        <span>Sales Call Log</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'calllogs', '25','Sales Call Log')">
+                        <i *ngIf="!GetFavoriteMenuStatus(25)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(25)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('customer')" *ngIf="displaySubMenu(7)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(7)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(7)">
+                        <span>Customers</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'customers', '7','Customers')">
+                        <i *ngIf="!GetFavoriteMenuStatus(7)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(7)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(54)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(86)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(86)">
+                        <span>Engineering Catalog</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'engineering-catalog', '86','Engineering Catalog')">
+                        <i *ngIf="!GetFavoriteMenuStatus(86)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(86)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(51)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(79)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(79)">
+                        <span>Photos</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'photos', '79','Photos')">
+                        <i *ngIf="!GetFavoriteMenuStatus(79)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(79)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(49)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(76)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(76)">
+                        <span>Sales Support</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'salessupport', '76','Sales Support')">
+                        <i *ngIf="!GetFavoriteMenuStatus(76)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(76)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(52)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(80)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(80)">
+                        <span>Trade Shows</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'tradeshow', '80','Trade Shows')">
+                        <i *ngIf="!GetFavoriteMenuStatus(80)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(80)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(53)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(81)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user custom_icon"></i>
+                      <a [routerLink]="getName(81)">
+                        <span>Videos</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('sales', 'videos', '81','Videos')">
+                        <i *ngIf="!GetFavoriteMenuStatus(81)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(81)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no' && displayMenu(6)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-truck custom_icon"></i>
+                <span>SSG</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="ssg_menu">
+                <ul class="nav navbar-nav">
+                  <li *ngIf="displaySubMenu(60)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(13)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user-o custom_icon"></i>
+                      <a [routerLink]="getName(13)">
+                        <span>Devices</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('masters', 'devices', '13','Devices')">
+                        <i *ngIf="!GetFavoriteMenuStatus(13)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(13)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(8)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(5)" class="floating_btn_menu"></a>
+                      <i class="fa fa-id-card custom_icon"></i>
+                      <a [routerLink]="getName(5)">
+                        <span>Employees</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('ssg', 'employee', '5','Employees')">
+                        <i *ngIf="!GetFavoriteMenuStatus(5)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(5)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(61)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(38)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user-o custom_icon"></i>
+                      <a [routerLink]="getName(38)">
+                        <span>Forecast</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('masters', 'forecast', '38','Forecast')">
+                        <i *ngIf="!GetFavoriteMenuStatus(38)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(38)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(62)">
+                    <a class="secound_box">
+                      <a class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a>
+                        <span>Human Resource</span>
+                      </a>
+                      <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+                    </a>
+                    <div class="
+                        collapse
+                        navbar-collapse
+                        third_dropdown
+                        background-color:red
+                      " id="third_dropdown">
+                      <ul class="nav navbar-nav">
+                        <li (click)="checkRights('employee-hiring')" *ngIf="displaySubMenu(93)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(93)" class="floating_btn_menu"></a>
+                            <i class="fa fa-user-o custom_icon"></i>
+                            <a [routerLink]="getName(93)">
+                              <span>Employee Hiring</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('masters', 'employee-hiring', '93','Employee Hiring')">
+                              <i *ngIf="!GetFavoriteMenuStatus(93)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(93)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubMenu(82)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(63)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(63)">
+                              <span>Unions</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('ssg', 'maintain-unions', '63','Unions')">
+                              <i *ngIf="!GetFavoriteMenuStatus(63)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(63)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <!-- <li *ngIf="displaySubMenu(80)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(37)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(37)">
+                              <span>Request Tickets</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('ssg', 'hr-request-tickets', '37')">
+                              <i *ngIf="!GetFavoriteMenuStatus(37)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(37)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubMenu(81)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(58)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(58)">
+                              <span>Vacation Days report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('ssg', 'vacation-days-report', '58')">
+                              <i *ngIf="!GetFavoriteMenuStatus(58)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(58)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li> -->
+                      </ul>
+                    </div>
+                  </li>
+                  <li (click)="checkRights('payroll interface')" *ngIf="displaySubMenu(63)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(66)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user-o custom_icon"></i>
+                      <a [routerLink]="getName(66)">
+                        <span>Payroll Interface</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('masters', 'payroll-interface', '66','Payroll Interface')">
+                        <i *ngIf="!GetFavoriteMenuStatus(66)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(66)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li *ngIf="displaySubMenu(9)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(8)" class="floating_btn_menu"></a>
+                      <i class="fa fa-user-o custom_icon"></i>
+                      <a [routerLink]="getName(8)">
+                        <span>Titles</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('masters', 'titles', '8','Titles')">
+                        <i *ngIf="!GetFavoriteMenuStatus(8)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(8)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no'&& displayMenu(7)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-laptop custom_icon"></i>
+                <span>IT</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="secound_dropdown">
+                <ul class="nav navbar-nav">
+                  <li (click)="checkRights('branch')" *ngIf="displaySubTypeMenu(28)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(1)" class="floating_btn_menu"></a>
+                      <i class="fa fa-sitemap custom_icon"></i>
+                      <a [routerLink]="getName(1)">
+                        <span>Branches</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'branch', '1','Branches')">
+                        <i *ngIf="!GetFavoriteMenuStatus(1)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(1)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('department map')" *ngIf="isAdmin">
+                    <a class="secound_box">
+                      <a [routerLink]="['/permissionmap']" class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a [routerLink]="['/permissionmap']">
+                        <span>Department Map</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'permission map', '37','Department Map')">
+                        <i *ngIf="!GetFavoriteMenuStatus(37)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(37)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('manage dept module tab')" *ngIf="isAdmin">
+                    <a class="secound_box">
+                      <a [routerLink]="['/permission']" class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a [routerLink]="['/permission']">
+                        <span>Manage Dept/Module/Tab</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'permission', '79','Manage Dept/Module/Tab')">
+                        <i *ngIf="!GetFavoriteMenuStatus(79)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(79)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <!-- <li *ngIf="displaySubTypeMenu(137)">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(43)" class="floating_btn_menu"></a>
+                      <i class="fa fa-id-card custom_icon"></i>
+                      <a [routerLink]="getName(43)">
+                        <span>Trouble Tickets</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('it', 'trouble-tickets', '43')">
+                        <i *ngIf="!GetFavoriteMenuStatus(43)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(43)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li (click)="checkRights('user')" *ngIf="isAdmin">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(2)" class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a [routerLink]="getName(2)">
+                        <span>Users</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'user', '2','Users')">
+                        <i *ngIf="!GetFavoriteMenuStatus(2)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(2)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('user permission')" *ngIf="isAdmin">
+                    <a class="secound_box">
+                      <a [routerLink]="getName(3)" class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a [routerLink]="getName(3)">
+                        <span>User Permissions</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('admin', 'user permission', '3','User Permissions')">
+                        <i *ngIf="!GetFavoriteMenuStatus(3)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(3)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="secound_menu" *ngIf="typeMediator == 'no' && displayMenu(8)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-address-book-o custom_icon"></i>
+                <span>Reports</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="sales">
+                <ul class="nav navbar-nav">
+
+                  <li *ngIf="displaySubMenu(12)">
+                    <a class="secound_box">
+                      <a class="floating_btn_menu"></a>
+                      <i class="fa fa-id-card custom_icon"></i>
+                      <a>
+                        <span>Operation</span>
+                      </a>
+                      <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+                    </a>
+                    <div class="
+                        collapse
+                        navbar-collapse
+                        third_dropdown
+                        background-color:red
+                      " id="third_dropdown">
+                      <ul class="nav navbar-nav">
+                        <li *ngIf="displaySubTypeMenu(148)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(59)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(59)">
+                              <span>Job Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'job-report', '59','Job Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(59)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(59)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li *ngIf="displaySubMenu(14)">
+                    <a class="secound_box">
+                      <a class="floating_btn_menu"></a>
+                      <i class="fa fa-id-card custom_icon"></i>
+                      <a>
+                        <span>Logistics</span>
+                      </a>
+                      <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+                    </a>
+                    <div class="collapse navbar-collapse third_dropdown background-color:red" id="third_dropdown">
+                      <ul class="nav navbar-nav">
+                        <li *ngIf="displaySubTypeMenu(40)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(39)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(39)">
+                              <span>Inventory Transactions</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'inventory-transaction', '39','Inventory Transactions')">
+                              <i *ngIf="!GetFavoriteMenuStatus(39)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(39)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(41)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(54)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(54)">
+                              <span>Ready to Rent</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'ready-to-rent', '54','Ready to Rent')">
+                              <i *ngIf="!GetFavoriteMenuStatus(54)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(54)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li *ngIf="displaySubMenu(16)">
+                    <a class="secound_box">
+                      <a class="floating_btn_menu"></a>
+                      <i class="fa fa-id-card custom_icon"></i>
+                      <a>
+                        <span>CRM</span>
+                      </a>
+                      <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+                    </a>
+                    <div class="collapse navbar-collapse third_dropdown background-color:red" id="third_dropdown">
+                      <ul class="nav navbar-nav">
+                        <li *ngIf="displaySubTypeMenu(149)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(62)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(62)">
+                              <span>Bid Board</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('ssg', 'bid-board', '62','Bid Board')">
+                              <i *ngIf="!GetFavoriteMenuStatus(62)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(62)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(150)">
+                          <a class="secound_box">
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(57)">
+                              <span>Call Log Activity</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'call-log-activity', '57','Call Log Activity')">
+                              <i *ngIf="!GetFavoriteMenuStatus(57)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(57)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(151)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(83)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(83)">
+                              <span>Customer List</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'customer-list', '83','Customer List')">
+                              <i *ngIf="!GetFavoriteMenuStatus(83)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(83)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </li>
+
+                  <li *ngIf="displaySubMenu(17)">
+                    <a class="secound_box">
+                      <a class="floating_btn_menu"></a>
+                      <i class="fa fa-users custom_icon"></i>
+                      <a >
+                        <span>SSG</span>
+                      </a>
+                      <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+                    </a>
+                    <div class="
+                        collapse
+                        navbar-collapse
+                        third_dropdown
+                        background-color:red
+                      " id="third_dropdown">
+                      <ul class="nav navbar-nav">
+                        <!-- <li *ngIf="displaySubTypeMenu(37)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(15)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(15)">
+                              <span>Divisional Revenue</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'divisional revenue', '15')">
+                              <i *ngIf="!GetFavoriteMenuStatus(15)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(15)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li> -->
+                        <li *ngIf="displaySubTypeMenu(97)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(97)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(97)">
+                              <span>Divisional Revenue</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'divisional-revenue', '97','Divisional Revenue')">
+                              <i *ngIf="!GetFavoriteMenuStatus(97)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(97)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <!-- <li *ngIf="displaySubTypeMenu(38)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(9)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(9)">
+                              <span>Executive Dashboard</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'reports', '9')">
+                              <i *ngIf="!GetFavoriteMenuStatus(9)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(9)" class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li> -->
+                        <li *ngIf="displaySubMenu(70)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(55)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(55)">
+                              <span>Job Costing</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'job-costing', '55','Job Costing')">
+                              <i *ngIf="!GetFavoriteMenuStatus(55)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(55)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(154)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(44)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(44)">
+                              <span>Last Invoiced</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'last-invoiced', '44','Last Invoiced')">
+                              <i *ngIf="!GetFavoriteMenuStatus(44)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(44)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubMenu(68)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(39)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(45)">
+                              <span>Pipeline Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'pipeline-reports', '45','Pipeline Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(45)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(45)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(98)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(98)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(98)">
+                              <span>Sales PB Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'sales-report', '98','Sales PB Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(98)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(98)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubMenu(72)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(64)" class="floating_btn_menu"></a>
+                            <i class="fa fa-clock-o custom_icon"></i>
+                            <a [routerLink]="getName(64)">
+                              <span>Time Grid</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'time-grid', '64','Time Grid')">
+                              <i *ngIf="!GetFavoriteMenuStatus(64)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(64)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubMenu(71)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(56)" class="floating_btn_menu"></a>
+                            <i class="fa fa-clock-o custom_icon"></i>
+                            <a [routerLink]="getName(56)">
+                              <span>Time Tracking Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('reports', 'time-tracking-reports', '56','Time Tracking Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(56)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(56)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(89)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(89)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(89)">
+                              <span>Utilization PB Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'utilization-pb-report', '89','Utilization PB Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(89)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(89)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(99)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(99)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(99)">
+                              <span>Utilization PB Report (NEW)</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'utilization-new-pb-report', '99','Utilization PB Report-NEW')">
+                              <i *ngIf="!GetFavoriteMenuStatus(99)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(99)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                        <li *ngIf="displaySubTypeMenu(153)">
+                          <a class="secound_box">
+                            <a [routerLink]="getName(34)" class="floating_btn_menu"></a>
+                            <i class="fa fa-id-card custom_icon"></i>
+                            <a [routerLink]="getName(34)">
+                              <span>Utilization Report</span>
+                            </a>
+                            <a class="star_icon_link" (click)="AddFavorite('admin', 'utilization', '34','Utilization Report')">
+                              <i *ngIf="!GetFavoriteMenuStatus(34)" class="fa fa-star-o star_icon float-right"></i>
+                              <i *ngIf="GetFavoriteMenuStatus(34)"
+                                class="fa fa-star star_icon float-right text-red"></i>
+                            </a>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="secound_menu" *ngIf="typeMediator == 'no'  && displayMenu(9)">
+              <a href="javascript:void(0)" class="secound_menu collapsed">
+                <i class="fa fa-2x fa-cog custom_icon"></i>
+                <span>Tools</span>
+                <i class="fa fa-caret-right plus_minus_icon" aria-hidden="true"></i>
+              </a>
+              <div class="collapse navbar-collapse secound_dropdown" id="secound_dropdown">
+                <ul class="nav navbar-nav">
+                  <!-- <li (click)="checkRights('hr request')" *ngIf="displaySubMenu(73)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(41)">
+                        <span>HR Request</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'hr-requests', '41')">
+                        <i *ngIf="!GetFavoriteMenuStatus(41)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(41)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <!-- <li (click)="checkRights('it request')" *ngIf="displaySubMenu(74)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(42)">
+                        <span>It Request</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'it-requests', '41')">
+                        <i *ngIf="!GetFavoriteMenuStatus(42)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(42)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <!-- <li (click)="checkRights('building request')" *ngIf="displaySubMenu(75)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(46)">
+                        <span>Building Request</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'building-requests', '46')">
+                        <i *ngIf="!GetFavoriteMenuStatus(46)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(46)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li> -->
+                  <li (click)="checkRights('time clock')" *ngIf="displaySubMenu(32)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(60)">
+                        <span>Time Clock</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'time-clock', '60','Time Clock')">
+                        <i *ngIf="!GetFavoriteMenuStatus(60)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(60)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('maintain auto mailers')" *ngIf="displaySubMenu(76)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(61)">
+                        <span>Maintain Auto Mailers</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'maintain-auto-mailers', '61','Maintain Auto Mailers')">
+                        <i *ngIf="!GetFavoriteMenuStatus(61)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(61)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('price lookup')" *ngIf="displaySubMenu(77)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(70)">
+                        <span>Price Lookup</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'price-lookup', '70','Price Lookup')">
+                        <i *ngIf="!GetFavoriteMenuStatus(70)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(70)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                  <li (click)="checkRights('doc search')" *ngIf="displaySubMenu(78)">
+                    <a class="secound_box">
+                      <i class="fa fa-file custom_icon"></i>
+                      <a [routerLink]="getName(71)">
+                        <span>Doc Search</span>
+                      </a>
+                      <a class="star_icon_link" (click)="AddFavorite('tools', 'doc-search', '71','Doc Search')">
+                        <i *ngIf="!GetFavoriteMenuStatus(71)" class="fa fa-star-o star_icon float-right"></i>
+                        <i *ngIf="GetFavoriteMenuStatus(71)" class="fa fa-star star_icon float-right text-red"></i>
+                      </a>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <!-- <div class="mobile-search waves-effect waves-light">
+                <div class="header-search">
+                    <div class="main-search morphsearch-search">
+                        <div class="input-group"> <span class="input-group-prepend search-close"><i
+                                    class="fa fa-times input-group-text"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter Keyword"> <span
+                                class="input-group-append search-btn"><i
+                                    class="fa fa-search input-group-text"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <a [routerLink]="['/dashboard']">
+                <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" /> </a>
+            <a class="mobile-options waves-effect waves-light"> <i class="fa fa-ellipsis-h"></i> </a> -->
+    </div>
+  </div>
+</nav>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>
+<div class="custom_slider_popup" *ngIf="show">
+  <kendo-popup [anchor]="anchor" (anchorViewportLeave)="show = false">
+    <div class="content">
+      <h5 class="k-window-titlebar k-dialog-titlebar">Select Branch</h5>
+    </div>
+    <div class="row m-0">
+      <div class="col-md-8 p-2">
+        <kendo-combobox [(ngModel)]="branchCode" [suggest]="true" placeholder="Select Branch"
+          (valueChange)="branchChange();" class="form-control form-control-round" [textField]="'value'"
+          [data]="userBranch" [valuePrimitive]="true" [valueField]="'code'">
+        </kendo-combobox>
+      </div>
+    </div>
+    <div class="row ml-2">
+      <div class="k-actions k-actions-end">
+        <div class="k-columnmenu-actions">
+          <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </kendo-popup>
+</div>

@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Time Grid</h4>
+        </div>
+        <div class="d-flex justify-content-center" style="width: 70%">
+            <div>
+                <label class="label label-primary label-mersino">Grid update every 5 minutes </label>
+                <label class="label label-primary label-mersino">Last update: {{selectedLog | date :'short'}}</label>
+
+            </div>
+        </div>
+        <div class="form-control1 displayFlex alignFlexEnd">
+            <button kendoTooltip title="Refresh" id="btnRefresh" class="btn_icon" (click)="getAllData()">
+            </button>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <label class="mb-0 pr-2">Branch:</label>
+        <kendo-combobox kendoTooltip title="Filter by branch" style="width: 15%;" [(ngModel)]="filterCollection.branch"
+            [suggest]="true" placeholder="Select Branch" (valueChange)="getAllData()"
+            class="form-control form-control-round" [textField]="'value'" [data]="branchList" [valueField]="'code'"
+            [valuePrimitive]="true">
+        </kendo-combobox>
+    </div>
+    <div style="max-height: 80vh; overflow: auto;">
+        <div class="row justify-content-center m-3 no-gutters">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="row no-gutters">
+                        <kendo-grid [resizable]="true" [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                            (selectionChange)="onSelectionChange($event)" [data]="timeData" [sort]="sort"
+                            (sortChange)="onSortChange($event)" [sortable]="true"
+                            (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 70vh;"
+                            (dataStateChange)="onDataStateChange($event)"
+                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                            <kendo-grid-column *ngFor="let column of timecolumns" [width]="column.width"
+                                field="{{column.Name}}" title="{{column.Text}}">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem)"
+                                        *ngIf="column.Name=='job'">
+                                        {{ dataItem.job }}
+                                    </span>
+                                    <span
+                                        *ngIf="column.Name!='description' && column.Name!='timeIn' && column.Name!='timeOut' && column.Name!='job'">{{dataItem[column.Name]}}</span>
+                                    <span *ngIf="column.Name=='description'">{{dataItem.description
+                                        ?dataItem.description:dataItem.job }}</span>
+                                    <span *ngIf="column.Name=='timeIn'">
+                                        {{dataItem.timeIn | date :'MM-dd-yyyy HH:MM a'}}
+                                    </span>
+                                    <span *ngIf="column.Name=='timeOut'">
+                                        {{dataItem.timeOut | date :'MM-dd-yyyy HH:MM a'}}
+                                    </span>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <ng-template kendoGridToolbarTemplate>
+                                <!-- <div class="example-config">
+                                    <a #anchor (click)="onToggleFilter()">
+                                        <span class="k-icon k-i-more-vertical"></span>
+                                    </a>
+                                </div> -->
+                                <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                                    (keydown.enter)="getAllData()" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="filterCollection.searchText" />
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                                <i class="fa fa-search" (click)="getAllData();"></i>
+                                <span> Total : {{timeTotal}}</span>
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                            </ng-template>
+                        </kendo-grid>
+                        <!-- <kendo-datapager [total]="timeTotal" [pageSize]="pageSize" [skip]="skip"
+                            style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                            <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                let-currentPage="currentPage">
+                                <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                </kendo-datapager-numeric-buttons>
+                                <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                            </ng-template>
+                        </kendo-datapager> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

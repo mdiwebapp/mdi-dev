@@ -1,0 +1,144 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>FLUID LEVELS - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBrakeReservoir" class="w-100"
+                                (click)="onHandleOperations('brake_reservoir')" kendoTooltip kendoRippleContainer
+                                kendoButton>BRAKE RESERVOIR: {{f.brakeReservoir.value}}
+                            </button> --><label class="col-form-label">BRAKE RESERVOIR:</label>
+                            <kendo-combobox *ngIf="!displayBrakeReservoir" [suggest]="true"
+                                (valueChange)="onHandleOperations('brake_reservoir')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="brakeReservoir">
+                            </kendo-combobox> <div class="required-text"
+                            *ngIf="form.get('brakeReservoir').hasError('required') && form.get('brakeReservoir').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayCoolantReservoir" class="w-100"
+                                (click)="onHandleOperations('coolant_reservoir')" kendoTooltip kendoRippleContainer
+                                kendoButton>COOLANT RESERVOIR: {{f.coolantReservoir.value}}
+                            </button> --><label class="col-form-label">COOLANT RESERVOIR:</label>
+                            <kendo-combobox *ngIf="!displayCoolantReservoir" [suggest]="true"
+                                (valueChange)="onHandleOperations('coolant_reservoir')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="coolantReservoir">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('coolantReservoir').hasError('required') && form.get('coolantReservoir').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayTransferCase" class="w-100"
+                                (click)="onHandleOperations('transfer_case')" kendoTooltip kendoRippleContainer
+                                kendoButton>TRANSFER CASE: {{f.transferCase.value}}
+                            </button> --><label class="col-form-label">TRANSFER CASE:</label>
+                            <kendo-combobox *ngIf="!displayTransferCase" [suggest]="true"
+                                (valueChange)="onHandleOperations('transfer_case')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="transferCase">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('transferCase').hasError('required') && form.get('transferCase').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFrontDiffrential" class="w-100"
+                                (click)="onHandleOperations('front_differential')" kendoTooltip kendoRippleContainer
+                                kendoButton>FRONT DIFFERENTIAL: {{f.frontDiffrential.value}}
+                            </button> --><label class="col-form-label">FRONT DIFFERENTIAL:</label>
+                            <kendo-combobox *ngIf="!displayFrontDiffrential" [suggest]="true"
+                                (valueChange)="onHandleOperations('front_differential')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="frontDiffrential">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('frontDiffrential').hasError('required') && form.get('frontDiffrential').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayRearDiffrential" class="w-100"
+                                (click)="onHandleOperations('rear_differential')" kendoTooltip kendoRippleContainer
+                                kendoButton>REAR DIFFERENTIAL: {{f.rearDiffrential.value}}
+                            </button> --><label class="col-form-label">REAR DIFFERENTIAL:</label>
+                            <kendo-combobox *ngIf="!displayRearDiffrential" [suggest]="true"
+                                (valueChange)="onHandleOperations('rear_differential')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="rearDiffrential">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('rearDiffrential').hasError('required') && form.get('rearDiffrential').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayWindShieldReservoir" class="w-100"
+                                (click)="onHandleOperations('windshield_reservoir')" kendoTooltip kendoRippleContainer
+                                kendoButton>WINDSHIELD RESERVOIR: {{f.windShieldReservoir.value}}
+                            </button> --><label class="col-form-label">WINDSHIELD RESERVOIR:</label>
+                            <kendo-combobox *ngIf="!displayWindShieldReservoir" [suggest]="true"
+                                (valueChange)="onHandleOperations('windshield_reservoir')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="windShieldReservoir">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('windShieldReservoir').hasError('required') && form.get('windShieldReservoir').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayTransmission" class="w-100"
+                                (click)="onHandleOperations('transmission')" kendoTooltip kendoRippleContainer
+                                kendoButton>TRANSMISSION: {{f.transmission.value}}
+                            </button> --><label class="col-form-label">TRANSMISSION:</label>
+                            <kendo-combobox *ngIf="!displayTransmission" [suggest]="true"
+                                (valueChange)="onHandleOperations('transmission')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="transmission">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('transmission').hasError('required') && form.get('transmission').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayEngineOil" class="w-100" (click)="onHandleOperations('engine_oil')"
+                                kendoTooltip kendoRippleContainer kendoButton>ENGINE OIL: {{f.engineOil.value}}
+                            </button> --><label class="col-form-label">ENGINE OIL:</label>
+                            <kendo-combobox *ngIf="!displayEngineOil" [suggest]="true"
+                                (valueChange)="onHandleOperations('engine_oil')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="engineOil">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('engineOil').hasError('required') && form.get('engineOil').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayPowerStreeing" class="w-100"
+                                (click)="onHandleOperations('power_steering')" kendoTooltip kendoRippleContainer
+                                kendoButton>POWER STREEING: {{f.powerStreeing.value}}
+                            </button> --><label class="col-form-label">POWER STREEING:</label>
+                            <kendo-combobox *ngIf="!displayPowerStreeing" [suggest]="true"
+                                (valueChange)="onHandleOperations('power_steering')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="powerStreeing">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('powerStreeing').hasError('required') && form.get('powerStreeing').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

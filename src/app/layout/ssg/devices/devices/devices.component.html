@@ -1,0 +1,339 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Maintain Devices</h4>
+      <div class="wp-50 p-l-10 p-r-10">
+        <div *ngIf="menuService.isAddRight">
+          <button
+            kendoTooltip
+            title="Add"
+            id="btnAdd"
+            class="btn_icon"
+            *ngIf="!isAdd"
+            filter="button"
+            (click)="btnAdd()"
+          ></button>
+        </div>
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+          <button
+            kendoTooltip
+            title="Cancel"
+            id="btnCancel"
+            class="btn_icon"
+            filter="button"
+            (click)="btnCancel()"
+            *ngIf="!isCancel"
+          ></button>
+        </div>
+      </div>
+      <div class="wp-50 p-l-10 p-r-10">
+        <div *ngIf="menuService.isEditRight">
+          <button
+            kendoTooltip
+            title="Edit"
+            id="btnEdit"
+            class="btn_icon"
+            *ngIf="!isEdit"
+            filter="button"
+            (click)="btnEdit()"
+          ></button>
+        </div>
+
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+          <button
+            kendoTooltip
+            title="Save"
+            id="btnSave"
+            class="btn_icon"
+            filter="button"
+            *ngIf="!isSave"
+            (click)="onSave()"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="d-flex ml-auto justify-content-between alignItemsCenter mt-1"
+      style="width: 70%"
+    >
+      <div>
+        <label class="label label-primary label-mersino">Device Id # {{ deviceId }}</label>
+        <label class="label label-primary label-mersino"
+          >Date Created : {{ cdate | date }}</label
+        >
+      </div>
+
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <div
+          kendoTooltip
+          title="Print"
+          style="border-right: 1px solid #878786"
+          class="m-r-20 p-r-20"
+        >
+          <button
+            id="btnPrint"
+            class="btn_icon"
+            filter="button"
+            (click)="downloadFile()"
+          ></button>
+        </div>
+        <label>Active</label>
+        <kendo-switch
+          onLabel="Yes"
+          offLabel="No"
+          class=""
+          style="width: auto"
+          [disabled]="isDisabled"
+          (valueChange)="onSwitchChange($event)"
+          [(ngModel)]="inactive"
+        >
+        </kendo-switch>
+      </div>
+    </div>
+  </div>
+  <kendo-dialog
+    title="Deactive Device"
+    *ngIf="opened"
+    (close)="submitReason(0)"
+    [minWidth]="250"
+    [width]="450"
+  >
+    <!-- <kendo-textarea name="comments" [(ngModel)]="reason" style="width: 26em !important;">
+        </kendo-textarea> -->
+    <h5>Deactive {{ deviceId }}?</h5>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="submitReason(1)" primary="true">Yes</button>
+      <button kendoButton (click)="submitReason(0)">No</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+  <kendo-dialog
+    title=""
+    *ngIf="openedOptions"
+    (close)="submitOption(0)"
+    [minWidth]="250"
+    [width]="450"
+  >
+    <kendo-grid
+      (selectionChange)="selectionChange($event.selectedRows[0].dataItem)"
+      [kendoGridBinding]="deactiveReasons"
+      (dblclick)="dblClickEvent($event)"
+      kendoGridSelectBy
+    >
+      <kendo-grid-column field="name" title="Select Reason"></kendo-grid-column>
+    </kendo-grid>
+  </kendo-dialog>
+  <div class="card-block table-border-style">
+    <div class="row">
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="35%">
+              <div class="pane-content">
+                <div class="col-md-12 mb-3">
+                  <div class="row no-gutters">
+                    <div class="col-md-12 mb-1">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-2">
+                              <label class="mt-1"> Active</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="status"
+                                onLabel="Yes"
+                                (valueChange)="onStatuschange($event)"
+                                offLabel="All"
+                              >
+                              </kendo-switch>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="mt-1"> Desktop</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="isDesktop"
+                                onLabel="Yes"
+                                (valueChange)="onDesktopchange($event)"
+                                offLabel="No"
+                              >
+                              </kendo-switch>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="mt-1"> Laptop</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="isLaptop"
+                                onLabel="Yes"
+                                (valueChange)="onLaptopchange($event)"
+                                offLabel="No"
+                              >
+                              </kendo-switch>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-2">
+                              <label class="mt-1"> Phone</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="isPhone"
+                                onLabel="Yes"
+                                (valueChange)="onPhonechange($event)"
+                                offLabel="No"
+                              >
+                              </kendo-switch>
+                            </div>
+
+                            <div class="col-md-2">
+                              <label class="mt-1"> HotSpot</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="isHotSpot"
+                                onLabel="Yes"
+                                (valueChange)="onHotspotchange($event)"
+                                offLabel="No"
+                              >
+                              </kendo-switch>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="mt-1"> Tablet</label>
+                            </div>
+                            <div class="col-md-2">
+                              <kendo-switch
+                                [(ngModel)]="isTablet"
+                                onLabel="Yes"
+                                (valueChange)="onTabletchange($event)"
+                                offLabel="No"
+                              >
+                              </kendo-switch>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row no-gutters">
+                    <kendo-grid
+                    [data]="data"
+                      [selectable]="true"
+                      [navigable]="true"
+                      [resizable]="true"                  
+                      [ngClass]="
+                        (id == 0 && !isAdd) ||
+                        (id > 0 && !isEdit) ||
+                        selectedTab == tabs.tab2 ||
+                        selectedTab == tabs.tab3
+                          ? ''
+                          : 'k-state-disabled'
+                      "
+                      [reorderable]="true"
+                      [sort]="sort"
+                      (sortChange)="sortChange($event)"
+                      kendoGridSelectBy
+                      [selectedKeys]="mySelection"
+                      [sortable]="true"
+                       [sortable]="{
+                        allowUnsort: false,
+                        mode: multiple ? 'multiple' : 'single'
+                      }"
+                      (selectionChange)="
+                        editClick($event.selectedRows[0].dataItem.id)
+                      "              
+                      style="height: 65vh"
+                      (columnReorder)="reorderColumns($event)"
+                      (columnResize)="resizeColumns($event)"
+                    >
+                      <ng-template kendoGridToolbarTemplate>
+                        <input
+                          class="col-md-9"
+                          placeholder="Search in all columns..."
+                          (keydown.enter)="filterDevices()"
+                          [(ngModel)]="filterOptions.searchText"
+                          kendoTextBox
+                        />
+                        <kendo-grid-spacer></kendo-grid-spacer>
+                        <i class="fa fa-search" (click)="loadItems()"></i>
+                        <span> Total : {{ totalData }}</span>
+                      </ng-template>
+                      <kendo-grid-column
+                        *ngFor="let column of viewColumns"
+                        [width]="column.width"
+                        field="{{ column.Name }}"
+                        title="{{ column.Text }}"
+                      >
+                      </kendo-grid-column>
+                    </kendo-grid>
+                    <kendo-datapager
+                      [total]="totalData"
+                      [pageSize]="pageSize"
+                      [skip]="skip"
+                      style="width: 100% !important"
+                      (pageChange)="onPageChange($event)"
+                    >
+                      <ng-template
+                        kendoDataPagerTemplate
+                        let-totalPages="totalPages"
+                        let-currentPage="currentPage"
+                      >
+                        <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                        <kendo-datapager-numeric-buttons [buttonCount]="5">
+                        </kendo-datapager-numeric-buttons>
+                        <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                        <kendo-dropdownlist
+                          class="form-control form-control-round"
+                          style="width: 16% !important"
+                          [data]="pageSizeList"
+                          [(ngModel)]="pageSize"
+                          (valueChange)="onPageSizechange($event)"
+                          [valuePrimitive]="true"
+                          [textField]="'value'"
+                          [valueField]="'value'"
+                        >
+                        </kendo-dropdownlist>
+                        <!-- <kendo-datapager-info></kendo-datapager-info>
+                                                                          Current page: {{currentPage}} -->
+                      </ng-template>
+                    </kendo-datapager>
+                  </div>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <div class="col-md-12 pane-content">
+                <hr />
+                <kendo-tabstrip
+                  class="custom mt-2" [keepTabContent]="true"
+                  (tabSelect)="onTabSelect($event)"
+                >
+                  <kendo-tabstrip-tab
+                    class="text-success"
+                    [title]="'Device Info'"
+                    *ngIf="!isTab1"
+                    [selected]="true"
+                  >
+                    <ng-template kendoTabContent>
+                      <app-devices-info></app-devices-info>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab *ngIf="!isTab2" [title]="'Notes'">
+                    <ng-template kendoTabContent>
+                      <app-devices-notes></app-devices-notes>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'History'" *ngIf="!isTab3">
+                    <ng-template kendoTabContent>
+                      <app-devices-history></app-devices-history>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                </kendo-tabstrip>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+    </div>
+  </div>
+</div>

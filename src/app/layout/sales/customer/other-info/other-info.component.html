@@ -1,0 +1,97 @@
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-7 mb-2">
+            <h4> Customer Checklist</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="col-form-label text-right">Credit App: {{getCreditStatus()}}
+                        <span *ngIf="getCreditStatus() && getCreditStatus() !== 'N/A'">{{getCreditDate()
+                            | date: 'MM/dd/yyyy'}}</span></label>
+                </div>
+                <div class="col-md-6">
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="disableCustomer"
+                        (valueChange)="creditappstatus.toggle()">
+                    </kendo-switch>
+                    <div class="credit-app-status">
+                        <kendo-combobox class="form-control form-control-round" [textField]="'label'"
+                            [valueField]="'value'" [filterable]="true" [data]="creditAppData" [valuePrimitive]="true"
+                            #creditappstatus (valueChange)="onValueChange($event, 'creditApp')">
+                        </kendo-combobox>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label" *ngIf="!form.get('taxExempt').value">Tax Exempt: N/A</label>
+                    <label class="col-form-label" *ngIf="form.get('taxExempt').value">Tax Exempt: Expires
+                        {{form.get('taxExemptDate').value |
+                        date: 'MM/dd/yyyy'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" formControlName="taxExempt"
+                        [disabled]="disableCustomer" (valueChange)="onValueChange($event, 'taxExempt')">
+                    </kendo-switch>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-form-label" *ngIf="!form.get('coi').value">COI: N/A</label>
+                    <label class="col-form-label" *ngIf="form.get('coi').value">COI: Expires {{form.get('coiDate').value
+                        |
+                        date: 'MM/dd/yyyy'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" formControlName="coi"
+                        [disabled]="disableCustomer" (valueChange)="OnChangeCOI($event,coi_date_picker)">
+                    </kendo-switch>
+                    <div class="request-date">
+                        <kendo-datepicker class=" form-control form-control-round" calendarType="classic"
+                            (valueChange)="onCOIDateChange($event,coi_date_picker)" #coi_date_picker>
+                        </kendo-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mb-2">
+            <button class="k-button w-100 mb-1" type="button" style="font-size: 12px;" [disabled]="disableCustomer"
+                [style.background]="labourToRevColor" (click)="onHandleOperations('pre_payment')"
+                [ngStyle]="otherColorInfo( form.get('prePayment')?.value, 'color')">Credit
+                Card / Pre-Pay:
+                {{otherColorInfo( form.get('prePayment')?.value)}} </button>
+            <button class="k-button w-100 mb-1" type="button" style="font-size: 12px;" [disabled]="disableCustomer"
+                (click)="onHandleOperations('credit_limit')"
+                [ngClass]="form.get('creditLimit')?.value?'creditLimitEnabled':'creditLimitDisabled'"
+                [ngStyle]="craditLimitInfo(form.get('creditLimit')?.value,'color')">Credit
+                Limit:
+                {{craditLimitInfo( form.get('creditLimit')?.value) | currency}}</button>
+            <button class="k-button w-100 mb-1" type="button" style="font-size: 12px;" [disabled]="disableCustomer"
+                (click)="onHandleOperations('credit_risk')"
+                [ngStyle]="otherColorInfo( form.get('creditRisk')?.value, 'color')">Credit Risk:
+                {{otherColorInfo( form.get('creditRisk')?.value)}} </button>
+            <button class="k-button w-100 mb-1" type="button" style="font-size: 12px;" [disabled]="disableCustomer"
+                (click)="onHandleOperations('credit_override')"
+                [ngStyle]="otherColorInfo( form.get('creditOverride')?.value, 'color')">Credit Override:
+                {{otherColorInfo( form.get('creditOverride')?.value)}} </button>
+            <div>
+                <label class="col-form-label">Contact Notes:</label>
+                <kendo-textarea [cols]="100" [rows]="5" class="form-control form-control-round"
+                    formControlName="creditNote" [disabled]="disableCustomer">
+                </kendo-textarea>
+            </div>
+        </div>
+    </div>
+</form>
+<kendo-dialog title="Maintain Customers" *ngIf="creditLimitVisible" (close)="onHandleOperations('credit_limit')"
+    [minWidth]="250" [width]="450">
+    <p>Enter Credit Limit for {{selectedCustomer?.customerName}}</p>
+    <kendo-textbox (valueChange)="onAmountChange($event)"></kendo-textbox>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperations('credit_limit')" primary="true">OK</button>
+        <button kendoButton (click)="onHandleOperations('credit_limit_cancel')">Cancel</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+
+<kendo-dialog title="Date Invalid" *ngIf="isCOIInvalidDateVisible" (close)="OnCloseCOIDateInvalid()" [minWidth]="250"
+    [width]="450">
+    <p>Expiration date is in the past or today. Please chose a date in future</p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="OnCloseCOIDateInvalid()" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

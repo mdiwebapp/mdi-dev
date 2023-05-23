@@ -1,0 +1,91 @@
+// kendo-appbar .title {
+//   font-size: 18px;
+//   margin: 10px;
+// }
+// kendo-badge-container {
+//   margin-right: 8px;
+// }
+kendo-appbar ul {
+  font-size: 14px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+kendo-appbar li {
+  margin: 0 9px;
+}
+
+kendo-appbar li:hover {
+  cursor: pointer;
+  /*color: #fbfbfb;*/
+  text-decoration: underline;
+}
+
+// kendo-appbar .actions .k-button {
+//   padding: 0;
+// }
+// kendo-breadcrumb {
+//   margin-left: 30px;
+// }
+// ul.show-notification.profile-notification.dropdown-menu.show{
+// left: initial;
+//   right: 0;
+//   width: 15em;   
+// }
+
+// li.waves-effect.waves-light{
+//   padding: .7em 20px;
+// }
+// a{
+// font-size: 15px;
+//   padding-left: 0;
+//   color: #455a64;
+//   text-decoration: none;}
+//   .header-navbar .navbar-wrapper .navbar-logo{
+//     text-transform: none;
+//   }
+
+
+.title {
+  font-size: 18px;
+  margin: 0;
+}
+
+kendo-badge-container {
+  margin-right: 8px;
+}
+
+// ul {
+//   font-size: 14px;
+//   list-style-type: none;
+//   padding: 0;
+//   margin: 0;
+//   display: flex;
+// }
+// li {
+//   margin: 0 9px;
+// }
+// li:hover {
+//   cursor: pointer;
+//   color: #d6002f;
+// }
+.actions .k-button {
+  padding: 0;
+}
+
+ul.show-notification.profile-notification.dropdown-menu.show {
+  left: auto;
+  right: 0;
+  width: 15em;
+}
+
+li.waves-effect.waves-light {
+  padding: .5em 20px;
+}
+
+.k-multiselect .k-multiselect-wrap .k-searchbar .k-input,
+.k-dropdowntree .k-multiselect-wrap .k-searchbar .k-input {
+  display: none;
+}

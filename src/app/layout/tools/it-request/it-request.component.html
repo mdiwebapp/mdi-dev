@@ -1,0 +1,223 @@
+<div class="card">
+    <form [formGroup]="itRequestForm" (ngSubmit)="onSubmitITRequest()">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">IT Trouble Requests</h4>
+            </div>
+        </div>
+        <div style="max-height: 80vh; overflow: auto;">
+            <div class="row justify-content-center m-3 no-gutters">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label
+                                                        class="col-form-label">Computer
+                                                        Name:</label></div>
+                                                <div class="col-md-6"><label class="col-form-label">MDIIT</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label
+                                                        class="col-form-label">Computer Login:</label></div>
+                                                <div class="col-md-6"><label
+                                                        class="col-form-label">austin.simpson</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label
+                                                        class="col-form-label">Branch:</label></div>
+                                                <div class="col-md-6"><label class="col-form-label">Corp</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label class="col-form-label">Data
+                                                        Time:</label></div>
+                                                <div class="col-md-6"><label class="col-form-label">7/11/2022 1:38:02
+                                                        AM</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label
+                                                        class="col-form-label">User:</label></div>
+                                                <div class="col-md-6"><label class="col-form-label">Austin
+                                                        Simpson</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 text-right pr-2"><label
+                                                        class="col-form-label">Email:</label></div>
+                                                <div class="col-md-6"><label
+                                                        class="col-form-label">austin.simpson@mersino.com</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="k-button w-100 text-ce" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('request')">{{request_btn || 'Select Request Type'}}</button>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <!-- <fieldset>
+                                                <legend>Request relates to</legend>
+                                                <div class="row my-2">
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-5">
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">Email</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">Internet</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">MDI</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">Phone</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">Printer</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row no-gutters">
+                                                            <div class="d-flex align-items-center">
+                                                                <input type="checkbox" kendoCheckBox />
+                                                                <label class="col-form-label pl-2">Other</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="col-form-label pr-2">Describe the request</label>
+                        </div>
+                        <div class="col-md-12">
+                            <kendo-textarea [cols]="145" [rows]="8" class="form-control form-control-round">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="col-form-label pr-2">Your Open Requests</label>
+                        </div>
+                        <div class="col-md-12">
+                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                                [data]="requests" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                                [skip]="skip" (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                [hideHeader]="true" style="height: 20vh;">
+                                <kendo-grid-column *ngFor="let column of requestsColumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+                    <div class="row no-gutters mt-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="k-button w-100 text-ce" type="button" style="font-size: 12px;"
+                                        (click)="onHandleFilters('attach')">Attach</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="k-button w-100" type="submit"
+                                        style="font-size: 12px;">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<kendo-dialog title="MDI3.0" *ngIf="isAttachDialogVisible" (close)="onHandleFilters('attach')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        No Image on Clipboard.
+        Use the Print Screen Key on your Keyboard to add a screenshort to the Clipboard.
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleFilters('attach')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Choose an issue" *ngIf="isRequestVisible" (close)="onHandleFilters('request')" [minWidth]="250"
+    [height]="500" [width]="450">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{requestData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                [data]="requestData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of requestColumn" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

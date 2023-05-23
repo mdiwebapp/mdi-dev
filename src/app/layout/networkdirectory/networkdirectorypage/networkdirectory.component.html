@@ -1,0 +1,153 @@
+<div class="card h-100">
+    <div class="card-header">
+        <h4> {{vehicleNumber}} </h4>
+    </div>
+    <div class="card-block table-border-style pb-0">
+        <div class=" row">
+            <div class="col-lg-4" style="height: 550px;">
+                <kendo-treeview [nodes]="data" kendoTreeViewExpandable textField="name" kendoTreeViewSelectable
+                    [filterable]="true" style="height: 100%;" kendoTreeViewHierarchyBinding expandBy="name"
+                    [(expandedKeys)]="expandedNames" childrenField="subDirectories">
+                    <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                        <div class="w-100 fontweight-bold" path={{dataItem.path}} contentType="{{dataItem.contentType}}"
+                            (click)="selectedFiles(dataItem)">
+                            {{ dataItem.name }}
+                        </div>
+                    </ng-template>
+                </kendo-treeview>
+            </div>
+            <div class="col-lg-8" style="height: 500px;overflow-y: scroll;">
+                <table class="table">
+                    <thead class="table-header p-5">
+                        <tr>
+                            <th scope="col " class="verticalalign-center">File</th>
+                            <th scope="col" class="verticalalign-center text-right">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div *ngIf="subDirData.length>0" class="d-flex flex-wrap">
+                    <div *ngFor="let item of subDirData" style="margin: 15px;width: 100px;text-align: center;"
+                        (click)="selectedFiles(item)">
+                        <img src="../../../../assets/images/PNG-48/folder.ico" width="50" style="margin: 15px;"> <br>
+                        {{item.name}}
+                    </div>
+                </div>
+
+                <kendo-treeview [nodes]="files" kendoTreeViewExpandable kendoTreeViewSelectable style="height: 100%;"
+                    (nodeDblClick)="onNodeDblClick($event)" [(selectedKeys)]="selectedKeys"
+                    kendoTreeViewHierarchyBinding>
+                    <ng-template kendoTreeViewNodeTemplate let-dataItem>
+
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th class="pt-2"> <span class="fontweight-bold"> <span
+                                                [ngClass]="iconClass(dataItem)"></span> {{ dataItem.name }}</span></th>
+                                    <th class="pt-2" style="text-align: right;">
+                                        <i class="fa fa-1x fa-download mr-2" title="Download"
+                                            (click)="downloadFile(dataItem)"></i>
+                                        <i *ngIf="dataItem.displayImage" class="fa fa-1x fa-solid fa-eye mr-2"
+                                            title="Preview" (click)="previewImage(dataItem)" #anchor></i>
+                                        <!-- <button class="btn-red float-right" (click)="downloadFile(dataItem)"><i
+                                                class="fa fa-1x fa-download mr-2"></i>Download</button>
+                                        <button *ngIf="dataItem.displayImage" class="btn-red float-right ml-2 mr-2"
+                                            (click)="previewImage(dataItem)" #anchor><i
+                                                class="fa fa-1x fa-solid fa-eye mr-2"></i>Preview</button> -->
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </kendo-treeview>
+            </div>
+
+            <!-- <div class="col-lg-2">
+               
+            </div> -->
+        </div>
+    </div>
+    <div class="custom_slider_popup" *ngIf="show">
+        <kendo-popup [anchor]="anchor" (anchorViewportLeave)="show">
+
+            <div class="content imgcon">
+                <div class="row">
+                    <div class="col-lg-11"></div>
+                    <div class="col-lg-1">
+                        <button (click)="closePopup()" class="btn-red float-right">X</button>
+                    </div>
+                </div>
+
+                <img *ngIf="displayImage" class="img-preview-size" [src]="imagUrl" />
+                <div *ngIf="!displayImage" style="height: 100px;text-align: center;">
+                    No preview available.</div>
+
+                <div class="imnav">
+                    <a href="javascript:void(0)" (click)="previous()">
+                        <div class="prim control"></div>
+                    </a>
+
+                    <a href="javascript:void(0)" (click)="next()">
+                        <div class="neim control"></div>
+                    </a>
+
+                </div>
+            </div>
+        </kendo-popup>
+    </div>
+    <div class="custom_slider_popup" *ngIf="showUserCredentials">
+        <kendo-popup style="width: inherit;">
+            <form [formGroup]="networkform" class="cust-form">
+                <div class="row no-gutters mb-2">
+                    <div class="col-md-12 text-center">
+                        <label class="col-form-label">Please enter below details to access network drive</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Drive Path:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round p-3" formControlName="drivePath"
+                                placeholder="Drive Path, e.g. \\\\192.168.0.2\\Mersino\\">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Username:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round p-3" formControlName="username"
+                                placeholder="Username e.g.MERSINO\\username">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Password:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round p-3" formControlName="password"
+                                placeholder="Password">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-5">
+                    <div class="k-actions k-actions-end">
+                        <div class="k-columnmenu-actions">
+                            <button class="k-button" type="submit" (click)="loadNetworkFolders()">
+                                Login To Shared Drive
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </kendo-popup>
+    </div>
+</div>

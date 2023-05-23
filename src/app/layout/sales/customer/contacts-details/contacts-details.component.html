@@ -1,0 +1,157 @@
+<form [formGroup]="form">
+    <div class="row">
+        <kendo-splitter-pane [collapsible]="true" size="40%">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                [ngClass]="selectable ? '':'k-state-disabled'" (columnResize)="onResizeColumn($event)"
+                (selectionChange)="onRowSelect($event)" [data]="contacts" [sort]="sort"
+                (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column field="firstName" title="Name" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.firstName}} {{dataItem.lastName}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="role" title="Role" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.role}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </kendo-splitter-pane>
+        <kendo-splitter-pane>
+            <div class="pane-content" style="height: auto !important;">
+                <div class="">
+                    <div class="col-md-12">
+                        <div class="form-group row no-gutters">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">First Name:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="firstName" [disabled]="disableCustomer">
+                                </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row no-gutters">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Last Name:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="lastName" [disabled]="disableCustomer"> </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row no-gutters">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Location:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="location" [disabled]="disableCustomer"> </kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row no-gutters">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Role:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <!-- <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                    *ngIf="!roleTypeVisible" (click)="onHandleOperation('role')"
+                                    [disabled]="disableCustomer">Role:
+                                    {{form.get('role').value}}</button> -->
+                                <kendo-combobox placeholder="" [suggest]="true" [textField]="'label'"
+                                    [valueField]="'label'" [filterable]="true" [valuePrimitive]="true"
+                                    formControlName="role" [data]="roleTypeData" [disabled]="disableCustomer"
+                                    (valueChange)="onSelectionChange('role', $event)">{{form.get('role').value}}
+                                </kendo-combobox>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Title:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <kendo-textbox formControlName="title" [disabled]="disableCustomer">
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('title').hasError('required') && form.get('title').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Office:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <kendo-maskedtextbox formControlName="office" mask="(000) 000-0000"
+                                        [disabled]="disableCustomer">
+                                    </kendo-maskedtextbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Cell:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <kendo-maskedtextbox formControlName="cellPhone" mask="(000) 000-0000"
+                                        [disabled]="disableCustomer">
+                                    </kendo-maskedtextbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Email:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox formControlName="email" [disabled]="disableCustomer"></kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="mailto:{{form.get('email').value}}">
+                                        <i class="k-icon k-i-email m-10 align-self-center"
+                                            style="font-size: 20px;margin-left: 10px;margin-top: 15px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Contact Notes:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <kendo-textarea cols="40" formControlName="note" [disabled]="disableCustomer">
+                                    </kendo-textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-splitter-pane>
+    </div>
+</form>

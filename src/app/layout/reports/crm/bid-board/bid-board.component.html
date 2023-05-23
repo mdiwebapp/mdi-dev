@@ -1,0 +1,130 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Bid Board</h4>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="row">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="35%">
+                            <div class="pane-content">
+                                <div class="col-md-12 d-flex justify-content-center mb-3">
+                                    <div class="col-md-8">
+                                        <button class="k-button w-100" type="button" *ngIf="!isBranchVisible"
+                                            style="font-size: 12px;" [disabled]="disableBidBoard"
+                                            (click)="onHandleBranch()">Branch: {{branchName ||
+                                            'All'}}</button>
+                                        <!-- <kendo-combobox placeholder="" [suggest]="true"
+                                            class="form-control form-control-round" [textField]="'value'"
+                                            [valueField]="'code'" [filterable]="true" [valuePrimitive]="true"
+                                            [data]="branches" *ngIf="isBranchVisible"
+                                            (valueChange)="onBranchChange($event)" [value]="branch">
+                                        </kendo-combobox> -->
+                                        <kendo-combobox #branch kendoTooltip [suggest]="true"
+                                            placeholder="Select Branch" (selectionChange)="onBranchChange($event)"
+                                            class="form-control form-control-round" [textField]="'value'"
+                                            [data]="branches" [valueField]="'code'" [valuePrimitive]="true"
+                                            *ngIf="isBranchVisible">
+                                        </kendo-combobox>
+                                    </div>
+                                </div>
+                                <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true"
+                                    [resizable]="true" [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                    (selectionChange)="onRowSelect($event)" [data]="bidBoardData" [sort]="sort"
+                                    (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                                    [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                    style="height: 70vh;" (dataStateChange)="onDataStateChange($event)"
+                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                    [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+                                    (groupChange)="groupChange()" [groupable]="false">
+                                    <kendo-grid-column *ngFor="let column of columns" [width]="column.width"
+                                        field="{{column.Name}}" title="{{column.Text}}" [hidden]="column.hide">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <span
+                                                *ngIf="column.Name!='jobValue' && column.Name!='jobNumber'">{{dataItem[column.Name]}}</span>
+                                            <span *ngIf="column.Name=='jobValue'">
+                                                ${{dataItem?.jobValue | number: '1.0-0'}}
+                                            </span>
+                                            <span *ngIf="column.Name=='jobNumber' && dataItem.jobNumber">
+                                                <a style="color: blue"
+                                                    (click)="onRedirectProject(dataItem.jobNumber)">{{dataItem.jobNumber}}</a>
+                                            </span>
+
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane>
+                            <kendo-scheduler class="schedule-calender" [kendoSchedulerBinding]="events"
+                                style="height: 70h;" (slotClick)="onSelectDate($event)"
+                                (slotDblClick)="slotDblClickHandler($event)" [selectedDate]="selectedDate">
+                                <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate">
+                                    <ng-template kendoSchedulerMonthDaySlotTemplate let-date="date" ng-disabled="all">
+                                        <!-- <span style="cursor: pointer;color: rgb(164, 164, 245);float: left;" *ngIf="checkTitle(date)">more...</span> -->
+                                        <div style="background-color: inherit;">  {{getCalendarDate(date)}}</div>
+                                    </ng-template>
+                                    <div kendoschedulertoolbarnavigation class="d-flex justify-content-center w-100">
+                                        <div class=" row justify-content-center">
+                                            <div class="col-md-4 d-flex justify-content-center">
+                                                <button kendoButton class="k-nav-today k-button" icon="arrow-60-left"
+                                                    (click)="setPrevMonth()"></button>
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center pl-1 pr-1">                                                   
+                                                    <span class="pt-1 pl-1" style="font-weight: bold;">
+                                                        {{selectedDate | date:
+                                                        'MMMM yyyy'}}
+                                                    </span>
+                                                </div>
+                                                <div kendoschedulertoolbarnavigation
+                                                    style="display: flex;justify-content: end;">
+                                                    <button kendoButton class="k-nav-today k-button"
+                                                        icon="arrow-60-right" (click)="setNextMonth()"></button>
+                                                </div>
+                                                <label class="col-form-label"
+                                                    style="padding: inherit; font-weight: bold; font-size: 16px;">Note
+                                                    - Double click a day to see all events.</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <kendo-scheduler-month-view> </kendo-scheduler-month-view>
+                               
+                            </kendo-scheduler>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </div>
+
+        <kendo-dialog *ngIf="displayEventpopup" title="Event" (close)="closeEvent('cancel')" [minWidth]="750"
+            [width]="750">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onGridSelection($event)" [data]="eventsData"
+                [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 50vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of eventsColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}" [hidden]="column.hide">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <span
+                            *ngIf="column.Name!='jobValue' && column.Name!='jobNumber'">{{dataItem[column.Name]}}</span>
+                        <span *ngIf="column.Name=='jobValue'">
+                            ${{dataItem?.jobValue | number: '1.0-0'}}
+                        </span>
+                        <span *ngIf="column.Name=='jobNumber'">
+                            <a style="color: blue"
+                                (click)="onRedirectProject(dataItem.jobNumber)">{{dataItem.jobNumber}}</a>
+                        </span>
+
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </kendo-dialog>
+
+    </div>
+</div>

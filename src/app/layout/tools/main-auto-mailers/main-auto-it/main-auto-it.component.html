@@ -1,0 +1,151 @@
+<form [formGroup]="maintainITForm">
+    <div class="">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true" [ngClass]="isSelectionVisible == false ? '' : 'k-state-disabled'"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]="itData"
+                [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 40vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column field="pk" title="PK">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.pk }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="subject" title="Subject">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.subject }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox class="form-control form-control-round" placeholder="" (keyup)="onFilter($event.target.value)">
+                    </kendo-textbox>
+                </ng-template>
+            </kendo-grid>
+        <div class="row m-3">
+            <div class="col-md-6">
+                <fieldset class="p-2">
+                    <legend class="text-left ml-4">Current report</legend>
+                    <kendo-textbox class="form-control form-control-round" formControlName="pk"
+                        disabled>
+                    </kendo-textbox>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="p-2">
+                    <legend class="text-left ml-4">Submit (Only include the subject up to the date)</legend>
+                    <!-- <kendo-textarea [cols]="120" [rows]="5" class="form-control form-control-round"
+                        [disabled]="!isMaintainITForm" formControlName="subject">
+                    </kendo-textarea> -->
+                    <kendo-textbox class="form-control form-control-round" [disabled]="!isMaintainITForm" formControlName="subject">
+                    </kendo-textbox>
+                    <div class="required-text"
+                                        *ngIf="maintainITForm.get('subject').hasError('required') && maintainITForm.get('subject').touched">
+                                        This field is required!
+                                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col-md-6">
+                <fieldset class="p-2">
+                    <legend class="text-left">Associated Function Name</legend>
+                    <kendo-textarea [cols]="120" [rows]="3" class="form-control form-control-round"
+                        [disabled]="!isMaintainITForm" formControlName="functionName">
+                    </kendo-textarea>
+                    <div class="required-text"
+                                        *ngIf="maintainITForm.get('functionName').hasError('required') && maintainITForm.get('functionName').touched">
+                                        This field is required!
+                                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="p-2">
+                    <legend class="text-left">Description</legend>
+                    <kendo-textarea [cols]="120" [rows]="3" class="form-control form-control-round"
+                        [disabled]="!isMaintainITForm" formControlName="description">
+                    </kendo-textarea>
+                    <div class="required-text"
+                                        *ngIf="maintainITForm.get('description').hasError('required') && maintainITForm.get('description').touched">
+                                        This field is required!
+                                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 ">
+                <label class="col-form-label">Branch Specific:</label>
+            </div>
+            <div class="col-md-1">
+                <kendo-switch [disabled]="!isMaintainITForm" onLabel="Yes" offLabel="No" class=""
+                    style="width: auto;" formControlName="isBranchspecific">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 text-right">
+                <label class="col-form-label">Skip:</label>
+            </div>
+            <div class="col-md-1">
+                <kendo-switch [disabled]="!isMaintainITForm" onLabel="Yes" offLabel="No" class="" formControlName="isSkip"
+                    style="width: auto;">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 text-right">
+                <label class="col-form-label">Active:</label>
+            </div>
+            <div class="col-md-1">
+                <kendo-switch [disabled]="!isMaintainITForm" onLabel="Yes" offLabel="No" class=""
+                    style="width: auto;" formControlName="isActive">
+                </kendo-switch>
+            </div>
+            <div class="col-md-3">
+                <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="!isMaintainITForm"
+                    (click)="onHandleOperation('report_type')">{{report_btn}}</button>
+                    <input type="hidden" formControlName="reportType">
+                    <div class="required-text"
+                                        *ngIf="maintainITForm.get('reportType').hasError('required') && maintainITForm.get('reportType').touched">
+                                        This field is required!
+                                    </div>
+            </div>
+        </div>
+    </div>
+
+    <kendo-dialog title="Select Screen" *ngIf="isReportTypeVisible" (close)="onHandleOperation('report_type')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" (keyup)="onfilterReportType($event.target.value)"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{reportTypeList.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'report_type')"
+                [data]="reportTypeList" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="reportTypeSelection" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column field="label" title="Label">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.label }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+</form>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

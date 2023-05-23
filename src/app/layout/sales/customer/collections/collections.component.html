@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true"
+            [reorderable]="true" (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+            [data]="collection" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+            [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+            (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [group]="state.group"
+            [(expandedGroupKeys)]="expandedGroupKeys" (groupChange)="groupChange()" [groupable]="false">
+            <kendo-grid-column *ngFor="let column of collectionColumns" [width]="column.width" field="{{column.Name}}"
+                title="{{column.Text}}" [hidden]="column.hide">
+            </kendo-grid-column>
+            <kendo-grid-column field="type" [hidden]="true">
+                <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                    {{value}}
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid> -->
+        <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true"
+        [reorderable]="true" (columnResize)="onResizeColumn($event)"
+        (selectionChange)="onSelectionChange($event)" [data]="collection" [sort]="sort"
+        (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+        (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 50vh;"
+        [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys" (groupChange)="groupChange()"
+        [groupable]="false">
+        <kendo-grid-column field="invoiceNumber" title="Invoice">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.invoiceNumber}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="note" title="Note">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.note}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          
+          </kendo-grid>
+    </div>
+</div>

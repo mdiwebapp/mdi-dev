@@ -1,0 +1,367 @@
+<div class="card-block table-border-style pb-0 pane-content overflow-auto">
+    <form [formGroup]="customer" class="cust-form">
+        <div class="row no-gutters m-0 border-bottom-1 pb-1">
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Call Date</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-datepicker kendoTooltip class="form-control form-control-round" formControlName="call_date"
+                    calendarType="classic">
+                </kendo-datepicker>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">MDI Rep</label>
+            </div>
+            <div class="col-md-3 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="mdiRepList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">MDI Branch</label>
+            </div>
+            <div class="col-md-3 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="branchList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+        </div>
+        <hr />
+        <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Customer Name</label>
+            </div>
+            <div class="col-md-4 p-1">
+                <kendo-textbox class="form-control form-control-round" formControlName="name">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-1 p-1"></div>
+            <div class="col-md-5 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton>Add
+                    Customer
+                </button>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Address</label>
+            </div>
+            <div class="col-md-4 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="" formControlName="address">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Customer Type</label>
+            </div>
+            <div class="col-md-4 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="customerTypeList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                    formControlName="type">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-6 p-1"></div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">City</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="" formControlName="city">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">State</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="stateList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                    formControlName="state">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Zip</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="" formControlName="zipcode">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-3 p-1">
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Phone</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-maskedtextbox class="form-control form-control-round" placeholder="" formControlName="phone"
+                    mask="(000) 000-0000">
+                </kendo-maskedtextbox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Fax</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-maskedtextbox class="form-control form-control-round" placeholder="" formControlName="phone"
+                    mask="(000) 000-0000">
+                </kendo-maskedtextbox>
+            </div>
+            <div class="col-md-5 p-1"></div>
+        </div>
+        <hr />
+        <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Contact Name</label>
+            </div>
+            <div class="col-md-3 p-1" *ngIf="!displayExistingCustomer">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-3 p-1" *ngIf="!displayExistingCustomer">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-6 p-1" *ngIf="displayExistingCustomer">
+                <kendo-combobox class="form-control form-control-round" [data]="existingCustomerList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Existing Contact</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="onExistingContact($event)">
+                </kendo-switch>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Phone</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Position</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-4 p-1"></div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Mobile</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-textbox placeholder="" class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-8 p-1"></div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Email</label>
+            </div>
+            <div class="col-md-6 p-1">
+                <kendo-textbox placeholder="" class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Credit App Sent</label>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Contact Type</label>
+            </div>
+            <div class="col-md-3 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="contactTypeList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Contact Reason</label>
+            </div>
+            <div class="col-md-5 p-1">
+                <kendo-combobox class="form-control form-control-round" [data]="contactReasonList" [suggest]="true"
+                    [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Services Discussed</label>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Pumps</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Dewatering</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Trenching</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Power</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Environmental</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="">
+                </kendo-switch>
+            </div>
+            <div class="col-md-2 p-1 text-right">
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Rental</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="rentalChange($event)">
+                </kendo-switch>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-combobox *ngIf="displayRentalDrp" class="form-control form-control-round" [data]="rentalList"
+                    [suggest]="true" [textField]="'value'" [valueField]="'value'" [filterable]="true"
+                    [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Sales</label>
+            </div>
+            <div class="col-md-1 p-1">
+                <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="salesChange($event)">
+                </kendo-switch>
+            </div>
+            <div class="col-md-2 p-1">
+                <kendo-combobox *ngIf="displaySalesDrp" class="form-control form-control-round" [data]="salesList"
+                    [suggest]="true" [textField]="'value'" [valueField]="'value'" [filterable]="true"
+                    [valuePrimitive]="true">
+                </kendo-combobox>
+            </div>
+            <div class="col-md-2 p-1"></div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Current Vendor</label>
+            </div>
+            <div class="col-md-5 p-1 text-right">
+                <kendo-textbox placeholder="" class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+            </div>
+            <div class="col-md-4 p-1"></div>
+            <div class="col-md-2 p-1 text-right">
+                <label class="mr-2 mb-0 pt-2">Notes/Comments</label>
+            </div>
+            <div class="col-md-10 p-1 text-right">
+                <kendo-textarea placeholder="" class="form-control form-control-round w-100" [rows]="5" placeholder="">
+                </kendo-textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+            <div class="col-md-6 p-1">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-4 p-1 text-right">
+                        <label class="mr-2 mb-0 pt-2">Follow Up:</label>
+                    </div>
+                    <div class="col-md-8 p-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="onFollowUpSection($event)">
+                        </kendo-switch>
+                    </div>
+                    <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+                        <label class="mr-2 mb-0 pt-2">Follow Up Date:</label>
+                    </div>
+                    <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+                        <kendo-datepicker kendoTooltip class="form-control form-control-round" calendarType="classic">
+                        </kendo-datepicker>
+                    </div>
+                    <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+                        <label class="mr-2 mb-0 pt-2">Follow Up Reason:</label>
+                    </div>
+                    <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+                        <kendo-combobox class="form-control form-control-round" [data]="followUpReasonList"
+                            [suggest]="true" [textField]="'value'" [valueField]="'value'" [filterable]="true"
+                            [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+                        <label class="mr-2 mb-0 pt-2">Follow Up Method:</label>
+                    </div>
+                    <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+                        <kendo-combobox class="form-control form-control-round" [data]="followUpMethodList"
+                            [suggest]="true" [textField]="'value'" [valueField]="'value'" [filterable]="true"
+                            [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 p-1">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-4 p-1 text-right">
+                        <label class="mr-2 mb-0 pt-2">MDI Project:</label>
+                    </div>
+                    <div class="col-md-8 p-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="onMDIProjectSection($event)">
+                        </kendo-switch>
+                    </div>
+                    <div class="col-md-4 p-1 text-right" *ngIf="displayMDIProjectSection">
+                        <label class="mr-2 mb-0 pt-2">Job Number:</label>
+                    </div>
+                    <div class="col-md-7 p-1" *ngIf="displayMDIProjectSection">
+                        <kendo-combobox class="form-control form-control-round" [data]="jobNumberList" [suggest]="true"
+                            [textField]="'value'" [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-1 p-1" *ngIf="displayMDIProjectSection">
+                        <button class="btn w-100 p-2 text-center d-block" type="button" (click)="onJobSearch()"
+                            kendoRippleContainer kendoButton>
+                            <i class="fa fa-search fa-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters m-0 pb-2 pt-2">
+            <div class="col-md-5 p-1"></div>
+            <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer
+                    (click)="onSubmit()" kendoButton>Submit</button>
+            </div>
+            <div class="col-md-5 p-1"></div>
+        </div>
+    </form>
+</div>
+
+<kendo-dialog title="Keyword Search" *ngIf="displayJobSearch" (close)="close('cancel')" [minWidth]="550" [width]="550">
+    <div class="row m-0">
+        <app-keyword-search-popup></app-keyword-search-popup>
+    </div>
+    <div class="row row no-gutters m-0 pt-2">
+        <div class="col-md-2 p-1"></div>
+        <div class="col-md-3 p-1 text-center">
+            <button class="btn w-100 p-2 text-center d-block" (click)="close('cancel')" type="button"
+                kendoRippleContainer kendoButton>Close</button>
+        </div>
+        <div class="col-md-2 p-1"></div>
+        <div class="col-md-3 p-1 text-center">
+            <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton>Print
+                List</button>
+        </div>
+        <div class="col-md-2 p-1"></div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Invalid Call Date" *ngIf="displayInvalidPopup" (close)="closeSubmit('Cancel')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Call Date is invalid.
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeSubmit('Yes')" primary="true">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,168 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>FUEL SYSTEM - <span class="pl-1">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                    (valueChange)="changeMarkAll($event)">
+                                </kendo-switch>
+                                Mark All N/A
+                            </span>
+                        </legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayfueloilBtn" class="w-100" (click)="onfuelOil()" kendoTooltip
+                                    kendoRippleContainer kendoButton>FUEL LEVEL : {{f.fuelLevel.value}}
+                                </button> -->
+                                <label class="col-form-label">FUEL LEVEL:</label>
+                                <kendo-combobox *ngIf="!displayfueloilBtn" formControlName="fuelLevel"
+                                    (valueChange)="onfuelOil()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="fuellevelList"
+                                    [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('fuelLevel').hasError('required') && form.get('fuelLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaywaterinfuelBtn" class="w-100" (click)="onwaterinfuelOil()"
+                                    kendoTooltip kendoRippleContainer kendoButton>WATER IN FUEL : {{f.fuelWater.value}}
+                                </button> -->
+                                <label class="col-form-label">WATER IN FUEL:</label>
+                                <kendo-combobox *ngIf="!displaywaterinfuelBtn" formControlName="fuelWater"
+                                    (valueChange)="onwaterinfuelOil()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="waterlevelList" [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('fuelWater').hasError('required') && form.get('fuelWater').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayhosesBtn" class="w-100" (click)="onhoses()" kendoTooltip
+                                    kendoRippleContainer kendoButton>HOSES : {{f.hoses.value}}
+                                </button> -->
+                                <label class="col-form-label">HOSES:</label>
+                                <kendo-combobox *ngIf="!displayhosesBtn" formControlName="hoses"
+                                    (valueChange)="onhoses()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="hosesList"
+                                    [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('hoses').hasError('required') && form.get('hoses').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1" *ngIf="isControlPanel">
+                                <!-- <button *ngIf="displayleaksBtn" class="w-100" (click)="onleaks()" kendoTooltip
+                                    kendoRippleContainer kendoButton>FUEL LEAKS : {{f.fuelLeaks.value}}
+                                </button> -->
+                                <label class="col-form-label">FUEL LEAKS:</label>
+                                <kendo-combobox *ngIf="!displayleaksBtn" formControlName="fuelLeaks"
+                                    (valueChange)="onleaks()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="leaksList"
+                                    [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                *ngIf="form.get('fuelLeaks').hasError('required') && form.get('fuelLeaks').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>LUBE SYSTEM</legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaycrankcaseBtn" class="w-100" (click)="onbreathe()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CRANKCASE BREATHER : {{f.crankCase.value}}
+                                </button> -->
+                                <label class="col-form-label">CRANKCASE BREATHER:</label>
+                                <kendo-combobox *ngIf="!displaycrankcaseBtn" formControlName="crankCase"
+                                    (valueChange)="onbreathe()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="CRANKCASEBREATHERList" [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('crankCase').hasError('required') && form.get('crankCase').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayoilleaksexistBtn" class="w-100" (click)="onleaksExist()"
+                                    kendoTooltip kendoRippleContainer kendoButton>LEAKAGE : {{f.oilLeaks.value}}
+                                </button> -->
+                                <label class="col-form-label">LEAKAGE:</label>
+                                <kendo-combobox *ngIf="!displayoilleaksexistBtn" formControlName="oilLeaks"
+                                    (valueChange)="onleaksExist()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="leaksList"
+                                    [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('oilLeaks').hasError('required') && form.get('oilLeaks').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayengineoilconditionBtn" class="w-100" (click)="onOilCondition()"
+                                    kendoTooltip kendoRippleContainer kendoButton>ENGINE OIL CONDITION :
+                                    {{f.engineOilCond.value}}
+                                </button> -->
+                                <label class="col-form-label">ENGINE OIL CONDITION:</label>
+                                <kendo-combobox *ngIf="!displayengineoilconditionBtn" formControlName="engineOilCond"
+                                    (valueChange)="onOilCondition()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="ENGINEOIL_CONDITIONList" [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('engineOilCond').hasError('required') && form.get('engineOilCond').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayengineoillevelBtn" class="w-100" (click)="onOilLevel()"
+                                    kendoTooltip kendoRippleContainer kendoButton>ENGINE OIL LEVEL :
+                                    {{f.engineOilLevel.value}}
+                                </button> -->
+                                <label class="col-form-label">ENGINE OIL LEVEL:</label>
+                                <kendo-combobox *ngIf="!displayengineoillevelBtn" formControlName="engineOilLevel"
+                                    (valueChange)="onOilLevel()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="ENGINEOIL_LEVELList" [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('engineOilLevel').hasError('required') && form.get('engineOilLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- <div class="row col-md-12">
+                        <div class="col-md-6 p-1">
+                            <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()"
+                                kendoButton>TECHNICIAN APPROVAL
+                            </button> 
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()"
+                                kendoTooltip kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+                            </button>
+                            <kendo-combobox *ngIf="!displaySupervisorApproval" formControlName="supervisorApprovalData"
+                                (click)="onSupervisorApproval()" [suggest]="true" placeholder="Select SUPERVISOR"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [data]="supervisorApprovalList" [valueField]="'value'">
+                            </kendo-combobox>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

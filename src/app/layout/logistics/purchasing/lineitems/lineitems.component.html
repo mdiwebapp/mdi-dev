@@ -1,0 +1,554 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 65vh;">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <form [formGroup]="form" class="cust-form">
+
+        <div class="card-block p-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-12  p-1">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-8" *ngIf="!hasValue">
+                            <button class="btn col-md-12 text-center" type="button" (click)="onPartDialog()"
+                                [disabled]="isDisabled" kendoRippleContainer kendoButton>Click to Select a
+                                PartNumber</button>
+                        </div>
+                        <div class="col-md-8" *ngIf="hasValue">
+                            <button class="btn col-md-12 text-center" type="button" (click)="onPartDialog()"
+                                style="white-space: pre-wrap" [disabled]="isDisabled" kendoRippleContainer
+                                kendoButton>{{selectPartNumber}}</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-2 p-1"></div>
+                <div class="col-md-2 p-1" *ngIf="isViewHistory">
+                    <button class="btn w-100" (click)="onPurchaseHistory()" [disabled]="isDisabled">Purchase
+                        History</button>
+                </div>
+                <div class="col-md-6 p-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-8" *ngIf="!hasFleetValue">
+                            <button class="btn col-md-12 text-center" type="button" kendoRippleContainer
+                                [disabled]="isDisabled" (click)="onFleetDialog()" kendoButton>Fleet / Inv</button>
+                        </div>
+                        <div class="col-md-8" *ngIf="hasFleetValue">
+                            <button class="btn col-md-12 text-center" type="button" (click)="onFleetDialog()"
+                                [disabled]="isDisabled" kendoRippleContainer kendoButton>{{selectFleetNumber}}</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-2 p-1"> </div>
+                <div class="col-md-4 p-1"></div>
+                <div class="col-md-6 p-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-8" *ngIf="!hasJobValue">
+                            <button class="btn col-md-12 text-center" type="button" (click)="onJobSODialog()"
+                                [disabled]="isDisabled" kendoRippleContainer kendoButton>Job
+                                / SO</button>
+                        </div>
+                        <div class="col-md-8" *ngIf="hasJobValue">
+                            <button class="btn col-md-12 text-center" type="button" (click)="onJobSODialog()"
+                                [disabled]="isDisabled" kendoRippleContainer kendoButton>{{selectJob}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <button class="btn col-md-12 text-center" type="button" (click)=" scanMultipleClick()"
+                        kendoRippleContainer kendoButton> {{scanMultipleText}}
+                    </button>
+                </div>
+
+            </div>
+            <hr>
+            <div>
+                <div class="row no-gutters">
+                    <div class="col-md-4 p-1">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2"> Purchase Qty</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-numerictextbox class="form-control form-control-round" format="n0" [min]="0"
+                                    [spinners]="false" formControlName="purchaseQty" placeholder="Purchase Qty" [autoCorrect]="autoCorrect" >
+                                </kendo-numerictextbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Purchase Cost</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-numerictextbox class="form-control form-control-round" [min]="0"
+                                    [spinners]="false" formControlName="purchaseCost" placeholder="Purchase Cost" [autoCorrect]="autoCorrect">
+                                </kendo-numerictextbox>
+                                <kendo-formerror *ngIf="form.controls.purchaseCost.errors">Cost should not be negative
+                                </kendo-formerror>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Stock</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-switch onLabel="Yes" formControlName="stock" offLabel="No" class=""
+                                    style="width: auto;" (valueChange)="onStockChanges($event)">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1" *ngIf="statusStock">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Purchase UOM :</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" value="EA" [disabled]="true"
+                                    id="purchaseUOM">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1" *ngIf="!statusStock">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2"> Purchase UOM : </label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" value="EA" [disabled]="true"
+                                    id="purchaseUOM">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1" *ngIf="!statusStock">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Sales/Re-Rental </label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-combobox formControlName="sales" [data]="listSalesRental"
+                                    (valueChange)="OnChaneSalesRental($event)" placeholder="Sales/Re-Rental"
+                                    [suggest]="true" class="form-control form-control-round" [textField]="'value'"
+                                    [valueField]="'id'" [filterable]="true" [valuePrimitive]="true">
+                                </kendo-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1" *ngIf="!statusStock ">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Price Per Unit</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-numerictextbox class="form-control form-control-round" [min]="0" format="n0"
+                                    [spinners]="false" formControlName="pricePerUnit" placeholder="Price Per Unit"
+                                    [autoCorrect]="autoCorrect">
+                                </kendo-numerictextbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-4 p-1" *ngIf="!statusStock && displayItemsForSalesRental">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2"> UOM : </label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" value="EA" [disabled]="true"
+                                    id="UOM">
+                                </kendo-textbox>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 p-1" *ngIf="!statusStock && displayItemsForSalesRental">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Re-Rental Period </label>
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <div class="row pl-3 pr-3">
+
+                                    <div class="col-md-2 pl-0 pr-0">
+
+                                        <kendo-numerictextbox formControlName="rental" [min]="0" format="n2"
+                                            [spinners]="false" class="form-control form-control-round" [autoCorrect]="autoCorrect">
+                                        </kendo-numerictextbox>
+
+                                    </div>
+                                    <div class="col-md-10 pl-0 pr-0">
+                                        <kendo-combobox [data]="listRentalPeriod" formControlName="rentalPeriod"
+                                            placeholder="Re-Rental Period" [suggest]="true"
+                                            class="form-control form-control-round" [textField]="'value'"
+                                            [valueField]="'id'" [filterable]="true" [valuePrimitive]="true">
+                                        </kendo-combobox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-1" *ngIf="!statusStock && displayItemsForSalesRental">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Rental Start Date</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-datepicker formControlName="rentalStartDate" calendarType="classic"
+                                    [disabled]="isDisabled" class="form-control form-control-round">
+                                </kendo-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-1">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button kendoButton class="btn w-100" (click)="onAddline()" [disabled]="isDisabled">Add
+                                    Line</button>
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [data]="lineItemsViewData"
+                    height="300" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                    [selectedKeys]="mySelection">
+                    <kendo-grid-column field="newItemCode" title="Item Code">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.newItemCode}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="description" title="Description">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.description}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="quantity" title="Qty">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <kendo-numerictextbox [min]="min" format="n0" class="form-control form-control-round"
+                                [disabled]="isDisabled" [spinners]="false" [value]="dataItem.quantity"
+                                (valueChange)="onQuantityValueChange(dataItem,$event)" [autoCorrect]="autoCorrect">
+                            </kendo-numerictextbox>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="uom" title="UOM">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.uom}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="pricePer" title="Purchase Cost">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <!-- <span>
+                                <kendo-textbox class="form-control form-control-round" value="{{dataItem.pricePer}}">
+                                </kendo-textbox>
+                                <span class="k-icon k-i-dollar"></span>
+                            </span> -->
+                            <kendo-numerictextbox format="c2" [min]="min" class="form-control form-control-round" 
+                                [disabled]="isDisabled" [spinners]="false" [value]="dataItem.pricePer"
+                                (valueChange)="onCostValueChange(dataItem,$event)" [autoCorrect]="autoCorrect">
+                            </kendo-numerictextbox>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="total" title="Purchase Total">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>${{dataItem.total | number : '1.2-2'}}</lable>
+
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="stock" title="Stock">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <button class="btn col-md-12 text-center" type="button" kendoButton
+                                [disabled]="dataItem.stock === 'Y'"
+                                (click)="onHandleLineItemsRentalDialog(dataItem)">{{dataItem.stock}}</button>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column feild="fleetInv" title="Fleet/Inv">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.fleetInv}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column feild="jobSO" title="Job/SO">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.jobSO}}</lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="action" kendoTooltip title="Delete" [width]="70">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <i class="fa fa-2x fa-trash mr-2" (click)="!isDisabled && onDelete(dataItem)"></i>
+                        </ng-template>
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-md-4 p-1">
+                {{lineItemsViewData.length}} Line Items
+            </div>
+            <!-- <div class="col-md-2 p-1">
+                Sales Re-Rental Total 
+            </div> -->
+            <div class="col-md-2 p-1">
+                Sales Re-Rental Total : $ {{salesRentalTotal | number :
+                '1.2-2'}}
+            </div>
+            <div class="col-md-2 p-1">
+                Total : $ {{total | number :
+                '1.2-2'}}
+            </div>
+            <!-- <div class="col-md-2 p-1">
+                $454.58
+            </div> -->
+        </div>
+        <div class="row no-gutters m-0  mt-2 mb-2">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+        <kendo-dialog title="Error" *ngIf="displayError" (close)="onClosePOR()" [minWidth]="250" [width]="450">
+            <p style="margin: 30px; text-align: center;">
+                You must select a part
+            </p>
+            <kendo-dialog-actions>
+                <button kendoButton (click)="onClosePOR()" class="w-auto">Ok</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+
+        <kendo-dialog *ngIf="displayPartDialog" title="Part" (close)="close('cancel')" [minWidth]="650" [width]="650">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-2 p-1">
+                            Part Search
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <input [ngModelOptions]="{standalone: true}" (input)="onSearchPart($event.target.value)"
+                                class="form-control form-control-round" />
+                        </div>
+                        <!-- <div class="col-md-1 p-1">
+                            <i class="fa fa-search fa-2x" (click)="onSearchClick();"></i>
+                        </div> -->
+                        <div class="col-md-3 p-1 text-right">
+                            Part Count: {{totalData}}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [data]="partData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                        [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="mySelection" [sortable]="true"
+                        (selectionChange)="partClick($event.selectedRows[0].dataItem)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 65vh;">
+                        <kendo-grid-column *ngFor=" let column of viewEmpColumn" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+
+                </div>
+                <div class="col-md-12 m-0">
+
+                    <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                        style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                        <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                            <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                            <kendo-datapager-numeric-buttons [buttonCount]="5">
+                            </kendo-datapager-numeric-buttons>
+                            <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                            <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                                [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+                                [valueField]="'value'">
+                            </kendo-dropdownlist>
+                            <!-- <kendo-datapager-info></kendo-datapager-info>
+                Current page: {{currentPage}} -->
+                        </ng-template>
+                    </kendo-datapager>
+                </div>
+            </div>
+        </kendo-dialog>
+        <kendo-dialog *ngIf="displayFleetDialog" title="Fleet" (close)="onFleetClose('cancel')" [minWidth]="550"
+            [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-4 p-1">
+                            Fleet Search
+                        </div>
+                        <div class="col-md-4 p-1">
+                            <kendo-textbox [ngModelOptions]="{standalone: true}" formControlName="invNumber"
+                                (keydown.enter)="$event.preventDefault()" class="form-control form-control-round">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-1 p-1">
+                            <i class="fa fa-search fa-2x" (click)="onFleetSearchClick();"></i>
+                        </div>
+                        <div class="col-md-3 p-1 text-right">
+                            Fleet: {{totalFleetData}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [data]="fleetData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                        (selectionChange)="fleetClick($event.selectedRows[0].dataItem.invNumber)" [reorderable]="true"
+                        [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="fleetSelection" [sortable]="true"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 65vh;">
+                        <kendo-grid-column *ngFor=" let column of viewFleetColumn" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-datapager [total]="totalFleetData" [pageSize]="pageSize" [skip]="fleetSkip"
+                        style="width: 100% !important;" (pageChange)="onFleetPageChange($event)">
+                        <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                            <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                            <kendo-datapager-numeric-buttons [buttonCount]="5">
+                            </kendo-datapager-numeric-buttons>
+                            <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                            <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                                [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="onFleetPageSizechange($event)" [valuePrimitive]="true"
+                                [textField]="'value'" [valueField]="'value'">
+                            </kendo-dropdownlist>
+                            <!-- <kendo-datapager-info></kendo-datapager-info>
+                Current page: {{currentPage}} -->
+                        </ng-template>
+                    </kendo-datapager>
+                </div>
+            </div>
+        </kendo-dialog>
+        <kendo-dialog *ngIf="displayJobSoDialog" title="Job/SO" (close)="onJobClose('cancel')" [minWidth]="550"
+            [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-4 p-1">
+                            viewJobColumn Search
+                        </div>
+                        <div class="col-md-4 p-1">
+                            <kendo-textbox [ngModelOptions]="{standalone: true}" formControlName="jobNumber"
+                                (keydown.enter)="$event.preventDefault()" class="form-control form-control-round">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-1 p-1">
+                            <i class="fa fa-search fa-2x" (click)="onJobSearchClick();"></i>
+                        </div>
+                        <div class="col-md-3 p-1 text-right">
+                            JOB: {{jobData.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid kendoGridSelectBy [data]="jobData" [navigable]="true" [resizable]="true"
+                        [reorderable]="true" (selectionChange)="jobClick($event.selectedRows[0].dataItem.jobNumber)"
+                        [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy [selectedKeys]="jobSelection"
+                        [sortable]="true" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                        style="height: 65vh;">
+                        <kendo-grid-column *ngFor=" let column of viewJobColumn" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+
+                </div>
+            </div>
+        </kendo-dialog>
+    </form>
+</div>
+
+<kendo-dialog *ngIf="isPurchaseHistoryDialogVisible" (close)="onPurchaseHistory()" [minWidth]="550" [width]="800">
+    <div class="row m-0">
+        <div class="col-md-12">
+            <fieldset>
+                <legend>Purchase History For {{selectInvType}}- {{ (selectPartNumber.length>50)? (selectPartNumber |
+                    slice:0:50)+'..':(selectPartNumber) }} </legend>
+                <div class="row m-2">
+                    <div class="col-md-12">
+                        <kendo-grid kendoGridSelectBy [selectable]="true" [data]="purchaseHistoryData"
+                            [navigable]="true" [resizable]="true" [reorderable]="true"
+                            style="height: 35vh; width: 100%;">
+                            <kendo-grid-column *ngFor=" let column of purchaseHistoryColumns" [width]="column.width"
+                                field="{{column.Name}}" title="{{column.Text}}">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span *ngIf="column.Name!='lastOrderDate'">{{dataItem[column.Name]}}</span>
+                                    <span *ngIf="column.Name=='lastOrderDate' && dataItem.lastOrderDate">
+                                        {{dataItem.lastOrderDate | date: 'dd-MM-yyyy hh:ss:ff'}}
+                                    </span>
+
+                                </ng-template>
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-12 text-center"><button kendoButton class="px-2"
+                            (click)="onPurchaseHistory()">Close</button></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Line Items Rental Details" *ngIf="isLineItemRentalDialogVisible"
+    (close)="onHandleLineItemsRentalDialog()" [minWidth]="550" [width]="800">
+    <div class="row m-0">
+        <div class="col-md-12">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                [data]="rentalLineItems" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                (dataStateChange)="onDataStateChange($event)">
+                <kendo-grid-column field="sr" title="S/R">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.sr}}</lable>
+
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="srPrice" title="S/R Price">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>${{dataItem.srPrice | number : '1.2-2'}}</lable>
+
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="number" title="Quantity">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.number}}</lable>
+
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="rPeriod" title="Re-Rental Period">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.rPeriod}}</lable>
+
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="ruom" title="Re-Rental UOM">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.ruom}}</lable>
+
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

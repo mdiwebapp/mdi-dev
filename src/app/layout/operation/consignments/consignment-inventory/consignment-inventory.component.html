@@ -1,0 +1,195 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row no-gutters">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)"
+                (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)" [kendoGridBinding]="inventories"
+                [sort]="sort" kendoGridSelectBy [selectedKeys]="selections" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of inventoryColumns.slice(0, 3)" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <kendo-grid-column field="offRent" title="Off Rent" [width]="50" class="text-center">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <input type="checkbox" [checked]="dataItem.offRent"
+                            (change)="onChangeOffRentCheck($event, dataItem.inventoryNumber, rowIndex)" kendoCheckBox />
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="hours" title="Hours" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.hours}}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="serviceHours" title="Service Hours" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.serviceHours}}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="lastOnRent" title="Last On Rent" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.lastOnRent | date: 'MM/dd/yyyy'}}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="offRent" title="Last Off Rent" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.lastOffRent | date: 'MM/dd/yyyy'}}
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="row no-gutters">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" [kendoGridBinding]="jobInventoryData" [sort]="sort"
+                kendoGridSelectBy [selectedKeys]="inventorySelections" [sortable]="true"
+                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 30vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of jobInventoryColumns.slice(0, 5)" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <kendo-grid-column field="toggleDate" title="Toggle Date" [width]="50">``
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.toggleDate | date: 'MM/dd/yyyy'}}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="lastDate" title="Last Date" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{dataItem.lastDate | date: 'MM/dd/yyyy'}}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="offRent" title="Off Rent" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <input type="checkbox" [checked]="dataItem.offRent" [disables]="true" kendoCheckBox />
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</div>
+
+<kendo-dialog title="Utilization Calender" *ngIf="isCalenderVisible" (close)="onHandleDialog('close-calendar')"
+    [minWidth]="600" [width]="1000">
+    <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+            <kendo-splitter>
+                <kendo-splitter-pane [collapsible]="true" size="35%">
+                    <div class="row no-gutters">
+                        <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                            (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                            [data]="utilizationcalendarData" [sort]="sort" (sortChange)="onSortChange($event)"
+                            kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+                            (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 600px;"
+                            (dataStateChange)="onDataStateChange($event)"
+                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                            <kendo-grid-column field="date" title="Date" [width]="100">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.date | date}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="offRent" title="Changed To" [width]="50">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span *ngIf="dataItem.offRent">OFF RENT</span>
+                                    <span *ngIf="!dataItem.offRent">ON RENT</span>
+                                </ng-template>
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                    <div class="text-center">
+                        <label class="col-form-label mt-2">Currently</label>
+                        <button class="k-button col-md-12 w-100 " type="button" style="font-size: 12px;"
+                            [style.background-color]="offrentStatus === 'OffRent' ? '#a10d08' : '#1a8737'"
+                            (click)="enableDisableRule()">
+                            {{offrentStatus === "OffRent" ? 'OFF RENT' : 'ON RENT'}}
+                        </button>
+                        <button class="k-button col-md-12 w-100 mt-2" type="button" style="font-size: 12px;"
+                            type="submit" (click)="onHandleDialog('save')">Submit</button>
+                    </div>
+                </kendo-splitter-pane>
+                <kendo-splitter-pane>
+                    <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate"
+                        (dateChange)="dateChangeHandler($event)" (cancel)=" cancelHandler($event)"
+                        (save)="saveHandler($event)">
+                        <ng-template kendoSchedulerMonthDaySlotTemplate let-date="date">
+                            <strong>{{ getCalendarDate(date) }}</strong>
+                        </ng-template>
+                        <ng-template kendoSchedulerEventTemplate let-event="event">
+                            <div [ngClass]="event.title.offRent ? 'offrent' : 'onrent'"
+                                style="height: inherit; width: inherit" clas (click)="onSlotClick(event.title)">
+                                {{event.title.label}} <div *ngIf="event.title.offRent" class="text-center">Off Rent
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate">
+                            <div kendoschedulertoolbarnavigation class="d-flex justify-content-center w-100">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8 d-flex justify-content-center">
+                                        <button kendoButton class="k-nav-today k-button" icon="arrow-60-left"
+                                            (click)="setPrevMonth()"></button>
+                                        <div class="d-flex justify-content-between align-items-center pl-1 pr-1">
+                                            <kendo-datepicker class="scheduler-date form-control form-control-round"
+                                                (valueChange)="datechange($event)" style="width: 5% !important;"
+                                                [(value)]="datepickerdate" calendarType="classic" bottomView="year"
+                                                topView="decade" format="MMMM yyyy">
+                                            </kendo-datepicker>
+                                            <span class="pt-1 pl-1" style="font-weight: bold;">
+                                                {{selectedDate | date:
+                                                'MMMM yyyy'}}
+                                            </span>
+                                        </div>
+                                        <div kendoschedulertoolbarnavigation
+                                            style="display: flex;justify-content: end;">
+                                            <button kendoButton class="k-nav-today k-button" icon="arrow-60-right"
+                                                (click)="setNextMonth()"></button>
+                                        </div>
+                                        <label class="col-form-label"
+                                            style="padding: inherit; font-weight: bold; font-size: 16px;">
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        <div *ngIf="selectedLog" class="pt-1 pl-1" style="font-weight:bold;">
+                                            <label class="col-form-label pr-5" style="font-size: 22px;">
+                                                {{selectedLog?.inventoryNumber}}</label>
+                                        </div>
+                                        <div class="mt-3 mr-3">
+                                            <button kendoTooltip title="Refresh" id="btnRefresh" class="btn_icon"
+                                                filter="button" (click)="onHandleDialog('reload')">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <kendo-scheduler-month-view [eventHeight]="50">
+                        </kendo-scheduler-month-view>
+
+                    </kendo-scheduler>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </kendo-splitter-pane>
+    </kendo-splitter>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleDialog('close')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleDialog('close')">No</button>
+        <button kendoButton (click)="onHandleDialog('confirm')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="MDI3.0" *ngIf="isNoActionVisible" (close)="onHandleDialog('month')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Submit changes before changing the Month.
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleDialog('month')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

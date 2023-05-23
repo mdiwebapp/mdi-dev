@@ -1,0 +1,168 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">User Permissions</h4>
+      <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" *ngIf="!isEdit" filter="button"
+          (click)="onEdit();">
+        </button>
+      </div>
+      <div class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="onCancel();"
+          *ngIf="!isCancel">
+        </button>
+      </div>
+      <div *ngIf=" menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+          (click)="onSaveUserPermission();">
+        </button>
+      </div>
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+      <div>
+        <label class="label label-primary label-mersino">User Id : {{ userId }}</label>
+        <label class="label label-primary label-mersino">User Name : {{ userName }}</label>
+      </div>
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <div class="m-r-20 p-r-20">
+          <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-block table-border-style mt-1">
+    <kendo-splitter orientation="vertical">
+      <kendo-splitter-pane>
+        <kendo-splitter>
+          <kendo-splitter-pane [collapsible]="true" size="30%">
+            <div class="row pane-content">
+              <div class="col-md-12 table-responsive">
+                <kendo-grid [selectable]="true" [ngClass]="userId > 0 && !isEdit ? '' :  'k-state-disabled'"
+                  [navigable]="true" [resizable]="true" [reorderable]="true"
+                  (selectionChange)="editClick($event.selectedRows[0].dataItem)" [data]="data" [sort]="sort"
+                  (sortChange)="sortChange($event)" [sortable]="true" [skip]="skip" style="height: 75vh;"
+                  kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="{
+                    allowUnsort: false,
+                    mode: multiple ? 'multiple' : 'single'
+                  }">
+                  <ng-template kendoGridToolbarTemplate>
+                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                      (input)="onFilter($event.target.value)" />
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{ totalUsers }}</span>
+                  </ng-template>
+                  <kendo-grid-column field="name" title="Name" [width]="130">
+                    <ng-template kendoGridCellTemplate let-dataItem onscroll="handleScroll">
+                      <lable>{{ dataItem.name }}</lable>
+                    </ng-template>
+                  </kendo-grid-column>
+                </kendo-grid>
+              </div>
+            </div>
+          </kendo-splitter-pane>
+          <kendo-splitter-pane style="height: 76vh !important;">
+            {{userPermission}}
+            <div class="pane-content custom-pane-content">
+              <div class="col-md-12 custom-pane-content-div">
+                <div class="sidebar mt-2">
+                  <div [ngClass]="userId > 0 && isEdit ? '' :  'k-state-disabled'">
+                    <div class="custom_checkbox_main_div">
+                      <div class="custom_checkbox_box nav nav-tabs">
+                        <div *ngFor="let d of mainTabName">
+                          <div class="box_content active_btn  nav-item" [ngClass]="d.className"
+                            style="padding: 4px; border-bottom: 1px solid #dee2e6;">
+                            <label>
+                              <label class="col-form-label  pl-2 pr-2">
+                                <input [checked]="d.isAccess" [disabled]="hasAdminRole===true" [(ngModel)]="d.isAccess"
+                                  (change)="departmentChange($event,d.id)" type="checkbox" kendoCheckBox />
+                              </label>
+
+                            </label>
+                            <span (click)="onTabSelect(d.id, d.isAccess)">{{ d.departmentName }} </span>
+                            <i *ngIf="d.className == 'departmentActive'" class="fa fa-hand-o-right" style="float: right;
+                          margin-top: 11px;" aria-hidden="true"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="custom_checkbox_box_list">
+                        <div class="checkbox_content tab-content">
+                          <div *ngFor="let mdl of module; index as i">
+                            <div class="box_content_list box_content_sub_list tab-pane fade in active " id="main_2">
+                              <div class="box_content_sub_list_box">
+                                <ul class="custom_checkbox_box nav nav-tabs">
+                                  <li class="box_content active_btn active nav-item">
+                                    <label class="col-form-label pl-2 pr-2"> <input
+                                        [checked]="hasAdminRole && mdl.isAccess"
+                                        (change)="ChangeMainPermission(mdl, mdl.isAccess)"
+                                        [disabled]="isDepartment == false ? true : false" type="checkbox"
+                                        [(ngModel)]="isDepartment == false ? false : mdl.isAccess" kendoCheckBox /> {{
+                                      mdl.moduleName }}
+
+                                    </label>
+                                  </li>
+                                </ul>
+                                <div class="custom_checkbox_box_list">
+                                  <div class="checkbox_content tab-conten">
+                                    <div class="box_content_list tab-pane fade active show" id="main_sub_1">
+                                      <div *ngFor="let mdltb of mdl.moduleTabs; index as i">
+                                        <div style="border: 0.3px solid #dee2e6;padding: 5px;" class="pt-0 pb-0">
+                                          <div class="row">
+                                            <div class="col-md-6" style="border-right: 0.3px solid #dee2e6;">
+                                              <label class="col-form-label pr-2" style="padding: 12px;">
+
+                                                <input type="checkbox"
+                                                  [checked]=" mdl.isAccess == false || isDepartment == false  ? false : mdltb.isAccess"
+                                                  (change)="addUpdatePermission(mdl.departmentId,mdl.id,mdltb.id,0,mdltb.isAccess)"
+                                                  [disabled]="hasAdminRole===true || mdl.isAccess == false ? true : false"
+                                                  [(ngModel)]="hasAdminRole===true ? true :mdltb.isAccess"
+                                                  kendoCheckBox />
+                                                {{ mdltb.tabName }}
+                                              </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <div class="col-md-12">
+                                                <div *ngFor="let act of mdltb.actionTyes;index as i">
+                                                  <label class="col-form-label pr-2"
+                                                    style="float: left;width: 50%;padding: 12px;">
+                                                    <input *ngIf="act.typeName != 'VIEW'" id="{{act.id}}"
+                                                      (change)="addUpdatePermission(mdl.departmentId,mdl.id,mdltb.id,act.id,act.isAccess)"
+                                                      [checked]="isDepartment == false ? false : mdltb.isAccess == false || mdl.isAccess == false  ? false :  act.isAccess "
+                                                      [(ngModel)]="hasAdminRole===true ? true :act.isAccess"
+                                                      [disabled]="hasAdminRole===true || mdltb.isAccess == false ? true : false"
+                                                      type="checkbox" kendoCheckBox />
+
+                                                    <span *ngIf="act.typeName != 'VIEW'"> &nbsp;{{ act.typeName }}
+                                                    </span>
+                                                    <input *ngIf="act.typeName == 'VIEW'" id="{{act.id}}"
+                                                      (change)="addUpdatePermission(mdl.departmentId,mdl.id,mdltb.id,act.id,act.isAccess)"
+                                                      [checked]="mdltb.isAccess ? true : act.isAccess"
+                                                      [(ngModel)]="hasAdminRole===true ? true :act.isAccess"
+                                                      [disabled]="hasAdminRole===true || mdltb.isAccess == false ? true : false"
+                                                      type="hidden" />
+                                                  </label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </kendo-splitter-pane>
+        </kendo-splitter>
+      </kendo-splitter-pane>
+    </kendo-splitter>
+  </div>
+</div>

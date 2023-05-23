@@ -1,0 +1,1197 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">CRM Call Log</h4>
+    </div>
+    <!-- <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+            <div class="form-control1 displayFlex alignFlexEnd">
+                <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+                    <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button">
+                    </button>
+                    <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button">
+                    </button>
+                </div>
+            </div>
+        </div> -->
+  </div>
+  <div class="card-block table-border-style pb-0 pane-content overflow-auto">
+    <form [formGroup]="form" class="cust-form">
+      <div class="row no-gutters m-0 border-bottom-1 pb-1">
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Call Date</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-datepicker
+            kendoTooltip
+            class="form-control form-control-round"
+            formControlName="callDate"
+            calendarType="classic"
+          >
+          </kendo-datepicker>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('callDate').hasError('required') &&
+              form.get('callDate').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">MDI Rep</label>
+        </div>
+        <div class="col-md-3 p-1">
+          <button
+          *ngIf="!isMDIRepVisible"
+            class="k-button w-100"
+            type="button"
+            (click)="onToggleMDIRep()"
+          >
+          {{form.get('mdiRep')?.value || 'Select MDI Rep'}}
+          </button>
+          <kendo-combobox
+          *ngIf="isMDIRepVisible"
+            class="form-control form-control-round"
+            [data]="mdiRepList"
+            [suggest]="true"
+            [textField]="'label'"
+            (selectionChange)="valuemdiRepChange($event)"
+            formControlName="mdiRepData"
+            [valueField]="'value'"
+            [valuePrimitive]="true"
+            [kendoDropDownFilter]="dropdownFilterOption"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('mdiRepData').hasError('required') &&
+              form.get('mdiRepData').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">MDI Branch</label>
+        </div>
+        <div class="col-md-3 p-1">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="branchList"
+            [suggest]="true"
+            [textField]="'label'"
+            formControlName="mdiBranch"
+            [valueField]="'value'"
+            [valuePrimitive]="true"
+            (selectionChange)="onvaluechangeBranch($event)"
+            [kendoDropDownFilter]="dropdownFilterOption"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('mdiBranch').hasError('required') &&
+              form.get('mdiBranch').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+      </div>
+      <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Customer Name</label>
+        </div>
+        <div class="col-md-4 p-1">
+          <!-- <kendo-combobox class="form-control form-control-round" [data]="customerList" [suggest]="true"
+                        [textField]="'value'" formControlName="customerData" [valueField]="'value'" [filterable]="true"
+                        [valuePrimitive]="true">
+                    </kendo-combobox> -->
+          <button
+            class="k-button w-100"
+            type="button"
+            (click)="onHandleOperation('customer')"
+          >
+            {{ customerdataValue }}
+          </button>
+          <input type="hidden" formControlName="customerId" />
+          <input type="hidden" formControlName="customerName" />
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('customerId').hasError('required') &&
+              form.get('customerId').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1"></div>
+        <div class="col-md-5 p-1">
+          <button
+            class="btn w-100 p-2 text-center d-block"
+            type="button"
+            kendoRippleContainer
+            kendoButton
+            (click)="onCustomer()"
+          >
+            Add Customer
+          </button>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Address</label>
+        </div>
+        <div class="col-md-4 p-1">
+          <kendo-textbox
+            formControlName="address1"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('address1').hasError('required') &&
+              form.get('address1').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Customer Type</label>
+        </div>
+        <div class="col-md-4 p-1">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="customerTypeList"
+            [suggest]="true"
+            [textField]="'label'"
+            formControlName="customerType"
+            [valueField]="'label'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('customerType').hasError('required') &&
+              form.get('customerType').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Address Line 2</label>
+        </div>
+        <div class="col-md-4 p-1">
+          <kendo-textbox
+            formControlName="address2"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('address2').hasError('required') &&
+              form.get('address2').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-6 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">City</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-textbox
+            formControlName="city"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('city').hasError('required') && form.get('city').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">State</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="stateList"
+            [suggest]="true"
+            [textField]="'label'"
+            formControlName="state"
+            [valueField]="'label'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('state').hasError('required') &&
+              form.get('state').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Zip</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-textbox
+            formControlName="zipCode"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('zipCode').hasError('required') &&
+              form.get('zipCode').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-3 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Phone</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-maskedtextbox
+            formControlName="phone"
+            class="form-control form-control-round"
+            [mask]="mask"
+          >
+          </kendo-maskedtextbox>
+          <!-- <kendo-textbox formControlName="phone" class="form-control form-control-round" placeholder="" [mask]="mask">
+                    </kendo-textbox> -->
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('phone').hasError('required') &&
+              form.get('phone').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Fax</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-maskedtextbox
+            formControlName="fax"
+            class="form-control form-control-round"
+            placeholder=""
+            [mask]="mask"
+          >
+        </kendo-maskedtextbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('fax').hasError('required') && form.get('fax').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-5 p-1"></div>
+      </div>
+      <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Contact Name</label>
+        </div>
+        <div class="col-md-3 p-1" *ngIf="!displayExistingCustomer">
+          <kendo-textbox
+            formControlName="contactName1"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('contactName1').hasError('required') &&
+              form.get('contactName1').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-3 p-1" *ngIf="!displayExistingCustomer">
+          <kendo-textbox
+            formControlName="contactName2"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('contactName2').hasError('required') &&
+              form.get('contactName2').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-6 p-1" *ngIf="displayExistingCustomer">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="existingCustomerList"
+            [suggest]="true"
+            [textField]="'label'"
+            formControlName="existingCustomer"
+            [valueField]="'value'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+            (selectionChange)="onvalueChangeContactname($event)"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('existingCustomer').hasError('required') &&
+              form.get('existingCustomer').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Existing Contact</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="existingContact"
+            (valueChange)="onExistingContact($event)"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Phone</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-maskedtextbox
+            formControlName="phoneContact"
+            class="form-control form-control-round"
+            [mask]="mask"
+          >
+        </kendo-maskedtextbox>
+          <!-- <kendo-textbox formControlName="phoneContact" class="form-control form-control-round"
+                        placeholder="" [mask]="mask">
+                    </kendo-textbox> -->
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('phoneContact').hasError('required') &&
+              form.get('phoneContact').touched
+            "
+          >
+            This field is required!
+          </div>
+          <div
+            class="required-text"
+            *ngIf="
+              (form.get('phoneContact').hasError('pattern') &&
+                form.get('phoneContact').touched) ||
+              (form.get('phoneContact').hasError('maxlength') &&
+                form.get('phoneContact').touched) ||
+              (form.get('phoneContact').hasError('minlength') &&
+                form.get('phoneContact').touched)
+            "
+          >
+            This field is invalid!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Position</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-textbox
+            formControlName="position"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('position').hasError('required') &&
+              form.get('position').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-4 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Mobile</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <!-- <kendo-maskedtextbox formControlName="mobile"
+                    class="form-control form-control-round" [mask]="mob">
+                  </kendo-maskedtextbox> -->
+          <kendo-maskedtextbox
+            formControlName="mobile"
+            placeholder=""
+            class="form-control form-control-round"
+            placeholder=""
+            [mask]="mask"
+          >
+        </kendo-maskedtextbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('mobile').hasError('required') &&
+              form.get('mobile').touched
+            "
+          >
+            This field is required!
+          </div>
+          <div
+            class="required-text"
+            *ngIf="
+              (form.get('mobile').hasError('pattern') &&
+                form.get('mobile').touched) ||
+              (form.get('mobile').hasError('maxlength') &&
+                form.get('mobile').touched) ||
+              (form.get('mobile').hasError('minlength') &&
+                form.get('mobile').touched)
+            "
+          >
+            This field is invalid!
+          </div>
+        </div>
+        <div class="col-md-8 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Email</label>
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox
+            formControlName="email"
+            placeholder=""
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('email').hasError('required') &&
+              form.get('email').touched
+            "
+          >
+            This field is required!
+          </div>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('email').hasError('email') && form.get('email').touched
+            "
+          >
+            This field is invalid!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Credit App Sent</label>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="creditAppSent"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Contact Type</label>
+        </div>
+        <div class="col-md-3 p-1">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="contactTypeList"
+            [suggest]="true"
+            [textField]="'value'"
+            formControlName="contactTypeData"
+            [valueField]="'value'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('contactTypeData').hasError('required') &&
+              form.get('contactTypeData').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Contact Reason</label>
+        </div>
+        <div class="col-md-5 p-1">
+          <kendo-combobox
+            class="form-control form-control-round"
+            [data]="contactReasonList"
+            [suggest]="true"
+            [textField]="'label'"
+            formControlName="contactReasonData"
+            [valueField]="'label'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('contactReasonData').hasError('required') &&
+              form.get('contactReasonData').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Services Discussed</label>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Pumps</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="pumps"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Dewatering</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="dewatering"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Trenching</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="trenching"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Power</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="power"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Environmental</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="environmental"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-2 p-1 text-right"></div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Rental</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="rental"
+            (valueChange)="rentalChange($event)"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-combobox
+            *ngIf="displayRentalDrp"
+            class="form-control form-control-round"
+            [data]="rentalList"
+            [suggest]="true"
+            [textField]="'value'"
+            formControlName="rentalData"
+            [valueField]="'value'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('rentalData').hasError('required') &&
+              form.get('rentalData').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-1 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Sales</label>
+        </div>
+        <div class="col-md-1 p-1">
+          <kendo-switch
+            onLabel="Yes"
+            offLabel="No"
+            class=""
+            formControlName="sales"
+            (valueChange)="salesChange($event)"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-2 p-1">
+          <kendo-combobox
+            *ngIf="displaySalesDrp"
+            class="form-control form-control-round"
+            [data]="salesList"
+            [suggest]="true"
+            [textField]="'value'"
+            formControlName="salesData"
+            [valueField]="'value'"
+            [filterable]="true"
+            [valuePrimitive]="true"
+          >
+          </kendo-combobox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('salesData').hasError('required') &&
+              form.get('salesData').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-2 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Current Vendor</label>
+        </div>
+        <div class="col-md-5 p-1 text-right">
+          <kendo-textbox
+            formControlName="vendor"
+            placeholder=""
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('vendor').hasError('required') &&
+              form.get('vendor').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+        <div class="col-md-4 p-1"></div>
+        <div class="col-md-2 p-1 text-right">
+          <label class="mr-2 mb-0 pt-2">Notes/Comments</label>
+        </div>
+        <div class="col-md-10 p-1 text-right">
+          <kendo-textarea
+            formControlName="comments"
+            placeholder=""
+            class="form-control form-control-round w-100"
+            [rows]="5"
+            placeholder=""
+          >
+          </kendo-textarea>
+          <div
+            class="required-text"
+            *ngIf="
+              form.get('comments').hasError('required') &&
+              form.get('comments').touched
+            "
+          >
+            This field is required!
+          </div>
+        </div>
+      </div>
+
+      <div class="row no-gutters m-0 pt-1 border-bottom-1 pb-1">
+        <div class="col-md-6 p-1">
+          <div class="row no-gutters m-0">
+            <div class="col-md-4 p-1 text-right">
+              <label class="mr-2 mb-0 pt-2">Follow Up:</label>
+            </div>
+            <div class="col-md-8 p-1">
+              <kendo-switch
+                onLabel="Yes"
+                offLabel="No"
+                class=""
+                formControlName="followUp"
+                (valueChange)="onFollowUpSection($event)"
+              >
+              </kendo-switch>
+            </div>
+            <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+              <label class="mr-2 mb-0 pt-2">Follow Up Date:</label>
+            </div>
+            <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+              <kendo-datepicker
+                kendoTooltip
+                class="form-control form-control-round"
+                formControlName="followUpDate"
+                calendarType="classic"
+              >
+              </kendo-datepicker>
+              <div
+                class="required-text"
+                *ngIf="
+                  form.get('followUpDate').hasError('required') &&
+                  form.get('followUpDate').touched
+                "
+              >
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+              <label class="mr-2 mb-0 pt-2">Follow Up Reason:</label>
+            </div>
+            <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+              <kendo-combobox
+                class="form-control form-control-round"
+                [data]="followUpReasonList"
+                [suggest]="true"
+                [textField]="'label'"
+                formControlName="followUpReason"
+                [valueField]="'label'"
+                [filterable]="true"
+                [valuePrimitive]="true"
+              >
+              </kendo-combobox>
+              <div
+                class="required-text"
+                *ngIf="
+                  form.get('followUpReason').hasError('required') &&
+                  form.get('followUpReason').touched
+                "
+              >
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+              <label class="mr-2 mb-0 pt-2">Follow Up Method:</label>
+            </div>
+            <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+              <kendo-combobox
+                class="form-control form-control-round"
+                [data]="followUpMethodList"
+                [suggest]="true"
+                [textField]="'value'"
+                formControlName="followUpMethod"
+                [valueField]="'value'"
+                [filterable]="true"
+                [valuePrimitive]="true"
+              >
+              </kendo-combobox>
+              <div
+                class="required-text"
+                *ngIf="
+                  form.get('followUpMethod').hasError('required') &&
+                  form.get('followUpMethod').touched
+                "
+              >
+                This field is required!
+              </div>
+            </div>
+            <!-- <div class="col-md-4 p-1 text-right" *ngIf="displayFollowUpSection">
+              <label class="mr-2 mb-0 pt-2">Follow Up Mail:</label>
+            </div>
+            <div class="col-md-8 p-1" *ngIf="displayFollowUpSection">
+              <a href="mailto:{{form.value.email}}" id="hlEmail">
+                <i class="k-icon k-i-email m-10 align-self-center"
+                    style="font-size: 20px;margin-left: 10px;margin-top: 15px;"></i>
+            </a>
+            </div> -->
+          </div>
+        </div>
+        <div class="col-md-6 p-1">
+          <div class="row no-gutters m-0">
+            <div class="col-md-4 p-1 text-right">
+              <label class="mr-2 mb-0 pt-2">MDI Project:</label>
+            </div>
+            <div class="col-md-8 p-1">
+              <kendo-switch
+                onLabel="Yes"
+                offLabel="No"
+                class=""
+                formControlName="mdiProject"
+                (valueChange)="onMDIProjectSection($event)"
+              >
+              </kendo-switch>
+              <div class="required-text" *ngIf="!isBranchselected">
+                Please select branch
+              </div>
+            </div>
+            <div
+              class="col-md-4 p-1 text-right"
+              *ngIf="displayMDIProjectSection"
+            >
+              <label class="mr-2 mb-0 pt-2">Job Number:</label>
+            </div>
+            <div class="col-md-7 p-1" *ngIf="displayMDIProjectSection">
+              <kendo-combobox
+                class="form-control form-control-round"
+                [data]="jobNumberList"
+                [suggest]="true"
+                [textField]="'label'"
+                formControlName="jobNumber"
+                [valueField]="'value'"
+                [filterable]="true"
+                [valuePrimitive]="true"
+              >
+              </kendo-combobox>
+              <div
+                class="required-text"
+                *ngIf="
+                  form.get('jobNumber').hasError('required') &&
+                  form.get('jobNumber').touched
+                "
+              >
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-1 p-1" *ngIf="displayMDIProjectSection">
+              <button
+                class="btn w-100 p-2 text-center d-block"
+                type="button"
+                (click)="onJobSearch()"
+                kendoRippleContainer
+                kendoButton
+              >
+                <i class="fa fa-search fa-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row no-gutters m-0 pb-2 pt-2">
+        <div class="col-md-5 p-1"></div>
+        <div class="col-md-2 p-1" *ngIf="isEditable">
+          <button
+            class="btn w-100 p-2 text-center d-block"
+            type="button" 
+            kendoRippleContainer
+            *ngIf="menuService.isAddRight"
+            (click)="onSubmit()"
+            kendoButton
+          >
+            Submit
+          </button>
+        </div>
+        <div class="col-md-5 p-1"></div>
+      </div>
+      <kendo-dialog
+        title="Select Customer"
+        *ngIf="isCustomerVisible"
+        (close)="onHandleOperation('customer')"
+        [minWidth]="250"
+        [height]="500"
+        [width]="550"
+      >
+        <div class="row m-0">
+          <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+              <div class="col-md-3 p-1">Search</div>
+              <div class="col-md-6 p-1">
+                <kendo-textbox
+                  [(ngModel)]="searchText"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-control form-control-round"
+                  placeholder=""
+                  (keyup)="onFilter($event.target.value)"
+                >
+                </kendo-textbox>
+              </div>
+              <div class="col-md-3 p-1 text-right">Count: {{ totalData }}</div>
+            </div>
+          </div>
+          <div class="col-md-12 m-0">
+            <kendo-grid
+              [selectable]="true"
+              [navigable]="true"
+              [resizable]="true"
+              [reorderable]="true"
+              (columnResize)="onResizeColumn($event)"
+              (selectionChange)="onRowSelect($event, 'customer')"
+              [data]="customerData"
+              [sort]="customersort"
+              (sortChange)="onSortChange($event)"
+              kendoGridSelectBy
+              [selectedKeys]="customerselections"
+              [sortable]="true"
+              (columnReorder)="onReOrderColumns($event)"
+              [skip]="skip"
+              style="height: 35vh"
+              (dataStateChange)="onDataStateChange($event)"
+              [sortable]="{
+                allowUnsort: false,
+                mode: multiple ? 'multiple' : 'single'
+              }"
+              [hideHeader]="true"
+            >
+              <kendo-grid-column field="value" title="Name">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  <lable>{{ dataItem.value }}</lable>
+                </ng-template>
+              </kendo-grid-column>
+            </kendo-grid>
+            <kendo-datapager
+              [total]="totalData"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              style="width: 100% !important"
+              (pageChange)="onPageChange($event)"
+            >
+              <ng-template
+                kendoDataPagerTemplate
+                let-totalPages="totalPages"
+                let-currentPage="currentPage"
+              >
+                <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                <kendo-datapager-numeric-buttons [buttonCount]="5">
+                </kendo-datapager-numeric-buttons>
+                <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                <kendo-dropdownlist
+                  class="form-control form-control-round"
+                  style="width: 16% !important"
+                  [data]="pageSizeList"
+                  [(ngModel)]="pageSize"
+                  (valueChange)="onPageSizechange($event)"
+                  [ngModelOptions]="{ standalone: true }"
+                  [valuePrimitive]="true"
+                  [textField]="'value'"
+                  [valueField]="'value'"
+                >
+                </kendo-dropdownlist>
+              </ng-template>
+            </kendo-datapager>
+          </div>
+        </div>
+      </kendo-dialog>
+      <kendo-dialog
+        title="Keyword Search"
+        *ngIf="displayJobSearch"
+        (close)="close('cancel')"
+        [minWidth]="550"
+        [width]="550"
+      >
+        <div class="row no-gutters m-0">
+          <div class="col-md-12 text-right">Count: {{ total }}</div>
+        </div>
+        <div class="row no-gutters m-0 align-items-end">
+          <div class="col-md-6">
+            <label>Search Term 1</label>
+          </div>
+          <div class="col-md-6">
+            <label>Search Term 2</label>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <input
+              kendoTextBox
+              [(ngModel)]="And1"
+              *ngIf="filterchange"
+              placeholder="And1"
+              [ngModelOptions]="{ standalone: true }"
+              (keydown.enter)="$event.preventDefault();loadData();"
+            />
+            <input
+              kendoTextBox
+              [(ngModel)]="Or1"
+              *ngIf="!filterchange"
+              placeholder="Or1"
+              [ngModelOptions]="{ standalone: true }"
+              (keydown.enter)="$event.preventDefault();loadData();"
+            />
+            <span class="pl-2 pr-2">
+              <kendo-switch
+                onLabel="AND"
+                offLabel="OR"
+                class="extensionSwitch"
+                style="width: 70px"
+                (valueChange)="OnChangeFilter($event)"
+              >
+              </kendo-switch>
+            </span>
+            <input
+              kendoTextBox
+              [(ngModel)]="And2"
+              *ngIf="filterchange"
+              placeholder="And2"
+              [ngModelOptions]="{ standalone: true }"
+              (keydown.enter)="$event.preventDefault();loadData();"
+            />
+            <input
+              kendoTextBox
+              [(ngModel)]="Or2"
+              *ngIf="!filterchange"
+              placeholder="Or2"
+              [ngModelOptions]="{ standalone: true }"
+              (keydown.enter)="$event.preventDefault();loadData();"
+            />
+          </div>
+          <div class="col-md-5 mt-2">
+            <button
+              class="k-button mr-2"
+              kendoRippleContainer
+              type="button"
+              (click)="clearSearch()"
+            >
+              Clear Search
+            </button>
+            <button
+              class="k-button"
+              type="button"
+              kendoRippleContainer
+              kendoButton
+              (click)="filterData()"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+        <div class="row row no-gutters m-0">
+          <div class="col-md-12 p-1">
+            <kendo-grid
+              [selectable]="true"
+              [navigable]="true"
+              [resizable]="true"
+              [reorderable]="true"
+              (columnResize)="onResizeColumn($event)"
+              (selectionChange)="onRowSelect($event, 'customer')"
+              [data]="keywordData"
+              [sort]="customersort"
+              (sortChange)="onSortChange($event)"
+              kendoGridSelectBy
+              [selectedKeys]="customerselections"
+              [sortable]="true"
+              (columnReorder)="onReOrderColumns($event)"
+              [skip]="skip"
+              style="height: 35vh"
+              (dataStateChange)="onDataStateChange($event)"
+              [sortable]="{
+                allowUnsort: false,
+                mode: multiple ? 'multiple' : 'single'
+              }"
+              [hideHeader]="true"
+            >
+              <kendo-grid-column
+                *ngFor="let column of searchColumns"
+                [width]="column.width"
+                field="{{ column.Name }}"
+                title="{{ column.Text }}"
+              >
+              </kendo-grid-column>
+            </kendo-grid>
+          </div>
+        </div>
+        <div class="row row no-gutters m-0 pt-2">
+          <div class="col-md-2 p-1"></div>
+          <div class="col-md-3 p-1 text-center">
+            <button
+              class="btn w-100 p-2 text-center d-block"
+              (click)="close('cancel')"
+              type="button"
+              kendoRippleContainer
+              kendoButton
+            >
+              Close
+            </button>
+          </div>
+          <div class="col-md-2 p-1"></div>
+          <div class="col-md-3 p-1 text-center">
+            <button
+              class="btn w-100 p-2 text-center d-block"
+              type="button"
+              kendoRippleContainer
+              kendoButton
+              (click)="exportToExcelData()"
+            >
+              Print List
+            </button>
+          </div>
+          <div class="col-md-2 p-1"></div>
+        </div>
+      </kendo-dialog>
+    </form>
+  </div>
+</div>
+
+<kendo-dialog
+  title="Invalid Call Date"
+  *ngIf="displayInvalidPopup"
+  (close)="closeSubmit('Cancel')"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p style="margin: 30px; text-align: center">Call Date is invalid.</p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeSubmit('Yes')" primary="true">Ok</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<div
+  class="overlay"
+  style="background-color: #f0f8ff52; z-index: 9999"
+  [hidden]="!visible"
+>
+  <kendo-loader
+    class="spinner"
+    [type]="'converging-spinner'"
+    [themeColor]="'error'"
+    [size]="'large'"
+  >
+  </kendo-loader>
+</div>

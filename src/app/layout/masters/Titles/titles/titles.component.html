@@ -1,0 +1,84 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Manage Titles</h4>
+      <div *ngIf="menuService.isAddRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" *ngIf="!isAdd" filter="button"
+          (click)="btnAdd();">
+        </button>
+      </div>
+      <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" *ngIf="!isEdit" filter="button"
+          (click)="btnEdit();">
+        </button>
+      </div>
+
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="btnCancel();"
+          *ngIf="!isCancel">
+        </button>
+      </div>
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+          (click)="onSave();">
+        </button>
+      </div>
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+      <div *ngIf="form.get('name').value">
+        <label class="label label-primary label-mersino">Title: {{form.get('name').value}}</label>
+        <!-- <label class="label label-primary  label-mersino">Date Created : {{cdate | date}}</label> -->
+      </div>
+
+      <div class="form-control1 displayFlex alignFlexEnd">
+
+        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <!-- <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"> -->
+          <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+          <!-- </button> -->
+          <!-- <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button" *ngIf="isPrint"> -->
+          <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+          <!-- </button> -->
+        </div>
+        <label>Active</label>
+        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="isDisabled"
+          [(ngModel)]="inactive" (valueChange)="toggleChange($event)">
+        </kendo-switch>
+      </div>
+    </div>
+  </div>
+  <div class="card-block table-border-style pb-0">
+    <div class="row">
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="30%">
+              <div class="pane-content">
+                <div class="col-md-12 mb-3">
+                  <app-titleslist (EditClick)="editClick($event)" [isEdit]="isEdit" [titleId]="id"
+                    [onChange]="SaveChange"></app-titleslist>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+                <kendo-tabstrip-tab title="Titles" [selected]="true">
+                  <ng-template kendoTabContent>
+                    <app-title-info [form]="form" [employeeList]="employeeList" [activeTitles]='activeTitles' [titleData]='titleData'
+                      [allTitles]="allTitles" [allTitlesData]="allTitlesData"></app-title-info>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab title="Routing">
+                  <ng-template kendoTabContent>
+                    <app-title-routing (PORrouteClick)="hideallBtn($event)"></app-title-routing>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+              </kendo-tabstrip>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+    </div>
+  </div>
+</div>

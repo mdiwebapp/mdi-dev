@@ -1,0 +1,101 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <fieldset>
+                <legend>TRAILER</legend>
+                <div class="row no-gutters pl-2 pb-2 pr-2">
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayFrameBtn" class="w-100" (click)="onBatteryLeaks()" kendoTooltip
+                            kendoRippleContainer kendoButton>FRAME
+                        </button>
+                        <kendo-combobox *ngIf="!displayFrameBtn" formControlName="framData"
+                            (valueChange)="onBatteryLeaks()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="frameList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayPintleHitchBtn" class="w-100" (click)="onPintleHitch()" kendoTooltip
+                            kendoRippleContainer kendoButton>PINTLE HITCH
+                        </button>
+                        <kendo-combobox *ngIf="!displayPintleHitchBtn" formControlName="pintleHitchData"
+                            (valueChange)="onPintleHitch()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="pintleHitchList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displaySafetyLatchesBtn" class="w-100" (click)="onSafetyLatches()" kendoTooltip
+                            kendoRippleContainer kendoButton>SAFETY LATCHES / HOOKS
+                        </button>
+                        <kendo-combobox *ngIf="!displaySafetyLatchesBtn" formControlName="safetyLatchesData"
+                            (valueChange)="onSafetyLatches()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="safetyLatchesList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayWiringHarnessBtn" class="w-100" (click)="onWiringHarness()" kendoTooltip
+                            kendoRippleContainer kendoButton>WIRING HARNESS
+                        </button>
+                        <kendo-combobox *ngIf="!displayWiringHarnessBtn" formControlName="wiringHarnessData"
+                            (valueChange)="onWiringHarness()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wiringHarnessList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayLightsBtn" class="w-100" (click)="onLights()" kendoTooltip
+                            kendoRippleContainer kendoButton>LIGHTS
+                        </button>
+                        <kendo-combobox *ngIf="!displayLightsBtn" formControlName="lightsData"
+                            (valueChange)="onLights()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="lightsList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayWheelsBearingBtn" class="w-100" (click)="onWheelsBearings()" kendoTooltip
+                            kendoRippleContainer kendoButton>WHEEL BEARINGS
+                        </button>
+                        <kendo-combobox *ngIf="!displayWheelsBearingBtn" formControlName="wheelsBearingData"
+                            (valueChange)="onWheelsBearings()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wheelsBearingList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayWheelsBtn" class="w-100" (click)="onWheels()" kendoTooltip
+                            kendoRippleContainer kendoButton>WHEELS
+                        </button>
+                        <kendo-combobox *ngIf="!displayWheelsBtn" formControlName="wheelsData"
+                            (valueChange)="onWheels()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wheelsList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayActuatorConditionBtn" class="w-100" (click)="onActuatorCondition()"
+                            kendoTooltip kendoRippleContainer kendoButton>BRAKE ACTUATOR
+                        </button>
+                        <kendo-combobox *ngIf="!displayActuatorConditionBtn" formControlName="actutorConditionData"
+                            (valueChange)="onActuatorCondition()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="actutorConditionList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displayHubsConditionBtn" class="w-100" (click)="onHubsCondition()" kendoTooltip
+                            kendoRippleContainer kendoButton>HUBS
+                        </button>
+                        <kendo-combobox *ngIf="!displayHubsConditionBtn" formControlName="actutorConditionData"
+                            (valueChange)="onHubsCondition()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="hubsConditionList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>

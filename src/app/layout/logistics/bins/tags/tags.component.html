@@ -1,0 +1,109 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+      <div class="card-block p-0">
+        <div class="row no-gutters">
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Branch<em>*</em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+                <div class="required-text"
+                  *ngIf="form.get('vendorName').hasError('required') && form.get('vendorName').touched">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Key:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Bin Key:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="qbNameGPC"
+                placeholder="Bin Key">
+              </kendo-textbox>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Bin Description:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="qbNameGPC"
+                  placeholder="Bin Description">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row no-gutters">
+        <kendo-grid [selectable]="true"
+            [data]="data" [sort]="sort" 
+            kendoGridSelectBy  [sortable]="true"
+            [skip]="skip" style="height: 75vh;"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <ng-template kendoGridToolbarTemplate>
+                <input class="col-md-9" placeholder="Search in all columns..."
+                    [(ngModel)]="filterText" kendoTextBox/>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <span> Total : {{data?.length}}</span>
+            </ng-template>
+            <kendo-grid-column field="vendorName" title="Branch"  [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.vendorName}}</lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="status" title="Cat" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>GB-R01-G01-0001 </lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="status" title="Bin" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>GB-R01-G01-0001 </lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="status" title="Bin Key" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>GB-R01-G01-0001 </lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="status" title="Bin Description" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>GB-R01-G01-0001 </lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="status" title="Bin Key Description" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>GB-R01-G01-0001 </lable>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<form [formGroup]="form" class="cust-form">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <div class="row">
+        <div class="col-md-1">
+            <div class="d-flex justify-content-between">
+                <div class="wp-50 p-l-10 p-r-10">
+                    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" *ngIf="!isAdd && isAddRight" filter="button"
+                        (click)="btnAdd();">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10">
+                    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                        (click)="btnCancel();" *ngIf="!isCancel">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10">
+                    <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+                        (click)="onSave();">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="form-group row no-gutters">
+            <div class="col-md-2 text-right">
+                <label class="col-form-label pr-2">Subject</label>
+            </div>
+            <div class="col-md-10">
+                <kendo-textbox class="form-control form-control-round" formControlName="subject" placeholder="Subject">
+                </kendo-textbox>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group row no-gutters">
+            <div class="col-md-2 text-right">
+                <label class="col-form-label pr-2">Notes:</label>
+            </div>
+            <div class="col-md-10">
+                <kendo-textarea placeholder="Notes" [rows]="3" formControlName="note"
+                    class="form-control form-control-round w-100">
+                </kendo-textarea>
+            </div>
+        </div>
+    </div>
+</form>
+<hr>
+
+<div class="row mt-3">
+    <div class="col-md-12 border-right">
+        <div class="table-responsive">
+            <kendo-grid [data]="data" [sort]="sort" (sortChange)="sortChange($event)" [sortable]="true" [skip]="skip"
+            kendoGridSelectBy  (selectionChange)="editClick($event.selectedRows[0].dataItem)"
+            [selectedKeys]="mySelection" style="height: 45vh;" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <ng-template kendoGridToolbarTemplate>
+                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                        (input)="onFilter($event.target.value)" />
+                    <span> Total : {{data?.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+                <kendo-grid-column field="createdDate" title="Created Date" [width]="130">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.createdDate | date}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="userName" title="User Name" [width]="130">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.userName}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="subject" title="Subject" [width]="130">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.subject}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="note" title="Note" [width]="130">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.note}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+            <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+        </div>
+    </div>
+</div>

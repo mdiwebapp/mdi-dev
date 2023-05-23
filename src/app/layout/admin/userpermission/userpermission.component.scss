@@ -1,0 +1,96 @@
+.tabs-section {
+    overflow: hidden;
+    background-color: #333;
+    padding: 60px 0px;
+}
+.tabs-section .feature-img {
+    max-height: 255px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 3px solid #fff;
+}
+.tabs-section .nav-tabs {
+    border: 0;
+}
+.tabs-section .nav-link {
+    border: 0;
+    padding: 11px 15px;
+    transition: 0.3s;
+    color: #fff;
+    border-radius: 0;
+    border-right: 2px solid #cddc39 !important;
+    font-weight: 600;
+    font-size: 15px;
+}
+.tabs-section .nav-link:hover {
+    color: #cddc39;
+}
+.tabs-section .nav-link.active {
+    color: #333333;
+    background: #cddc39;
+}
+.tabs-section .nav-link:hover {
+    border-right: 4px solid #cddc39;
+}
+.tabs-section .tab-pane.active {
+    -webkit-animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.5s ease-out;
+}
+.tabs-section .details h3 {
+    font-size: 26px;
+    color: #cddc39;
+}
+.tabs-section .details p {
+    color: #aaaaaa;
+}
+.k-checkbox:checked:disabled, .k-checkbox:indeterminate:disabled, .k-checkbox.k-state-indeterminate:disabled, .k-checkbox.k-checked.k-disabled, .k-checkbox.k-indeterminate.k-disabled{
+    background-color:#2f9a7b !important;
+}
+input.k-checkbox[type="checkbox"] {
+    /* Base Styles aka unchecked */
+    color: red !important;
+    font-weight: 300; // Will be overwritten by :checked
+    font-size: 16px; // Base styling
+  }
+  input.k-checkbox[type="checkbox"]:not(:checked) {
+    /* Explicit Unchecked Styles */
+    color: blue !important;
+    border: 1px solid #FF0000; // Only apply border to unchecked state
+  }
+  input.k-checkbox[type="checkbox"]:checked {
+    /* Checked Styles */
+    color: green !important;
+    font-weight: 900; // Use a bold font when checked
+  }
+  
+.chkItem{
+    font-size: 16px;
+    border-radius: 0;
+    color: #fff;
+    background-color: #454544;
+    padding: 2px 1rem;
+}
+
+.unchkItem{
+    font-size: 16px;
+    border-radius: 0;    
+    padding: 2px 1rem;
+}
+input.k-checkbox{
+    border-radius: 0;
+}
+
+.departmentInactive{
+    color: black;
+    background-color: white;
+}
+.departmentActive{
+    color: white;
+    background-color: #757575;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6 !important;
+    border-top: 1px solid #dee2e6 !important;
+    border-left: 1px solid #dee2e6;
+}

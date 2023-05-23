@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+    <form>
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable">
+                    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+                       *ngIf="!isAdd" (click)="onHandleOperation('new')">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="isDisable">
+                    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                        (click)="onHandleOperation('cancel')">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="isDisable">
+                    <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                        (click)="onHandleOperation('save')">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <form [formGroup]="notesForm">
+            <div class="col-md-12">
+                <div class="form-group row no-gutters">
+                    <div class="col-md-2 text-right">
+                        <label class="col-form-label pr-2">Subject</label>
+                    </div>
+                    <div class="col-md-10">
+                        <kendo-textbox class="form-control form-control-round" placeholder="Subject"
+                            [disabled]="!isDisable" formControlName="subject">
+                        </kendo-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group row no-gutters">
+                    <div class="col-md-2 text-right">
+                        <label class="col-form-label pr-2">Notes:</label>
+                    </div>
+                    <div class="col-md-10">
+                        <kendo-textarea placeholder="Notes" [cols]="130" [rows]="3"
+                            class="form-control form-control-round" [disabled]="!isDisable" formControlName="note">
+                        </kendo-textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                    (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]="notes"
+                    [sort]="notesSort" (sortChange)="onSortChange($event,'notes')" kendoGridSelectBy
+                    [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                    [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <kendo-grid-column field="createdDate" title="Created Date" [width]="100">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>
+                                {{dataItem.createdDate | date: 'MM/dd/yyyy'}}
+                            </lable>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column *ngFor="let column of  notesColumns" [width]="column.width"
+                        field="{{column.Name}}" title="{{column.Text}}">
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+        </form>
+    </form>
+</div>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

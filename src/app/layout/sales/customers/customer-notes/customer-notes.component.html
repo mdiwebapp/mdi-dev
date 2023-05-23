@@ -1,0 +1,75 @@
+<form [formGroup]="form" name="loginForm" class="cust-form">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <div class="register-box box-shadow-none card mb-0">
+    <div class="card-block p-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group row no-gutters">
+            <div class="col-md-1 text-right">
+              <label class="col-form-label pr-2">Subject<em>*</em>:</label>
+            </div>
+            <div class="col-md-11">
+              <kendo-textbox class="form-control form-control-round" placeholder="Subject" formControlName="subject">
+              </kendo-textbox>
+              <div class="required-text"
+                *ngIf="form.get('subject').hasError('required') && form.get('subject').touched">
+                This field is required!
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group row no-gutters">
+            <div class="col-md-1 text-right">
+              <label class="col-form-label pr-2">Notes:</label>
+            </div>
+            <div class="col-md-11">
+              <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round" formControlName="note"
+                placeholder="Notes">
+              </kendo-textarea>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+</form>
+<div class="table-responsive">
+
+  <kendo-grid [data]="data" [sortable]="true" [skip]="skip" [sort]="sort" (sortChange)="sortChange($event)"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" kendoGridSelectBy
+    [selectedKeys]="mySelection">
+    <ng-template kendoGridToolbarTemplate>
+      <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)" />
+      <kendo-grid-spacer></kendo-grid-spacer>
+    </ng-template>
+    <kendo-grid-column field="createdDate " title="Created Date" [width]="80">
+      <ng-template kendoGridCellTemplate let-dataItem>
+
+        <lable>{{dataItem.createdDate | date}}</lable>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="userName" title="User" [width]="50">
+      <!-- <ng-template kendoGridCellTemplate let-dataItem>
+          <lable (click)="editContactClick(dataItem.id)">{{dataItem.ProductName}}
+          </lable>
+        </ng-template> -->
+    </kendo-grid-column>
+    <kendo-grid-column field="subject" title="Subject" [width]="130">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <lable>
+          {{dataItem.subject}}
+        </lable>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="note" title="Notes" [width]="150">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <lable>{{dataItem.note}}
+        </lable>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</div>

@@ -1,0 +1,570 @@
+<div class="register-box box-shadow-none card mb-0">
+
+  <form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0">
+      <div class="row no-gutters">
+        <div class="col-md-12 card">
+          <kendo-grid [data]="projectinventoryData" kendoGridSelectBy style="height: 65vh" [navigable]="true"
+            [resizable]="true" [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" (selectionChange)="
+              inventoryGridSelection($event.selectedRows[0].dataItem)
+            " kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true" [sortable]="{
+              allowUnsort: false,
+              mode: multiple ? 'multiple' : 'single'
+            }">
+            <kendo-grid-column field="invType" title="Inv Type" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="inventoryNumber" kendoTooltip title="Inv#" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="description" kendoTooltip title="Description" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="quantity" kendoTooltip title="Quantity" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="offRent" kendoTooltip title="Off Rent" [width]="100">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto" [(ngModel)]="dataItem.offRent"
+                  [ngModelOptions]="{ standalone: true }" (valueChange)="onToggleOffRent(dataItem)">
+                </kendo-switch>
+                <!-- <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto" [(ngModel)]="dataItem.offRent"
+                  [ngModelOptions]="{ standalone: true }" (valueChange)="off_rent_toggle.toggle($event)">
+                </kendo-switch> -->
+                <!-- <span class="request-date">
+                  <kendo-datepicker class="form-control form-control-round" calendarType="classic" #off_rent_toggle
+                    (valueChange)="toggle($event)">
+                  </kendo-datepicker>
+                </span> -->
+                <button class="btn btn-link ml-1 text-dark" (click)="onSellToJob(dataItem)">
+                  <i class="fa fa-dollar"></i>
+                </button>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-md-3 text-center">
+          <button kendoRippleContainer kendoButton class="btn w-auto mb-2 p-2" kendoTooltip
+            [disabled]="projectinventoryData.length==0"
+            title="Click to call all inventory off the job. This stops rental rates from accruing and notifies the applicable leadership with an automatic email that the job was called off."
+            (click)="onCallOff()">
+            Call Off
+          </button>
+        </div>
+        <div class="col-md-3 text-center">
+          <button kendoRippleContainer kendoButton class="btn w-auto mb-2 p-2" kendoTooltip
+            title="Click to generate the Inventory movement report in Microsoft Excel.The Inventory Movement report shows movement of inventory fro a selected period of time and is used to invoice the customer."
+            (click)="onInventoryMovement()">
+            Inventory Movement
+          </button>
+        </div>
+        <div class="col-md-3 text-center">
+          <button kendoRippleContainer kendoButton class="btn w-auto mb-2 p-2" kendoTooltip
+            title="Click to access the Project Inventory screen where you can dispatch invenotry to or remove inventory from the job."
+            (click)="onProjectInventory()">
+            Project Inventory
+          </button>
+        </div>
+        <div class="col-md-3 text-center">
+          <button kendoRippleContainer kendoButton class="btn w-auto mb-2 p-2" (click)="onPrint()">
+            Print
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<kendo-dialog title="Select Date" *ngIf="displayInvCallOff" (close)="onCallOffClose()" [minWidth]="250" [width]="750">
+  <form [formGroup]="form" class="cust-form">
+    <div class="row m-0 p-3">
+      <div class="col-md-12">
+        <kendo-datepicker class="form-control form-control-round" formControlName="invDate" [(ngModel)]="calloffDate"
+          [ngModelOptions]="{ standalone: true }" calendarType="classic">
+        </kendo-datepicker>
+      </div>
+      <div class="col-md-12 text-center p-3 pt-4">
+        <button class="btn w-auto p-2 pl-4 pr-4" type="button" (click)="onCallOffSubmit()" kendoRippleContainer
+          kendoButton>
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</kendo-dialog>
+<kendo-dialog title="Action Cancelled" *ngIf="displayInvCallOffCancel" (close)="closePAFCancel()" [minWidth]="250"
+  [width]="250">
+  <p style="margin: 30px; text-align: center">Call off canceled</p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closePAFCancel()">Yes</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog *ngIf="displayInvInventoryMovement" [minWidth]="250" [width]="550">
+  <form [formGroup]="form" class="cust-form">
+    <div class="row m-0 p-3">
+      <div class="col-md-4">Enter Start Date</div>
+      <div class="col-md-8">
+        <kendo-datepicker class="form-control form-control-round" [(value)]="startDateValue"
+          [ngModelOptions]="{ standalone: true }" calendarType="classic">
+        </kendo-datepicker>
+      </div>
+      <div class="col-md-4 mt-2">Enter End Date</div>
+      <div class="col-md-8 mt-2">
+        <kendo-datepicker class="form-control form-control-round" [(value)]="endDateValue"
+          [ngModelOptions]="{ standalone: true }" calendarType="classic">
+        </kendo-datepicker>
+      </div>
+      <div class="col-md-12 text-center mt-3">
+        <button class="btn w-auto p-2 pl-5 pr-5 mr-2" type="button" (click)="exportInventoryMovement()"
+          kendoRippleContainer kendoButton>
+          OK
+        </button>
+        <button class="btn w-auto p-2 pl-4 pr-4" type="button" (click)="onInventoryMovement()" kendoRippleContainer
+          kendoButton>
+          Cancel
+        </button>
+      </div>
+    </div>
+    <kendo-dialog title="MDI 3.0" *ngIf="isDateSelected" [minWidth]="250" [width]="450">
+      <p style="margin: 30px; text-align: center" class="fs-16">
+        {{ lblAlert2 }}
+      </p>
+      <kendo-dialog-actions>
+        <button kendoButton (click)="closeIsDateSelected()">Ok</button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
+  </form>
+</kendo-dialog>
+
+<div class="backdrop" [style.display]="displayInvProjectInventory ? 'block' : 'none'" style="z-index: 333333"></div>
+<div class="custom_slider_popup custom_slider_popup1 p-0" *ngIf="displayInvProjectInventory">
+  <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+    <div class="content">
+      <div class="row k-window-titlebar k-dialog-titlebar m-0">
+        <div class="col-md-10">
+          <h5 class="">Maintain Project Inventory</h5>
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0" type="button"
+            (click)="onProjectInventory()" kendoRippleContainer kendoButton>
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="form" class="cust-form">
+      <div class="row m-0 p-3">
+        <div class="col-md-12 text-center">
+          <div class="row mb-3">
+            <div class="col-md-6 text-right p-0">
+              <p class="mt-2 pr-2">
+                Current Location - YARD - {{ selectedBranchCode }}
+              </p>
+            </div>
+            <div class="col-md-4 p-0 tex-left">
+              <kendo-combobox formControlName="location" [suggest]="true" placeholder="Change Location" kendoTooltip
+                title="Click to change to another location." class="form-control form-control-round"
+                [data]="allBranches" [textField]="'value'" [valueField]="'code'" [valuePrimitive]="true"
+                (valueChange)="onBranchValueChange($event)">
+              </kendo-combobox>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-5">
+              <div class="row mb-2">
+                <div class="col-md-6 mb-2">
+                  <!-- <div *ngIf="!displayLoadPick">
+                    <button
+                      class="btn w-auto p-2 pl-4 pr-4 k-button"
+                      type="button"
+                      kendoRippleContainer
+                      kendoTooltip
+                      title="Click to select a Changes Order to view and add those line items to the Pick List."
+                      kendoButton
+                      (click)="onLoadPickList()"
+                    >
+                      Loan Pick List
+                    </button>
+                  </div> -->
+                  <div *ngIf="displayLoadPick">
+                    <kendo-combobox formControlName="screen" (click)="onLoadPickList()" [suggest]="true"
+                      placeholder="select Screen" class="form-control form-control-round" [textField]="'value'"
+                      [data]="screenList" [valueField]="'value'">
+                    </kendo-combobox>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2 text-right">
+                  <!-- <button
+                    class="btn w-auto p-2 pl-4 pr-4 k-button"
+                    type="button"
+                    kendoRippleContainer
+                    kendoTooltip
+                    title="Click to select all/none of the items and quantities in the Pick List."
+                    kendoButton
+                  >
+                    Pick All
+                  </button> -->
+                </div>
+                <div class="col-md-12">
+                  <div class="card h-400 mb-2">
+                    <kendo-grid [height]="400" [data]="loadprojectinventoryData" kendoGridSelectBy [navigable]="true"
+                      [resizable]="true" [reorderable]="true" [sort]="sort1" (sortChange)="sortChange1($event)"
+                      kendoGridSelectBy [selectedKeys]="loadedInventorySelection" [sortable]="true" [sortable]="{
+                        allowUnsort: false,
+                        mode: multiple ? 'multiple' : 'single'
+                      }" (selectionChange)="
+                        loadedInventoryGridSelection(
+                          $event.selectedRows[0].dataItem
+                        )
+                      ">
+                      <kendo-grid-column field="action" kendoTooltip title="Delete" [width]="70">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <i class="fa fa-2x fa-trash mr-2" (click)="onDelete(dataItem)"></i>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="invType" kendoTooltip title="Inv Type" [width]="130">
+                      </kendo-grid-column>
+                      <kendo-grid-column kendoTooltip title="Inv #" [width]="120">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <kendo-combobox class="form-control form-control-round" [value]="dataItem.invNumber"
+                            *ngIf="dataItem.invNumberList && dataItem.serialized"
+                            (valueChange)="changeInvNumber(dataItem,$event)" style="width: 150px;"
+                            [data]="dataItem.invNumberList.toString().split(',')" [suggest]="true" [filterable]="true">
+                          </kendo-combobox>
+                          <div *ngIf="!dataItem.serialized">{{dataItem.invNumber}} </div>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="quantity" kendoTooltip title="Quantity" [width]="80">
+                      </kendo-grid-column>
+                      <kendo-grid-column field="available" kendoTooltip title="Available" [width]="80">
+                      </kendo-grid-column>
+                      <kendo-grid-column field="toPick" title="To Pick" [width]="70">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <kendo-numerictextbox class="form-control form-control-round" placeholder="" #dataItem.pk
+                            [min]="0" formControlName="{{ dataItem.pk }}" [spinners]="false" [value]="dataItem.toPick"
+                            format="n0" (valueChange)="
+                              onReceiveValueChange(
+                                dataItem,
+                                $event,
+                                dataItem.pk
+                              )
+                            ">
+                          </kendo-numerictextbox>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </kendo-grid>
+                  </div>
+                </div>
+                <div class="col-md-7 mb-2">
+                  <div>
+                    <button class="btn w-auto p-2 pl-4 pr-4 k-button" type="button" kendoRippleContainer kendoTooltip
+                      title="Click to select a Changes Order to view and add those line items to the Pick List."
+                      kendoButton (click)="onLoadItem()">
+                      {{ selectedItem || "Select an item" }}
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-2 mb-2 p-0" kendoTooltip title="Type the item quantity needed for the job.">
+                  <kendo-textbox class="form-control form-control-round w-100" kendoTooltip title="Enter the Quantity"
+                    formControlName="addLine" placeholder="">
+                  </kendo-textbox>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <button class="btn w-auto p-2 pl-4 pr-4 k-button" kendoTooltip
+                    title="Click to add the selected item and quantity to the Pick List." type="button"
+                    kendoRippleContainer kendoButton (click)="onAddLine()">
+                    Add Line
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="custom_slider_popup" *ngIf="displayItem" style="width: 800px !important">
+              <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%">
+                <!-- <div class="content">
+                    <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+                </div> -->
+                <div class="row m-0">
+                  <kendo-grid [kendoGridBinding]="gridView" [data]="itemCode" [pageSize]="20" [pageable]="true"
+                    [sortable]="true" [selectable]="true" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                    [reorderable]="true" [selectedKeys]="itemCodeSelection" [height]="400"
+                    [columnMenu]="{ filter: true }" (selectionChange)="
+                      itemCodeClick($event.selectedRows[0].dataItem)
+                    ">
+                    <ng-template kendoGridToolbarTemplate>
+                      <input class="form-control form-control-round col-md-10" placeholder="Search in all columns..."
+                        formControlName="description" kendoTextBox />
+                      <div class="col-md-1 p-2">
+                        <i class="fa fa-search fa-2x" (click)="onSearchClick()"></i>
+                      </div>
+                    </ng-template>
+                    <kendo-grid-column field="invType" kendoTooltip title="Inventory Type" [width]="150">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="description" kendoTooltip title="Description">
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </div>
+                <div class="row ml-2">
+                  <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                      <button class="k-button k-primary" (click)="closepopup()" type="button">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </kendo-popup>
+            </div>
+            <div class="col-md-2 pt-8pr">
+              <button class="btn w-100 p-2 pl-4 pr-4 k-button mb-3" type="button" kendoRippleContainer
+                (click)="onDispatchJOb()" kendoButton [disabled]="isDisabled">
+                <i class="fa fa-2x fa-caret-right mr-2"></i>
+                Dispatch to Job
+              </button>
+              <kendo-datepicker class="form-control form-control-round mb-3"
+                title="Click to select the send or remove date for the item(s)." formControlName="invselectedDate"
+                calendarType="classic" (valueChange)="onDateChange($event)">
+              </kendo-datepicker>
+              <button class="btn w-100 p-2 pl-4 pr-4 k-button mb-3" type="button" kendoRippleContainer kendoButton
+                (click)="onRemoveJob()" [disabled]="isDisabled">
+                <i class="fa fa-2x fa-caret-left mr-2"></i> Remove from Job
+              </button>
+            </div>
+            <div class="col-md-5">
+              <div class="col-md-12">
+                <div class="row m-0 mb-2">
+                  <div class="col-md-10 p-0">
+                    <label>Current Job - {{ jobNumber }} - {{ jobName }}
+                    </label>
+                  </div>
+                  <div class="col-md-2 p-0">
+                    <button class="btn w-auto p-2 pl-4 pr-4 k-button" type="button" kendoTooltip
+                      title="Click to select all/none of the items and quantities on the job." kendoRippleContainer
+                      kendoButton (click)="onReturnAll()" [disabled]="isDisabled">
+                      {{ returnAllText }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="card h-400 mb-2">
+                  <kendo-grid [data]="projectinventoryData1" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                    [reorderable]="true" [sort]="sort2" [height]="400" (sortChange)="sortChange2($event)"
+                    kendoGridSelectBy [selectedKeys]="unLoadedInventorySelection" [sortable]="true" [sortable]="{
+                      allowUnsort: false,
+                      mode: multiple ? 'multiple' : 'single'
+                    }" (selectionChange)="
+                      unloadedInventoryGridSelection(
+                        $event.selectedRows[0].dataItem
+                      )
+                    ">
+                    <kendo-grid-column field="invType" kendoTooltip title="Inv Type" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="invNumber" kendoTooltip title="Inv#" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="quantity" kendoTooltip title="Quantity" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="retQty" kendoTooltip title="Ret Qty" [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <kendo-numerictextbox class="form-control form-control-round" placeholder="" #dataItem.pk
+                          [min]="0" formControlName="{{ dataItem.pk }}" [spinners]="false" [value]="dataItem.toPick"
+                          format="n0" (valueChange)="
+                      onReceiveValueChangeForUnload(
+                          dataItem,
+                          $event,
+                          dataItem.pk
+                        )
+                      ">
+                        </kendo-numerictextbox>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="damaged" kendoTooltip title="Damaged" [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto"
+                        (valueChange)="openDescriptionBox(dataItem,$event)">
+                        </kendo-switch>
+                      </ng-template>
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row no-gutters m-2">
+                  <div class="col-md-4 p-1">
+                    <label class="color-success p-2">On the way to Yard</label>
+                  </div>
+                  <div class="col-md-4 p-1">
+                    <label class="color-warning p-2">On the way To Job</label>
+                  </div>
+                  <div class="col-md-4 p-2">
+                    <div *ngIf="!displayDocument">
+                      <button class="btn w-auto p-2 pl-4 pr-4 k-button" type="button" (click)="onDocument()"
+                        kendoTooltip title="Click to select, view, and print a document." kendoRippleContainer
+                        kendoButton>
+                        Select a Document
+                      </button>
+                    </div>
+                    <div *ngIf="displayDocument">
+                      <kendo-combobox formControlName="document" [suggest]="true" kendoTooltip
+                        title="Click to select, view, and print a document." placeholder="Select Screen"
+                        class="form-control form-control-round" [textField]="'value'" [data]="documentList"
+                        [valueField]="'value'" (valueChange)="onDocumentValueChange($event)">
+                      </kendo-combobox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <kendo-dialog title="{{ lbltitle }}" *ngIf="opened" (close)="close('CANCEL')" [minWidth]="250" [width]="450">
+        <p style="margin: 30px; text-align: center" class="fs-16">
+          {{ lblAlert }}
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="close('YES')" themeColor="primary">
+            Yes
+          </button>
+          <button kendoButton (click)="close('NO')">No</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+      <kendo-dialog title="{{ lbltitle1 }}" *ngIf="openedRemove" (close)="closeRemove('CANCEL')" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center" class="fs-16">
+          {{ lblAlert1 }}
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="closeRemove('YES')" themeColor="primary">
+            Yes
+          </button>
+          <button kendoButton (click)="closeRemove('NO')">No</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+      <kendo-dialog title="MDI 3.0" *ngIf="iscloseDispatchToJob" (close)="closeDispatchToJob()" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center" class="fs-16">
+          No Items Disptached
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="closeDispatchToJob()">Ok</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+      <kendo-dialog title="{{ lbltitle2 }}" *ngIf="openedAddLine" (close)="closeAddLine()" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center" class="fs-16">
+          {{ lblAlert2 }}
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="closeAddLine()">Ok</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+      <kendo-dialog title="MDI 3.0" *ngIf="isDisplayLocation" [minWidth]="250" [width]="450">
+        <p style="margin: 30px; text-align: center" class="fs-16">
+          Select Location.
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="closeIsDisplayLocation()">Ok</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+      <kendo-dialog title="Error" *ngIf="invalidQuantity" (close)="onHandleErrorDialog()" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center">
+          {{ lblAlert2 }}
+        </p>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="onHandleErrorDialog()">OK</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+    </form>
+  </kendo-popup>
+</div>
+
+<kendo-dialog title="{{ confirmDialogTitle }}" *ngIf="isConfirmDialog" (close)="onCloseConfirmDialog()" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    {{ confirmDialogMessage }}
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onSellToJobYesClick()" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="onSellToJobNoClick()">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="MDI 3.0" *ngIf="isSaleCancelled" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">Sale Cancelled.</p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onCloseIsSaleCancelled()">Ok</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 999999999" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>
+
+<kendo-dialog title="Select Date" *ngIf="isOffrentDialogVisible" (close)="onToggleOffRent()" [minWidth]="250"
+  [width]="450">
+  <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+    (valueChange)="onSelectOffRentDate($event)">
+  </kendo-datepicker>
+</kendo-dialog>
+
+<kendo-dialog title="MDI 3.0" *ngIf="isSaleCancelled" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">Sale Cancelled.</p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onCloseIsSaleCancelled()">Ok</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<form [formGroup]="form" class="cust-form">
+  <kendo-dialog title="MDI 3.0" *ngIf="isEnterQuantityForSellToJob" (close)="onEnterQuantityForSellToJob()"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+      Enter quantity as well
+      <kendo-textbox class="form-control form-control-round" placeholder="" formControlName="txtQuantity">
+      </kendo-textbox>
+    </p>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="onOKEnterQuantityForSellToJob()" class="w-auto">OK</button>
+      <button kendoButton (click)="onEnterQuantityForSellToJob()" class="w-auto">Cancel</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</form>
+<kendo-dialog title="MDI 3.0" *ngIf="quantityForSellToJob" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center" class="fs-16">{{lblAlert2}}</p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onCloseQuantityCancelled()">Ok</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Exit?" *ngIf="isConfirmOffRent" (close)="onToggleOffrentConfirmDialog()" [minWidth]="250"
+  [width]="450" style="z-index: 99999">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    No Date will be Selected
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="onConfirmOffRent()" themeColor="primary">
+      Yes
+    </button>
+    <button kendoButton (click)="onToggleOffrentConfirmDialog()">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+
+
+<kendo-dialog title="Damaged Equipment" *ngIf="showDescBox" (close)="damagedEquipmentDialog('close')" [minWidth]="250"
+  [width]="450" style="z-index: 99999999999">
+  <p style="margin: 30px; text-align: center" class="fs-16">
+    Describe the damage to
+  </p>
+  <kendo-textarea placeholder="Description" [rows]="3"  [ngModelOptions]="{standalone: true}" [(ngModel)]="damageDescirption"  class="form-control form-control-round w-100">
+  </kendo-textarea>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="damagedEquipmentDialog('Ok')" themeColor="primary">Ok</button>
+    <button kendoButton (click)="damagedEquipmentDialog('Cancel')">Cancel</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

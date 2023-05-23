@@ -1,0 +1,248 @@
+<div class="register-box box-shadow-none card mb-0 pane-content">
+    <form class="cust-form" [formGroup]="form">
+        <div class="card-block p-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2"
+                        *ngIf="selectedLogBy !== 'MDIWEBIMPORT' && selectedLogBy !== 'MDIWEBIMPORT4' ">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Assigned To:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="disable"
+                                (click)="handleEmployeeDialog()">{{selectedEmployeeName || "Select Employee"}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-6 text-right">
+                            <label class="col-form-label pr-2">Send Email:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                formControlName="sendemail">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Completed Date:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                [disabled]="disable" formControlName="completedDate">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Completed By:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Completed By"
+                                [disabled]="disable" formControlName="completedBy">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Job #:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Job"
+                                (keypress)="numberOnly($event)" [disabled]="disable" formControlName="jobNumber">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Spoke To:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Spoke To"
+                                [disabled]="disable" formControlName="spokeTo">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Call Type:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="disable"
+                                *ngIf="!isCallTypeVisible" (click)="onHandleCallType()">{{form.get('callType')?.value ||
+                                "Call Type"}}</button>
+                            <kendo-combobox placeholder="" [suggest]="true" [textField]="'label'" [valueField]="'value'"
+                                [filterable]="true" [valuePrimitive]="true" formControlName="callType"
+                                [data]="callTypes" *ngIf="isCallTypeVisible">
+                            </kendo-combobox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Comments:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textarea placeholder="Comments" [cols]="130" [rows]="3" [disabled]="disable"
+                                class="form-control form-control-round" formControlName="comments">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox (change)="onChangeAction($event)"
+                                    [disabled]="actiondisable" formControlName="noActionRequired" />
+                                <label class="col-form-label pl-2">No Action Required</label>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder=""
+                                [disabled]="disableNoActionRequiredComment" formControlName="noActionReason">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Closed:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="disable"
+                                (valueChange)="onChangeClosed($event)" formControlName="closed">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <kendo-dialog title="Employees" *ngIf="isEmployeeVisible" (close)="handleEmployeeDialog()" [minWidth]="250"
+            [height]="500" [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-3 p-1">
+                            Employee Search
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                                placeholder="Search Employee" [(ngModel)]="employeeSearch" (keyup)="filterEmployee()">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-3 p-1 text-right">
+                            EE Count: {{employees.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                        [data]="employees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                        [skip]="skip" style="height: 55vh;" (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <kendo-grid-column *ngFor="let column of columns" [width]="column.width" field="{{column.Name}}"
+                            title="{{column.Text}}">
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </div>
+            </div>
+        </kendo-dialog>
+    </form>
+</div>
+
+
+<kendo-dialog title="Assignment Confirmation" *ngIf="isConfirmationDialog" (close)="handleEmployeeConfirmationDialog()"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Are you sure you want to assign to Employee: {{selectedEmployeeName}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onEmployeeConfirmClose()">No</button>
+        <button kendoButton (click)="onEmployeeConfirm()" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<!-- <kendo-dialog title="Select Screen" *ngIf="isCallTypeVisible" (close)="onHandleCallType()" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-2 p-1">
+                    Search
+                </div>
+                <div class="col-md-7 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{callTypes.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectCallType($event)" [data]="callTypes"
+                [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of callTypesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog> -->
+
+<kendo-dialog title="Save Canceled" *ngIf="isNoActionVisible" (close)="onHandleCloseAction()" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleCloseAction()">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<!-- <kendo-dialog title="Save Canceled" *ngIf="!isCommentsRequiredVisible" (close)="onHandleCloseAction()" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        comments required.
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleCloseAction()">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog> -->

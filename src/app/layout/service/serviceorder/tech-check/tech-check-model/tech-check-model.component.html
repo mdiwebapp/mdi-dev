@@ -1,0 +1,4 @@
+<app-tech-check-wp *ngIf="techCheckType == 'frmTechnicianChecklistWP'" (closeChecklistPopup)="btnCancelTech($event)"></app-tech-check-wp>
+<app-tech-check-trailer *ngIf="techCheckType == 'frmTechnicianChecklistTrailer'" (closeChecklistPopup)="btnCancelTech($event)"></app-tech-check-trailer>
+<app-tech-check-list *ngIf="techCheckType == 'frmTechnicianChecklist'" (closeChecklistPopup)="btnCancelTech($event)"></app-tech-check-list>
+<app-tech-check-vehicle *ngIf="techCheckType == 'frmTechnicianChecklistVehicle'" (closeChecklistPopup)="btnCancelTech($event)"></app-tech-check-vehicle>

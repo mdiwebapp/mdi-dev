@@ -1,0 +1,580 @@
+<form [formGroup]="fieldfailureForm">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Field Failure</h4>
+                <div class="" *ngIf="menuService.isAddRight">
+                    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon mr-2" filter="button" *ngIf="disable"
+                        (click)="onHandleOperation('new')">
+                    </button>
+                </div>
+                <div class="" *ngIf="menuService.isEditRight">
+                    <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon mr-2" filter="button" *ngIf="disable"
+                        (click)="onHandleOperation('edit')">
+                    </button>
+                </div>
+
+                <div class="" *ngIf="menuService.isAddRight || menuService.isEditRight">
+                    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon mr-2" filter="button"
+                        *ngIf="!disable" (click)="onHandleOperation('cancel')">
+                    </button>
+                </div>
+                <div class="" *ngIf="menuService.isAddRight || menuService.isEditRight">
+                    <button kendoTooltip title="Save" id="btnSave" class="btn_icon mr-2" filter="button"
+                        *ngIf="!disable" (click)="submitFieldFailureForm()">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="row">
+                <kendo-splitter orientation="vertical">
+                    <kendo-splitter-pane>
+                        <kendo-splitter>
+                            <kendo-splitter-pane [collapsible]="true" size="35%">
+                                <div class="pane-content">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <kendo-label [for]="branch" text="Branch:"></kendo-label>
+                                                <kendo-combobox #branch kendoTooltip
+                                                    title="Filter field failure by branch" [suggest]="true"
+                                                    [(ngModel)]="filterBranch" [ngModelOptions]="{standalone: true}"
+                                                    placeholder="Select Branch"
+                                                    (valueChange)="filterFieldFailureData($event)"
+                                                    class="form-control form-control-round" [textField]="'value'"
+                                                    [data]="branchList" [valueField]="'code'" [valuePrimitive]="true"
+                                                    [disabled]="!disable">
+                                                </kendo-combobox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                            [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                            (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem.ff,$event.selectedRows[0].dataItem.branch)"
+                                            [data]="fieldfailureData" [sort]="fieldFailuresort"
+                                            (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                            [selectedKeys]="selections" [sortable]="true"
+                                            (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                            style="height: 75vh;"
+                                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                            <ng-template kendoGridToolbarTemplate>
+                                                <!-- <div class="example-config">
+                                            <a #anchor (click)="onToggleFilter()">
+                                                <span class="k-icon k-i-more-vertical"></span>
+                                            </a>
+                                        </div> -->
+                                                <input placeholder="Search in all columns..." kendoTextBox
+                                                    class="col-md-9" (keydown.enter)="$event.preventDefault()"
+                                                    (input)="onFilter($event.target.value)" />
+                                                <kendo-grid-spacer></kendo-grid-spacer>
+                                                <span> Total : {{totalData}}</span>
+                                                <kendo-grid-spacer></kendo-grid-spacer>
+                                            </ng-template>
+
+                                            <!-- <kendo-grid-column *ngFor="let column of fieldfailurecolumns" [width]="column.width"
+                                        field="{{column.Name}}" title="{{column.Text}}">
+                                    </kendo-grid-column> -->
+                                            <kendo-grid-column field="ff" title="FF">
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <lable>{{ dataItem.ff }}</lable>
+                                                </ng-template>
+                                            </kendo-grid-column>
+
+                                            <kendo-grid-column field="fleetNum" title="Fleet Num">
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <lable>{{ dataItem.fleetNum }}</lable>
+                                                </ng-template>
+                                            </kendo-grid-column>
+
+                                            <kendo-grid-column field="branchName" title="Branch">
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <lable>{{ dataItem.branchName }}</lable>
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                        </kendo-grid>
+                                        <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                                            style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                                            <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                                let-currentPage="currentPage">
+                                                <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                                <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                                </kendo-datapager-numeric-buttons>
+                                                <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                                                <kendo-dropdownlist class="form-control form-control-round"
+                                                    style="width: 16% !important;" [data]="pageSizeList"
+                                                    [(ngModel)]="pageSize" (valueChange)="onPageSizechange($event)"
+                                                    [ngModelOptions]="{standalone: true}" [valuePrimitive]="true"
+                                                    [textField]="'value'" [valueField]="'value'">
+                                                </kendo-dropdownlist>
+                                            </ng-template>
+                                        </kendo-datapager>
+                                    </div>
+                                </div>
+                            </kendo-splitter-pane>
+                            <kendo-splitter-pane style="height: 70vh; overflow-y: auto; overflow-x: hidden;">
+                                <fieldset>
+                                    <legend class="text-center">Field Failure Report</legend>
+                                    <p class="text-center">EQUIPMENT FIELD FAILURE REPORT</p>
+                                    <p class="text-center">This form is to be completed each and every time
+                                        a piece of equipment experiences a failure in the field</p>
+                                    <div class="row pl-4 pr-4 pb-4">
+                                        <input type="hidden" formControlName="Id">
+                                        <div class="col-md-6">
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label">Project</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <input type="hidden" formControlName="projectNumber">
+                                                        <input type="hidden" formControlName="projectNumber">
+                                                        <input type="hidden" formControlName="projectLocation">
+                                                        <button class="k-button w-100 nullbtn" type="button"
+                                                            (click)="onHandleOperation('project')"
+                                                            [disabled]="disable">{{projectdetailvalue}}</button>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('projectdetail').hasError('required') && fieldfailureForm.get('projectdetail').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label">Account Manager</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <button class="k-button w-100 nullbtn" type="button"
+                                                            (click)="onHandleOperation('account_manager')"
+                                                            [disabled]="disable">{{accountManagervalue}}</button>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('accountManager').hasError('required') && fieldfailureForm.get('accountManager').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label">Type of Failure</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <button class="k-button w-100 nullbtn" type="button"
+                                                            (click)="onHandleOperation('type_of_failure')"
+                                                            [disabled]="disable">{{failureTypevalue}}</button>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('typeOfFailure').hasError('required') && fieldfailureForm.get('typeOfFailure').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <button class="k-button w-100" type="button"
+                                                            [disabled]="disable">Photographs
+                                                            Taken?</button>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('photographtaken').hasError('required') && fieldfailureForm.get('photographtaken').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <span>
+                                                            <input type="radio" value="yes"
+                                                                formControlName="photographtaken" [disabled]="disable"
+                                                                (change)="onSortingRadioChange('yes')"
+                                                                kendoRadioButton />
+                                                            <label class="k-label ml-2 mr-1"> Yes</label>
+                                                        </span>
+                                                        <span>
+                                                            <input type="radio" value="no"
+                                                                formControlName="photographtaken" [disabled]="disable"
+                                                                (change)="onSortingRadioChange('no')"
+                                                                kendoRadioButton />
+                                                            <label class="k-label ml-2">No</label>
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div *ngIf="isPhotographstakenbyvisible">
+                                                <div class="row mb-2 align-items-center">
+                                                    <div class="col-md-5 text-right">
+                                                        <div>
+                                                            <label class="k-label ">If Yes,by whom?</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div>
+                                                            <button class="k-button w-100 nullbtn" type="button"
+                                                                (click)="onHandleOperation('if_whom')"
+                                                                [disabled]="disable">{{photographstakenbyvalue}}</button>
+                                                            <div class="required-text"
+                                                                *ngIf="fieldfailureForm.get('ifYesWhom').hasError('required') && fieldfailureForm.get('ifYesWhom').touched">
+                                                                This field is required!
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row mb-2">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label ml-2">Inv Number</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <button class="k-button w-100 nullbtn" type="button"
+                                                            (click)="onHandleInvNumberOperation()"
+                                                            [disabled]="disable">{{invNumbervalue}}</button>
+                                                        <div class="required-text" *ngIf="!isProjectSelected">Please
+                                                            select project</div>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('invNumber').hasError('required') && fieldfailureForm.get('invNumber').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label ml-2">Date of Incident</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <kendo-datepicker class="form-control form-control-round"
+                                                            calendarType="classic" formControlName="dateOfIncident"
+                                                            [disabled]="disable">
+                                                        </kendo-datepicker>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('dateOfIncident').hasError('required') && fieldfailureForm.get('dateOfIncident').touched">
+                                                            This field is required!
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2 align-items-center">
+                                                <div class="col-md-5 text-right">
+                                                    <div>
+                                                        <label class="k-label ml-2">Time of Incident</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div>
+                                                        <button class="k-button w-100 nullbtn" type="button"
+                                                            [disabled]="disable" *ngIf="!isTimeOfIncident"
+                                                            (click)="onHandleOperation('time_incident')">{{timeofIncidentvalue}}</button>
+                                                        <!-- <kendo-timepicker #timepicker format="HH:mm:ss" [steps]="steps"
+                                                            [value]="value" *ngIf="isTimeOfIncident"
+                                                            formControlName="timeOfIncident"></kendo-timepicker> -->
+                                                        <kendo-timepicker #timepicker *ngIf="isTimeOfIncident"
+                                                            format="HH:mm" class="form-control form-control-round"
+                                                            [(value)]="valueoftimeofIncident"
+                                                            (valueChange)="handleTimeofIncident($event)"
+                                                            calendarType="classic">
+                                                        </kendo-timepicker>
+                                                        <div class="required-text"
+                                                            *ngIf="fieldfailureForm.get('timeOfIncident').hasError('required') && fieldfailureForm.get('timeOfIncident').touched">
+                                                            This field is required!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <label class="col-form-label pr-2">Description of problem</label>
+                                            <kendo-textarea [cols]="145" [rows]="4"
+                                                class="form-control form-control-round w-100"
+                                                formControlName="describeofpromblem" [disabled]="disable">
+                                            </kendo-textarea>
+                                            <div class="required-text"
+                                                *ngIf="fieldfailureForm.get('describeofpromblem').hasError('required') && fieldfailureForm.get('describeofpromblem').touched">
+                                                This field is required!
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <label class="col-form-label pr-2">How did you find out about the
+                                                problem?</label>
+                                            <kendo-textarea [cols]="145" [rows]="4"
+                                                class="form-control form-control-round w-100"
+                                                formControlName="findOutAboutthePromblem" [disabled]="disable">
+                                            </kendo-textarea>
+                                            <div class="required-text"
+                                                *ngIf="fieldfailureForm.get('findOutAboutthePromblem').hasError('required') && fieldfailureForm.get('findOutAboutthePromblem').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <label class="col-form-label pr-2">If repaired, how was the unit returned
+                                                to the proper operating condition?</label>
+                                            <kendo-textarea [cols]="145" [rows]="4"
+                                                class="form-control form-control-round w-100"
+                                                formControlName="condition" [disabled]="disable">
+                                            </kendo-textarea>
+                                            <div class="required-text"
+                                                *ngIf="fieldfailureForm.get('condition').hasError('required') && fieldfailureForm.get('condition').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-start">
+                                            <div class="mt-3">
+                                                <input type="checkbox" formControlName="ifFieldFailure"
+                                                    [disabled]="disable" kendoCheckBox
+                                                    (change)="onchangeifFieldFailure()" />
+                                                <label class="col-form-label pl-2">Not a Field
+                                                    Failure</label>
+                                                <div class="required-text"
+                                                    *ngIf="fieldfailureForm.get('ifFieldFailure').hasError('required') && fieldfailureForm.get('ifFieldFailure').touched">
+                                                    This field is required!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <label class="col-form-label pr-2">Reason:
+                                            </label>
+                                            <kendo-textarea [cols]="145" [rows]="4" formControlName="fieldFailureReason"
+                                                class="form-control form-control-round w-100"
+                                                [disabled]="disableReason">
+                                            </kendo-textarea>
+                                            <div class="required-text"
+                                                *ngIf="fieldfailureForm.get('fieldFailureReason').hasError('required') && fieldfailureForm.get('fieldFailureReason').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </kendo-splitter-pane>
+                        </kendo-splitter>
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<kendo-dialog title="Select Screen" *ngIf="isProjectVisible" (close)="onHandleOperation('project')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="filterProject"
+                        class="form-control form-control-round" placeholder=""
+                        (keyup)="searchProjectData($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{projectdata.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'project')"
+                [data]="projectdata" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="projectselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 32vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+
+                <kendo-grid-column field="jobNumber" title="FF">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.jobNumber }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="job" title="FF">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.job }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Account Manager" *ngIf="isaccountManagerVisible" (close)="onHandleOperation('account_manager')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="filterAccountManager"
+                        class="form-control form-control-round" placeholder=""
+                        (keyup)="onAccountManagerFilter($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{accountManagerData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'account_manager')"
+                [data]="accountManagerData" [sort]="accountManagersort"
+                (sortChange)="onAccountManagerSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="accountmanagerselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of accountManagercolumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+
+</kendo-dialog>
+
+<kendo-dialog title="Select Screen" *ngIf="isTypeOfFailureVisible" (close)="onHandleOperation('type_of_failure')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="filterFailureType"
+                        class="form-control form-control-round" placeholder=""
+                        (keyup)="onFailureTypeFilter($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{typeOfFailureData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'type_failure')"
+                [data]="typeOfFailureData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="typeOffailureselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 32vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Screen" *ngIf="isInvNumberVisible" (close)="onHandleOperation('inv_number')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [(ngModel)]="invNumbersearchText" [ngModelOptions]="{standalone: true}"
+                        class="form-control form-control-round" placeholder=""
+                        (keyup)="onInvNumberFilter($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{totalInvNumberData}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'inv_number')"
+                [data]="invNumberData" [sort]="invNumbersort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="invNumberselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 32vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of invNumberDataColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+            <kendo-datapager [total]="totalInvNumberData" [pageSize]="invNumberpageSize" [skip]="invNumberskip"
+                style="width: 100% !important;" (pageChange)="onInvNumberPageChange($event)">
+                <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                    </kendo-datapager-numeric-buttons>
+                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                    <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                        [data]="pageSizeList" [(ngModel)]="invNumberpageSize"
+                        (valueChange)="oninvNumberPageSizechange($event)" [ngModelOptions]="{standalone: true}"
+                        [valuePrimitive]="true" [textField]="'value'" [valueField]="'value'">
+                    </kendo-dropdownlist>
+                </ng-template>
+            </kendo-datapager>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Screen" *ngIf="isIfYesWhomVisible" (close)="onHandleOperation('if_whom')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="filterPhotographstakenby"
+                        class="form-control form-control-round" placeholder=""
+                        (keyup)="onPhotographstakenbyFilter($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{photographsTakenbyData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'if_whom')"
+                [data]="photographsTakenbyData" [sort]="photographsTakenbysort"
+                (sortChange)="onPhotographstakebySortChange($event)" kendoGridSelectBy
+                [selectedKeys]="phototgraphsTakenbyselections" [sortable]="true"
+                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 32vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of photographsTakenbyDataColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

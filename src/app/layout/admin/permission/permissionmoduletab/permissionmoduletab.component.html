@@ -1,0 +1,39 @@
+<kendo-grid [data]="moduleTab" [height]="533"   [navigable]="true" [resizable]="true" [reorderable]="true" 
+    [sort]="gridState.sort" [sortable]="true" (dataStateChange)="onStateChange($event)"
+    (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)"
+    (remove)="removeHandler($event)" (add)="addHandler($event)" [navigable]="true">
+    <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand title="Add" id="btnAdd" class="btn_icon"></button>
+    </ng-template>
+    <kendo-grid-column field="departmentId" title="Department" width="120">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.permissionDepartmentName}}
+        </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+            <kendo-dropdownlist popupAnchor [data]="department"   (valueChange)="departmentChange($event)"
+                textField="departmentName" valueField="id" [valuePrimitive]="true" [formControl]="formGroup.get('departmentId')">
+            </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="permissionModuleId" title="Module" width="140">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.moduleName}}
+        </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+            <kendo-dropdownlist popupAnchor [data]="module"  
+                textField="value" valueField="id" [valuePrimitive]="true" [formControl]="formGroup.get('permissionModuleId')">
+            </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="tabName" editor="text" width="180" title="Tab Name"></kendo-grid-column>
+    <kendo-grid-command-column title="" width="100">
+        <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridEditCommand  [primary]="true" title="Edit"  id="btnEdit" class="btn_icon">
+            </button>
+            <button kendoGridSaveCommand title="Save" id="btnSave" class="btn_icon" filter="button">
+            </button>
+            <button kendoGridCancelCommand title="Cancel" id="btnCancel" class="btn_icon" filter="button">
+            </button>
+        </ng-template>
+    </kendo-grid-command-column>
+</kendo-grid>

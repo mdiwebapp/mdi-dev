@@ -1,0 +1,166 @@
+<div class="row">
+    <div class="col-md-12">
+        <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+            <kendo-tabstrip-tab title="Time Approval Routing" [selected]="true">
+                <ng-template kendoTabContent>
+                    <div class="row">
+                        <div class="col-md-12 m-5">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        (click)="onToggleEmployeeButton()" *ngIf="!isEmpBtn">{{selectedEmployee?.value
+                                        || 'Select Employee'}}</button>
+                                    <kendo-combobox placeholder="Select Employee" [textField]="'value'"
+                                        [valueField]="'eeid'" [data]="employees" *ngIf="isEmpBtn"
+                                        (valueChange)="onValueChange($event)" [ngModel]="selectedEmployee"
+                                        [kendoDropDownFilter]="employeeFilterOptions">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        (click)="onToggleBranchButton()" *ngIf="!isBranch">Home Branch: {{homeBranch}}
+                                    </button>
+                                    <kendo-combobox placeholder="Select Job" [textField]="'branch'"
+                                         [valueField]="'time'" [data]="jobData"
+                                        *ngIf="isBranch" [ngModel]="selectedBranch" [valuePrimitive]="true"
+                                        [kendoDropDownFilter]="employeeFilterOptions"
+                                        (valueChange)="onValueJobChange($event)">
+                                    </kendo-combobox>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                (selectionChange)="onSelectionChange($event)" [data]="employeeData"
+                                                [sort]="titlesSort" (sortChange)="onSortChange($event)"
+                                                kendoGridSelectBy [selectedKeys]="titlesSelections" [sortable]="true"
+                                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                                [hideHeader]="true">
+                                                <kendo-grid-column *ngFor="let column of employeeColumns"
+                                                    [width]="column.width" field="{{column.Name}}"
+                                                    title="{{column.Text}}">
+                                                </kendo-grid-column>
+                                            </kendo-grid>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                (selectionChange)="onSelectionChange($event)" [data]="employeeInfoData"
+                                                [sort]="titlesSort" (sortChange)="onSortChange($event)"
+                                                kendoGridSelectBy [selectedKeys]="approverSelections" [sortable]="true"
+                                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                                [hideHeader]="true">
+                                                <kendo-grid-column *ngFor="let column of employeeInfoColumns"
+                                                    [width]="column.width" field="{{column.Name}}"
+                                                    title="{{column.Text}}">
+                                                </kendo-grid-column>
+                                            </kendo-grid>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <fieldset>
+                                                <legend>Reporting Issues</legend>
+                                                <kendo-textarea rows="5" [cols]="170" [ngModel]="reportingIssue"
+                                                    [disabled]="true"></kendo-textarea>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="POR Routing">
+                <ng-template kendoTabContent>
+                    <div class="row">
+                        <div class="col-md-12 m-5">
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        (click)="onToggleEmployeeButton()" *ngIf="!isEmpBtn">{{bomEmployee?.value
+                                        || 'Select Employee'}}</button>
+                                    <kendo-combobox placeholder="Select Employee" [textField]="'value'"
+                                        [valueField]="'eeid'" [data]="employees" *ngIf="isEmpBtn"
+                                        [ngModel]="bomEmployee" (valueChange)="onBOMEmployeeValueChange($event)"
+                                        [kendoDropDownFilter]="employeeFilterOptions2">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex">
+                                        <div class="wp-30 p-l-10 p-r-10">
+                                            <button kendoTooltip title="Refresh" id="btnRefresh" class="btn_icon"
+                                                (click)="onRefresh()">
+                                            </button>
+                                        </div>
+                                        <div class="wp-70 p-l-10 p-r-10" *ngIf="menuService.isEditRight">
+                                            <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon"
+                                                *ngIf="!isEdit" (click)="btnCancel();" filter="button">
+                                            </button>
+                                            <button kendoTooltip title="Save" id="btnSave" class="btn_icon"
+                                                *ngIf="!isEdit" filter="button" (click)="onSave();">
+                                            </button>
+                                            <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon"
+                                                *ngIf="isEdit" filter="button" (click)="btnEdit();">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-11">
+                                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                        [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                        (selectionChange)="onSelectionChange($event)" [data]="titlesData"
+                                        [sort]="titlesSort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                        [selectedKeys]="titlesSelections" [sortable]="true"
+                                        (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 50vh;"
+                                        (dataStateChange)="onDataStateChange($event)"
+                                        (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                        <kendo-grid-column *ngFor="let column of titlesColumns" [width]="column.width"
+                                            field="{{column.Name}}" title="{{column.Text}}">
+                                        </kendo-grid-column>
+                                        <kendo-grid-column title="Report TO Name" width="80" field="reportTOName">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [valuePrimitive]="true" [value]="dataItem.reportTo"
+                                                    [textField]="'value'" [valueField]="'eeid'" [disabled]="isEdit"
+                                                    (valueChange)="changeReportTo(dataItem,$event)" [data]="employees"
+                                                    [suggest]="true">
+                                                </kendo-combobox>
+                                                <!-- <kendo-dropdownlist [data]="employees" [textField]="'value'"
+                                                [value]="dataItem.reportTOName"    [valueField]="'eeid'">
+                                                </kendo-dropdownlist> -->
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                </div>
+                            </div>
+                            <!-- <div class="row mt-3">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Approval Amount</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <kendo-textbox></kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+    </div>
+</div>

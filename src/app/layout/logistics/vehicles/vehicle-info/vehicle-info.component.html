@@ -1,0 +1,955 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 72vh;">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <form [formGroup]="form" class="cust-form">
+
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters"
+                        *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Vehicle Number:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="vehicleNumber"
+                                placeholder="Vehicle Number" [disabled]="true">
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('vehicleNumber').hasError('required') && form.get('vehicleNumber').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Vehicle Type:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="vehicleType" [suggest]="true" placeholder="Vehicle Type"
+                                class="form-control form-control-round" [textField]="'value'" [data]="VehicleTypeData"
+                                [valueField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                (filterChange)="vehicleTypeFilter($event)" (valueChange)="vehicleTypeChange($event)">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                *ngIf="form.get('vehicleType').hasError('required') && form.get('vehicleType').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+
+                </div>
+                <!-- <div class="col-md-4 mb-3">
+                    <div class="row no-gutters" *ngIf="form.get('vehicleType').value > 0 || id > 0">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">sub Category:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="subCategory" [suggest]="true" placeholder="Vehicle Type"
+                                class="form-control form-control-round" [textField]="'value'" [data]="VehicleTypeData"
+                                [valueField]="'id'" [filterable]="true" [valuePrimitive]="true">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                *ngIf="form.get('subCategory').hasError('required') && form.get('subCategory').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div> 
+                </div>-->
+            </div>
+
+
+
+            <div class="row no-gutters"
+                *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                <div class="col-md-8 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Description:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <kendo-textbox class="form-control form-control-round" formControlName="description"
+                                placeholder="Description" required>
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('description').hasError('required') && form.get('description').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters" *ngIf="type05">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Rental:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                formControlName="rental">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters"
+                *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                <div class="col-md-8 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">VIN:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="serialNumber"
+                                (change)="checkSerialNo($event.target.value)" placeholder="VIN">
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('serialNumber').hasError('required') && form.get('serialNumber').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+
+                </div>
+            </div>
+            <div class="row no-gutters"
+                *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                <div class="col-md-4 mb-3" *ngIf="!this.type04 && !this.type06  && !this.type07 && !this.type08">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">License Plate #:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="license"
+                                placeholder="License Plate Number">
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('license').hasError('required') && form.get('license').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3"
+                    *ngIf="(!this.type04 && !this.type06  && !this.type07 && !this.type08) &&  nonExpiringPlate==false">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Expires:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker formControlName="licenseExpiration" calendarType="classic"
+                                class="form-control form-control-round">
+                            </kendo-datepicker>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3" *ngIf="this.type03">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">Non-Expiring Plate:</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [disabled]="isDisabled" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="nonExpiringPlate" (valueChange)="ExpiringPlateActive($event)">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters"
+                *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Branch:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="branchId" placeholder="Branch" [suggest]="true"
+                                class="form-control form-control-round" [textField]="'value'" [data]="branch"
+                                (filterChange)="branchFilter($event)" [valueField]="'id'" [filterable]="true"
+                                [valuePrimitive]="true">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                *ngIf="form.get('branchId').hasError('required') && form.get('branchId').touched">
+                                This field is required!
+                            </div>
+                            <!-- <kendo-textbox class="form-control form-control-round" formControlName="branch"
+                                placeholder="Branch"  >
+                            </kendo-textbox> -->
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Assign To:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="assignEmployeeId" placeholder="Assign To" [suggest]="true"
+                                class="form-control form-control-round" [textField]="'value'" [data]="assignTo"
+                                (filterChange)="assignedToFilter($event)" [valueField]="'id'" [filterable]="true"
+                                [valuePrimitive]="true">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                *ngIf="form.get('assignEmployeeId').hasError('required') && form.get('assignEmployeeId').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Assigned on:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker formControlName="assignedDate" calendarType="classic"
+                                [(value)]="setAssignedDate" class="form-control form-control-round">
+                            </kendo-datepicker>
+                            <div class="required-text"
+                                *ngIf="form.get('assignedDate').hasError('required') && form.get('assignedDate').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters"
+                *ngIf="(form.get('vehicleType').value !='' && form.get('vehicleType').value !=null) || id > 0">
+                <div class="col-md-4 mb-3" *ngIf="type03==false && type06==false && type07==false">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Miles:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="miles"
+                                placeholder="Miles">
+                            </kendo-textbox>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3" *ngIf="type04 || type06 || type07">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Hours:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="hours"
+                                placeholder="Hours">
+                            </kendo-textbox>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Annual Inspection Date Expires On:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker formControlName="annualInspectionDate" calendarType="classic"
+                                [(value)]="setannualInspectionDate" class="form-control form-control-round">
+                            </kendo-datepicker>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Last Service Date:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker formControlName="lastServiceDate" calendarType="classic"
+                                [disabled]="isDisabled" class="form-control form-control-round">
+                            </kendo-datepicker>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <kendo-expansionpanel [expanded]="isExpanded" [disabled]="isMoreDisabled" id="expPanel">
+                <ng-template kendoExpansionPanelTitleDirective>
+                    <div class="header-content">
+                        More Info
+                    </div>
+                </ng-template>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Service Frequency:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-combobox formControlName="serviceFrequency" placeholder="Service Frequency"
+                                    [suggest]="true" class="form-control form-control-round" [textField]="'value'"
+                                    [data]="lstFrequency" [valueField]="'value'" [filterable]="true"
+                                    [valuePrimitive]="true">
+                                </kendo-combobox>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Purchased From:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="purchasedFrom"
+                                    placeholder="Purchased From">
+                                </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('purchasedFrom').hasError('required') && form.get('purchasedFrom').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Purchase Price:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="purchasePrice"
+                                    placeholder="Purchase Price">
+                                </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('purchasePrice').hasError('required') && form.get('purchasePrice').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Daily Rate:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="dailyRate"
+                                    placeholder="Daily Rate">
+                                </kendo-textbox>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Date Purchased:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-datepicker formControlName="purchaseDate" calendarType="classic"
+                                    [(value)]="setpurchaseDate" class="form-control form-control-round">
+                                </kendo-datepicker>
+                                <div class="required-text"
+                                    *ngIf="form.get('purchaseDate').hasError('required') && form.get('purchaseDate').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right"
+                                *ngIf="!moretype0601 && !moretype0602 && !moretype03 && !moretype0604 && !moretype07 && !moretype08 && !moretype09">
+                                <label class="col-form-label pr-2">DOT:</label>
+                            </div>
+                            <div class="col-md-2"
+                                *ngIf="!moretype0601 && !moretype0602 && !moretype03 && !moretype0604 && !moretype07 && !moretype08 && !moretype09">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="dot">
+                                </kendo-switch>
+                            </div>
+
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Expensed:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="expensed">
+                                </kendo-switch>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters"
+                            *ngIf="!moretype04 && !moretype0601 && !moretype0602 && !moretype03 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                            <div class="col-md-4 text-right" *ngIf="!moretype05">
+                                <label class="col-form-label pr-2">ABS:</label>
+                            </div>
+                            <div class="col-md-2" *ngIf="!moretype05">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="abs">
+                                </kendo-switch>
+                            </div>
+
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">CDL:</label>
+                            </div>
+                            <div class="col-md-2" style="margin-top: 3px;">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="cdl">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"
+                        *ngIf="!moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype07 && !moretype08 && !moretype09">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Miles At Purchase:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="milesAtPurchased" placeholder="Miles">
+                                </kendo-textbox>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"
+                        *ngIf="moretype04 || moretype0601 || moretype0602 || moretype07 || moretype08 || moretype09">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Hours At Purchase:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="hoursAtPurchased" placeholder="Hours">
+                                </kendo-textbox>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row">
+
+                    <!-- <app-more-info></app-more-info> -->
+                    <div class="p-2" *ngIf="!moretype03">
+                        <div class="row no-gutters mb-3" *ngIf="!moretype0603">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Engine Make:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="engineMake"
+                                    placeholder="Engine Make">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="!moretype0603">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Engine Model:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="engineModel"
+                                    placeholder="Engine Model">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf=" !moretype0603">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Engine SN:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="engineSerialNumber" placeholder="Engine SN">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype0602 || moretype0604">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Engine HP:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="engineHP"
+                                    placeholder="Engine SN">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3"
+                            *ngIf="!moretype05 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Displacement:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="displacement"
+                                    placeholder="Displacement">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters mb-3"
+                            *ngIf="!moretype04 && !moretype0602  && !moretype0603  && !moretype0604">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Transmission Model:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="transmissionModel" placeholder="Transmission Model">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Unit Biuld date (Mfg date):</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-datepicker formControlName="unitBuildDate" calendarType="classic"
+                                    [(value)]="setunitBuildDate" class="form-control form-control-round">
+                                </kendo-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <div class="row no-gutters mb-3"
+                            *ngIf="!moretype02 && !moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype09 && !moretype10">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Max Lifting Height:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="maxLiftingHeight" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!--  <div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="maxLiftingHeightIN" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Lifting Capacity:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="liftingCapacity"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3"
+                            *ngIf="!moretype02 && !moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602  && !moretype0603  && !moretype0604 && !moretype10 && !moretype09 && !moretype08">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Telescoping Reach Length:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="telescopicReachLength" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!-- <div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="telescopicReachLengthIN" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+
+                            <div class="col-md-6 text-right">
+                            </div>
+
+                        </div>
+                        <div class="row no-gutters mb-3">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Length:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="length"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!-- <div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round" formControlName="lengthIN"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+                            <div class="col-md-2 text-right" *ngIf="moretype04">
+                                <label class="col-form-label pr-2">Sleeps:</label>
+                            </div>
+                            <div class="col-md-4" *ngIf="moretype04">
+                                <kendo-combobox formControlName="sleeps" placeholder="Service Frequency"
+                                    [suggest]="true" class="form-control form-control-round" [textField]="'value'"
+                                    [data]="branch" [valueField]="'id'" [filterable]="true" [valuePrimitive]="true">
+                                </kendo-combobox>
+
+                            </div>
+
+                            <div class="col-md-2 text-right"
+                                *ngIf="moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Axle Spacing 1:</label>
+                            </div>
+                            <div class="col-md-2"
+                                *ngIf="moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="axleSpacing1"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-2 text-left"
+                                *ngIf="moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!--<div class="col-md-1"
+                                *ngIf="moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603  && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="axleSpacing1IN"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left"
+                                *ngIf="moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+                            <div class="col-md-2 text-right"
+                                *ngIf="!moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Front Axel Ratio:</label>
+                            </div>
+                            <div class="col-md-1"
+                                *ngIf="!moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="frontAxelRatio"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-2 text-right"
+                                *ngIf="!moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Rear Axel Ratio:</label>
+                            </div>
+                            <div class="col-md-1"
+                                *ngIf="!moretype03 && !moretype04 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="rearAxelRatio"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-3 text-right"
+                                *ngIf="moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Wheels or Tracks:</label>
+                            </div>
+                            <div class="col-md-2"
+                                *ngIf="moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09">
+                                <kendo-switch onLabel="Tracks" offLabel="No" class="" style="width: auto;"
+                                    formControlName="vehicleNumber">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Height:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="height"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!--  <div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round" formControlName="heightIN"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+                            <div class="col-md-2 text-right"
+                                *ngIf="moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Axle Spacing 2:</label>
+                            </div>
+                            <div class="col-md-2"
+                                *ngIf="moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="axleSpacing2"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-2 text-left"
+                                *ngIf="moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!-- <div class="col-md-1"
+                                *ngIf="moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="axleSpacing2IN"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left"
+                                *ngIf="moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+                            <div class="col-md-2 text-right"
+                                *ngIf="!moretype03 && !moretype04 && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Front GAWR:</label>
+                            </div>
+                            <div class="col-md-1"
+                                *ngIf="!moretype03 && !moretype04  && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="frontGAWR"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-2 text-right"
+                                *ngIf="!moretype03 && !moretype04  && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Rear GAWR:</label>
+                            </div>
+                            <div class="col-md-1"
+                                *ngIf="!moretype03 && !moretype04  && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="rearGAWR"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters mb-3">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Width:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="width"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!--<div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round" formControlName="widthIN"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+
+                            <div class="col-md-1 text-right"
+                                *ngIf="!moretype04 && !moretype0602 && !moretype0604 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">Tire Size:</label>
+                            </div>
+                            <div class="col-md-3"
+                                *ngIf="!moretype04 && !moretype0602 && !moretype0604 && !moretype09 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="tireSize"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right"
+                                *ngIf="!moretype04  && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09">
+                                <label class="col-form-label pr-2"># of Axels:</label>
+                            </div>
+                            <div class="col-md-1"
+                                *ngIf="!moretype04  && !moretype05 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09">
+                                <kendo-textbox class="form-control form-control-round" formControlName="numberOfAxels"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3"
+                            *ngIf="moretype04 && !moretype0601 && !moretype0602 && !moretype0603 && !moretype0604 && !moretype07 && !moretype08 && !moretype09 && !moretype10">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Weight:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="weight"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+
+                            <div class="col-md-3 text-right">
+
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="!moretype04">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Curb Weight:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="curbWeight"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+
+                            <div class="col-md-3 text-right"
+                                *ngIf="!moretype0602 && !moretype0604 && !moretype09 && !moretype10">
+                                <label class="col-form-label pr-2">PSI Cold:</label>
+                            </div>
+                            <div class="col-md-2" *ngIf="!moretype0602 && !moretype0604 && !moretype10">
+                                <kendo-textbox class="form-control form-control-round" formControlName="psiCold"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype0604">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Dry Weight:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="dryWeight"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+
+
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype09 || moretype10">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Operating Weight:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round" formControlName="operatingWeight"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype09 || moretype10">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">MAX Drilling Depth:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="maxDrillingDepth" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-2 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div>
+                            <!--<div class="col-md-1">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="maxDrillingDepthIN" placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-left">
+                                <label class="col-form-label pr-2">&nbsp;IN</label>
+                            </div> -->
+
+                        </div>
+                        <div class="row no-gutters mb-3"
+                            *ngIf="!moretype04 && !moretype0602 && !moretype0604  && !moretype07 && !moretype08  && !moretype09 && !moretype10">
+
+                            <div class="col-md-3 text-right" *ngIf="!moretype03 && !moretype0601 && !moretype0603">
+                                <label class="col-form-label pr-2">GVWR:</label>
+                            </div>
+                            <div class="col-md-2" *ngIf="!moretype03 && !moretype0601 && !moretype0603">
+                                <kendo-textbox class="form-control form-control-round" formControlName="gvwr"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                            <div class="col-md-1 text-right" *ngIf="!moretype03 && !moretype0601 && !moretype0603">
+                                <label class="col-form-label pr-2">Lbs.</label>
+                            </div>
+
+
+                            <div class="col-md-3 text-right"
+                                *ngIf="(moretype03 && !moretype0601 && !moretype0603) || moretype05">
+                                <label class="col-form-label pr-2">Trailer Hitch</label>
+                            </div>
+                            <div class="col-md-3 text-right"
+                                *ngIf="(moretype03 && !moretype0601 && !moretype0603) || moretype05">
+                                <kendo-combobox formControlName="trailerHitch" [suggest]="true"
+                                    placeholder="Trailer Hitch" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="TrailerHitchData" [valueField]="'value'"
+                                    [filterable]="true" [valuePrimitive]="true">
+                                </kendo-combobox>
+                            </div>
+
+
+
+                        </div>
+                        <div class="row no-gutters mb-3">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Wheel Material:</label>
+                            </div>
+                            <div class="col-md-3">
+                                <kendo-dropdownlist formControlName="wheelMaterial"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="WheelMaterialData" [valueField]="'value'" [valuePrimitive]="true">
+                                </kendo-dropdownlist>
+                                <!-- <kendo-switch onLabel="Steel" offLabel="Alloy" class="" style="width: auto;"
+                                    id="wheelSwitch" formControlName="wheelMaterial">
+                                </kendo-switch> -->
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype02">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Cab Type:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-switch onLabel="Day" offLabel="No" class="" id="cabSwitch" style="width: auto;"
+                                    formControlName="cabType">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-3" *ngIf="moretype02">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Fifth Wheel:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="fifthWheel">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </kendo-expansionpanel>
+
+        </div>
+
+
+    </form>
+</div>

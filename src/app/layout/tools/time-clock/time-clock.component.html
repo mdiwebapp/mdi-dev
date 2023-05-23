@@ -1,0 +1,335 @@
+<form [formGroup]="timeClock">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Time Clock</h4>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="35%">
+                            <kendo-tabstrip class="custom mt-2" style="height:70vh;">
+                                <kendo-tabstrip-tab class="text-success" [title]="'Hours'" [selected]="true"
+                                    *ngIf="!isTab1">
+                                    <ng-template kendoTabContent>
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="days" formControlName="hours"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2">Days</label>
+                                            </span>
+                                        </div>
+
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="week" formControlName="hours"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2">Week</label>
+                                            </span>
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3">
+                                                <input type="radio" value="lastweek" formControlName="hours"
+                                                    (change)="onReportTypeChange($event)" kendoRadioButton />
+                                                <label class="k-label ml-2 mr-2">Last Week</label>
+                                            </span>
+                                        </div>
+
+                                        <div class="row no-gutters">
+                                            <span class="p-2 pl-3 pr-3" *ngIf="isDaysVisible">
+
+                                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    [data]="Daysdata" [sort]="sort" (sortChange)="onSortChange($event)"
+                                                    kendoGridSelectBy [selectedKeys]="daysselections" [sortable]="false"
+                                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                    style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="jobNumber" title="Job">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.jobNumber }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeIn" title="TimeIn">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeIn }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeOut" title="TimeOut">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeOut }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="hours" title="Hours">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.hours | number : '1.2-2'}}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+
+                                            </span>
+
+                                            <span class="p-2 pl-3 pr-3" *ngIf="isWeeksVisible">
+                                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    [data]="Weeksdata" [sort]="sort" (sortChange)="onSortChange($event)"
+                                                    kendoGridSelectBy [selectedKeys]="weeksselections"
+                                                    [sortable]="false" (columnReorder)="onReOrderColumns($event)"
+                                                    [skip]="skip" style="height: 35vh;"
+                                                    (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="jobNumber" title="Job">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.jobNumber }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeIn" title="TimeIn">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeIn }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeOut" title="TimeOut">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeOut }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="hours" title="Hours">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.hours | number : '1.2-2'}}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+
+                                            </span>
+
+                                            <span class="p-2 pl-3 pr-3" *ngIf="isLastWeeksVisible">
+                                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    [data]="lastWeeksdata" [sort]="sort"
+                                                    (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                                    [selectedKeys]="lastWeeksselections" [sortable]="false"
+                                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                    style="height: 35vh;" (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="jobNumber" title="Job">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.jobNumber }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeIn" title="TimeIn">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeIn }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="objtimeOut" title="TimeOut">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objtimeOut }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                    <kendo-grid-column field="hours" title="Hours">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.hours | number : '1.2-2'}}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+
+                                            </span>
+
+                                        </div>
+                                    </ng-template>
+                                </kendo-tabstrip-tab>
+                                <kendo-tabstrip-tab class="text-success" [title]="'PTO Days'" *ngIf="!isTab2">
+                                    <ng-template kendoTabContent>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="k-label">{{Label1}}</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="k-label">{{Label2}}</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="k-label">{{Label3}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    (selectionChange)="onSelectionChange($event)" [data]="PTOData"
+                                                    [sort]="personalTimeSort"
+                                                    (sortChange)="onSortChange($event,'personalTime')" kendoGridSelectBy
+                                                    [selectedKeys]="selections" [sortable]="false"
+                                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                    style="height: 35vh; " (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="objworkDate" title="Work Date">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.objworkDate | date:'MM/dd/yyyy' }}
+                                                            </lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </kendo-tabstrip-tab>
+                            </kendo-tabstrip>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane [collapsible]="true">
+                            <div class="row ml-2" style="margin-right: 0px !important;">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('1')">1</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('2')">2</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('3')">3</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('4')">4</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('5')">5</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('6')">6</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('7')">7</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('8')">8</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('9')">9</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('P')">P</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('0')">0</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onValueChange('V')">V</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="onHandleOperation('cancel')"> Cancel</button>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="menuService.isAddRight">
+                                            <button class="k-button w-100 mt-2" type="button"
+                                                (click)="GetDetail()">ENTER</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <kendo-textbox [value]="inputValue" formControlName="EmployeeNo"
+                                                placeholder="NO USER" [disabled]="isEmployeeDisabled"
+                                                (click)="onAddEmployeeno()" (keydown.enter)="GetDetail()" tabindex="1">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <input type="hidden" formControlName="JobNo">
+                                            <kendo-textbox [value]="jobValue" placeholder="NO JOB"
+                                                formControlName="JobName" [disabled]="isJobDisabled"
+                                                (click)="onAddJobNo()" (keydown.enter)="GetDetail()" tabindex="2">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="k-button w-100 mt-2" type="button" *ngIf="ischangeJobVisible"
+                                                (click)="OnChangeJob()">Change JOB</button>
+                                            <button class="k-button w-100 mt-2" type="button" *ngIf="isPunchInVisible"
+                                                (click)="OnPunchIn()">IN</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="k-button w-100 mt-2" type="button" *ngIf="isPunchOUTVisible"
+                                                (click)="OnPunchOut()">OUT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </div>
+    </div>
+</form>
+<kendo-dialog title="Invalid Employee" *ngIf="isnotEmployee" (close)="closeInvalidEmployee()" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Invalid Employee!
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closeInvalidEmployee()" primary="true">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Invalid Job" *ngIf="isInvalidJob" (close)="closeInvalidJob()" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Invalid Job!
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closeInvalidJob()" primary="true">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Time Tracking" *ngIf="isPunchInAllowed" (close)="closePunchedInAllow()" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        You cannot punch in for {{timediff}} minutes.
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closePunchedInAllow()" primary="true">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Lunch Time?" *ngIf="isdialogPunchOutVisible" (close)="closePunchOutdialog('no')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        You will not be able to punch back in for 30 minutes. PUNCH OUT?
+    </p>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closePunchOutdialog('yes')" type="button"
+            primary="true">Yes</button>
+        <button class="k-button k-secondary" (click)="closePunchOutdialog('no')" type="button">No</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>
+<kendo-dialog title="Change Job" *ngIf="isdialogChangeJobVisible" (close)="closechangeJobdialog('no')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Change Job?
+    </p>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closechangeJobdialog('yes')" type="button"
+            primary="true">Yes</button>
+        <button class="k-button k-secondary" (click)="closechangeJobdialog('no')" type="button">No</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

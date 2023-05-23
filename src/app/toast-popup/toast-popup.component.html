@@ -1,0 +1,37 @@
+<kendo-dialog *ngIf="dialogOpened" (close)="close()" [minWidth]="250" [width]="450">
+    <kendo-dialog-titlebar class="k-appbar-light">
+        <div style="font-size: 18px; line-height: 1.3em;">
+            Error
+        </div>
+    </kendo-dialog-titlebar>
+    <div>
+        <ol [innerHTML]="errorMsg">
+        </ol>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog *ngIf="openErrorDialog && errorDetails" (close)="closeError()" [minWidth]="400" [width]="600"
+    [height]="600">
+    <kendo-dialog-titlebar class="k-appbar-light">
+        <div style="font-size: 18px; line-height: 1.3em;">
+            Error
+        </div>
+    </kendo-dialog-titlebar>
+    <div *ngIf="errorDetails">
+        <div kendoTypography style="text-align: center;" variant="h3" *ngIf="errorDetails.moduleName">
+            <strong>
+                Module - {{ errorDetails.moduleName }}
+            </strong>
+        </div>
+        <hr />
+        <div kendoTypography variant="h6" *ngIf="errorDetails.customizedError">{{ errorDetails.customizedError }} </div>
+        <hr />
+        <kendo-panelbar>
+            <kendo-panelbar-item title="Technical Details" *ngIf="errorDetails.errorMessage">
+                <kendo-panelbar-item style="display: block; word-break: break-word;" [title]="errorDetails.errorMessage"
+                    [disabled]="true">
+                </kendo-panelbar-item>
+            </kendo-panelbar-item>
+        </kendo-panelbar>
+    </div>
+</kendo-dialog>

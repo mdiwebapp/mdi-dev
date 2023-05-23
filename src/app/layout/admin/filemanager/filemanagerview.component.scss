@@ -1,0 +1,17 @@
+.card .card-header h5 {
+    font-size: 20px;
+}
+
+a:focus, a:hover{
+    background-color:transparent !important;
+    //cursor: pointer;
+    color:blue !important ;   
+}
+
+a[_ngcontent-owq-c931]:focus, a[_ngcontent-owq-c931]:hover{
+    background-color:black;
+}
+
+ul.a {
+    list-style-type: circle;
+  }

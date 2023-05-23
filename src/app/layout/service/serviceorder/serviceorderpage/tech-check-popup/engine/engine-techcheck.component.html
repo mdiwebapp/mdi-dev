@@ -1,0 +1,346 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 60vh;">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>ENGINE
+                            <span class="pl-1">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                    (valueChange)="changeMarkAll($event)">
+                                </kendo-switch>
+                                Mark All N/A
+                            </span>
+                        </legend>
+                        <div class="row no-gutters m-0">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displyfilterHousing" class="w-100" (click)="onFilterHousing()"
+                                    kendoTooltip kendoRippleContainer kendoButton>AIR CLEANER/
+                                    HOUSING : {{f.airCleanHousing.value}}
+                                </button> --> <label class="col-form-label">AIR CLEANER/
+                                    HOUSING:</label>
+                                <kendo-combobox *ngIf="!displyfilterHousing" formControlName="airCleanHousing"
+                                    [suggest]="true" placeholder="Select Choice" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="filterHousingList" [valueField]="'value'"
+                                    [valuePrimitive]="true" (valueChange)="onFilterHousing()">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('airCleanHousing').hasError('required') && form.get('airCleanHousing').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displyEngineMounts" class="w-100" (click)="onEngineMounts()" kendoTooltip
+                                    kendoRippleContainer kendoButton>ENGINE MOUNTS : {{f.engineMounts.value}}
+                                </button> -->
+                                <label class="col-form-label">ENGINE MOUNTS:</label>
+                                <kendo-combobox *ngIf="!displyEngineMounts" formControlName="engineMounts"
+                                    [suggest]="true" placeholder="Select Choice" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="engineMountsList" [valueField]="'value'"
+                                    [valuePrimitive]="true" (valueChange)="onEngineMounts()">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('engineMounts').hasError('required') && form.get('engineMounts').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayGovernerLinkageing" class="w-100" (click)="onGovernerLinkage()"
+                                    kendoTooltip kendoRippleContainer kendoButton>NOISE WHEN RUNNING : {{f.noise.value}}
+                                </button> -->
+                                <label class="col-form-label">NOISE WHEN RUNNING:</label>
+                                <kendo-combobox *ngIf="!displayGovernerLinkageing" [suggest]="true"
+                                    formControlName="noise" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [data]="governerLinkageList" [valueField]="'value'" [valuePrimitive]="true"
+                                    (valueChange)="onGovernerLinkage()">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('noise').hasError('required') && form.get('noise').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayMSHAGuarding" class="w-100" (click)="onMSHAGuarding()"
+                                    kendoTooltip kendoRippleContainer kendoButton>MSHA
+                                    GUARDING : {{f.msha.value}}
+                                </button> --><label class="col-form-label">MSHA
+                                    GUARDING:</label>
+                                <kendo-combobox *ngIf="!displayMSHAGuarding" formControlName="msha" [suggest]="true"
+                                    placeholder="Select Choice" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="mSHAGuardingList" [valueField]="'value'"
+                                    [valuePrimitive]="true" (valueChange)="onMSHAGuarding()">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('msha').hasError('required') && form.get('msha').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-12 p-1" *ngIf="!isControlPanel">
+                                <!-- <button *ngIf="displaySafetySwitcheing" class="w-100" (click)="onSafetySwitches()"
+                                    kendoTooltip kendoRippleContainer kendoButton>SAFETY
+                                    SWITCHES : {{f.engineSafetySwitch.value}}
+                                </button> --><label class="col-form-label">SAFETY
+                                    SWITCHES:</label>
+                                <kendo-combobox *ngIf="!displaySafetySwitcheing" formControlName="engineSafetySwitch"
+                                    [suggest]="true" placeholder="Select Choice" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="safetySwitchesList" [valueField]="'value'"
+                                    [valuePrimitive]="true" (valueChange)="onSafetySwitches()">
+                                </kendo-combobox> 
+                            </div>
+                            <!-- <div class="col-md-6 p-1">
+                                <button *ngIf="displayEmissionControl" class="w-100" (click)="onEmissionControl()"
+                                    kendoTooltip kendoRippleContainer kendoButton>EMISSION
+                                    CONTROL
+                                </button>
+                                <kendo-combobox *ngIf="!displayEmissionControl" formControlName="mSHAGuarding"
+                                    [suggest]="true" placeholder="Select Choice" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="emissionControlList" [valueField]="'value'"
+                                    (valueChange)="onMSHAGuarding()">
+                                </kendo-combobox>
+                            </div> -->
+                        </div>
+                    </fieldset>
+                </div>
+                <div *ngIf="isControlPanel" class="row">
+
+                    <div class="col-md-6 p-2">
+                        <fieldset>
+                            <legend>CONTROL PANEL SETTINGS</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-6">
+                                    <label class="col-form-label pl-2">Engine manufacturer IN BOX</label>
+                                </div>
+                                <div class="col-md-6 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2"
+                                        (valueChange)="onEnginemanufactureInbox()" formControlName="engineManufacture"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label pl-2">Tooth count (if mech throttle)</label>
+                                </div>
+                                <div class="col-md-6 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2"
+                                        formControlName="toothCount" (valueChange)="onToothcount()"
+                                        formControlName="toothCount" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6 p-2">
+                        <fieldset>
+                            <legend>ELECTRONIC THROTTLE - CANBUS CONFIG</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-6">
+                                    <label class="col-form-label pl-2">Sourse</label>
+                                </div>
+                                <div class="col-md-6 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        (valueChange)="onSourse()" formControlName="throttleSource" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label pl-2">TSC1 Address</label>
+                                </div>
+                                <div class="col-md-6 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        formControlName="tsC1" (valueChange)="onTSC1Address()" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6 p-2"> 
+                        <div class="col-md-6">
+                            <label class="col-form-label pl-2">Emission Control</label>
+                        </div>
+                        <div class="col-md-6 pr-3">
+                            <kendo-combobox  formControlName="emission" [suggest]="true"
+                                placeholder="Select load bank" class="form-control form-control-round"
+                                [textField]="'value'" [data]="emissionControlList" [valueField]="'value'"
+                                [valuePrimitive]="true" (valueChange)="onemission()">
+                            </kendo-combobox>
+                             
+                        </div>
+                        <div class="col-md-8 p-t-15">
+                            <table style="width:100% ;" class="table">
+                                <tr><td><input type="checkbox"   formControlName="oilShutdown"></td><td>Verify Oil Shutdown</td></tr>
+                                <tr><td><input type="checkbox"   formControlName="tempShutdown"></td><td>Verify Temperature Shutdown</td></tr>
+                                <tr><td><input type="checkbox"  formControlName="speedShutdown"></td><td>Verify Over Speed Shutdown</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 p-2">
+                        <fieldset>
+                            <legend>TRANSDUCER CALIBRATION </legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-4">
+                                    <label class="col-form-label pl-2">Suction(Max)</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        (valueChange)="onsuctionMax()" formControlName="suctionMax" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">Min</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        formControlName="suctionMin" (valueChange)="onsuctionMin()" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-4">
+                                    <label class="col-form-label pl-2">Discharge(Max)</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        (valueChange)="ondischargeMax()" formControlName="dischargeMax" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">Min</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        formControlName="dischargeMin" (valueChange)="ondischargeMin()" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-4">
+                                    <label class="col-form-label pl-2">Level(Max)</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        (valueChange)="ontransLevelMax()" formControlName="transLevelMax" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">Min</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2 w-100"
+                                        formControlName="transLevelMin" (valueChange)="ontransLevelMin()" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+                <div *ngIf="isGenerator">
+                    <div class="col-md-12 p-2">
+                        <fieldset>
+                            <legend>GENERATOR SYSTEM</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">AC Voltage -L1</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2" (valueChange)="onacvL1()"
+                                        formControlName="acvL1" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">AC Voltage -L2</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2" (valueChange)="onacvL2()"
+                                        formControlName="acvL2" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">AC Voltage -L3</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2" (valueChange)="onacvL3()"
+                                        formControlName="acvL3" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">Load bank test</label>
+                                </div>
+                                <div class="col-md-2 pr-3">
+                                    <kendo-combobox  formControlName="loadBank" [suggest]="true"
+                                        placeholder="Select load bank" class="form-control form-control-round"
+                                        [textField]="'value'" [data]="loadBankList" [valueField]="'value'"
+                                        [valuePrimitive]="true" (valueChange)="onloadBank()">
+                                    </kendo-combobox>
+                                     
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">Hours</label>
+                                </div>
+                                <div class="col-md-1 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2" (valueChange)="onhours()"
+                                        formControlName="hours" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div  class="col-md-1"><h3  class="mb-0 mt-3">Hrs</h3></div>
+                                <div class="col-md-2">
+                                    <label class="col-form-label pl-2">AC Hz</label>
+                                </div>
+                                <div class="col-md-1 pr-3">
+                                    <kendo-textbox class="form-control form-control-round m-2" (valueChange)="onacHz()"
+                                        formControlName="acHz" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div  class="col-md-1"><h3  class="mb-0 mt-3">Hz</h3></div>
+                            </div>
+                            <div class="row no-gutters m-0">
+
+                                <div class="col-md-6 p-1">
+                                    <!-- <button *ngIf="displayMSHAGuarding" class="w-100" (click)="onMSHAGuarding()"
+                                        kendoTooltip kendoRippleContainer kendoButton>
+                                        WIRING AND CONNECTION  : {{f.msha.value}}
+                                    </button> --><label class="col-form-label">Select WIRING AND CONNECTION:</label>
+                                    <kendo-combobox   formControlName="generatorWiring" [suggest]="true"
+                                        placeholder="Select WIRING AND CONNECTION" class="form-control form-control-round"
+                                        [textField]="'value'" [data]="wiringConnectionList" [valueField]="'value'"
+                                        [valuePrimitive]="true" (valueChange)="ongeneratorWiring()">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-6 p-1"><label class="col-form-label">Select REAR BEARING:</label>
+                                    <!-- <button *ngIf="displayMSHAGuarding" class="w-100" (click)="onMSHAGuarding()"
+                                        kendoTooltip kendoRippleContainer kendoButton>REAR BEARING : {{f.msha.value}}
+                                    </button> -->
+                                    <kendo-combobox   formControlName="rearBearing" [suggest]="true"
+                                        placeholder="Select REAR BEARING" class="form-control form-control-round"
+                                        [textField]="'value'" [data]="rearBearingList" [valueField]="'value'"
+                                        [valuePrimitive]="true" (valueChange)="onrearBearing()">
+                                    </kendo-combobox>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- <div class="row col-md-12">
+                    <div class="col-md-6 p-1">
+                        <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()"
+                            kendoButton>TECHNICIAN APPROVAL
+                        </button>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()"
+                            kendoTooltip kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+                        </button>
+                        <kendo-combobox *ngIf="!displaySupervisorApproval" (click)="onSupervisorApproval()"
+                            [suggest]="true" placeholder="Select SUPERVISOR" class="form-control form-control-round"
+                            [textField]="'value'" [valuePrimitive]="true" [data]="supervisorApprovalList"
+                            [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </form>
+</div>

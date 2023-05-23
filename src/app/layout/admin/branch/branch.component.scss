@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  kendo-expansionpanel {
+    width: 100%;
+  }
+  .k-expander{
+    font-size: 0.8rem !important;
+  } 
+  .k-splitter .k-scrollable {
+    overflow-y: auto !important;
+}
+.k-expander-content {
+  padding: 1rem 1rem !important;
+}
+kendo-expansionpanel .k-expander-header {
+  padding: 10px !important;
+}
+.k-expander-content {
+  padding: 1rem 1rem !important;
+}
+.k-expander-title {
+  color: #383b3f !important;
+}

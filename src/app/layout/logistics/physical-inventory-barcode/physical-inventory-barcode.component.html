@@ -1,0 +1,99 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Physical Inventory Barcode</h4>
+        </div>
+    </div>
+</div>
+<div style="max-height: 80vh; overflow: auto;">
+    <div class="row justify-content-center m-3 no-gutters">
+        <div class="col-md-6">
+            <div class="card" [style.background-color]="isValid==0 ? '#fff' :(isValid==1 ?'yellowgreen' :'orangered')">
+                <div class="card">
+                    <h3 class="p-r-10 text-center">Physical Inventory - {{branchName}}</h3>
+                </div>
+                <div class="row justify-content-center mb-3">
+                    <div class="col-md-4">
+                        <kendo-textbox class="form-control form-control-round" [(ngModel)]="barcode"
+                            (keydown.enter)="addQty()">
+                        </kendo-textbox>
+                    </div>
+
+                    <div class="col-md-2 text-right">
+                        <label class="col-form-label pr-2">Enter Qty:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" (valueChange)="onValueChange()"
+                            [(ngModel)]="enterQty" style="width: auto;">
+                        </kendo-switch>
+                    </div>
+                </div>
+                <div class="row justify-content-center mb-3" *ngIf="disable">
+                    <div class="col-md-4">
+                        <kendo-numerictextbox class="form-control form-control-round" [disabled]="!disable"
+                        [min]="min" [autoCorrect]="autoCorrect"   [(ngModel)]="quantity" [format]="'n'" placeholder="Quantity">
+                        </kendo-numerictextbox>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <button class="k-button w-100" type="button" style="font-size: 12px;" (click)="openQtyConfirm()"
+                            [disabled]="!disable">Add</button>
+                    </div>
+
+                </div>
+
+                <div class="row no-gutters mb-3">                    
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                        [data]="data" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                        [skip]="skip" style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <kendo-grid-column *ngFor="let column of physicalInventoryBarcodecolumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="action" title="Action" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <i class="fa fa-2x fa-trash mr-2" (click)="openConfirm(dataItem)"></i>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="row  mb-3">
+                    <div class="col-md-6">
+                        <button kendoTooltip title="Excel" id="btnPrint" class="btn_icon ml-2" filter="button"
+                            (click)="exportData()">
+                        </button>
+                    </div>
+                    <div class="col-md-6" *ngIf="menuService.isAddRight">
+                        <button class="k-button w-100" type="submit" (click)="saveData()"
+                            style="font-size: 12px; margin-left: -20px;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<kendo-dialog title="Delete barcode" *ngIf="opened" (close)="closeSubmit('Cancel')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Are you sure you want to delete?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeSubmit('Yes')" primary="true">Yes</button>
+        <button kendoButton (click)="closeSubmit('No')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Add quantity" *ngIf="openedQty" (close)="closeQuantity('Cancel')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Are you sure you want to add {{quantity}} quantity in existing quantity {{excQty}}?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeQuantity('Yes')" primary="true">Yes</button>
+        <button kendoButton (click)="closeQuantity('No')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

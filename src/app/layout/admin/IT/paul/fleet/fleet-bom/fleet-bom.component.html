@@ -1,0 +1,18 @@
+<div class="table-responsive">
+
+  <kendo-treelist [kendoTreeListFlatBinding]="adorsBOM"
+                  [height]="410"
+                  kendoTreeListExpandable
+                  idField="id"                  
+                  parentIdField="report">
+    <kendo-treelist-column
+                           [expandable]="true"
+                           field="childPart"
+                           title="Part"
+                           [width]="100"></kendo-treelist-column>
+    <kendo-treelist-column field="description"
+                           title="Description"
+                           [width]="250"></kendo-treelist-column>
+  </kendo-treelist>
+
+</div>

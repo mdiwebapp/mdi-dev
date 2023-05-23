@@ -1,0 +1,389 @@
+<div class="card">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <form [formGroup]="form" name="loginForm">
+    <div class="card-header d-flex flex-row justify-content-start">
+      <div class="d-flex justify-content-between">
+        <h4 class="p-r-10">Maintain Users</h4>
+        <div *ngIf="menuService.isAddRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" *ngIf="!isAdd" filter="button"
+            (click)="btnAdd()"></button>
+        </div>
+        <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" *ngIf="!isEdit" filter="button"
+            (click)="btnEdit()"></button>
+        </div>
+
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="btnCancel()"
+            *ngIf="!isCancel"></button>
+        </div>
+        <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+          <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+            (click)="onSave()"></button>
+        </div>
+      </div>
+      <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%">
+        <div>
+          <label class="label label-primary label-mersino" *ngIf="userName">{{
+            userName
+            }}</label>
+          <label class="label label-primary label-mersino">User Id # {{ id }}</label>
+          <label class="label label-primary label-mersino">Date Created : {{ cdate | date }}</label>
+        </div>
+
+        <div class="form-control1 displayFlex alignFlexEnd">
+          <div style="border-right: 1px solid #878786" class="m-r-20 p-r-20">
+            <!-- <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"> -->
+            <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+            <!-- </button> -->
+            <!-- <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button"> -->
+            <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+            <!-- </button> -->
+          </div>
+          <label>Active</label>
+          <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto" formControlName="isActive">
+          </kendo-switch>
+        </div>
+      </div>
+    </div>
+    <div class="card-block table-border-style pb-0">
+      <div class="row">
+        <kendo-splitter orientation="vertical">
+          <kendo-splitter-pane>
+            <kendo-splitter>
+              <kendo-splitter-pane [collapsible]="true" size="30%">
+                <div class="">
+                  <div class="col-md-12 table-responsive">
+                    <!-- Grid bind here -->
+                    <app-userlist (EditClick)="editClick($event)" [isEdit]="isEdit" [userId]="id"
+                      [onChange]="SaveChange">
+                    </app-userlist>
+                  </div>
+                </div>
+              </kendo-splitter-pane>
+
+              <kendo-splitter-pane>
+                <div class="col-md-12">
+                  <div class="row my-3">
+                    <div class="col-md-12">
+                      <div class="register-box box-shadow-none card mb-0">
+                        <div class="card-block p-0">
+                          <div class="row no-gutters">
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">User ID<em>*</em>:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-textbox formControlName="userId" class="form-control form-control-round"
+                                    (change)="onChangeEvent($event)" placeholder="User ID"></kendo-textbox>
+                                  <div class="required-text" *ngIf="
+                                      form.get('userId').hasError('required') &&
+                                      form.get('userId').touched
+                                    ">
+                                    This field is required!
+                                  </div>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('userId')
+                                        .hasError('maxlength') &&
+                                      form.get('userId').touched
+                                    ">
+                                    Maximum length is 50 charecter.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">User Name<em>*</em>:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-textbox formControlName="userName" class="form-control form-control-round"
+                                    placeholder="User Name"></kendo-textbox>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('userName')
+                                        .hasError('required') &&
+                                      form.get('userName').touched
+                                    ">
+                                    This field is required!
+                                  </div>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('userName')
+                                        .hasError('maxlength') &&
+                                      form.get('userName').touched
+                                    ">
+                                    Maximum length is 50 charecter.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Default Branch<em>*</em>:
+                                  </label>
+                                </div>
+
+                                <div class="col-md-8">
+                                  <kendo-combobox formControlName="branchId" placeholder="Select Branch"
+                                    [suggest]="true" class="form-control form-control-round" [textField]="'value'"
+                                    [data]="branch" [valueField]="'id'" [filterable]="true"
+                                    (filterChange)="branchhandleFilter($event)" [valuePrimitive]="true"
+                                    [kendoDropDownFilter]="pipelineFilterOptions">
+                                  </kendo-combobox>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('branchId')
+                                        .hasError('required') &&
+                                      form.get('branchId').touched
+                                    ">
+                                    This field is required!
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Branches<em>*</em>:
+                                  </label>
+                                </div>
+
+                                <div class="col-md-8">
+                                  <kendo-multiselect class="form-control form-control-round" [disabled]="!isEdit"
+                                    [data]="branch" (filterChange)="branchhandleFilter($event)" [textField]="'value'"
+                                    [(ngModel)]="selectedBranch" [ngModelOptions]="{ standalone: true }"
+                                    (ngModelChange)="onBranchChange($event)" [valueField]="'id'">
+                                  </kendo-multiselect>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">Employee:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-combobox formControlName="employeeId" placeholder="Select an Employee"
+                                    class="form-control form-control-round" [textField]="'employeeName'"
+                                    [suggest]="true" [data]="employeeData" [valueField]="'id'" [valuePrimitive]="true"
+                                    [kendoDropDownFilter]="pipelineFilterOptions">
+                                  </kendo-combobox>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Email<em>*</em>:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-textbox formControlName="email" class="form-control form-control-round"
+                                    style="width: 87% !important" placeholder="Email Id">
+                                  </kendo-textbox>
+                                  <a href="mailto:{{ form.value.email }}" id="hlEmail">
+                                    <i class="
+                                        k-icon k-i-email
+                                        m-10
+                                        align-self-center
+                                      " style="
+                                        font-size: 20px;
+                                        margin-left: 10px;
+                                        margin-top: 15px;
+                                      "></i>
+                                  </a>
+                                  <div class="required-text" *ngIf="
+                                      form.get('email').hasError('required') &&
+                                      form.get('email').touched
+                                    ">
+                                    This field is required!
+                                  </div>
+                                  <div class="required-text" *ngIf="form.get('email').hasError('email')">
+                                    This field is not valid value!
+                                  </div>
+                                  <div class="required-text" *ngIf="
+                                      form.get('email').hasError('maxlength') &&
+                                      form.get('email').touched
+                                    ">
+                                    Maximum length is 50 charecter.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Domain Account:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-textbox formControlName="domainAccount" class="form-control form-control-round"
+                                    placeholder="Domain Account">
+                                  </kendo-textbox>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('domainAccount')
+                                        .hasError('maxlength') &&
+                                      form.get('domainAccount').touched
+                                    ">
+                                    Maximum length is 50 charecter.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Phone:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-maskedtextbox formControlName="phoneNumber"
+                                    class="form-control form-control-round" [mask]="mask">
+                                  </kendo-maskedtextbox>
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('phoneNumber')
+                                        .hasError('maxlength') &&
+                                      form.get('phoneNumber').touched
+                                    ">
+                                    Maximum length is 50 charecter.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Account Manager
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto"
+                                    formControlName="isSalesMan">
+                                  </kendo-switch>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    New Feature<em>*</em>
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-numerictextbox formControlName="newFeature" [decimals]="'0'" [format]="'n0'"
+                                    class="form-control form-control-round">
+                                  </kendo-numerictextbox>
+                                  <!-- <input type="number" placeholder="New Feature" style="padding-left: 10px !important;"
+                                    class="form-control form-control-round" kendoTextBox formControlName="newFeature" /> -->
+                                  <div class="required-text" *ngIf="
+                                      form
+                                        .get('newFeature')
+                                        .hasError('required') &&
+                                      form.get('newFeature').touched
+                                    ">
+                                    This field is required!
+                                  </div>
+
+                                  <div class="required-text" *ngIf="
+                                      form.get('newFeature').hasError('min') &&
+                                      form.get('newFeature').touched
+                                    ">
+                                    Minimum required number is 0.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6 mb-2" *ngIf="id <= 0">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">Copy Security:
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-combobox formControlName="userSecurityId" placeholder="Select User"
+                                    class="form-control form-control-round" [textField]="'name'" [suggest]="true"
+                                    [filterable]="true" (filterChange)="userHandleFilter($event)" [data]="userList"
+                                    [valueField]="'id'" [valuePrimitive]="true">
+                                  </kendo-combobox>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    Admin
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto"
+                                    formControlName="isAdmin">
+                                  </kendo-switch>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group row no-gutters">
+                                <div class="col-md-4 text-right">
+                                  <label class="col-form-label pr-2">
+                                    2FA Require
+                                  </label>
+                                </div>
+                                <div class="col-md-8">
+                                  <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto"
+                                    formControlName="isEnable2FA">
+                                  </kendo-switch>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- <kendo-expansionpanel [expanded]="isExpanded" [disabled]="isMoreDisabled" id="expPanel">
+                        <ng-template kendoExpansionPanelTitleDirective>
+                          <div class="header-content">
+                            More Info - Branch
+                          </div>
+                        </ng-template>
+
+                        <div class="row ml-1">
+                          <span class="d-flex mr-2 minwidth" *ngFor="let d of branch">
+                            <input type="checkbox" class="mr-1" id="{{d.id}}" kendoCheckBox />
+                            {{d.value}}
+                          </span>
+                        </div>
+                      </kendo-expansionpanel> -->
+                    </div>
+                  </div>
+                  <hr />
+                </div>
+              </kendo-splitter-pane>
+            </kendo-splitter>
+          </kendo-splitter-pane>
+        </kendo-splitter>
+      </div>
+    </div>
+  </form>
+</div>

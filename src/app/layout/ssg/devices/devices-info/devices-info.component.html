@@ -1,0 +1,361 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-4 mb-3"  *ngIf="isShown">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Device ID<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row pl-3 pr-3">
+    
+                                <div class="col-md-3 pl-0 pr-0" *ngIf="isNewDevicePrefix">
+                                     <kendo-textbox class="form-control form-control-round" formControlName="devicePrefix" [disabled]="true">
+                                    </kendo-textbox>
+                                </div>
+                                
+                                <div class="col-md-3 pl-0 pr-0" *ngIf="!isNewDevicePrefix">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="devicePrefix">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-9 pl-0 pr-0">
+                                    <kendo-textbox formControlName="deviceId" 
+                                             class="form-control form-control-round" >
+                                        </kendo-textbox>
+                                        <div
+                                        class="required-text"
+                                        *ngIf="
+                                         
+                                        (form.get('deviceId').hasError('pattern'))
+                                        "
+                                      >
+                                        Enter only Number
+                                      </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div class="input-group-prepend" *ngIf="isNewDevicePrefix">
+                                        <span class="input-group-text" id="basic-addon1" >{{ newDevicePrefix || "DeviceName" }}</span>
+                                      </div>
+                                      <div class="input-group-prepend" *ngIf="!isNewDevicePrefix">
+                                          <input type="text" class="input-group-text" value="" formControlName="devicePrefix" >
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" placeholder="Device Id" value="" formControlName="deviceId" aria-label="Device Id" aria-describedby="basic-addon1">
+                                </div>
+                                </div> -->
+<!-- 
+                            <div class="input-group mb-0">
+                                <div class="input-group-prepend" *ngIf="isNewDevicePrefix">
+                                  <span class="input-group-text" id="basic-addon1" >{{ newDevicePrefix || "DeviceName" }}</span>
+                                </div>
+                                <div class="input-group-prepend" *ngIf="!isNewDevicePrefix">
+                                    <input type="text" class="input-group-text" value="" formControlName="devicePrefix" >
+                                  </div>
+                                <input type="text" class="form-control" placeholder="Device Id" value="" formControlName="deviceId" aria-label="Device Id" aria-describedby="basic-addon1">
+                              </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Device Type<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="type" [suggest]="true" [data]="deviceList"
+                                (valueChange)="setExpand($event)" [filterable]="true" placeholder="Device Type"
+                                class="form-control form-control-round">
+                            </kendo-combobox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Status<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="status" [suggest]="true" [data]="statusList"
+                                [filterable]="true" placeholder="Status" class="form-control form-control-round">
+                            </kendo-combobox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Brand<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="brand"
+                                placeholder="Brand Name" required>
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Assign a User<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="employeeId" [suggest]="true" [data]="employeeList"
+                                [valuePrimitive]="true" [textField]="'value'" [valueField]="'id'"
+                                placeholder="Assign a User" class="form-control form-control-round">
+                            </kendo-combobox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Location<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-combobox formControlName="location" [suggest]="true" [data]="locationList"
+                                [textField]="'value'" [valueField]="'value'" placeholder="Location" (valueChange)="onLocationChange($event)"
+                                [valuePrimitive]="true" class="form-control form-control-round">
+                            </kendo-combobox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Issued On<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker class="form-control form-control-round" formControlName="issuedDate"
+                                calendarType="classic" [(value)]="setissueDate">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Model<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="model"
+                                placeholder="Model" required>
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Part Number<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="partNumber"
+                                placeholder="Part Number" required>
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Serial #<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="serialNumber"
+                                placeholder="Serial Number" required>
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <kendo-expansionpanel [expanded]="isExpand">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    View More Info - {{form.get('type').value}}
+                </div>
+            </ng-template>
+            <div class="row" *ngIf="form.get('type').value == 'Desktop' || form.get('type').value == 'Laptop'">
+                <!-- <app-vendor-more-info></app-vendor-more-info> -->
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">License<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_licenceKEY"
+                                placeholder="License">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">RAM<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_ram"
+                                placeholder="RAM">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">OS<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_os"
+                                placeholder="OS">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">HDD<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_hdd"
+                                placeholder="HDD">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Belarc<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                formControlName="CD_belarc">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">CPU<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_processor"
+                                placeholder="CPU">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Speed<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_speed"
+                                placeholder="Speed">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Purchased On<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-datepicker class="form-control form-control-round" formControlName="CD_purchaseDate"
+                                calendarType="classic" [(value)]="setpurchaseDate">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">MAC<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="CD_mac"
+                                (change)="checkMacaddress($event.target.value)" placeholder="MAC">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row"
+                *ngIf="form.get('type').value == 'Phone' || form.get('type').value == 'Tablet' || form.get('type').value == 'HotSpot'">
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">IMEI<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="imei"
+                                placeholder="IMEI">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">SIM<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="sim"
+                                placeholder="SIM">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3" *ngIf="form.get('type').value != 'HotSpot'">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">G Suite<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                formControlName="MD_gSuite">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="form.get('type').value != 'HotSpot'">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">VMDM<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                formControlName="MD_vmdm">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-right">
+                            <label class="col-form-label pr-2">Phone<em></em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <kendo-textbox class="form-control form-control-round" formControlName="phoneNumber"
+                                placeholder="Phone">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </kendo-expansionpanel>
+    </form>
+</div>

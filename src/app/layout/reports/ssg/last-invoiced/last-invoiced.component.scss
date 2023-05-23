@@ -1,0 +1,35 @@
+a:focus, a:hover {
+    /* color: #da0719; */
+    text-decoration: none;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+}
+.overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(74, 74, 74, 0.8);
+    z-index: 99999;
+  }
+  
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.k-splitter .k-scrollable {
+    overflow-y: auto !important;
+}
+.laborToRev{
+  .k-dateinput-wrap {
+      // input {
+          background: yellow;
+      // } 
+  }
+}  

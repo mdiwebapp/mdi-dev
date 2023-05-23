@@ -1,0 +1,118 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>EXHAUST SYSTEM</legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayMufflerPipesBtn" class="w-100" (click)="onMufflerPipes()"
+                                    kendoTooltip kendoRippleContainer kendoButton>
+                                    MUFFLER/PIPES: {{f.mufflerPipesLevel.value}}
+                                </button> --><label class="col-form-label">MUFFLER/PIPES:</label>
+                                <kendo-combobox *ngIf="!displayMufflerPipesBtn" formControlName="mufflerPipesLevel"
+                                    (valueChange)="onMufflerPipes()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="mufflerPipesList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('mufflerPipesLevel').hasError('required') && form.get('mufflerPipesLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayHangerBtn" class="w-100" (click)="onHangars()" kendoTooltip
+                                    kendoRippleContainer kendoButton>
+                                    HANGARS/SUPPORTS: {{f.hangerLevel.value}}
+                                </button> --><label class="col-form-label">HANGARS/SUPPORTS:</label>
+                                <kendo-combobox *ngIf="!displayHangerBtn" formControlName="hangerLevel" [suggest]="true"
+                                    (valueChange)="onHangars()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="hangerList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('hangerLevel').hasError('required') && form.get('hangerLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-12 p-1">
+                                <!-- <button *ngIf="displayRainCapBtn" class="w-100" (click)="onRainCap()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CONDITION OF THE RAIN CAP: {{f.rainCapLevel.value}}
+                                </button> --><label class="col-form-label">CONDITION OF THE RAIN CAP:</label>
+                                <kendo-combobox *ngIf="!displayRainCapBtn" formControlName="rainCapLevel"
+                                    (valueChange)="onRainCap()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="rainCapList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('rainCapLevel').hasError('required') && form.get('rainCapLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-12" *ngIf="!isGenerator">
+                    <fieldset>
+                        <legend>TEST</legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 pl-5 pr-5 pt-2 pb-2">
+                                <fieldset>
+                                    <legend>VACUUM(INCHES OF THE MERCURY)</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:95% !important" formControlName="vaccumMercury"
+                                                (valueChange)="onVaccumMercury()" placeholder="">
+                                            </kendo-textbox>
+                                             
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0">"</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 pl-5 pr-5 pt-2 pb-2">
+                                <fieldset>
+                                    <legend>VACCUUM HOLD</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:95% !important" formControlName="vaccumHold"
+                                                (valueChange)="onVaccumHold()" placeholder="">
+                                            </kendo-textbox>
+                                            
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p><b>min</b></p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- <div class="row col-md-12">
+                    <div class="col-md-6 p-1">
+                        <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()"
+                            kendoButton>TECHNICIAN APPROVAL
+                        </button> 
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()"
+                            kendoTooltip kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+                        </button>
+                        <kendo-combobox *ngIf="!displaySupervisorApproval" 
+                            (click)="onSupervisorApproval()" [suggest]="true" placeholder="Select SUPERVISOR"
+                            class="form-control form-control-round" [textField]="'value'" [valuePrimitive]="true"
+                            [data]="supervisorApprovalList" [valueField]="'value'">
+                        </kendo-combobox>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </form>
+</div>

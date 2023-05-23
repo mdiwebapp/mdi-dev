@@ -1,0 +1,120 @@
+::ng-deep .k-switch-label-on {
+    left: 10%;
+    font-size: 14px;
+    display: unset;
+    color: white;
+    top: 49%;
+  }
+  
+  ::ng-deep .k-switch-label-off {
+    right: 10%;
+    font-size: 14px;
+    display: unset;
+    color: #fff;
+    text-align: center;
+    top: 49%;
+  }
+  
+  ::ng-deep .k-switch-container {
+    max-width: 210px;
+    min-width: 65px;
+  }
+  
+  ::ng-deep .k-switch-on .k-switch-container {
+    border-color: #2f9a7b;
+    background-color: #2f9a7b;
+  }
+  
+  ::ng-deep .k-switch-off .k-switch-container {
+    border-color: #e53321;
+    background-color: #e53321;
+    color: #fff !important;
+  }
+  
+  ::ng-deep .k-switch-off .k-switch-handle {
+    background-color: #f3f3f3;
+  }
+  
+  ::ng-deep .k-switch-on:focus,
+  ::ng-deep .k-switch-on.k-state-focused,
+  ::ng-deep .k-switch-off:focus,
+  ::ng-deep .k-switch-off.k-state-focused {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+  }
+  
+  
+  kendo-dropdownlist {
+    width: 100%;
+  }
+  
+  
+  .k-animation-container li,
+  .k-animation-container-shown li,
+  .kendodropdownlist li {
+    font-size: 14px !important;
+  }
+  
+  // .btn-primary{
+  //   border-radius: 4px;
+  // }
+  .k-grid {
+    font-family: unset !important;
+  }
+  
+  // .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  //   font-family: Gotham !important;
+  // }
+  // .k-grid th, .k-column-title, button, .nav-tabs{
+  //   font-family: Gotham !important;
+  
+  // }
+  // .k-grid td {
+  //   font-family: Calibr !important;
+  // }
+  // .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  //   background: #000080;
+  // }
+  // .table-fixed tbody td, .table-fixed tbody th, .table-fixed thead>tr>th{  
+  //   font-family: Gotham !important;
+  // }
+  // .k-input {
+  //   font-family: Calibr !important;
+  // }
+  
+  ::ng-deep .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active{
+    background-color: #454544!important;
+    color: white!important;
+  }
+  ::ng-deep .k-tabstrip-top > .k-tabstrip-items .k-item:hover{
+    background-color: #454544!important;
+    color: white!important;
+  }
+  ::ng-deep .k-tabstrip-top > .k-tabstrip-items .k-item{
+    color: black;
+  }
+  
+  .displayFlex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  
+    label {
+      font-weight: normal;
+      min-width: 50%;
+      text-align: left;
+    }
+  
+    .widthAuto {
+      width: auto;
+    }
+  }
+  
+  .checkbox-fade {
+    cursor: pointer;
+  
+    * {
+      cursor: pointer;
+    }
+  }
+  

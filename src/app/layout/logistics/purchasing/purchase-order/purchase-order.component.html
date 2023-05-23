@@ -1,0 +1,594 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 65vh;">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <form [formGroup]="form" class="cust-form">
+
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="btn w-100 p-2 text-center" type="button" kendoRippleContainer kendoButton>POR
+                                #</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-textbox class="form-control form-control-round" formControlName="PONumber"
+                                [readonly]="true" placeholder="POR">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Status</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-textbox class="form-control form-control-round" formControlName="Status"
+                                [readonly]="true" placeholder="Status">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Submit Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker calendarType="classic" formControlName="ClosedDate"
+                                [disabled]="isDisabled" class="form-control form-control-round">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Expected Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker formControlName="ExpectedDate" calendarType="classic"
+                                [disabled]="isDisabled" class="form-control form-control-round">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <button class="btn w-100 p-2  text-center" type="button" (click)="submitQBPO()"
+                                kendoRippleContainer kendoButton>QB PO #</button>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-textbox class="form-control form-control-round" formControlName="QBPONumber"
+                                [disabled]="isDisabled" placeholder="QB PO">
+                            </kendo-textbox>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-12 p-1">
+                            <button class="btn w-100 p-2 text-center" type="button" (click)="onEmployeeDialog()"
+                                [disabled]="isDisabled" kendoRippleContainer kendoButton>{{employeeName}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">QB Send Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker formControlName="QBNoticeDate" calendarType="classic" [readonly]="true"
+                                [disabled]="isDisabled" class="form-control form-control-round">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <div class="col-md-12 p-1">
+                                <button class="btn w-100 p-2 text-center" type="button" kendoRippleContainer
+                                    (click)="sendEmailButtonOptions()" [disabled]="isDisabled" kendoButton>Send</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Created Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker formControlName="CreatedDate" calendarType="classic" [readonly]="true"
+                                [disabled]="isDisabled" class="form-control form-control-round">
+                            </kendo-datepicker>
+
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Created By
+
+                            </label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <p style="padding-top: 7px;">{{createdByValue}}</p>
+                            <!-- <label class="col-form-label pr-2"></label> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Received Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker calendarType="classic" class="form-control form-control-round"
+                                [readonly]="true" [disabled]="isDisabled">
+                            </kendo-datepicker>
+
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-12 p-1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right p-1">
+                            <label class="col-form-label pr-2">Closed Date</label>
+                        </div>
+                        <div class="col-md-7 p-1">
+                            <kendo-datepicker calendarType="classic" class="form-control form-control-round"
+                                [readonly]="true" [disabled]="isDisabled">
+                            </kendo-datepicker>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-12 p-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <kendo-expansionpanel [expanded]="isExpanded" id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    Vendor
+                </div>
+            </ng-template>
+            <div class="row no-gutters m-0">
+                <div class="col-md-2 p-1">
+                    <fieldset>
+                        <legend>Vendor</legend>
+                        <div class="row no-gutters">
+                            <span class="p-2 pl-3 pr-3">
+                                <input type="radio" name="vendorStatus" value="0" [(ngModel)]="vendorStatus"
+                                    (change)="onVendorRadioChange(0)" [ngModelOptions]="{standalone: true}"
+                                    kendoRadioButton />
+                                <label class="k-label ml-2 mr-2"> Existing</label>
+                            </span>
+                        </div>
+                        <div class="row no-gutters">
+                            <span class="p-2 pl-3 pr-3">
+                                <input type="radio" name="vendorStatus" value="1" [(ngModel)]="vendorStatus"
+                                    (change)="onVendorRadioChange(1)" [disabled]="isDisabledVendor"
+                                    [ngModelOptions]="{standalone: true}" kendoRadioButton />
+                                <label class="k-label ml-2 mr-2">New</label>
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-5 p-1">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-12">
+                            <div class="row m-0">
+                                <div class="col-md-3 text-right p-2 "><label>Vendor Name</label></div>
+                                <div class="col-md-9  p-1">
+                                    <kendo-combobox [data]="vendorData" formControlName="Vendor" [suggest]="true"
+                                    *ngIf="vendorStatus=='0'"    [disabled]="isDisableVendorCombo" (valueChange)="onVendorChange($event)"
+                                        class="form-control form-control-round  " [textField]="'vendorName'"
+                                        [valueField]="'id'" [valuePrimitive]="true">
+                                    </kendo-combobox>
+                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                    *ngIf="vendorStatus=='1'" formControlName="Vendor" placeholder="">
+                                </kendo-textbox>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row  m-0">
+                                <div class="col-md-3 text-right p-2 "><label>Address 1</label></div>
+                                <div class="col-md-9  p-1">
+                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                        formControlName="Address" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row  m-0">
+                                <div class="col-md-3 text-right p-2 "><label>Address 2</label></div>
+                                <div class="col-md-9  p-1">
+                                    <kendo-textbox class="form-control form-control-round mt-2" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row m-0">
+                                <div class="col-md-1 p-0">
+
+                                </div>
+                                <div class="col-md-11 p-1">
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-5 p-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-5 text-center  p-2 ">
+                                                    <label class="text-center pt-2">City</label>
+                                                </div>
+                                                <div class="col-md-7 p-0">
+                                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                                        formControlName="City" placeholder="">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 p-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-5 text-center  p-2 ">
+                                                    <label class="text-center pt-2">State</label>
+                                                </div>
+                                                <div class="col-md-7 p-0">
+                                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                                        formControlName="State" placeholder="">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 p-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-3 text-center  p-2 "><label
+                                                        class="text-center pt-2">Zip</label></div>
+                                                <div class="col-md-9 p-0">
+                                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                                        formControlName="Zip" placeholder="">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 p-1">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-3 text-right p-1"><label>Contact</label></div>
+                        <div class="col-md-9  p-1">
+                            <kendo-textbox class="form-control form-control-round" formControlName="Contact"
+                                placeholder="">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-3  text-right p-1"><label>Phone</label></div>
+                        <div class="col-md-9 p-1">
+                            <kendo-textbox class="form-control form-control-round" formControlName="Phone"
+                                placeholder="">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-6 text-right p-1"><label>POR Total:</label></div>
+                        <div class="col-md-0 text-right p-1"><label>${{porTotal}}</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-md-4 p-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-12 text-left">
+                            <label class="col-form-label pr-2">Notes</label>
+                        </div>
+                        <div class="col-md-12">
+                            <kendo-textarea class="form-control form-control-round" [cols]="130" [rows]="5"
+                                [disabled]="isDisabled" formControlName="Notes" placeholder="">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8  p-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-12 text-right">
+                            <kendo-grid [data]="ApprovalViewData" [selectable]="true" [navigable]="true"
+                                [resizable]="true" [sort]="sort1" (sortChange)="sortChange1($event)" kendoGridSelectBy
+                                [selectedKeys]="mySelection1">
+                                <kendo-grid-column *ngFor="let column of viewColumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span *ngIf="column.Name!='approvalDate'">{{dataItem[column.Name]}}</span>
+                                        <span *ngIf="column.Name=='approvalDate' && dataItem.approvalDate">
+                                            {{dataItem.approvalDate | date: 'MM-dd-yyyy'}}
+                                        </span>
+
+                                    </ng-template>
+                                </kendo-grid-column>
+
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+        <kendo-expansionpanel id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    Ship
+                </div>
+            </ng-template>
+            <div class="row no-gutters m-0">
+                <div class="col-md-2 p-1">
+                    <fieldset>
+                        <legend>Ship To</legend>
+                        <div class="row no-gutters">
+                            <span class="p-2 pl-3 pr-3">
+
+                                <input type="radio" name="paperWorkType" value="0" [(ngModel)]="shipStatus"
+                                    (change)="onShipRadioChange(0)" [ngModelOptions]="{standalone: true}"
+                                    kendoRadioButton />
+                                <label class="k-label ml-2 mr-2"> Existing</label>
+                            </span>
+                        </div>
+                        <div class="row no-gutters">
+                            <span class="p-2 pl-3 pr-3">
+                                <input type="radio" name="paperWorkType" value="1" [(ngModel)]="shipStatus"
+                                    (change)="onShipRadioChange(1)" [disabled]="isDisabledShip"
+                                    [ngModelOptions]="{standalone: true}" kendoRadioButton />
+                                <label class="k-label ml-2 mr-2">New</label>
+                            </span>
+                        </div>
+                    </fieldset>
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-7 p-1">
+                            <label>Freight Included</label>
+                        </div>
+                        <div class="col-md-5 p-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [disabled]="isDisabled" formControlName="Freight">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-7 p-1">
+                            <label>Tax Included</label>
+                        </div>
+                        <div class="col-md-5 p-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [disabled]="isDisabled" formControlName="Tax">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-6 p-1">
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-12">
+                                    <kendo-combobox [data]="shipData" formControlName="shipTo" [suggest]="true"
+                                        [disabled]="isDisableShipCombo" (valueChange)="onShipChange($event)"
+                                        class="form-control form-control-round" [textField]="'value'"
+                                        [valueField]="'value'" [valuePrimitive]="true">
+                                    </kendo-combobox>
+                                </div>
+                                <!-- <div class="col-md-12">
+                                    <kendo-textbox class="form-control form-control-round mt-2"  placeholder="">
+                                    </kendo-textbox>
+                                </div> -->
+                                <div class="col-md-12">
+                                    <kendo-textbox class="form-control form-control-round mt-2"
+                                        formControlName="ShipAddress" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-6 pr-2">
+                                            <kendo-textbox class="form-control form-control-round mt-2"
+                                                formControlName="ShipCity" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-2 pr-2">
+                                            <kendo-textbox class="form-control form-control-round mt-2"
+                                                formControlName="ShipState" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <kendo-textbox class="form-control form-control-round mt-2"
+                                                formControlName="ShipZip" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-3 text-right p-1"><label>Shipping Type</label></div>
+                                <div class="col-md-9  p-1">
+                                    <kendo-combobox [data]="shipTermsData" [suggest]="true" formControlName="ShipTerms"
+                                        [disabled]="isDisabled" class="form-control form-control-round"
+                                        [textField]="'value'" [valueField]="'value'" [filterable]="true"
+                                        [valuePrimitive]="true">
+                                    </kendo-combobox>
+                                </div>
+                                <div class="col-md-3  text-right p-1"><label>Credit Card</label></div>
+                                <div class="col-md-9 p-1">
+                                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                        formControlName="CreditCard">
+                                    </kendo-switch>
+                                </div>
+                                <div class="col-md-3 text-right p-1"><label>Name On Card</label></div>
+                                <div class="col-md-9 p-1">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="CCHolder"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-3 text-right p-1"><label>Last 4 Digits</label></div>
+                                <div class="col-md-9 p-1">
+                                    <kendo-numerictextbox class="form-control form-control-round" [maxlength]="4"
+                                        formControlName="CCLast4" [spinners]="false" placeholder="">
+                                    </kendo-numerictextbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+        <div class="row mt-2 mb-2">
+
+        </div>
+
+        <kendo-dialog *ngIf="displayEmpDialog" title="Employees" (close)="close('cancel')" [minWidth]="550"
+            [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-4 p-1">
+                            Employee Search
+                        </div>
+                        <div class="col-md-4 p-1">
+                            <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="searchEmp"
+                                class="form-control form-control-round" placeholder="Search Employee">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-4 p-1 text-right">
+                            EE Count: {{empData.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [data]="empData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                        [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="mySelection" [sortable]="true"
+                        (selectionChange)="employeeClick($event.selectedRows[0].dataItem)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 65vh;">
+                        <kendo-grid-column *ngFor=" let column of viewEmpColumn" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </kendo-dialog>
+        <kendo-dialog title="Submit POR?" *ngIf="displaySubmitPOR" (close)="onSubmitPOR()" [minWidth]="250"
+            [width]="450">
+            <p style="margin: 30px; text-align: center;">
+                Submitting this POR will send an email to be approved. Proceed?
+            </p>
+            <kendo-dialog-actions>
+                <button kendoButton (click)="onSubmitPOR()" class="w-auto">Yes</button>
+                <button kendoButton (click)="onSubmitPOR()" class="w-auto">No</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+    </form>
+    <kendo-dialog title="Receiving Inventory Menu" *ngIf="displayReceivePOR" (close)="onReceivePOR()" [minWidth]="1000"
+        [width]="600">
+        <div class="row m-0 d-flex justify-content-center">
+            <h3 class="text-center">Receiving Inventory - SSG</h3>
+        </div>
+        <div class="row m-0">
+            <kendo-grid [data]="receivePORData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                [selectedKeys]="mySelection" [sortable]="true"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 65vh;">
+                <kendo-grid-column *ngFor=" let column of receivingInvColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <kendo-grid-column field=" receive" title="Receive">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <kendo-textbox class="form-control form-control-round" placeholder=""
+                            value="{{dataItem.receive}}" (focusout)="onReceiveValueChange()">
+                        </kendo-textbox>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column [width]="100" field="status" title="Status">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+        <kendo-dialog-actions class="d-flex justify-content-center">
+            <div>
+                <button kendoButton class="m-4" (click)="onHandleReceiveDialog()">Receive</button>
+                <button kendoButton>Receive All</button>
+            </div>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    <kendo-dialog title="POR Receiving" *ngIf="isReceiveDialog" (close)="onHandleReceiveDialog()" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center;">
+            Receive items from POR # B72758?
+        </p>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="onHandleReceiveDialog()">No</button>
+            <button kendoButton (click)="onHandleReceiveConfirmDialog()" primary="true">Yes</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    <kendo-dialog title="Please enter Quickbooks Number:" *ngIf="isReceiveConfirmDialog"
+        (close)="onHandleReceiveDialog()" [minWidth]="250" [width]="450">
+        <div class="row m-0">
+            <div class="col-md-8">
+                <p>
+                    Quickbooks Number:
+                </p>
+            </div>
+            <div class="col-md-4">
+                <button kendoButton (click)="onHandleReceiveConfirmDialog()" class="w-100 mb-2"
+                    primary="true">OK</button>
+                <button kendoButton (click)="onHandleReceiveConfirmDialog()" class="w-100">Cancel</button>
+            </div>
+        </div>
+        <kendo-dialog-actions>
+            <kendo-textbox class="form-control form-control-round" placeholder="Completed By" value="20-17752">
+            </kendo-textbox>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    <kendo-dialog *ngIf="isErrorDialog" (close)="onCloseError()" [minWidth]="250" [width]="450">
+        <p style="margin: 30px; text-align: center;">
+            Not a valid number
+        </p>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="onCloseError()">OK</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    <kendo-dialog title="Print File in One File" *ngIf="displayPrintButtonOptions" (close)="submitQBPO()" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Do you want to print in one file?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="OnSubmitQbPoYesClick()" class="w-auto">Yes</button>
+        <button kendoButton (click)="OnSubmitQbPoNoClick()" class="w-auto">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Print File in One File" *ngIf="displayPrintButtonOptionsForEmail" (close)="sendEmailButtonOptions()" [minWidth]="250"
+[width]="450">
+<p style="margin: 30px; text-align: center;">
+    Do you want to print in one file?
+</p>
+<kendo-dialog-actions>
+    <button kendoButton (click)="OnSubmitSendEmailYesClick()" class="w-auto">Yes</button>
+    <button kendoButton (click)="OnSubmitSendEmailNoClick()" class="w-auto">No</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+</div>

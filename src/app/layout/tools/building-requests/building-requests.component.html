@@ -1,0 +1,176 @@
+<div class="card">
+    <form [formGroup]="buildRequestForm">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Building Requests</h4>
+            </div>
+        </div>
+        <div style="max-height: 80vh; overflow: auto;">
+            <div class="row justify-content-center m-3 no-gutters">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="row no-gutters m-3">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label pr-2">User:</label>
+                                        <label class="col-form-label pr-2">{{currentUser}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label pr-2">Email:</label>
+                                        <label class="col-form-label pr-2">{{currentUserEmail}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label pr-2">Date Time:</label>
+                                        <label class="col-form-label pr-2">{{currentDate | date: 'MM/dd/yyyy h:mm:ss a'}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label pr-2">Branch:</label>
+                                        <label class="col-form-label pr-2">{{selectedBranch}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="k-button w-100 text-ce" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('request')">{{ selectedRequestType|| 'Select Request Type'}}</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('buildingrequest')">{{selectedBuildingType || 'Select Building Type'}}</button>
+                            </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="col-form-label pr-2">Describe the request
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <kendo-textarea [cols]="145" [rows]="8" class="form-control form-control-round" formControlName="message">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="col-form-label pr-2">Your Open Requests</label>
+                        </div>
+                        <div class="col-md-12">
+                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                                [data]="requests" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                                [skip]="skip" (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                [hideHeader]="false" style="height: 20vh;">
+                                <kendo-grid-column *ngFor="let column of requestsColumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                        <!-- <div class="col-md-12">
+                            <kendo-textarea [cols]="145" [rows]="5" class="form-control form-control-round">
+                            </kendo-textarea>
+                        </div> -->
+                    </div>
+                    <div class="row no-gutters mt-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class=" k-button w-100" type="submit" style="font-size: 12px;"
+                                        (click)="onSubmitBuildingRequest()">
+                                        Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<kendo-dialog title="Select Building" *ngIf="isBuildingVisible" (close)="onHandleFilters('buildingrequest')"
+    [minWidth]="250" [height]="500" [width]="450">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="Search Building" (input)="onFilterBuilding($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{buildingData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'building')"
+                [data]="buildingData" [sort]="sortBuildingData" (sortChange)="sortBuildingChange($event)" kendoGridSelectBy
+                [selectedKeys]="buildingSelection" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="false">
+                <kendo-grid-column *ngFor="let column of buildingRequestColumns " [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Request" *ngIf="isRequestVisible" (close)="onHandleFilters('request')" [minWidth]="250"
+    [height]="500" [width]="450">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="search requests"  (input)="onFilterRequestsType($event.target.value)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{requestData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'request-type')"
+                [data]="requestData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="requestSelection" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of requestColumn" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+<kendo-dialog title="{{error_title}}" *ngIf="isErrorDialogVisible" (close)="onHandleDialog('error')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{error_msg}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleDialog('error')">Ok</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

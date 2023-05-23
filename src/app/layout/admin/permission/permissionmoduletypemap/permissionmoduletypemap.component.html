@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-header titleHeader permi">
+        <h4 class="col-md-12">Assign Tab Actions</h4>
+    </div>
+    <div class="card-block table-border-style pb-0">
+        <kendo-grid [data]="data" [height]="533" [sort]="gridState.sort" [sortable]="true" [navigable]="true"
+            [resizable]="true" [reorderable]="true" (dataStateChange)="onStateChange($event)"
+            (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)"
+            (remove)="removeHandler($event)" [navigable]="true">
+            <ng-template kendoGridToolbarTemplate>
+
+                <input placeholder="Type here for filter" kendoTextBox class="col-md-9"
+                    (input)="onFilter($event.target.value)" />
+
+            </ng-template>
+            <kendo-grid-column field="departmentId" title="Department" width="120">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{ dataItem.permissionDepartmentName}}
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="permissionModuleId" title="Module" width="120">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{ dataItem.moduleName}}
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="tabName" editor="text" width="180" title="Tab Name"></kendo-grid-column>
+            <kendo-grid-column field="allTypes" title="Permission Type" width="300">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{ dataItem.allTypes}}
+                </ng-template>
+                <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column">
+                    <kendo-multiselect class="form-control form-control-round" [data]="permissionType"
+                        [textField]="'typeName'" [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}"
+                        [valueField]="'id'">
+                    </kendo-multiselect>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-command-column title="" width="120">
+                <ng-template kendoGridCellTemplate let-isNew="isNew">
+                    <button kendoGridEditCommand [primary]="true" title="Edit" id="btnEdit" class="btn_icon">
+                    </button>
+                    <button kendoGridSaveCommand title="Save" id="btnSave" class="btn_icon" filter="button">
+                    </button>
+                    <button kendoGridCancelCommand title="Cancel" id="btnCancel" class="btn_icon" filter="button">
+                    </button>
+                </ng-template>
+            </kendo-grid-command-column>
+        </kendo-grid>
+    </div>
+</div>

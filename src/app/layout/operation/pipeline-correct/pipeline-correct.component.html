@@ -1,0 +1,220 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Pipeline Correction</h4>
+    </div>
+    <div class="form-control1 displayFlex alignFlexEnd">
+      <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button" *ngIf="isPrint"
+        (click)="ExportExcel()">
+      </button>
+
+    </div>
+  </div>
+  <div class="card-block table-border-style">
+    <form [formGroup]="filterForm">
+      <div class="row">
+        <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true"
+          [reorderable]="true" (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+          [data]="corrections" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+          [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" user
+          (dataStateChange)="onDataStateChange($event)"
+          [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+          style="height: 50vh; overflow-x: auto;" [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+          (groupChange)="groupChange()" [groupable]="false">
+          <kendo-grid-column field="branchName" title="Branch">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.branchName}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="am" title="AM">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.am}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="alertDesc" title="Alert Desc">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.alertDesc}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="jobNumber" title="Job Number">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.jobNumber}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="jobName" title="Job Name">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.jobName}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="estValue" title="Est. Value">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <!-- <div class="eststartdate" *ngIf="dataItem.alertDesc == 'Projected Value May Be Too Low'">
+                              <button kendoButton fillMode="clear" icon="dollar"></button>
+                                <kendo-textbox class="form-control form-control-round" placeholder="" [(value)]="dataItem.objestValue" (change)="onChangeDetail(dataItem.jobNumber,dataItem.objestStartDate,dataItem.objestEndDate,$event.target.value)">
+                                </kendo-textbox>
+                            </div> -->
+              <div class="eststartdate" *ngIf="dataItem.alertDesc == 'Projected Value May Be Too Low'">
+                <kendo-numerictextbox class="form-control form-control-round" format="c2" [spinners]="false"
+                  placeholder="" [(value)]="dataItem.objestValue"
+                  (change)="onChangeDetail(dataItem.jobNumber,dataItem.objestStartDate,dataItem.objestEndDate,$event.target.value)">
+                </kendo-numerictextbox>
+              </div>
+              <div *ngIf="dataItem.alertDesc != 'Projected Value May Be Too Low'">
+                <lable>${{ dataItem.estValue | number : '1.2-2':"en-US" }}</lable>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="invoiced" title="Invoiced">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>${{ dataItem.invoiced | number : '1.2-2':"en-US" }}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="estStartDate" title="Est. Start Date">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div *ngIf="dataItem.alertDesc == 'Start Date has Passed'" class="eststartdate hide-date-btn"
+                style="width: 125px; padding: 0px;">
+                <!-- <lable>{{dataItem.estStartDate}}</lable> -->
+                <kendo-datepicker [(value)]="dataItem.objestStartDate"
+                  (valueChange)="onChangeDetail(dataItem.jobNumber,$event,dataItem.objestEndDate,dataItem.objestValue)"
+                  #est_start_date (click)="est_start_date.toggle()" calendarType="classic">
+                </kendo-datepicker>
+              </div>
+              <div *ngIf="dataItem.alertDesc != 'Start Date has Passed'">
+                <lable>{{dataItem.estStartDate}}</lable>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="estEndDate" title="Est. End Date">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div *ngIf="dataItem.alertDesc == 'End Date has Passed'" class="eststartdate hide-date-btn"
+                style="width: 125px; padding: 0px;">
+                <kendo-datepicker calendarType="classic" [(value)]="dataItem.objestEndDate"
+                  (valueChange)="onChangeDetail(dataItem.jobNumber,dataItem.objestEndDate,$event,dataItem.objestValue)"
+                  #est_end_date (click)="est_end_date.toggle()">
+                </kendo-datepicker>
+              </div>
+              <div *ngIf="dataItem.alertDesc != 'End Date has Passed'">
+                <lable>{{dataItem.estEndDate}}</lable>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="custName" title="Customer Name">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.custName}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="jobStatus" title="Job Status">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <lable>{{dataItem.jobStatus}}</lable>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="closeJob" title="Close Job" [width]="50">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="text-center">
+                <div *ngIf="dataItem.jobStatus=='Active'">
+                  <input type="checkbox" (change)="onCloseActiveJob($event)" kendoCheckBox />
+                </div>
+                <div *ngIf="dataItem.jobStatus!='Active'">
+                  <input type="checkbox" (change)="onCloseJob(dataItem.jobNumber,dataItem.jobStatus,$event)"
+                    kendoCheckBox />
+                </div>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <ng-template kendoGridToolbarTemplate>
+            <div class="col-md-3">
+              <label class="col-form-label">Account Manager</label>
+              <kendo-combobox class="col-md-8 form-control form-control-round" [data]="accounts" [suggest]="true"
+                [textField]="'name'" [valueField]="'employeeNumber'" [filterable]="true" [valuePrimitive]="true"
+                formControlName="account" (selectionChange)="onAccountChange($event)"
+                (sortChange)="onSortChange($event)" [kendoDropDownFilter]="pipelineFilterOptions">
+              </kendo-combobox>
+            </div>
+            <div class="col-md-3">
+              <label class="col-form-label">Branch</label>
+              <kendo-combobox class="col-md-8 form-control form-control-round" [data]="branches" [suggest]="true"
+                [textField]="'value'" [valueField]="'code'" [filterable]="true" [valuePrimitive]="true"
+                formControlName="branch" (selectionChange)="onBranchChange($event)"
+                [kendoDropDownFilter]="pipelineFilterOptions">
+              </kendo-combobox>
+            </div>
+            <div class="col-md-3">
+              <kendo-textbox placeholder=" Search in all columns..." class="col-md-12"
+                (keyup)="onSearchPipelineData($event.target.value)" [(ngModel)]="searchText"
+                [ngModelOptions]="{standalone: true}">
+              </kendo-textbox>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Group/Ungroup</label>
+              <kendo-switch onLabel="Yes" offLabel="No" style="width: auto;"
+                (valueChange)="onGroupUnGroupBranch($event)"></kendo-switch>
+            </div>
+          </ng-template>
+
+        </kendo-grid>
+        <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important"
+          (pageChange)="onPageChange($event)">
+          <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+            <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+            <kendo-datapager-numeric-buttons [buttonCount]="5">
+            </kendo-datapager-numeric-buttons>
+            <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+            <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important"
+              [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{ standalone: true }"
+              (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+              [valueField]="'value'">
+            </kendo-dropdownlist>
+            <!-- <kendo-datapager-info></kendo-datapager-info>
+                                            Current page: {{currentPage}} -->
+          </ng-template>
+        </kendo-datapager>
+      </div>
+    </form>
+    <div class="row mt-2">
+      <div class="col-md-5">
+        <label class="col-form-label">Update Log</label>
+        <kendo-textarea [cols]="130" [rows]="3" class="form-control form-control-round" [(ngModel)]="Logs"
+          [ngModelOptions]="{standalone: true}" ng-bind-html="Logs" [disabled]="isDisable"></kendo-textarea>
+      </div>
+      <div class="col-md-7 d-flex align-items-center">
+        <div class="col-md-6">
+          <!-- <div class="d-flex justify-content-start">
+            <button class="k-button" type="button" style="font-size: 12px;" kendoButton
+              (click)="ExportExcel()">Excel</button>
+          </div> -->
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-end">
+            <!-- <button class="k-button justify-content-start" type="button" style="font-size: 12px;"
+              kendoButton>Back</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>
+
+<kendo-dialog title="Please confirm" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    Are you sure you want to close Job {{jobNumber}}?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="close('no')">No</button>
+    <button kendoButton (click)="close('yes')" primary="true">Yes</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Cannot Close" *ngIf="activejob" (close)="closeactivejob()" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    Cannot Close an Active Job.
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeactivejob()" primary="true">Ok</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

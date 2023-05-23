@@ -1,0 +1,136 @@
+<div class="row no-gutters">
+    <kendo-grid [selectable]="true" [navigable]="true" [data]="serviceHistoryData" [sort]="sort"
+        (sortChange)="sortChange($event)" kendoGridSelectBy [resizable]="true" [selectedKeys]="mySelection"
+        [sortable]="true" [skip]="skip" [reorderable]="true" style="height: 30vh;" (selectionChange)="editClick($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                (input)="onFilter($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{serviceHistoryData?.length}}</span>
+        </ng-template>
+        <kendo-grid-column field="serviceNumber" title="Service Number" [width]="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.serviceNumber}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="dateRepaired" title="Date Repaired" [width]="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.dateRepaired | date}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="status" title="Status" [width]="100">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.status}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="employeeName" title="Employee Name" [width]="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.employeeName}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+
+        <!-- <kendo-grid-column field="note" title="Note">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.note}}</lable>
+            </ng-template>
+        </kendo-grid-column> -->
+    </kendo-grid>
+    <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+</div>
+
+
+<div class="row no-gutters">
+    <kendo-grid [selectable]="true" [data]="serviceSubHistoryData" [sort]="sort" kendoGridSelectBy [sortable]="true"
+        [skip]="skip" style="height: 30vh;" [resizable]="true" [reorderable]="true"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                (input)="onFilterDetail($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{serviceSubHistoryData?.length}}</span>
+        </ng-template>
+        <kendo-grid-column field="serviceNumber" title="Service Number" [width]="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.serviceNumber}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="inventoryType" title="Inventory Type" [width]="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.inventoryType}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="partsMemo" title="Description">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.partsMemo}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="quantity" title="Quantity" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.quantity}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="listPrice" title="Price" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>${{dataItem.listPrice | number : '1.2-2' }}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="total" title="Total" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>${{(dataItem.quantity * dataItem.listPrice) | number : '1.2-2'}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+
+    </kendo-grid>
+    <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+</div>
+
+<div class="row no-gutters mt-3">
+    <div class="col-md-12">
+        <div class="form-group row no-gutters">
+            <div class="col-md-1 text-right">
+                <label class="col-form-label pr-2">Notes:</label>
+            </div>
+            <div class="col-md-11">
+                <kendo-textarea [(ngModel)]="serviceNote" placeholder="Notes" [cols]="130" [rows]="3"
+                    class="form-control form-control-round" [disabled]="true">
+                </kendo-textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 
+<form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0 tab-div-panel-h">
+        <div class="row no-gutters">
+            <div class="col-md-12 mb-2">
+                <kendo-grid [data]="serviceHistoryData" kendoGridSelectBy style="height:200px;" [navigable]="true"
+                    [resizable]="true" [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)"
+                    kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <kendo-grid-column *ngFor=" let column of viewColumns" [width]="column.width"
+                        field="{{column.Name}}" title="{{column.Text}}">
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+            <div class="col-md-12 mb-2">
+                <kendo-grid [data]="serviceSubHistoryData" kendoGridSelectBy style="height:200px;" [navigable]="true"
+                    [resizable]="true" [reorderable]="true" [sort]="sort1" (sortChange)="sortChange1($event)"
+                    kendoGridSelectBy [selectedKeys]="mySelection1" [sortable]="true"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <kendo-grid-column *ngFor=" let column of viewSubColumns" [width]="column.width"
+                        field="{{column.Name}}" title="{{column.Text}}">
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+            <div class="col-md-12 mb-2 p-3 text-center">
+                <label class="col-form-label "><b>Hours: 1633</b></label>
+            </div>
+            <div class="col-md-12 mb-2">
+                <kendo-textbox class="form-control form-control-round" formControlName="reason" style="height:100px;"
+                    placeholder="Installed 1/4' ball valve stainless steel, 1/4' 90 elbow stainless steel, 1/4' x 3' stainless steel nipple. 0-100 pressure gauge.">
+                </kendo-textbox>
+            </div>
+        </div>
+    </div>
+</form> -->

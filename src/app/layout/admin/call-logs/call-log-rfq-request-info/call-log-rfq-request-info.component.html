@@ -1,0 +1,555 @@
+<div class="register-box box-shadow-none card mb-0 pane-content">
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+        <div *ngIf="selectedLog">
+            <label class="label label-primary label-mersino">Log ID # {{selectedLog.logId}}</label>
+            <label class="label label-primary  label-mersino">Log Date : {{selectedLog.logDate | date :
+                "MM/dd/yyyy"}}</label>
+            <label class="label label-primary  label-mersino">Log By : {{selectedLog.logBy}}</label>
+        </div>
+    </div>
+    <form class="cust-form" [formGroup]="form">
+        <div class="card-block p-0">
+            <div class="row justify-content-center m-3">
+                <div class="font-weight-bold h5 px-5 mx-5 text-center">RFQ Center Request</div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Name</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="name"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">Discharge Point(Dist)</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="dpDistance"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Title</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="title"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">DOE Measurement 1</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="doeMeasure1"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Company</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="company"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">DOE Measurement 2</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="doeMeasure2"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Email</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="phone"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">DOE Measurement 3</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="doeMeasure3"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Phone</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="oPhone"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-5 text-right">
+                            <label class="col-form-label pr-2">DOE Measurement 4</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="doeMeasure4"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Address</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="address"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox formControlName="erSystem" [disabled]="disable" />
+                                <label class="col-form-label pl-2">Earth Retainage</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">ERS Type</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="ersType"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">City</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="city"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox formControlName="soilBoring"
+                                    [disabled]="disable" />
+                                <label class="col-form-label pl-2">Soil Boring</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">S.B Type</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="sbType"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">State</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="state"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox formControlName="elecAvail" [disabled]="disable" />
+                                <label class="col-form-label pl-2">Electricity
+                                    Avail.</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Location</label>
+                        </div>
+                        <div class="col-md-3">
+                            <kendo-textbox class="form-control form-control-round" formControlName="elecLocation"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Service Type</label>
+                        </div>
+                        <div class="col-md-2">
+                            <kendo-textbox class="form-control form-control-round" formControlName="elecServiceType"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Country</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="country"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox style="min-width: 15px"
+                                    formControlName="waterSupplyAvail" [disabled]="disable" />
+                                <label class="col-form-label pl-2">Water supply Avail.</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Location</label>
+                        </div>
+                        <div class="col-md-3">
+                            <kendo-textbox class="form-control form-control-round" formControlName="wsLocation"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Source</label>
+                        </div>
+                        <div class="col-md-2">
+                            <kendo-textbox class="form-control form-control-round" formControlName="wsSource"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Project Title</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="projectTitle"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox style="min-width: 15px"
+                                    formControlName="exUObstructions" [disabled]="disable" />
+                                <label class="col-form-label pl-2">Existing Utilities / Obstruction</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Location</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="exUObstructions"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters mb-2">
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Bid Date</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" formControlName="bidDate"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 pl-2">
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" kendoCheckBox formControlName="unionLocation"
+                                    [disabled]="disable" />
+                                <label class="col-form-label pl-2">Union</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Location</label>
+                        </div>
+                        <div class="col-md-7">
+                            <kendo-textbox class="form-control form-control-round" formControlName="unionLocation"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Proj. Description</label>
+                        </div>
+                        <div class="col-md-10">
+                            <kendo-textarea style="margin-left: 5px;" placeholder="Reason" [cols]="130" [rows]="3"
+                                [disabled]="disable" class="form-control form-control-round"
+                                formControlName="descProject">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Prevailing Wage?</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row no-gutters">
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="0" kendoRadioButton formControlName="prevailingWage"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> Yes</label>
+                                </span>
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="1" kendoRadioButton formControlName="prevailingWage"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> No</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Certified Payroll?</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row no-gutters">
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="0" kendoRadioButton [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> Yes</label>
+                                </span>
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="1" kendoRadioButton [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> No</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Anticipated Start Date</label>
+                        </div>
+                        <div class="col-md-3" style="margin-left: 5px;">
+                            <kendo-textbox class="form-control form-control-round" formControlName="anticStartDate"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Duration of Pumping</label>
+                        </div>
+                        <div class="col-md-3" style="margin-left: 5px;">
+                            <kendo-textbox class="form-control form-control-round" [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">OCIP/CCIP?</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row no-gutters">
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="0" kendoRadioButton formControlName="ocipccip"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> Yes</label>
+                                </span>
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="1" kendoRadioButton formControlName="ocipccip"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> No</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-7">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label">Groundwater Depth</label>
+                        </div>
+                        <div class="col-md-7 ml-3">
+                            <kendo-textbox class="form-control form-control-round" formControlName="gwDepth"
+                                [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Sketch of Excavation?</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row no-gutters">
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="0" kendoRadioButton formControlName="excavationSketch"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> Yes</label>
+                                </span>
+                                <span class="p-2 pl-3 pr-3">
+                                    <input type="radio" value="1" kendoRadioButton formControlName="excavationSketch"
+                                        [disabled]="disable" />
+                                    <label class="k-label ml-2 mr-2"> No</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Assigned To:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="disable"
+                                (click)="handleEmployeeDialog()">{{form.get('assignTo')?.value?.value ||
+                                'Select Employee'}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Send Email:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="disable"
+                                formControlName="sendemail">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<kendo-dialog title="Employees" *ngIf="isEmployeeVisible" (close)="handleEmployeeDialog()" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Employee Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="Search Employee">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    EE Count: {{allEmployees.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                [data]="allEmployees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of employeeColumn" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

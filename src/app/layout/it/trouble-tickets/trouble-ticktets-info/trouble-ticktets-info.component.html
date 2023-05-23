@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Maintain Trouble Tickets</h4>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="isDisable">
+                <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                *ngIf="menuService.isEditRight"  (click)="onHandleOperation('edit')">
+                </button>
+            </div>
+
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable">
+                <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                    (click)="onHandleOperation('cancel')">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable">
+                <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                    (click)="onHandleOperation('save')">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="row">
+            <div class="col-md-12">
+                <app-trouble-ticktets-section [disable]="isDisable"></app-trouble-ticktets-section>
+            </div>
+        </div>
+    </div>
+</div>

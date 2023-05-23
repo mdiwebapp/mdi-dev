@@ -1,0 +1,191 @@
+<div class="row no-gutters">
+  <div class="col-md-12 mb-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="mt-1"> Active</label>
+          </div>
+          <div class="col-md-6">
+            <kendo-switch
+              [disabled]="
+                branchId == 0 || (branchId > 0 && !isEdit) ? false : true
+              "
+              (valueChange)="BranchInActive($event)"
+              [(ngModel)]="status"
+              onLabel="Yes"
+              offLabel="All"
+            >
+            </kendo-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="dropdown">
+    <a href="#!" class="waves-effect waves-light" data-toggle="dropdown">
+        <span> </span>
+        <span class="k-icon k-i-more-vertical"></span> </a>
+    <ul class="show-notification profile-notification dropdown-menu custom-dropdown">
+        <li class="waves-effect waves-light">
+            <div *ngFor="let column of columns" class="col-xs-12 example-col">
+                <input type="checkbox" id="{{ column.Name }}" class="k-checkbox" [disabled]="isDisabled(column.Name)"
+                    [checked]="column.isCheck" [(ngModel)]="column.isCheck" (change)="hideColumn()" />
+                <label class="k-checkbox-label" for="{{ column.Name }}">{{ column.Name }}</label>
+            </div>
+        </li>
+        <li>
+            <div class="k-columnmenu-actions ng-star-inserted">
+                <button class="k-button w-50" type="button">Reset</button>
+                <button class="k-button k-primary w-50" (click)="columnApply()" type="button">Apply</button>
+            </div>
+        </li>
+    </ul>
+</div> -->
+<div class="custom_slider_popup" *ngIf="show">
+  <kendo-popup [anchor]="anchor" (anchorViewportLeave)="show = false">
+    <div class="content">
+      <h5 class="k-window-titlebar k-dialog-titlebar">Advanced Filters</h5>
+    </div>
+    <div class="row m-0">
+      <div class="col-md-4 p-0">
+        <div
+          class="waves-effect waves-light"
+          style="padding: 5px; border-radius: 5px; margin-top: 3px"
+        >
+          <div *ngFor="let column of columns" class="col-xs-12 example-col">
+            <input
+              type="checkbox"
+              id="{{ column.Name }}"
+              class="k-checkbox"
+              [disabled]="isDisabled(column.Name)"
+              [checked]="column.isCheck"
+              [(ngModel)]="column.isCheck"
+              (change)="hideColumn()"
+            />
+            <label class="k-checkbox-label" for="{{ column.Name }}">{{
+              column.Text
+            }}</label>
+          </div>
+        </div>
+        <!-- <div class="k-columnmenu-actions ng-star-inserted">
+                    <button class="k-button w-50" type="button">Reset</button>
+                    <button class="k-button k-primary w-50" (click)="columnApply()"
+                        type="button">Apply</button>
+                </div> -->
+      </div>
+    </div>
+    <div class="row ml-2">
+      <div class="k-actions k-actions-end">
+        <div class="k-columnmenu-actions">
+          <button class="k-button" (click)="columnApply()" type="button">
+            Apply
+          </button>
+          <button class="k-button" type="button" (click)="resetpopup()">
+            Reset
+          </button>
+          <button
+            class="k-button k-primary"
+            (click)="closepopup()"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </kendo-popup>
+</div>
+<div class="branchlist_page_left_sidebar">
+  <kendo-grid
+    [data]="data"
+    [selectable]="true"
+    [navigable]="true"
+    [resizable]="true"   
+    [ngClass]="
+      branchId == 0 || (branchId > 0 && !isEdit) ? '' : 'k-state-disabled'
+    "
+    [reorderable]="true"
+    [sort]="sort"
+    (sortChange)="sortChange($event)"
+    kendoGridSelectBy
+    [selectedKeys]="mySelection"
+    (columnResize)="resizeColumns($event)"
+    [sortable]="true"
+    [sortable]="{ allowUnsort: false, mode: multiple ? 'multiple' : 'single' }"
+    (selectionChange)="editClick($event.selectedRows[0].dataItem.id)"
+    (dataStateChange)="dataStateChange($event)"
+    (columnReorder)="reorderColumns($event)"
+    [skip]="skip"
+    style="height: 75vh"    
+  >
+    <ng-template kendoGridToolbarTemplate>
+      <div class="example-config">
+        <a #anchor (click)="onToggle()">
+          <span class="k-icon k-i-more-vertical"></span>
+        </a>
+      </div>
+      <input
+        placeholder="Type here to filter branches"
+        kendoTextBox
+        class="col-md-8"
+        (input)="onFilter($event.target.value)"
+      />
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <span> Total : {{ data?.length }}</span>
+
+      <kendo-grid-spacer></kendo-grid-spacer>
+
+      <!-- <kendo-grid-spacer></kendo-grid-spacer>
+            <kendo-grid-column-chooser></kendo-grid-column-chooser> -->
+    </ng-template>
+
+    <kendo-grid-column
+      *ngFor="let column of viewColumns"
+      [width]="column.width"
+      field="{{ column.Name }}"
+      title="{{ column.Text }}"
+    >
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span *ngIf="column.Name == 'inactive'">
+          <lable *ngIf="!dataItem.active"
+            ><i class="fa fa-times text-green" aria-hidden="true"></i>
+          </lable>
+          <lable *ngIf="dataItem.active"
+            ><i class="fa fa-check text-red" aria-hidden="true"></i>
+          </lable>
+        </span>
+        <span *ngIf="column.Name != 'inactive'">
+          {{ dataItem[column.Name] }}
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+
+    <!-- <kendo-grid-column field="branchName" title="Name" *ngIf="!isHidden('branchName')">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.branchName}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="branchCode" title="Code" *ngIf="!isHidden('branchCode')">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.branchCode}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="active" title="Active" *ngIf="!isHidden('inactive')">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable *ngIf="!dataItem.active"><i class="fa fa-times text-green" aria-hidden="true"></i>
+                </lable>
+                <lable *ngIf="dataItem.active"><i class="fa fa-check text-red" aria-hidden="true"></i>
+                </lable>
+            </ng-template>
+        </kendo-grid-column> -->
+  </kendo-grid>
+  <!-- <button class="ml-2 mt-1 btn btn-outline-primary btn-custom " (click)="expandHeight()">
+        Expand height
+    </button>
+    <button class="ml-2 mt-1 btn btn-outline-primary btn-custom " (click)="collspanHeight()">
+        Set default height
+    </button> -->
+</div>

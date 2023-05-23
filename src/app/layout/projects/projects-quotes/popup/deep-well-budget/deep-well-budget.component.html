@@ -1,0 +1,508 @@
+<div>
+    <form [formGroup]="form" class="cust-form">
+        <div class="row  no-gutters m-2">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>Job Site</legend>
+                            <div class="">
+                                <div class="row  no-gutters m-2">
+                                    <div class="col-md-6">
+                                        <label>Miles to the Job</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="milesToTheJob" placeholder="">
+                                        </kendo-textbox>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters m-2">
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <legend>Well</legend>
+                                            <div class="pl-2 pr-2 pb-2">
+                                                <div class=" row no-gutters m-0">
+                                                    <div class="col-md-6">
+                                                        <p>
+                                                            <input type="radio" name="wells" value="Q" #quantity
+                                                                kendoRadioButton formControlName="wells"
+                                                                [checked]="dislayWellRadio==false"
+                                                                (change)="changeAnswer($event)" /><label
+                                                                class="k-label ml-2" [for]="quantity">Quantity</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <kendo-textbox *ngIf="!dislayWellRadio"
+                                                            class="form-control form-control-round"
+                                                            formControlName="wellsQty" placeholder=""
+                                                            [disabled]="isDisabled">
+                                                        </kendo-textbox>
+                                                    </div>
+                                                </div>
+                                                <div class="row  no-gutters m-0">
+                                                    <div class="col-md-6">
+                                                        <p>
+                                                            <input type="radio" name="wells" value="F" #footage
+                                                                kendoRadioButton formControlName="wells"
+                                                                [checked]="dislayWellRadio==true"
+                                                                (change)="changeAnswer($event)" /><label
+                                                                class="k-label ml-2" [for]="footage">Footage</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <kendo-textbox *ngIf="dislayWellRadio"
+                                                            class="form-control form-control-round "
+                                                            formControlName="footageText" placeholder=""
+                                                            [disabled]="isDisabled">
+                                                        </kendo-textbox>
+                                                    </div>
+                                                </div>
+                                                <div class="row  no-gutters m-0">
+                                                    <div class="col-md-6">
+                                                        <p *ngIf="dislayWellRadio" class="ml-3">Spacing</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <kendo-textbox *ngIf="dislayWellRadio"
+                                                            class="form-control form-control-round"
+                                                            formControlName="spacingText" placeholder=""
+                                                            [disabled]="isDisabled">
+                                                        </kendo-textbox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters m-2">
+                                    <div class="col-md-6">
+                                        <label class="">Depth of Wells</label>
+                                    </div>
+                                    <div class="col-md-6 mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="depthWellsText" placeholder="" [disabled]="isDisabled">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="">Provide filter</label>
+                                    </div>
+                                    <div class="col-md-6 mb-1">
+                                        <kendo-combobox formControlName="provideFilterType" [suggest]="true"
+                                            placeholder="" class="form-control form-control-round" [textField]="'value'"
+                                            [data]="provideFilterData" [valueField]="'value'" [filterable]="true"
+                                            [valuePrimitive]="true" [disabled]="isDisabled">
+                                        </kendo-combobox>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="">Drill Rig</label>
+                                    </div>
+                                    <div class="col-md-6 mb-1">
+                                        <kendo-combobox formControlName="drillRigType" [suggest]="true" placeholder=""
+                                            class="form-control form-control-round" [textField]="'value'"
+                                            [data]="drillRigData" [valueField]="'value'" [filterable]="true"
+                                            [valuePrimitive]="true" [disabled]="isDisabled">
+                                        </kendo-combobox>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>Labor</legend>
+                            <div class="">
+                                <div class="row  no-gutters m-2">
+                                    <div class="col-md-7">
+                                        <label>Wells/Day - Drilling</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="txtWellDrilling" placeholder="">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label>Wells/Day - Set Up</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="txtWellSetup" placeholder="" [disabled]="isDisabled">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label>Hours/Work Day</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="txtHoursDay" placeholder="" [disabled]="isDisabled">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label># of Tractor Loads</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="txtTractorLoads" placeholder="" [disabled]="isDisabled">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="">Loader & Operator</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-combobox formControlName="loadernOperatorType" [suggest]="true"
+                                            placeholder="" class="form-control form-control-round" [textField]="'value'"
+                                            [data]="loadernOperatorData" [valueField]="'value'" [filterable]="true"
+                                            [valuePrimitive]="true" [disabled]="isDisabled">
+                                        </kendo-combobox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="">Fork Lift & Operator</label>
+                                    </div>
+                                    <div class="col-md-5 mb-1">
+                                        <kendo-combobox formControlName="forkliftnOperatorType" [suggest]="true"
+                                            placeholder="" class="form-control form-control-round" [textField]="'value'"
+                                            [data]="forkliftnOperatorData" [valueField]="'value'" [filterable]="true"
+                                            [valuePrimitive]="true" [disabled]="isDisabled">
+                                        </kendo-combobox>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label>Crew Size - Set Up</label>
+                                    </div>
+                                    <div class="col-md-5  mb-1">
+                                        <kendo-textbox class="form-control form-control-round"
+                                            formControlName="txtCrewsSetup" placeholder="" [disabled]="isDisabled">
+                                        </kendo-textbox>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Equipment</legend>
+                            <div class="row no-gutters m-2">
+                                <div class="col-md-6">
+                                    <div class="row no-gutters m-2">
+                                        <div class="col-md-6">
+                                            <label class="">Pump Size</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-combobox formControlName="pumpSizeType" [suggest]="true"
+                                                placeholder="" class="form-control form-control-round"
+                                                [textField]="'value'" [data]="pumpSizeData" [valueField]="'value'"
+                                                [filterable]="true" [valuePrimitive]="true"
+                                                (valueChange)="onValueChange($event)" [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="">Fuel Cubes</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-combobox formControlName="fuelCubeType" [suggest]="true"
+                                                placeholder="" class="form-control form-control-round"
+                                                [textField]="'value'" [data]="fuelCubeData" [valueField]="'value'"
+                                                [filterable]="true" [valuePrimitive]="true" [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="">Containment</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-combobox formControlName="containmentType" [suggest]="true"
+                                                placeholder="" class="form-control form-control-round"
+                                                [textField]="'value'" [data]="containmentData" [valueField]="'value'"
+                                                [filterable]="true" [valuePrimitive]="true" [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="">Providing Power</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-combobox formControlName="providingPowerType" placeholder=""
+                                                [suggest]="true" class="form-control form-control-round"
+                                                [textField]="'value'" [data]="providingPowerData" [valueField]="'value'"
+                                                [valuePrimitive]="true" (valueChange)="changeProvidingType($event)"
+                                                [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6 pr-1" *ngIf="displayProvidignType">
+                                            <div class="row">
+                                                <div class="col-md-6"><label>Gen1</label></div>
+                                                <div class="col-md-6 mb-1">
+                                                    <kendo-textbox class="form-control form-control-round"
+                                                        formControlName="gen1Text" placeholder=""
+                                                        [disabled]="isDisabled">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-1" *ngIf="displayProvidignType">
+                                            <kendo-combobox formControlName="gen1Type" [suggest]="true" placeholder=""
+                                                class="form-control form-control-round" [textField]="'value'"
+                                                [data]="gen1Data" [valueField]="'value'" [filterable]="true"
+                                                [valuePrimitive]="true" (valueChange)="onGen1ValueChange($event)"
+                                                [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6 pr-1" *ngIf="displayProvidignType">
+                                            <div class="row">
+                                                <div class="col-md-6"><label>Gen2</label></div>
+                                                <div class="col-md-6 mb-1">
+                                                    <kendo-textbox class="form-control form-control-round"
+                                                        formControlName="gen2Text" placeholder=""
+                                                        [disabled]="isDisabled">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-1" *ngIf="displayProvidignType">
+                                            <kendo-combobox formControlName="gen2Type" [suggest]="true" placeholder=""
+                                                class="form-control form-control-round" [textField]="'value'"
+                                                [data]="gen2Data" [valueField]="'value'" [filterable]="true"
+                                                [valuePrimitive]="true" (valueChange)="onGen2ValueChange($event)"
+                                                [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-6 pr-1" *ngIf="displayProvidignType">
+                                            <div class="row">
+                                                <div class="col-md-6"><label>Gen3</label></div>
+                                                <div class="col-md-6 mb-1">
+                                                    <kendo-textbox class="form-control form-control-round"
+                                                        formControlName="gen3Text" placeholder=""
+                                                        [disabled]="isDisabled">
+                                                    </kendo-textbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-1" *ngIf="displayProvidignType">
+                                            <kendo-combobox formControlName="gen3Type" [suggest]="true" placeholder=""
+                                                class="form-control form-control-round" [textField]="'value'"
+                                                [data]="gen3Data" [valueField]="'value'" [filterable]="true"
+                                                [valuePrimitive]="true" (valueChange)="onGen3ValueChange($event)"
+                                                [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row no-gutters m-2">
+                                        <div class="col-md-6">
+                                            <label class="">Discharge Footage</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-textbox class="form-control form-control-round"
+                                                formControlName="dischargeFootageText" placeholder=""
+                                                [disabled]="isDisabled">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="">Discharge Type</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-combobox formControlName="dischargeType" [suggest]="true"
+                                                placeholder="" class="form-control form-control-round"
+                                                [textField]="'value'" [data]="dischargeTypeData" [valueField]="'value'"
+                                              (valueChange)="ondischargeType($event)"  [filterable]="true" [valuePrimitive]="true" [disabled]="isDisabled">
+                                            </kendo-combobox>
+                                        </div>
+                                       
+                                            <div class="col-md-6" *ngIf="isFuse_hours">
+                                                <label class="">Fuses/Hour</label>
+                                            </div>
+                                            <div class="col-md-6 mb-1" *ngIf="isFuse_hours">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="fusesHourText" placeholder=""
+                                                    [disabled]="isDisabled">
+                                                </kendo-textbox>
+                                            </div>
+                                        
+                                         
+                                            <div  *ngIf="isPipeSize" class="col-md-6">
+                                                <label class="">Pipe Size</label>
+                                            </div>
+                                            <div class="col-md-6 mb-1"  *ngIf="isPipeSize">
+                                                <kendo-combobox formControlName="pipeSizeType" [suggest]="true"
+                                                    placeholder="" class="form-control form-control-round"
+                                                    [textField]="'value'" [data]="pipeSizeData" [valueField]="'value'"
+                                                    [filterable]="true" [valuePrimitive]="true" [disabled]="isDisabled">
+                                                </kendo-combobox>
+                                            </div>
+                                         
+                                        <div class="col-md-6">
+                                            <label class=""># of Sedimentation Trap</label>
+                                        </div>
+                                        <div class="col-md-6 mb-1">
+                                            <kendo-textbox class="form-control form-control-round"
+                                                formControlName="sedimentationTrapText" placeholder=""
+                                                [disabled]="isDisabled">
+                                            </kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="row no-gutters m-2">
+                    <div class="col-md-6">
+                        <label class=""># of Wells</label>
+                    </div>
+                    <div class="col-md-6"> {{wellsFootage | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Days of Drilling</label>
+                    </div>
+                    <div class="col-md-6"> {{daysOfDrilling | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Days of Set Up</label>
+                    </div>
+                    <div class="col-md-6"> {{daysOfSetup | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Days of Tear Down</label>
+                    </div>
+                    <div class="col-md-6">{{daysOfTearDown | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Drive Time, RTrip</label>
+                    </div>
+                    <div class="col-md-6">{{driveTime | number : '1.2-2'}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Out of Town Job</label>
+                    </div>
+                    <div class="col-md-6">{{outOfTownJobs}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Days per Truck Load</label>
+                    </div>
+                    <div class="col-md-6">{{daysPerTruckLoad}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Stick Boom - Casings</label>
+                    </div>
+                    <div class="col-md-6">{{stickBoomCasings}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Stick Boom - Pumps</label>
+                    </div>
+                    <div class="col-md-6">{{stickBoomPumps}}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="">LowBoy Floats, Trips</label>
+                    </div>
+                    <div class="col-md-6"> {{lowBoyFloats}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Power Required</label>
+                    </div>
+                    <div class="col-md-6">{{powerRequired | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Power Selected</label>
+                    </div>
+                    <div class="col-md-6" [style.background]="colorCode">{{powerSelected | number : '1.2-2' }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="">Approx Flow</label>
+                    </div>
+                    <div class="col-md-6">{{approxFlow | number: "1.0":"en-US" }}
+                    </div>
+                    <div class="col-md-12">
+                        <div class="">
+                            <kendo-grid [data]="fileList" kendoGridSelectBy class="h-grid" [hideHeader]="true"
+                                style="height:200px" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (selectionChange)='onGridSelect($event)'>
+                                <kendo-grid-column field="name" title="Name">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <lable>{{ dataItem.name }}</lable>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row no-gutters m-2">
+
+            <div class="col-md-1 text-right p-1">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-50" (click)="onBack()">Back
+                </button>
+            </div>
+            <div class="col-md-2 text-center p-1">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-100" (click)="onLoadLastInput()">Load
+                    Last Input
+                </button>
+            </div>
+            <div class="col-md-1 text-center p-1">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-100" (click)="onCalculate()"
+                    [style.background]="calculateButtonColor">{{CalculateMeassage}}
+                </button>
+            </div>
+            <div class="col-md-2 text-center p-1" *ngIf="showCreateBudget">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-100" (click)="onCreateBudget()">Create
+                    Budget
+                </button>
+            </div>
+            <div class="col-md-3 text-center p-1">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-100" (click)="onRentalQuote()">Add Line
+                    Items To Rental Quote
+                </button>
+            </div>
+            <div class="col-md-2 text-center p-1">
+                <button kendoTooltip kendoRippleContainer kendoButton class="w-100"
+                    (click)="onRefreshFileList()">Refresh File
+                    List
+                </button>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </form>
+</div>
+
+<kendo-dialog title="{{lbltitle}}" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;" class="fs-16">
+        {{lblAlert}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="close('yes')" themeColor="primary">Yes</button>
+        <button kendoButton (click)="close('no')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+
+<kendo-dialog title="MDI3.0" *ngIf="openedCalculate" (close)="closeCalcualte()" [minWidth]="250" [width]="450">
+    <div class="text-center">
+        <p class="fs-16">You must select if you need Spill Containment</p>
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeCalcualte()" themeColor="primary">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="MDI3.0" *ngIf="nothingToLoad" (close)="closeNothingToLoad()" [minWidth]="250" [width]="450">
+    <div class="text-center">
+        <p class="fs-16">Nothing To Load</p>
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeNothingToLoad()" themeColor="primary">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="MDI3.0" *ngIf="isErrorMessage" (close)="closeErrorMessage()" [minWidth]="250" [width]="450">
+    <div class="text-center">
+        <p class="fs-16">{{errorMessage}}</p>
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeErrorMessage()" themeColor="primary">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

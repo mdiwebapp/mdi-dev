@@ -1,0 +1,220 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Maintain Employee</h4>
+      <div *ngIf="menuService.isAddRight">
+        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon m-l-10 m-r-10" filter="button" (click)="btnAdd()"
+          *ngIf="!isAdd && (selectedTab != 3 && selectedTab != 4)"></button>
+      </div>
+      <div *ngIf="menuService.isEditRight">
+        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon m-l-10 m-r-10" filter="button"
+          (click)="btnEdit()" *ngIf="!isEdit && (selectedTab != 3 && selectedTab != 4)"></button>
+      </div>
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon m-l-10 m-r-10" filter="button"
+          *ngIf="!isCancel" (click)="btnCancel()"></button>
+      </div>
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight">
+        <button kendoTooltip title="Save" id="btnSave" class="btn_icon m-l-10 m-r-10" filter="button" *ngIf="!isSave"
+          (click)="onSave()"></button>
+      </div>
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+      <div *ngIf="employeeName">
+        <label class="label label-primary label-mersino">{{ employeeName}}</label>
+        <label class="label label-primary label-mersino">Employee # {{id}}</label>
+        <label class="label label-primary  label-mersino">Date Created : {{cdate | date}}</label>
+      </div>
+
+      <div class="form-control1 displayFlex alignFlexEnd">
+
+        <!-- <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button">
+          </button>
+        </div> -->
+        <label>Active</label>
+        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="isDisabled"
+          [(ngModel)]="inactive" [ngModelOptions]="{standalone: true}">
+        </kendo-switch>
+      </div>
+    </div>
+  </div>
+  <div class="card-block table-border-style pb-0">
+    <div class="row">
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="30%">
+              <div class="col-md-12">
+                <div class="row no-gutters">
+                  <div class="col-md-12 mb-3">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <kendo-dropdownlist [data]="statuses" [textField]="'value'" [valueField]="'id'"
+                          [valuePrimitive]="true" value="active" (valueChange)="
+                                onStatusChange(filterCollection.status)
+                              " [(ngModel)]="filterCollection.status" [ngModelOptions]="{ standalone: true }">
+                        </kendo-dropdownlist>
+                      </div>
+                      <div class="col-md-6">
+                        <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                          [data]="branches" #multiselect [textField]="'value'" [valueField]="'code'" [filterable]="true"
+                          [valuePrimitive]="true" [value]="['All']" (valueChange)="onBranchValueChange($event)">
+                        </kendo-multiselect>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <kendo-grid class="mt-2" [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                  [ngClass]="(!isEdit) ? '' :  'k-state-disabled'"
+                  (selectionChange)="editClick($event.selectedRows[0].dataItem.id)" [data]="data" [sort]="sort"
+                  (sortChange)="sortChange($event)" kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+                  [skip]="skip" style="height: 65vh;"
+                  [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                  <ng-template kendoGridToolbarTemplate>
+                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText"
+                      (keydown.enter)="onSearchClick(searchText)" />
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <i class="fa fa-search" (click)="onSearchClick(searchText)"></i>
+                    <span> Total : {{totalData}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                  </ng-template>
+
+                  <kendo-grid-column title="Employee Name" field="name" [width]="150">
+                  </kendo-grid-column>
+                  <kendo-grid-column title="Branch" field="branchName" [width]="150">
+                  </kendo-grid-column>
+                </kendo-grid>
+                <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+                  (pageChange)="onPageChange($event)">
+                  <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                    </kendo-datapager-numeric-buttons>
+                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                    <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                      [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+                      (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+                      [valueField]="'value'">
+                    </kendo-dropdownlist>
+                  </ng-template>
+                </kendo-datapager>
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <div class="col-md-12 pane-content">
+                <form [formGroup]="form" class="cust-form">
+                  <div class="row pl-0 pt-2 no-gutters">
+                    <div class="col-md-4 mb-2">
+                      <div class="form-group row no-gutters">
+                        <div class="col-md-4 text-right">
+                          <label class="col-form-label pr-2">First Name<em>*</em>:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <kendo-textbox formControlName="firstName" class="form-control form-control-round"
+                            placeholder="First Name">
+                          </kendo-textbox>
+                          <div class="required-text"
+                            *ngIf="form.get('firstName').hasError('required')  && form.get('firstName').touched">
+                            This field is required!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <div class="form-group row no-gutters">
+                        <div class="col-md-4 text-right">
+                          <label class="col-form-label pr-2">Last Name:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <kendo-textbox formControlName="lastName" class="form-control form-control-round"
+                            placeholder="Last Name">
+                          </kendo-textbox>
+                          <div class="required-text"
+                            *ngIf="form.get('lastName').hasError('required')  && form.get('lastName').touched">
+                            This field is required!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                      <div class="form-group row no-gutters">
+                        <div class="col-md-4 text-right">
+                        </div>
+                        <div class="col-md-8">
+                          <label class="col-form-label pr-2"> {{startDate | date}}</label>
+                          <button class="k-button col-md-12 w-100 request-date py-2" type="button"
+                            [disabled]="isDisableStartDate" style="font-size: 12px;"
+                            (click)="start_date_btn.toggle()">Start Date:
+                            {{form.get('startDate').value | date: 'MM/dd/yyyy'}}
+                            <kendo-datepicker class=" form-control form-control-round" calendarType="classic"
+                              #start_date_btn (valueChange)="onHandleOperation('start_date', $event)">
+                            </kendo-datepicker>
+                          </button>
+                          <div class="required-text"
+                            *ngIf="form.get('startDate').hasError('required')  && form.get('startDate').touched">
+                            This field is required!
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <kendo-tabstrip class="custom mt-2" (tabSelect)="onTabSelect($event)" [keepTabContent]="true">
+                  <kendo-tabstrip-tab class="text-success" [disabled]="isEdit" [title]="'Personal Detail'"
+                    *ngIf="isTab1" [selected]="selectedTab === 0">
+                    <ng-template kendoTabContent>
+                      <app-employee-moreinfo #moreinfo (SaveEditClick)="OnAddUpdate()"> </app-employee-moreinfo>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Work'" [selected]="selectedTab === 1" [disabled]="isEdit"
+                    *ngIf="isTab2">
+                    <ng-template kendoTabContent>
+                      <app-employee-work [employeeForm]="form"></app-employee-work>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Activity'" [selected]="selectedTab === 2" [disabled]="isEdit"
+                    *ngIf="isTab3">
+                    <ng-template kendoTabContent>
+                      <app-employee-activity></app-employee-activity>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Notes'" [selected]="selectedTab === 3" [disabled]="isEdit"
+                    *ngIf="isTab4">
+                    <ng-template kendoTabContent>
+                      <app-employee-notes (onAddNotes)="onHandleNotes()"></app-employee-notes>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'History'" [selected]="selectedTab === 4" [disabled]="isEdit"
+                    *ngIf="isTab5">
+                    <ng-template kendoTabContent>
+                      <app-employee-history></app-employee-history>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                </kendo-tabstrip>
+                <div class="col-md-10 p-0">
+                  <kendo-tabstrip class="custom mt-2" (tabSelect)="on2TabSelect($event)" [keepTabContent]="true">
+                    <kendo-tabstrip-tab [title]="'Certificate'" [selected]="true" *ngIf="isTab6">
+                      <ng-template kendoTabContent>
+                        <app-employee-certificate></app-employee-certificate>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Equip'" *ngIf="isTab7">
+                      <ng-template kendoTabContent>
+                        <app-employee-equip></app-employee-equip>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                  </kendo-tabstrip>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+    </div>
+  </div>
+</div>

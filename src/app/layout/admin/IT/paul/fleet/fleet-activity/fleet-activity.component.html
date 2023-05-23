@@ -1,0 +1,58 @@
+<div class="table-responsive  pane-content" style="max-height: 70vh; overflow: auto;">
+
+  <kendo-grid [sortable]="true" [resizable]="true" style="height: 64vh;" [sort]="sort" (sortChange)="sortChange($event)"
+    [data]="FHData" kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+    <ng-template kendoGridToolbarTemplate>
+      <span>Unit Movement</span>
+      <!--
+  <input placeholder="Type here to filter customers history" kendoTextBox class="col-md-9"
+         (input)="onFilter($event.target.value)" />
+   -->
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <span> Total : {{activityGridColumn.length}}</span>
+
+    </ng-template>
+    <!-- <kendo-grid-column *ngFor=" let column of activityGridColumn" [width]="column.width" field="{{column.Name}}"
+      title="{{column.Text}}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span>{{dataItem[column.Name]}}</span>
+      </ng-template>
+    </kendo-grid-column> -->
+    <kendo-grid-column field="from" title="From">
+      <ng-template kendoGridCellTemplate let-dataItem>
+          <lable>{{ dataItem.from }}</lable>
+      </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="to" title="To">
+    <ng-template kendoGridCellTemplate let-dataItem>
+        <lable>{{ dataItem.to }}</lable>
+    </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="intdays" title="Days">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{ dataItem.intdays }}</lable>
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="customer" title="Customer">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{ dataItem.customer }}</lable>
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="job" title="Job">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{ dataItem.job }}</lable>
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="hours" title="Hours">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{ dataItem.hours }}</lable>
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="user" title="User">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{ dataItem.user }}</lable>
+  </ng-template>
+</kendo-grid-column>
+  </kendo-grid>
+</div>

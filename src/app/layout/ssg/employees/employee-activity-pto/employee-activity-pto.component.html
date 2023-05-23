@@ -1,0 +1,64 @@
+<form [formGroup]="employee">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="col-md-12 mb-2 px-0">
+                <div class="form-group row mt-4 pt-2">
+                    <div class="col-md-6 text-right px-0">
+                        <label class="col-form-label pr-2">Beginning</label>
+                    </div>
+                    <div class="col-md-6 px-0">
+                        <kendo-textbox class="form-control form-control-round form" formControlName="beginning">
+                        </kendo-textbox>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-12 mb-2 px-0">
+                <div class="form-group row no-gutters">
+                    <div class="col-md-6 text-right px-0">
+                        <label class="col-form-label pr-2">Used:</label>
+                    </div>
+                    <div class="col-md-6 px-0">
+                        <label class="col-form-label pr-2">0</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2 px-0">
+                <div class="form-group row no-gutters">
+                    <div class="col-md-6 text-right px-0">
+                        <label class="col-form-label pr-2">Remaining:</label>
+                    </div>
+                    <div class="col-md-6 px-0">
+                        <label class="col-form-label pl-3">10</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-5">
+            <h4>Personal Time Off </h4>
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]=""
+                [sort]="personalTimeSort" (sortChange)="onSortChange($event,'personalTime')" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 25vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of personalTimecolumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+        <div class="col-5">
+            <h4 class="text-center">Other</h4>
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]=""
+                [sort]="otherSort" (sortChange)="onSortChange($event,'other')" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 25vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of otherColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,167 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <fieldset>
+                <legend>COMPRESSOR - <span class="pl-1">
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                        [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                        (valueChange)="changeMarkAll($event)">
+                    </kendo-switch>
+                    Mark All N/A
+                </span></legend>
+                <div class="row no-gutters pl-2 pb-2 pr-2">
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>VENTURE ORIFICE SIZE BEFORE</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onVOSB()"    style="width:96% !important" formControlName="txtVOSB" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <h3 class="mb-0">"</h3>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>VENTURE ORIFICE SIZE AFTER</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onVOSA()"    style="width:96% !important" formControlName="txtVOSA" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <h3 class="mb-0">"</h3>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <fieldset>
+                            <legend>BACK PRESSURE READING</legend>
+                            <div class="row no-gutters m-0">
+                                <div class="col-md-11">
+                                    <kendo-textbox class="form-control form-control-round m-1"
+                                    (valueChange)="onBPR()"   style="width:96% !important" formControlName="txtBPR" placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                                <div class="col-md-1">
+                                    <p class="mb-0"><b>PSI</b></p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayHoseFitting" class="w-100" (click)="onHoseFitting()" kendoTooltip
+                            kendoRippleContainer kendoButton>VENTURI HOSE/FITTINGS: {{f.hoseFittingData.value}}
+                        </button> --> <label class="col-form-label">VENTURI HOSE/FITTINGS:</label>
+                        <kendo-combobox *ngIf="!displayHoseFitting" formControlName="hoseFittingData"
+                            (valueChange)="onHoseFitting()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="hoseFittingList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox>
+                        <div class="required-text"
+                                    *ngIf="form.get('hoseFittingData').hasError('required') && form.get('hoseFittingData').touched">
+                                    This field is required!
+                                </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayVenturiOriginsBtn" class="w-100" (click)="onVenturiOrings()" kendoTooltip
+                            kendoRippleContainer kendoButton>VENTURI/O-RINGS (VITON): {{f.venturiOringsData.value}}
+                        </button> --><label class="col-form-label">VENTURI/O-RINGS (VITON):</label>
+                        <kendo-combobox *ngIf="!displayVenturiOriginsBtn" formControlName="venturiOringsData"
+                            (valueChange)="onVenturiOrings()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="venturiOringsList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('venturiOringsData').hasError('required') && form.get('venturiOringsData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayPulleyBtn" class="w-100" (click)="onPulley()" kendoTooltip
+                            kendoRippleContainer kendoButton>PULLEY: {{f.pulleyData.value}}
+                        </button> --><label class="col-form-label">PULLEY:</label>
+                        <kendo-combobox *ngIf="!displayPulleyBtn" formControlName="pulleyData"
+                            (valueChange)="onPulley()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="pulleyList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('pulleyData').hasError('required') && form.get('pulleyData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayAirFilterBtn" class="w-100" (click)="onAirFilter()" kendoTooltip
+                            kendoRippleContainer kendoButton>COMPRESSOR AIR FILTER: {{f.airFilterData.value}} 
+                        </button> --><label class="col-form-label">COMPRESSOR AIR FILTER:</label>
+                        <kendo-combobox *ngIf="!displayAirFilterBtn" formControlName="airFilterData"
+                            (valueChange)="onAirFilter()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="airFilterList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('airFilterData').hasError('required') && form.get('airFilterData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayOilLevelBtn" class="w-100" (click)="onOilLevel()" kendoTooltip
+                            kendoRippleContainer kendoButton>COMPRESSOR OIL LEVEL: {{f.oilLevelData.value}}
+                        </button> --><label class="col-form-label">COMPRESSOR OIL LEVEL:</label>
+                        <kendo-combobox *ngIf="!displayOilLevelBtn" formControlName="oilLevelData"
+                            (valueChange)="onOilLevel()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="oilLevelList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('oilLevelData').hasError('required') && form.get('oilLevelData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayCompressorOilBtn" class="w-100" (click)="onCompressorOil()" kendoTooltip
+                            kendoRippleContainer kendoButton>COMPRESSOR OIL: {{f.compressorOilData.value}}
+                        </button> --><label class="col-form-label">COMPRESSOR OIL:</label>
+                        <kendo-combobox *ngIf="!displayCompressorOilBtn" formControlName="compressorOilData"
+                            (valueChange)="onCompressorOil()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="compressorOilList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('compressorOilData').hasError('required') && form.get('compressorOilData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayPopOffValueBtn" class="w-100" (click)="onPopOffValue()" kendoTooltip
+                            kendoRippleContainer kendoButton>POP-OFF VALUE: {{f.popOffValueData.value}}
+                        </button> --><label class="col-form-label">POP-OFF VALUE:</label>
+                        <kendo-combobox *ngIf="!displayPopOffValueBtn" formControlName="popOffValueData"
+                            (valueChange)="onPopOffValue()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="popOffValueList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('popOffValueData').hasError('required') && form.get('popOffValueData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayCompressorBeltBtn" class="w-100" (click)="onCompressorBelt()"
+                            kendoTooltip kendoRippleContainer kendoButton>COMPRESSOR BELT: {{f.compressorBeltData.value}}
+                        </button> --><label class="col-form-label">COMPRESSOR BELT:</label>
+                        <kendo-combobox *ngIf="!displayCompressorBeltBtn" formControlName="compressorBeltData"
+                            (valueChange)="onCompressorBelt()" [suggest]="true" placeholder="Select Choice"
+                            class="form-control form-control-round" [textField]="'value'" [data]="compressorBeltList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox><div class="required-text"
+                        *ngIf="form.get('compressorBeltData').hasError('required') && form.get('compressorBeltData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                </div>
+            </fieldset> 
+        </div>
+    </form>
+</div>

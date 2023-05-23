@@ -1,0 +1,323 @@
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb" *ngIf="selectedchart == 1">
+            <ol class="breadcrumb">
+                <!-- <li class="breadcrumb-item"><span class="k-icon k-i-home"></span>
+                    <ins> Home</ins>
+                </li> -->
+                <li class="breadcrumb-item active" aria-current="page">Region</li>
+            </ol>
+        </nav>
+
+        <nav aria-label="breadcrumb" *ngIf="selectedchart == 2">
+            <ol class="breadcrumb">
+                <!-- <li class="breadcrumb-item"><span class="k-icon k-i-home"></span>
+                    <ins> Home</ins>
+                </li> -->
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 1">
+                        <ins> Region</ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ this.breadcrumb[1].text}}</li>
+            </ol>
+        </nav>
+
+        <nav aria-label="breadcrumb" *ngIf="selectedchart == 3">
+            <ol class="breadcrumb">
+                <!-- <li class="breadcrumb-item"><span class="k-icon k-i-home"></span>
+                    <ins>
+                        <ins> Home</ins>
+                    </ins>
+                </li> -->
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 1">
+                        <ins> Region</ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 2">
+                        <ins> {{ this.breadcrumb[1].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> {{ this.breadcrumb[2].text}} </li>
+            </ol>
+        </nav>
+        <nav aria-label="breadcrumb" *ngIf="selectedchart == 4">
+            <ol class="breadcrumb">
+                <!-- <li class="breadcrumb-item"><span class="k-icon k-i-home"></span>
+                    <ins>
+                        <ins> Home</ins>
+                    </ins>
+                </li> -->
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 1">
+                        <ins> Region</ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 2">
+                        <ins> {{ this.breadcrumb[1].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 3">
+                        <ins> {{ this.breadcrumb[2].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> {{ this.breadcrumb[3].text}} </li>
+            </ol>
+        </nav>
+        <nav aria-label="breadcrumb" *ngIf="selectedchart == 5">
+            <ol class="breadcrumb">
+                <!-- <li class="breadcrumb-item"><span class="k-icon k-i-home"></span>
+                    <ins>
+                        <ins> Home</ins>
+                    </ins>
+                </li> -->
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 1">
+                        <ins> Region</ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 2">
+                        <ins> {{ this.breadcrumb[1].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 3">
+                        <ins> {{ this.breadcrumb[2].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a (click)="this.selectedchart = 4">
+                        <ins> {{ this.breadcrumb[3].text}}
+                        </ins>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> {{ this.breadcrumb[4].text}} </li>
+            </ol>
+        </nav>
+        <div class="row m-0 ml-3  mb-3" style="height: 76vh;overflow: scroll;">
+            <div class="col-md-3">
+                <div class="row">
+
+                    <kendo-buttongroup selection="single" style="display: grid;">
+                        <button kendoButton [toggleable]="true" (click)="CurrentDateClick()" class="mb-2">Real
+                            Time</button>
+                        <button kendoButton [selected]="true" [toggleable]="true" (click)="lastMonthClick()"
+                            class="mb-2">Last 30
+                            Days</button>
+                        <button kendoButton [toggleable]="true" (click)="lastThreeMonthClick()" class="mb-2">Last 90
+                            Days</button>
+                        <!-- <button kendoButton [toggleable]="true" (click)="lastSixMonthClick()" class="mb-2">Last 120
+                            Days</button> -->
+                        <button kendoButton [toggleable]="true" (click)="lasttwelveMonthClick()" class="mb-2">Last
+                            365 Days
+                        </button>
+                        <button kendoButton [toggleable]="true" #anchor (click)="CustomeDateRangeClick();"
+                            class="mb-2">Custom
+                            Date
+                            Range
+                        </button>
+
+                    </kendo-buttongroup>
+
+                    <kendo-dialog title="" *ngIf="displaydatepicker" (close)="closepopup()" [minWidth]="250"
+                        [width]="450">
+                        <div class="content">
+                            <div class="row no-gutters mt-1 mr-2">
+                                <div class="col-md-4 text-right">
+                                    <label style="margin: 10px;"> From date:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-datepicker class="form-control form-control-round"
+                                        [(ngModel)]="customFromDate" kendo-datepicker>
+                                    </kendo-datepicker>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-1 mr-2">
+                                <div class="col-md-4 text-right">
+                                    <label style="margin: 10px;"> To date:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-datepicker class="form-control form-control-round" [(ngModel)]="customToDate"
+                                        kendo-datepicker>
+                                    </kendo-datepicker>
+
+                                </div>
+                            </div>
+                        </div>
+                        <kendo-dialog-actions>
+                            <button class="k-button mr-2" (click)="bindChartData()" type="button">Submit</button>
+                            <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+                        </kendo-dialog-actions>
+                    </kendo-dialog>
+                    <!-- <kendo-datepicker *ngIf="displaydatepicker" class="form-control form-control-round mb-2"
+                        [(ngModel)]="CustomFromDate" calendarType="classic" (valueChange)="onChangeFromDate($event)"
+                        style="width: 341px !important;">>
+                    </kendo-datepicker>
+                    <kendo-datepicker *ngIf="displaydatepicker" class="form-control form-control-round mb-2"
+                        [(ngModel)]="CustomToDate" calendarType="classic" (valueChange)="onChangeToDate($event)"
+                        style="width: 341px !important;">>
+                    </kendo-datepicker> -->
+                    <!-- <kendo-buttongroup selection="single">
+
+                        <button *ngIf="!displayYtd" kendoButton [selected]="true" [toggleable]="true"
+                            (click)="lastMonthClick()">Last
+                            Month</button>
+                        <button *ngIf="displayYtd" kendoButton [toggleable]="true" (click)="lastMonthClick()">Last
+                            Month</button>
+                    </kendo-buttongroup> -->
+                </div>
+
+            </div>
+            <div class="col-md-8" *ngIf="selectedchart == 1">
+                <kendo-chart (seriesClick)="level1Click($event)" style="height: 100%;">
+                    <kendo-chart-area background="#eee" [margin]="30"> </kendo-chart-area>
+                    <kendo-chart-title text={{reportTitle}} color="black" font="19pt sans-serif">
+                    </kendo-chart-title>
+                    <!-- <kendo-chart-legend position="top" orientation="horizontal">
+                    </kendo-chart-legend> -->
+                    <kendo-chart-series>
+                        <kendo-chart-value-axis>
+                            <kendo-chart-value-axis-item [min]="0" [max]="maxValueLevel1" [labels]="valueAxisLables">
+                                <kendo-chart-value-axis-item-labels>
+
+                                </kendo-chart-value-axis-item-labels>
+                            </kendo-chart-value-axis-item>
+                        </kendo-chart-value-axis>
+                        <kendo-chart-series-item [labels]="seriesLabelsActualVsForecast" [color]="item.color"
+                            type="column" [data]="item.items" field="utilizationRate" *ngFor="let item of levelRevenue"
+                            categoryField="region" [stack]="true">
+                        </kendo-chart-series-item>
+                    </kendo-chart-series>
+                </kendo-chart>
+
+            </div>
+            <div class="col-md-8" *ngIf="selectedchart == 2">
+                <kendo-chart (seriesClick)="level2Click($event)" style="height: 100%;">
+                    <kendo-chart-area background="#eee" [margin]="30"> </kendo-chart-area>
+                    <kendo-chart-title text={{reportTitle2}} color="black" font="19pt sans-serif">
+                    </kendo-chart-title>
+                    <!-- <kendo-chart-legend position="top" orientation="horizontal">
+                    </kendo-chart-legend> -->
+                    <kendo-chart-series>
+                        <kendo-chart-value-axis>
+                            <kendo-chart-value-axis-item [min]="0" [max]="maxValueLevel2" [labels]="valueAxisLables">
+                                <kendo-chart-value-axis-item-labels>
+                                </kendo-chart-value-axis-item-labels>
+                            </kendo-chart-value-axis-item>
+                        </kendo-chart-value-axis>
+
+                        <kendo-chart-series-item [color]="item.color" type="column" [data]="item.items"
+                            field="utilizationRate" *ngFor="let item of level2Region" categoryField="branchName"
+                            [stack]="true">
+                            <kendo-chart-series-item-tooltip>
+                                <ng-template let-value="value" let-dataItem="dataItem">
+                                    {{ dataItem.utilizationRate}} %
+                                </ng-template>
+                            </kendo-chart-series-item-tooltip>
+
+                        </kendo-chart-series-item>
+                    </kendo-chart-series>
+                </kendo-chart>
+
+            </div>
+            <div class="col-md-8" *ngIf="selectedchart == 3">
+                <kendo-chart (seriesClick)="level3Click($event)" style="height: 100%;">
+                    <kendo-chart-area background="#eee" [margin]="30"> </kendo-chart-area>
+                    <kendo-chart-title text={{reportTitle3}} color="black" font="19pt sans-serif">
+                    </kendo-chart-title>
+                    <!-- <kendo-chart-legend position="top" orientation="horizontal">
+                    </kendo-chart-legend> -->
+                    <kendo-chart-series>
+                        <kendo-chart-value-axis>
+                            <kendo-chart-value-axis-item [min]="0" [max]="maxValueLevel3" [labels]="valueAxisLables">
+                                <kendo-chart-value-axis-item-labels>
+                                </kendo-chart-value-axis-item-labels>
+                            </kendo-chart-value-axis-item>
+                        </kendo-chart-value-axis>
+
+                        <kendo-chart-series-item [color]="item.color" type="column" [data]="item.items"
+                            field="utilizationRate" *ngFor="let item of level3Region" categoryField="modelGroup"
+                            [stack]="true">
+                            <kendo-chart-series-item-tooltip>
+                                <ng-template let-value="value" let-dataItem="dataItem">
+                                    {{ dataItem.utilizationRate}} %
+                                </ng-template>
+                            </kendo-chart-series-item-tooltip>
+
+                        </kendo-chart-series-item>
+                    </kendo-chart-series>
+                </kendo-chart>
+
+            </div>
+            <div class="col-md-8" *ngIf="selectedchart == 4">
+                <kendo-chart (seriesClick)="level4Click($event)" style="height: 100%;">
+                    <kendo-chart-area background="#eee" [margin]="30"> </kendo-chart-area>
+                    <kendo-chart-title text={{reportTitle4}} color="black" font="19pt sans-serif">
+                    </kendo-chart-title>
+                    <!-- <kendo-chart-legend position="top" orientation="horizontal">
+                    </kendo-chart-legend> -->
+                    <kendo-chart-series>
+                        <kendo-chart-value-axis>
+                            <kendo-chart-value-axis-item [min]="0" [max]="maxValueLevel4" [labels]="valueAxisLables">
+                                <kendo-chart-value-axis-item-labels>
+                                </kendo-chart-value-axis-item-labels>
+                            </kendo-chart-value-axis-item>
+                        </kendo-chart-value-axis>
+                        <kendo-chart-category-axis *ngFor="let item of level4Region">
+                            <kendo-chart-category-axis-item [labels]="{rotation:'auto'}">
+                            </kendo-chart-category-axis-item>
+                        </kendo-chart-category-axis>
+                        <kendo-chart-series-item [color]="item.color" type="column" [data]="item.items"
+                            field="utilizationRate" *ngFor="let item of level4Region" categoryField="invType"
+                            [stack]="true" [labels]="{rotation:'auto'}">
+                            <kendo-chart-series-item-tooltip>
+                                <ng-template let-value="value" let-dataItem="dataItem">
+                                    {{ dataItem.utilizationRate}} %
+                                </ng-template>
+                            </kendo-chart-series-item-tooltip>
+
+                        </kendo-chart-series-item>
+                    </kendo-chart-series>
+                </kendo-chart>
+
+            </div>
+            <div class="col-md-8" *ngIf="selectedchart == 5">
+                <kendo-grid [kendoGridBinding]="level5Region" [data]="level5Region" kendoGridSelectBy [navigable]="true"
+                    [resizable]="true" [reorderable]="true">
+                    <kendo-grid-column field="invType" title="Inventory Type">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="invNumber" title="Inventory Number">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="daysTotal" title="Days" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="onRent" title="On Rent" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="offRent" title="Off Rent" [width]="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="utilizationRate" title="Utility" [width]="100">
+                    </kendo-grid-column>
+
+                </kendo-grid>
+            </div>
+        </div>
+
+        <div class="row m-0 ml-1">
+            <div class="col-md-3 text-right">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

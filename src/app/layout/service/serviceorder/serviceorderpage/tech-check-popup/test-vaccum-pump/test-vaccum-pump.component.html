@@ -1,0 +1,67 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>VACCUM PUMP</legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPulleyCondition" class="w-100"
+                                (click)="onHandleOperations('pulley_condition')" kendoTooltip kendoRippleContainer
+                                kendoButton>PULLY CONDITION: {{f.pulleyCondition.value}}
+                            </button> --><label class="col-form-label">PULLY CONDITION:</label>
+                            <kendo-combobox *ngIf="!displayPulleyCondition" [suggest]="true"
+                                (valueChange)="onHandleOperations('pulley_condition')" placeholder="Select Screen"
+                                [valuePrimitive]="true" class="form-control form-control-round" [textField]="'value'"
+                                [data]=" pulleyConditionList" [valueField]="'value'" formControlName="pulleyCondition">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('pulleyCondition').hasError('required') && form.get('pulleyCondition').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaybearings" class="w-100" (click)="onHandleOperations('bearings')"
+                                kendoTooltip kendoRippleContainer kendoButton>BREARINGS: {{f.bearings.value}}
+                            </button> --><label class="col-form-label">BREARINGS:</label>
+                            <kendo-combobox *ngIf="!displaybearings" [suggest]="true"
+                                (valueChange)="onHandleOperations('bearings')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]=" bearingsList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="bearings">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('bearings').hasError('required') && form.get('bearings').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBeltCondition" class="w-100"
+                                (click)="onHandleOperations('belt_condition')" kendoTooltip kendoRippleContainer
+                                kendoButton>BELT CONDITION: {{f.beltCondition.value}}
+                            </button> --><label class="col-form-label">BELT CONDITION:</label>
+                            <kendo-combobox *ngIf="!displayBeltCondition" [suggest]="true"
+                                (valueChange)="onHandleOperations('belt_condition')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="beltConditionList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="beltCondition">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('beltCondition').hasError('required') && form.get('beltCondition').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaySpareBelts" class="w-100" (click)="onHandleOperations('spare_belts')"
+                                kendoTooltip kendoRippleContainer kendoButton>SPARE BELTS: {{f.spareBelts.value}}
+                            </button> --><label class="col-form-label">SPARE BELTS:</label>
+                            <kendo-combobox *ngIf="!displaySpareBelts" [suggest]="true"
+                                (valueChange)="onHandleOperations('spare_belts')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="spareBeltsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="spareBelts">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('spareBelts').hasError('required') && form.get('spareBelts').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

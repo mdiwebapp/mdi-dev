@@ -1,0 +1,288 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Paul's Playground</h4>
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button">
+          </button>
+          <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-block table-border-style pb-0 pane-content overflow-auto">
+    <form [formGroup]="form" class="cust-form">
+      <div class="row no-gutters m-0" *ngIf="!displayToggleTa">
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Time Approval Testing</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-1">
+          <fieldset>
+            <legend>Reports</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Fleet History</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-3">
+          <fieldset>
+            <legend>Maintain CRM - Collection Notes</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Maintain CRM - Contacts</legend>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row no-gutters m-0" *ngIf="displayToggleTa">
+        <div class="col-md-1">
+          <fieldset>
+            <legend>Reports</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Development</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Fleet History</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-3">
+          <fieldset>
+            <legend>Maintain CRM - Collection Notes</legend>
+          </fieldset>
+        </div>
+        <div class="col-md-2">
+          <fieldset>
+            <legend>Maintain CRM - Contacts</legend>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row no-gutters m-0">
+        <div class="col-md-12" *ngIf="!displayToggleTa">
+          <fieldset>
+            <legend>Development</legend>
+            <div class="row no-gutters m-0 p-2">
+              <div class="col-md-12 p-1" *ngIf="displayCols">
+                <kendo-grid [data]="viewData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                  [reorderable]="true">
+                  <kendo-grid-column field="invType" title="InvType">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <kendo-textbox class="form-control form-control-round" formControlName="invType" placeholder="">
+                      </kendo-textbox>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="invNumber" title="InvNumber">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <kendo-textbox class="form-control form-control-round" formControlName="invNumber" placeholder="">
+                      </kendo-textbox>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="description" title="Description">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <kendo-textbox class="form-control form-control-round" formControlName="description"
+                        placeholder="">
+                      </kendo-textbox>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="onHand" title="On Hand">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <kendo-textbox class="form-control form-control-round" formControlName="onHand" placeholder="">
+                      </kendo-textbox>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column field="counted" title="Counted">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <kendo-textbox class="form-control form-control-round" formControlName="counted" placeholder="">
+                      </kendo-textbox>
+                    </ng-template>
+                  </kendo-grid-column>
+                </kendo-grid>
+              </div>
+              <div class="col-md-12 p-1">
+                <kendo-textbox class="form-control form-control-round" formControlName="content" placeholder=""
+                  style="height: 100px;">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>Upload - Part Equiv</button>
+              </div>
+              <div class="col-md-4 p-1"></div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>Current Upload</button>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  (click)="onAddCols()" kendoButton>Add Cols</button>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>Color</button>
+              </div>
+              <div class="col-md-12 p-1">
+                <kendo-textbox class="form-control form-control-round" formControlName="content" placeholder=""
+                  style="height: 100px;">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-3 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>Populate Grud</button>
+              </div>
+              <div class="col-md-2 p-1">
+                <button *ngIf="!displayScreen" class="btn w-100 p-2 text-center mt-5 d-block" (click)="onScreen()"
+                  type="button" kendoRippleContainer kendoButton>MP6162</button>
+                <kendo-combobox *ngIf="displayScreen" class="mt-5  form-control form-control-round" [data]="screenList"
+                  [suggest]="true" placeholder="Select Screen" [textField]="'value'" [(ngModel)]="screenData"
+                  [valueField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                  [ngModelOptions]="{standalone: true}" (click)="onScreen()">
+                </kendo-combobox>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>Quick Report</button>
+              </div>
+              <div class="col-md-3 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>One-off Command</button>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center mt-5 d-block" type="button" kendoRippleContainer
+                  kendoButton>View Form</button>
+              </div>
+              <div class="col-md-5 p-1">
+                <kendo-textbox class="form-control form-control-round" formControlName="content" placeholder="">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-5 p-1"></div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton>View
+                  Parts Screen</button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-md-12" *ngIf="displayToggleTa">
+          <fieldset>
+            <legend>Time Approval Testing</legend>
+            <div class="row no-gutters m-0 p-2">
+              <div class="col-md-12 p-1" *ngIf="displayLoadTimeApprovalGrid">
+                <kendo-grid [data]="viewDataTimeApproval" [navigable]="true" [resizable]="true" [reorderable]="true">
+                  <kendo-grid-column *ngFor="let column of viewColumnsTimeApproval" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                  </kendo-grid-column>
+                </kendo-grid>
+              </div>
+              <div class="col-md-2 p-1">
+                <kendo-textbox class="form-control form-control-round" formControlName="content" placeholder="">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-3 p-1">
+                <kendo-datepicker kendoTooltip class="form-control form-control-round" formControlName="selectedDate"
+                  calendarType="classic">
+                </kendo-datepicker>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton>Check
+                  Date</button>
+              </div>
+              <div class="col-md-3 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton
+                  (click)="onLoadTimeApproval()">Load
+                  Time Approval Report</button>
+              </div>
+              <div class="col-md-2 p-1">
+                <button class="btn w-100 p-2 text-center d-block" type="button" kendoRippleContainer kendoButton>Run
+                  Approve Report</button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row no-gutters m-0">
+        <div class="col-md-6">
+          <div class="row no-gutters m-0">
+            <div class="col-md-4">
+              <fieldset>
+                <legend>String Manipulation</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+              <fieldset>
+                <legend>Directory and File Paths</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-3">
+              <fieldset>
+                <legend>Initial Form Test</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset>
+                <legend>Scott's Dashboard</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset>
+                <legend>Maintain Fleet ACT</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset>
+                <legend>Auto Invoice</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-3">
+              <fieldset>
+                <legend>Maintain EE</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <fieldset>
+                <legend>Certifications</legend>
+              </fieldset>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <fieldset>
+                <legend>Uploads</legend>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row no-gutters m-0">
+            <div class="col-md-6">
+              <label class="col-form-label pl-3">Toggle to TA:</label>
+              <kendo-switch onLabel="Yes" offLabel="No" class="ml-2" [(ngModel)]="toggleTA"
+                (valueChange)="toggleTAChange($event)">
+              </kendo-switch>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

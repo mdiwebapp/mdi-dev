@@ -1,0 +1,150 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row ">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>ALIGNMENT - <span class="pl-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="changeMarkAll($event)">
+                            </kendo-switch>
+                            Mark All N/A
+                        </span></legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>ALIGNMENT - BEFORE</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="alignmentBefore"
+                                                (valueChange)="onalignmentBefore()"  placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0">"</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>ALIGNMENT - AFTER</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="alignmentAfter"
+                                                (valueChange)="onalignmentAfter()" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0">"</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>COUPLER</legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBotsBtn" class="w-100" (click)="onBots()" kendoTooltip
+                                kendoRippleContainer kendoButton>BOLTS: {{f.bolts.value}}
+                            </button> --> <label class="col-form-label">BOLTS:</label>
+                            <kendo-combobox *ngIf="!displayBotsBtn" formControlName="bolts" [suggest]="true"
+                                (valueChange)="onBots()" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="botsList"
+                                [valuePrimitive]="true"  [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('bolts').hasError('required') && form.get('bolts').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayElectricalConditionBtn" class="w-100" (click)="onElecticalCondition()"
+                                kendoTooltip kendoRippleContainer kendoButton>ELEMENTS: {{f.elements.value}}
+                            </button> --><label class="col-form-label">ELEMENTS:</label>
+                            <kendo-combobox *ngIf="!displayElectricalConditionBtn"
+                                formControlName="elements" [suggest]="true" placeholder="Select Screen"
+                                (valueChange)="onElecticalCondition()" class="form-control form-control-round"
+                                [valuePrimitive]="true"  [textField]="'value'" [data]="electricalConditionList" [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('elements').hasError('required') && form.get('elements').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayFlangesBtn" class="w-100" (click)="onFlanges()" kendoTooltip
+                                kendoRippleContainer kendoButton>FLANGES: {{f.flanges.value}}
+                            </button> --><label class="col-form-label">FLANGES:</label>
+                            <kendo-combobox *ngIf="!displayFlangesBtn" formControlName="flanges" [suggest]="true"
+                                (valueChange)="onFlanges()" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="flangsList"
+                                [valuePrimitive]="true"  [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('flanges').hasError('required') && form.get('flanges').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>CHECK VALUE</legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFlapperBtn" class="w-100" (click)="onFlapper()" kendoTooltip
+                                kendoRippleContainer kendoButton>FLAPPER VALUE: {{f.flapperValve.value}}
+                            </button> --><label class="col-form-label">FLAPPER VALUE:</label>
+                            <kendo-combobox *ngIf="!displayFlapperBtn" formControlName="flapperValve" [suggest]="true"
+                                (valueChange)="onFlapper()" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="flapperList"
+                                [valuePrimitive]="true"   [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('flapperValve').hasError('required') && form.get('flapperValve').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPressureGuageBtn" class="w-100" (click)="onPressureGuage()"
+                                kendoTooltip kendoRippleContainer kendoButton>IS THERE A PRESSURE GAUGE?: {{f.pressureGauge.value}}
+                            </button> --><label class="col-form-label">IS THERE A PRESSURE GAUGE?:</label>
+                            <kendo-combobox *ngIf="!displayPressureGuageBtn" formControlName="pressureGauge"
+                                (valueChange)="onPressureGuage()" [suggest]="true" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="pressureGuageList"
+                                [valuePrimitive]="true"  [valueField]="'value'">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('pressureGauge').hasError('required') && form.get('pressureGauge').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+            <!-- <div class="row col-md-12">
+                <div class="col-md-6 p-1">
+                    <button class="w-100" kendoTooltip kendoRippleContainer (click)="onSave()"
+                        kendoButton>TECHNICIAN APPROVAL
+                    </button> 
+                </div>
+                <div class="col-md-6 p-1">
+                    <button *ngIf="displaySupervisorApproval" class="w-100" (click)="onSupervisorApproval()"
+                        kendoTooltip kendoRippleContainer kendoButton>SUPERVISOR APPROVAL
+                    </button>
+                    <kendo-combobox *ngIf="!displaySupervisorApproval" 
+                        (click)="onSupervisorApproval()" [suggest]="true" placeholder="Select SUPERVISOR"
+                        class="form-control form-control-round" [textField]="'value'" [valuePrimitive]="true"
+                        [data]="supervisorApprovalList" [valueField]="'value'">
+                    </kendo-combobox>
+                </div>
+            </div> -->
+        </div>
+    </form>
+</div>

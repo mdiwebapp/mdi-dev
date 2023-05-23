@@ -1,0 +1,53 @@
+<div class="card">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <div class="card-header">
+        <h4>File Manager</h4>
+    </div>
+    <div class="card-block table-border-style pb-0">
+        <div class="row">
+            <div class="col-lg-3 border-right">
+                <kendo-fileselect [(ngModel)]="myFiles" [restrictions]="myRestrictions"></kendo-fileselect>
+                <button kendoButton style="margin: 5px 0px;" *ngIf="myFiles" (click)="uploadFiles()"
+                    class="col-md-6 btn waves-effect waves-light btn-primary btn-outline-primary" title="Create Folder">
+                    Upload</button>
+                <button kendoButton style="margin: 5px 0px;" *ngIf="myFiles" (click)="clearModel()"
+                    class="col-md-6 btn waves-effect waves-light btn-primary btn-outline-primary" title="Create Folder">
+                    Cancel</button>
+
+                <button kendoButton style="margin: 5px 0px;" (click)="showAddFolder()"
+                    class="col-md-12 btn waves-effect waves-light btn-primary btn-outline-primary"
+                    title="Create Folder">
+                    Create Folder</button>
+                <div *ngIf="addFolder==true">
+                    <kendo-textbox class="form-control col-md-8 form-control-round" placeholder="Add new folder"
+                        [(ngModel)]="folderName">
+                    </kendo-textbox>
+                    <button kendoButton class="col-md-2 btn waves-effect waves-light btn-primary btn-outline-primary"
+                        title="Add" (click)="btnAdd()"><i class="fa fa-1x fa-save"></i></button>
+                    <button kendoButton class="col-md-2 btn waves-effect waves-light btn-primary btn-outline-primary"
+                        title="Cancel" (click)="hideAddFolder()"><i class="fa fa-1x fa-times"></i></button>
+                </div>
+
+                <div class="table-responsive">
+                    <kendo-treeview [nodes]="data" textField="name" kendoTreeViewExpandable [filterable]="true"
+                        kendoTreeViewSelectable kendoTreeViewHierarchyBinding childrenField="items">
+                        <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                            <div (click)="handleCollapse(dataItem)" style="width: 100%;">
+                                <span [ngClass]="iconClass(dataItem)"></span>
+                                {{ dataItem.name }}
+                                <span (click)="bindAddFolder(dataItem)" *ngIf="dataItem.name!='All Files'"
+                                    style="float: right;">
+                                    <i class="fa fa-1x fa-pencil"></i></span>
+                            </div>
+                        </ng-template>
+                    </kendo-treeview>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <!-- Grid bind here -->
+                <app-filemanagerlist (DeleteFolder)="deleteFolder($event)" [onChange]="SaveChange">
+                </app-filemanagerlist>
+            </div>
+        </div>
+    </div>
+</div>

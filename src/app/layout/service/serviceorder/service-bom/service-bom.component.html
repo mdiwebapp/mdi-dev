@@ -1,0 +1,17 @@
+<div class="register-box box-shadow-none card mb-0">
+    <div class="card-block p-0 tab-div-panel-h">
+        <div class="row no-gutters">
+            <div class="col-md-12 mb-2 p-3">
+                <label class="col-form-label "><b>MP8065</b></label>
+            </div>
+            <div class="col-md-12 mb-2">
+                <kendo-grid [data]="serviceBOMData" kendoGridSelectBy [navigable]="true" [resizable]="true"
+                    [reorderable]="true">
+                    <kendo-grid-column *ngFor=" let column of viewColumns" [width]="column.width"
+                        field="{{column.Name}}" title="{{column.Text}}">
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>

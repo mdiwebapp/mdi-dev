@@ -1,0 +1,57 @@
+<div class="row no-gutters">
+    <div class="col-md-12 mb-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="mt-1"> Active</label>
+                    </div>
+                    <div class="col-md-6">
+                        <kendo-switch (valueChange)="TitlesInActive($event)" [(ngModel)]="status" onLabel="Yes"
+                            offLabel="All">
+                        </kendo-switch>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="branch">
+    <kendo-grid [data]="data" [ngClass]="titleId == 0 || (titleId > 0 && !isEdit) ? '' :  'k-state-disabled'"
+        [navigable]="true" [resizable]="true" [reorderable]="true" 
+        [sort]="sort" (sortChange)="sortChange($event)" [sortable]="true" style="height: 65vh;"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [skip]="skip" [selectable]="true"
+        (dataStateChange)="dataStateChange($event)" kendoGridSelectBy [selectedKeys]="mySelection"
+        (selectionChange)="editClick($event.selectedRows[0].dataItem.id)">
+        <ng-template kendoGridToolbarTemplate>
+
+            <input class="col-md-9" placeholder="Search in all columns..." kendoTextBox
+                (input)="onFilter($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{data?.length}}</span>
+        </ng-template>
+        <kendo-grid-column field="name" title="Name">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.name}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="active" title="Active" width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable *ngIf="!dataItem.active"><i class="fa fa-times text-green" aria-hidden="true"></i>
+                </lable>
+                <lable *ngIf="dataItem.active"><i class="fa fa-check text-red" aria-hidden="true"></i>
+                </lable>
+            </ng-template>
+        </kendo-grid-column>
+        <!-- <kendo-grid-column field="value" title="Value">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.value}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+         <kendo-grid-column field="status" title="Status">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.reportTo}}</lable>
+            </ng-template>
+        </kendo-grid-column> -->
+    </kendo-grid>
+</div>

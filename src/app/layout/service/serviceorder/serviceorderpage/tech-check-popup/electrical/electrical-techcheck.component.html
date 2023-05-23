@@ -1,0 +1,168 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>ELECTRIC SYSTEM- <span class="pl-1">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                    (valueChange)="changeMarkAll($event)">
+                                </kendo-switch>
+                                Mark All N/A
+                            </span></legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>ALTERNATOR LOAD TEST</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="alternatorLoadTest"
+                                                (valueChange)="onalternatorLoadTest()" placeholder="">
+                                            </kendo-textbox>
+                                            <div class="required-text"
+                                                *ngIf="form.get('alternatorLoadTest').hasError('required') && form.get('alternatorLoadTest').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0 mt-3">V</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>STARTER LOAD TEST</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="starterLoadTest"
+                                                (valueChange)="onstarterLoadTest()" placeholder="">
+                                            </kendo-textbox>
+                                            <div class="required-text"
+                                                *ngIf="form.get('starterLoadTest').hasError('required') && form.get('starterLoadTest').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0 mt-3">A</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayWiringBtn" class="w-100" (click)="onWiringLevel()" kendoTooltip
+                                    kendoRippleContainer kendoButton>WIRING CONDITION : {{f.wiringLevel.value}}
+                                </button> --> <label class="col-form-label">WIRING CONDITION:</label>
+                                <kendo-combobox *ngIf="!displayWiringBtn" formControlName="wiringLevel" [suggest]="true"
+                                    (valueChange)="onWiringLevel()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="wiringList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('wiringLevel').hasError('required') && form.get('wiringLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayElectricalConditionBtn" class="w-100"
+                                    (click)="onElecticalCondition()" kendoTooltip kendoRippleContainer
+                                    kendoButton>CONNECTIONS : {{f.electricalConditionLevel.value}}
+                                </button> --> <label class="col-form-label">CONNECTIONS:</label>
+                                <kendo-combobox *ngIf="!displayElectricalConditionBtn"
+                                    formControlName="electricalConditionLevel" [suggest]="true"
+                                    (valueChange)="onElecticalCondition()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="electricalConditionList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('electricalConditionLevel').hasError('required') && form.get('electricalConditionLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayStartConnectionBtn" class="w-100" (click)="onStartConnections()"
+                                    kendoTooltip kendoRippleContainer kendoButton>
+                                    STARTERCONNECTIONS : {{f.startConnectionLevel.value}}
+                                </button> --> <label class="col-form-label">STARTER CONNECTIONS:</label>
+                                <kendo-combobox *ngIf="!displayStartConnectionBtn"
+                                    formControlName="startConnectionLevel" [suggest]="true" placeholder="Select Choice"
+                                    (valueChange)="onStartConnections()" class="form-control form-control-round"
+                                    [valuePrimitive]="true" [textField]="'value'" [data]="startConnectionList"
+                                    [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('startConnectionLevel').hasError('required') && form.get('startConnectionLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1" *ngIf="isControlPanel">
+                                <!-- <button *ngIf="displayControlPanelbtn" class="w-100" (click)="onControlPanel()"
+                                    kendoTooltip kendoRippleContainer kendoButton>CONDITION OF RELAYS :
+                                    {{f.relayLevel.value}}
+                                </button> --> <label class="col-form-label">CONDITION OF RELAYS:</label>
+                                <kendo-combobox *ngIf="!displayControlPanelbtn" formControlName="relayLevel"
+                                    [suggest]="true" (valueChange)="onRelays()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="controlPanelList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                *ngIf="form.get('relayLevel').hasError('required') && form.get('relayLevel').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1" *ngIf="isGenerator">
+                                <!-- <button *ngIf="displayControlPanelbtn" class="w-100" (click)="onControlPanel()"
+                                    kendoTooltip kendoRippleContainer kendoButton>CONTROL PANEL SHUTDOWN :
+                                    {{f.controlPanelShutdown.value}}
+                                </button> --> <label class="col-form-label">PANEL SHUTDOWN:</label>
+                                <kendo-combobox *ngIf="!displayControlPanelbtn" formControlName="controlPanelShutdown"
+                                    [suggest]="true" (valueChange)="onControlPanel()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="controlPanelList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('controlPanelShutdown').hasError('required') && form.get('controlPanelShutdown').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayAlternatorBtn" class="w-100" (click)="onAlternaor()" kendoTooltip
+                                    kendoRippleContainer kendoButton>ALTERNATOR : {{f.alternatorLevel.value}}
+                                </button> --> <label class="col-form-label">ALTERNATOR:</label>
+                                <kendo-combobox *ngIf="!displayAlternatorBtn" formControlName="alternatorLevel"
+                                    (valueChange)="onAlternaor()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="alternatorList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('alternatorLevel').hasError('required') && form.get('alternatorLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayFusesBtn" class="w-100" (click)="onFuses()" kendoTooltip
+                                    kendoRippleContainer kendoButton>BREAKERS/FUSES : {{f.fusesLevel.value}}
+                                </button> --> <label class="col-form-label">BREAKERS/FUSES:</label>
+                                <kendo-combobox *ngIf="!displayFusesBtn" formControlName="fusesLevel" [suggest]="true"
+                                    (valueChange)="onFuses()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="fusesList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('fusesLevel').hasError('required') && form.get('fusesLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

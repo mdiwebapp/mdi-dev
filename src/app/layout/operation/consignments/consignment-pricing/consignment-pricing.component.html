@@ -1,0 +1,128 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="wp-50 p-l-10 p-r-10">
+            <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" [disabled]="isAddPricing"
+                (click)="onHandleOperation('add')">
+            </button>
+        </div>
+        <div class="wp-50 p-l-10 p-r-10">
+            <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                [disabled]="!isAddPricing || !isEditPricing" (click)="onHandleOperation('edit')">
+            </button>
+        </div>
+        <div class="wp-50 p-l-10 p-r-10">
+            <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                [disabled]="!isAddPricing" (click)="onHandleOperation('cancel')">
+            </button>
+        </div>
+        <div class="wp-50 p-l-10 p-r-10">
+            <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" [disabled]="!isAddPricing"
+                (click)="onHandleOperation('save')">
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="col-md-8 p-2 mt-5 mb-2">
+                    <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="!isAddPricing"
+                        (click)="onHandleOperation('inventory_type')">{{inventory_type_btn}}</button>
+                </div>
+                <div class="col-md-12 text-center">
+                    <input type="checkbox" kendoCheckBox (change)="onChangeAction($event)" [disabled]="!isAddPricing" />
+                    <label class="col-form-label pl-2">28 Days Billing</label>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <fieldset>
+                        <legend>Rates</legend>
+                        <div class="row no-gutters mb-2">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Daily:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" [disabled]="!isAddPricing">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-2">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Weekly:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" [disabled]="!isAddPricing">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters mb-2">
+                            <div class="col-md-3 text-right">
+                                <label class="col-form-label pr-2">Monthly:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" [disabled]="!isAddPricing">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row no-gutters">
+                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                    (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]=""
+                    [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                    [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+                    (dataStateChange)="onDataStateChange($event)"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <ng-template kendoGridToolbarTemplate>
+                        <input placeholder="Search in all columns..." kendoTextBox class="col-md-12"
+                            (input)="onFilter($event.target.value)" />
+                        <kendo-grid-spacer></kendo-grid-spacer>
+                        <!-- <span> Total : {{totalLogs}}</span> -->
+                        <kendo-grid-spacer></kendo-grid-spacer>
+                    </ng-template>
+
+                    <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+                        title="{{column.Text}}">
+                    </kendo-grid-column>
+
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+<kendo-dialog title="Select Screen" *ngIf="isInventoryTypeVisible" (close)="onHandleOperation('inventory_type')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-2 p-1">
+                    Search
+                </div>
+                <div class="col-md-7 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{inventoryTypes.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                [data]="inventoryTypes" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of callTypesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

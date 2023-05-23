@@ -1,0 +1,1065 @@
+<div class="register-box box-shadow-none card mb-0 tab-scrollable h-70vh">
+  <form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0">
+      <div class="row no-gutters">
+        <div class="col-md-12">
+          <div class="row mb-1">
+            <div class="col-md-5 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-5 mb-1 text-right pr-2">
+                  <label class="col-form-label">Job Number:</label>
+                </div>
+                <div class="col-md-6">
+                  <button
+                    kendoRippleContainer
+                    kendoButton
+                    kendoTooltip
+                    class="btn w-100 p-2"
+                    title="This is the job number.Click to access the job folder on the network."
+                    [disabled]="isdisabled"
+                  >
+                    {{ jobNumber }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Job Status:</label>
+                </div>
+                <div class="col-md-4">
+                  <div *ngIf="!displayJobSatus" class="mr-2">
+                    <button
+                      class="btn w-100 mr-3 p-2"
+                      kendoRippleContainer
+                      kendoButton
+                      (click)="onJobStatus()"
+                      [disabled]="isStatusButtonDisables"
+                    >
+                      {{ jobStatus }}
+                    </button>
+                  </div>
+
+                  <div *ngIf="displayJobSatus" class="mr-2">
+                    <kendo-combobox
+                      formControlName="jobStatus"
+                      [suggest]="true"
+                      placeholder="Select Status"
+                      class="form-control form-control-round"
+                      [textField]="'value'"
+                      [data]="statusData"
+                      [valueField]="'value'"
+                      [filterable]="true"
+                      [valuePrimitive]="true"
+                      [disabled]="!displayJobSatus"
+                      (valueChange)="onJobStatusClick($event)"
+                    >
+                    </kendo-combobox>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <button
+                    class="btn w-100 p-2 k-button"
+                    kendoRippleContainer
+                    kendoButton  [disabled]="isPAF"
+                    (click)="onPAF()"
+                    [style.background]="pAFbuttonColor"
+                   
+                  >
+                    PAF
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Branch:</label>
+                </div>
+                <div class="col-md-9">
+                  <button
+                    class="btn w-100 ml-2 p-2"
+                    kendoRippleContainer
+                    kendoButton
+                    (click)="onBranch()"
+                    [disabled]="isBranch"
+                  >
+                    {{ branchName }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 pr-3">
+                  <button
+                    class="btn w-100 ml-2 p-2"
+                    title="Click to access the customer's folder on the network."
+                    kendoTooltip
+                    kendoRippleContainer
+                    kendoButton
+                  >
+                    Customer
+                  </button>
+                </div>
+                <div class="col-md-8">
+                  <button
+                    kendoTooltip
+                    title="Click to assign a customer to a service order"
+                    class="btn w-100 p-2"
+                    kendoRippleContainer
+                    kendoButton
+                    (click)="selectCust()"
+                    [disabled]="isCustomer"
+                    [ngStyle]="checkCredit==false?{'background-color':'red'} : {'background-color': 'lightgreen'}"
+                  >
+                    {{ customername }}
+                  </button>
+                </div>
+
+                <kendo-dialog
+                  title="Select a Customer"
+                  *ngIf="displayCustDrp"
+                  (close)="selectCust()"
+                  [minWidth]="550"
+                  [width]="550"
+                >
+                  <div class="row">
+                    <!-- <div class="col-md-4">
+                                        <label>Customer Search</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <kendo-textbox class="form-control form-control-round" [ngModel]="custSearch" placeholder=""
+                                            [ngModelOptions]="{standalone: true}">
+                                        </kendo-textbox>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Cust Count: </label>
+                                    </div> -->
+                    <div class="col-md-12 mt-2">
+                      <kendo-grid
+                        [data]="customerData"
+                        [navigable]="true"
+                        [resizable]="true"
+                        [reorderable]="true"
+                        [sort]="sort1"
+                        (sortChange)="sortChange1($event)"
+                        kendoGridSelectBy
+                        [selectedKeys]="mySelection1"
+                        [sortable]="true"
+                        style="height: 60vh"
+                        (selectionChange)="
+                          customerClick($event.selectedRows[0].dataItem)
+                        "
+                        [sortable]="{
+                          allowUnsort: false,
+                          mode: multiple ? 'multiple' : 'single'
+                        }"
+                      >
+                        <ng-template kendoGridToolbarTemplate>
+                          <input
+                            class="col-md-8"
+                            placeholder="Search in all columns..."
+                            (keydown.enter)="getCustomerData()"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="custSearch"
+                            kendoTextBox
+                          />
+                          <kendo-grid-spacer></kendo-grid-spacer>
+                          <i
+                            class="fa fa-search fa-2x"
+                            (click)="getCustomerData()"
+                          ></i>
+                          <span> Total : {{ customerTotal }}</span>
+                          <kendo-grid-spacer></kendo-grid-spacer>
+                        </ng-template>
+                        <kendo-grid-column
+                          *ngFor="let column of viewColumnsCust"
+                          [width]="column.width"
+                          field="{{ column.Name }}"
+                          title="{{ column.Text }}"
+                        >
+                        </kendo-grid-column>
+                      </kendo-grid>
+                      <kendo-datapager
+                        [total]="customerTotal"
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        style="width: 100% !important"
+                        (pageChange)="onPageChange($event)"
+                      >
+                        <ng-template
+                          kendoDataPagerTemplate
+                          let-totalPages="totalPages"
+                          let-currentPage="currentPage"
+                        >
+                          <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                          <kendo-datapager-numeric-buttons [buttonCount]="5">
+                          </kendo-datapager-numeric-buttons>
+                          <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                          <kendo-dropdownlist
+                            class="form-control form-control-round"
+                            style="width: 16% !important"
+                            [data]="pageSizeList"
+                            [(ngModel)]="pageSize"
+                            [ngModelOptions]="{ standalone: true }"
+                            (valueChange)="onPageSizechange($event)"
+                            [valuePrimitive]="true"
+                            [textField]="'value'"
+                            [valueField]="'value'"
+                          >
+                          </kendo-dropdownlist>
+                        </ng-template>
+                      </kendo-datapager>
+                    </div>
+                  </div>
+                </kendo-dialog>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Name:</label>
+                </div>
+                <div class="col-md-9">
+                  <kendo-textbox
+                    class="form-control form-control-round"
+                    kendoTooltip
+                    title="This is the job's name. When creating a new project, type a descriptive job name in the box provided."
+                    [disabled]="isdisabled"
+                    formControlName="jobName"
+                    placeholder="Name"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Customer Contact: </label>
+                </div>
+                <div class="col-md-8">
+                  <button
+                    class="btn w-100 p-2"
+                    title="Click to select the project's customer. If using the planholder's list, you can add specific customers by click the planholder's button. (Cust# 1234).'"
+                    kendoTooltip
+                    (click)="onCustomerContact()"
+                    kendoRippleContainer
+                    kendoButton
+                    [disabled]="isdisabled"
+                  >
+                    {{ customerRep }} - {{ customerPhone }}
+                  </button>
+
+                  <kendo-dialog
+                    title="Select a Contact"
+                    *ngIf="displayCustomerContact"
+                    (close)="onCustomerContact()"
+                    [minWidth]="250"
+                    [width]="750"
+                  >
+                    <div class="row no-gutters mt-3 p-3">
+                      <div class="col-md-3 pl-3">
+                        <label>Contact Search</label>
+                      </div>
+                      <div class="col-md-6">
+                        <kendo-textbox
+                          class="form-control form-control-round"
+                          formControlName="customerContact"
+                          placeholder=""
+                        >
+                        </kendo-textbox>
+                      </div>
+                      <div class="col-md-1 p-1">
+                        <i
+                          class="fa fa-search fa-2x"
+                          (click)="onSearchClick()"
+                        ></i>
+                      </div>
+                      <div class="col-md-2 text-right">
+                        <label>Contacts - {{ contactListData.length }}</label>
+                      </div>
+                      <div class="col-md-12 mt-5">
+                        <kendo-grid
+                          [data]="contactListData"
+                          kendoGridSelectBy
+                          [navigable]="true"
+                          [resizable]="true"
+                          [reorderable]="true"
+                          [sort]="sort1"
+                          (sortChange)="sortChange1($event)"
+                          kendoGridSelectBy
+                          (selectionChange)="
+                            customerContactClick(
+                              $event.selectedRows[0].dataItem
+                            )
+                          "
+                          [selectedKeys]="mySelection1"
+                          [sortable]="true"
+                          [sortable]="{
+                            allowUnsort: false,
+                            mode: multiple ? 'multiple' : 'single'
+                          }"
+                        >
+                          <kendo-grid-column
+                            *ngFor="let column of viewColumnsContact"
+                            [width]="column.width"
+                            field="{{ column.Name }}"
+                            kendoTooltip
+                            title="{{ column.Text }}"
+                          >
+                          </kendo-grid-column>
+                        </kendo-grid>
+                      </div>
+                      <div class="col-md-12 mt-5">
+                        <div class="row no-gutters m-0">
+                          <div class="col-md-3 mb-1 pl-3">
+                            <label>First</label>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <kendo-textbox
+                              class="form-control form-control-round"
+                              formControlName="firstName"
+                              placeholder=""
+                            >
+                            </kendo-textbox>
+                          </div>
+                          <div class="col-md-3 mb-1 pl-3">
+                            <label>Phone</label>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <kendo-maskedtextbox
+                              formControlName="phoneNumber"
+                              class="form-control form-control-round"
+                              [mask]="mask"
+                            >
+                            </kendo-maskedtextbox>
+                          </div>
+                          <div class="col-md-3 mb-1 pl-3">
+                            <label>Last</label>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <kendo-textbox
+                              class="form-control form-control-round"
+                              formControlName="lastName"
+                              placeholder=""
+                            >
+                            </kendo-textbox>
+                          </div>
+                          <div class="col-md-3 mb-1 pl-3">
+                            <label>Title</label>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <kendo-textbox
+                              class="form-control form-control-round"
+                              formControlName="titleName"
+                              placeholder=""
+                            >
+                            </kendo-textbox>
+                          </div>
+                          <div class="col-md-3 mb-1 pl-3">
+                            <label>E-Mail</label>
+                          </div>
+                          <div class="col-md-3 mb-1">
+                            <kendo-textbox
+                              class="form-control form-control-round"
+                              formControlName="emailName"
+                              placeholder=""
+                            >
+                            </kendo-textbox>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mt-3 text-center">
+                        <button
+                          class="btn w-auto p-2 pl-4 pr-4 k-button"
+                          type="button"
+                          (click)="addCustomerContact()"
+                          kendoRippleContainer
+                          kendoButton
+                        >
+                          Add Contact
+                        </button>
+                      </div>
+                    </div>
+                  </kendo-dialog>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">Address:</label>
+                </div>
+                <div class="col-md-9">
+                  <kendo-textbox
+                    class="form-control form-control-round"
+                    kendoTooltip
+                    title="This is the job's street address. When creating a new project,type the street address for the job location in the box provided."
+                    formControlName="custAddress"
+                    placeholder="Address"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Account Manager:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-combobox
+                    formControlName="accountManager"
+                    [suggest]="true"
+                    placeholder="Employee"
+                    class="form-control form-control-round"
+                    [textField]="'name'"
+                    [data]="employeeData"
+                    [valueField]="'employeeNumber'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-combobox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-1">
+              <div class="row no-gutters m-0">
+                <div class="col-md-3 text-right">
+                  <label class="col-form-label pr-2">City:</label>
+                </div>
+                <div class="col-md-2">
+                  <kendo-textbox
+                    class="form-control form-control-round mr-1"
+                    kendoTooltip
+                    title="This is the city where the job is located. When creating a new project, type the job's city in the box provided."
+                    formControlName="jobCity"
+                    placeholder=""
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-textbox>
+                </div>
+                <div class="col-md-1 text-right">
+                  <label class="col-form-label pr-2">State:</label>
+                </div>
+                <div class="col-md-3">
+                  <kendo-combobox
+                    formControlName="jobState"
+                    [suggest]="true"
+                    placeholder="Select State"
+                    class="form-control form-control-round"
+                    [textField]="'value'"
+                    [data]="stateList"
+                    [valueField]="'value'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-combobox>
+                </div>
+                <div class="col-md-1 text-right">
+                  <label class="col-form-label pr-2">ZIP:</label>
+                </div>
+                <div class="col-md-2">
+                  <kendo-textbox
+                    class="form-control form-control-round"
+                    formControlName="jobZip"
+                    placeholder="ZIP"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1 border-top">
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Bid Date:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-datepicker
+                    class="form-control form-control-round"
+                    formControlName="bidDate"
+                    calendarType="classic"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-datepicker>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Job Type:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-combobox
+                    formControlName="jobType"
+                    [suggest]="true"
+                    placeholder="Job Type"
+                    class="form-control form-control-round"
+                    [textField]="'name'"
+                    [data]="jobData"
+                    [valueField]="'name'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-combobox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-5 text-right">
+                  <label class="col-form-label pr-2">Est. Job Value:</label>
+                </div>
+                <div class="col-md-7">
+                  <kendo-numerictextbox
+                    class="form-control form-control-round"
+                    kendoTooltip
+                    title="This is the estimated job value. The job value the estimated cost for our portion of the project's work. This filed is required for all projects. type in the box provided to add or modify the job value."
+                    formControlName="jobValue"
+                    placeholder="Est. Job Value"
+                    format="c2"
+                    [spinners]="false"
+                    min="0"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-numerictextbox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Est. Start Date:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-datepicker
+                    class="form-control form-control-round"
+                    formControlName="estimatedStartDate"
+                    calendarType="classic" (valueChange)="checkStartDate($event)"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-datepicker>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Probability:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-combobox
+                    formControlName="probability"
+                    [suggest]="true"
+                    placeholder="Probability"
+                    class="form-control form-control-round"
+                    [textField]="'name'"
+                    [data]="probabilityData"
+                    [valueField]="'name'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-combobox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-5 text-right">
+                  <label class="col-form-label pr-2">Total Amount:</label>
+                </div>
+                <div class="col-md-7">
+                  <label class="col-form-label pr-2"
+                    ><b>${{ billingAmt | number:'1.2-2' }}</b></label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Est. End Date:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-datepicker
+                    class="form-control form-control-round"
+                    calendarType="classic"  (valueChange)="checkEndDate($event)"
+                    formControlName="estimatedEndDate"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-datepicker>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-4 text-right">
+                  <label class="col-form-label pr-2">Lead Source:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-combobox
+                    formControlName="leadSource"
+                    [suggest]="true"
+                    placeholder="Lead Source"
+                    class="form-control form-control-round"
+                    [textField]="'name'"
+                    [data]="leadSourceData"
+                    [valueField]="'name'"
+                    [filterable]="true"
+                    [valuePrimitive]="true"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-combobox>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-1">
+              <div class="row no-gutters">
+                <div class="col-md-5 text-right">
+                  <label class="col-form-label pr-2">Labor Hours:</label>
+                </div>
+                <div class="col-md-7">
+                  <kendo-textbox
+                    class="form-control form-control-round"
+                    kendoTooltip
+                    title="This is the estimated labor hours needed to complete the job. This field is required for all projects. Be sure these hours hours are accurate before elevating to Activate status. Once Activate, Labor Hours cannot be modified."
+                    formControlName="laborHours"
+                    placeholder="Labor Hours"
+                    [disabled]="isdisabled"
+                  >
+                  </kendo-textbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1 border-top">
+            <div class="col-md-7 mb-1">
+              <div class="row">
+                <div class="col-md-7 mb-1">
+                  <div class="row no-gutters">
+                    <div class="col-md-6 text-right">
+                      <label class="col-form-label pr-2">Labor To Rev</label>
+                    </div>
+                    <div class="col-md-6">
+                      <button
+                        class="btn w-100 p-2"
+                        (click)="onLaborToRev()"
+                        kendoRippleContainer
+                        kendoButton
+                        kendoTooltip
+                        title="This is the labor to revenue percentage to date for the projects. Click to view a detailed Labor to revenue report."
+                        [disabled]="isLaborToRev"
+                        [style.background]="labourToRevColor"
+                      >
+                        {{ labourToRev }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 mb-1">
+                  <div class="row no-gutters">
+                    <div class="col-md-6 text-right">
+                      <label
+                        class="col-form-label pr-2"
+                        kendoTooltip
+                        title="These are the labor hours used to date for the products."
+                        >Labor Hours</label
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <button
+                        class="btn w-100 p-2"
+                        (click)="onHour()"
+                        kendoTooltip
+                        fromcont
+                        title="These are the labor hours used to date for the project."
+                        kendoRippleContainer
+                        kendoButton [style.background]="labourHoursColor"
+                      >
+                        {{ hours }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-7 mb-1">
+                  <div class="row no-gutters">
+                    <div class="col-md-6 text-right">
+                      <label class="col-form-label pr-2"
+                        >Labor To Rev w/o Pump Watch</label
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <button
+                        class="btn w-100 p-2"
+                        (click)="onLaborToRevPumpWatch()"
+                        kendoTooltip
+                        title="This is the labor to revenue percentage (excluding Pump Watch) to date for the projects. Click to view a detailed Labor to Revenue report."
+                        kendoRippleContainer
+                        kendoButton
+                        [disabled]="isLaborToRevWP"
+                        [style.background]="labourToRevPumpWatchColor"
+                      >
+                        {{ labourToRevPumpWatch }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 mb-1">
+                  <div class="row no-gutters">
+                    <div class="col-md-6 text-right">
+                      <label class="col-form-label pr-2"
+                        >Show All Invoices</label
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <kendo-switch
+                        onLabel="Yes"
+                        offLabel="No"
+                        class=""
+                        style="width: auto"
+                        formControlName="displayAllInvoices"
+                        (valueChange)="showAllInvoice($event)"
+                      >
+                      </kendo-switch>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 text-right">
+                  <label class="color-red">{{ callOffLabel }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 mb-1">
+              <fieldset>
+                <legend>Open Balance</legend>
+                <div class="row no-gutters p-2">
+                  <div class="col-md-5">
+                    <div class="row no-gutters">
+                      <div class="col-md-5">
+                        <label
+                          kendoTooltip
+                          title="Value of Inventory on the job"
+                          >Job <span>-</span></label
+                        >
+                      </div>
+                      <div class="col-md-7">
+                        <label
+                          ><b>${{ jobOpen | number:'1.2-2'}}</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="row no-gutters">
+                      <div class="col-md-5">
+                        <label
+                          kendoTooltip
+                          title="Value of Inventory on the job"
+                          >Inv$ <span>-</span></label
+                        >
+                      </div>
+                      <div class="col-md-7">
+                        <label
+                          ><b>${{ invTotal | number: '1.2-2'}}</b></label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="row no-gutters">
+                      <div class="col-md-5">
+                        <label>Cust <span>-</span></label>
+                      </div>
+                      <div class="col-md-7 text-right">
+                        <label
+                          ><b>${{ custOpen | number: '1.2-2' }}</b></label
+                        >
+                      </div>
+                    </div>
+                    <div class="row no-gutters">
+                      <div class="col-md-5"><label>Last Invoiced</label></div>
+                      <div class="col-md-7 text-right">
+                        <label class="color-red">{{ lastInvDate }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <kendo-dialog
+      title="Change Branch of Job?"
+      *ngIf="displayBranch"
+      (close)="close('cancel')"
+      [minWidth]="250"
+      [width]="450"
+    >
+      
+      <div>
+        <kendo-combobox
+          formControlName="branchType"
+          [suggest]="true"
+          (onChange)="onClosedisplayBranch()"
+          placeholder="Select Branch"
+          class="form-control form-control-round"
+          [textField]="'value'"
+          [valueField]="'code'"
+          [data]="branches"
+          [filterable]="true"
+          [valuePrimitive]="true"
+          (valueChange)="onValueChange($event)"
+        >
+        </kendo-combobox>
+      </div>
+    
+    </kendo-dialog>
+  </form>
+  <div>
+    <kendo-grid
+      kendoGridExpandGroupBy
+      [data]="projectInfoData"
+      kendoGridSelectBy
+      [navigable]="true"
+      [resizable]="true"
+      [reorderable]="true"
+      [sort]="sort"
+      (sortChange)="sortChange($event)"
+      kendoGridSelectBy
+      [selectedKeys]="infoGridSelection"
+      [sortable]="true"
+      style="height: 68vh"
+      (selectionChange)="
+        projectInfoGridSelection($event.selectedRows[0].dataItem)
+      "
+      [sortable]="{
+        allowUnsort: false,
+        mode: multiple ? 'multiple' : 'single'
+      }"
+      [group]="state.group"
+      [(expandedGroupKeys)]="expandedGroupKeys"
+      (groupChange)="groupChange()"
+      [groupable]="false"
+    >
+    <kendo-grid-column field="item" title="Item">
+      <ng-template kendoGridCellTemplate let-dataItem>
+          <lable>{{dataItem.item}}</lable>
+
+      </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="description" title="Description">
+    <ng-template kendoGridCellTemplate let-dataItem>
+        <lable>{{dataItem.description }}</lable>
+
+    </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="invoiceNumber" title="Invoice#">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{dataItem.invoiceNumber }}</lable>
+
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="qty" title="Quantity">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>{{dataItem.qty }}</lable>
+
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="rate" title="Rate">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>${{dataItem.rate | number : '1.2-2'}}</lable>
+
+  </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="lineTotal" title="Line Total">
+  <ng-template kendoGridCellTemplate let-dataItem>
+      <lable>${{dataItem.lineTotal | number : '1.2-2'}}</lable>
+
+  </ng-template>
+</kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>
+
+<div
+  class="backdrop"
+  [style.display]="displayLaborToRev ? 'block' : 'none'"
+  style="z-index: 333333"
+></div>
+<div class="custom_slider_popup p-0" *ngIf="displayLaborToRev">
+  <kendo-popup
+    [anchor]="anchor"
+    #popup
+    popupClass="content"
+    style="width: 100%"
+  >
+    <div class="content bg-danger p-3">
+      <div class="row">
+        <div class="col-md-10">
+          <img
+            class="img-fluid"
+            src="assets/images/logo-white.png"
+            alt="Theme-Logo"
+            style="width: 125px"
+          />
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button
+            class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0"
+            type="button"
+            (click)="onLaborToRev()"
+            kendoRippleContainer
+            kendoButton
+          >
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="col-md-12 text-center p-4">
+        <p>
+          <b>{{ l2Rdata.jobNumber }} - {{ l2Rdata.jobName }}</b>
+        </p>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="row" style="line-height: 2.5">
+          <div class="col-md-6"><b>Union</b></div>
+          <div class="col-md-6">{{ l2Rdata.unionHours }} Hours</div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6">${{ l2Rdata.unionCost | number: "1.2-2"}}</div>
+          <div class="col-md-6"><b>Non Union</b></div>
+          <div class="col-md-6">{{ l2Rdata.nonUnionHours | number: "1.2-2"}} Hours</div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6">${{ l2Rdata.nonUnionCost | number: "1.2-2" }}</div>
+          <div class="col-md-6"><b>Total Cost</b></div>
+          <div class="col-md-6">${{ l2Rdata.nonUnionCost | number: "1.2-2" }}</div>
+          <div class="col-md-6"><b>Invoiced</b></div>
+          <div class="col-md-6">
+            ${{ l2Rdata.totalInvoiced | number: "1.2-2" }}
+          </div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6 border-top">
+            <p class="percentage-div">{{ l2Rdata.l2R }}%</p>
+          </div>
+          <div class="col-md-12 text-center pb-3">
+            <button
+              class="btn w-auto p-2 pl-4 pr-4"
+              type="button"
+              (click)="onLaborToRev()"
+              kendoRippleContainer
+              kendoButton
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </kendo-popup>
+</div>
+<div
+  class="backdrop"
+  [style.display]="displayLaborToRevPumpWatch ? 'block' : 'none'"
+  style="z-index: 333333"
+></div>
+<div class="custom_slider_popup p-0" *ngIf="displayLaborToRevPumpWatch">
+  <kendo-popup
+    [anchor]="anchor"
+    #popup
+    popupClass="content"
+    style="width: 100%"
+  >
+    <div class="content bg-danger p-3">
+      <div class="row">
+        <div class="col-md-10">
+          <img
+            class="img-fluid"
+            src="assets/images/logo-white.png"
+            alt="Theme-Logo"
+            style="width: 125px"
+          />
+        </div>
+        <div class="col-md-2 text-right pr-0">
+          <button
+            class="btn w-auto p-2 pl-4 pr-4 k-button bg-transparent border-0"
+            type="button"
+            (click)="onLaborToRevPumpWatch()"
+            kendoRippleContainer
+            kendoButton
+          >
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="col-md-12 text-center p-4">
+        <p><b>{{l2Rdata.jobNumber}} - DVM Nine Mile Road Sanitary Sewer</b></p>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="row" style="line-height: 2.5">
+          <div class="col-md-6"><b>Union</b></div>
+          <div class="col-md-6">{{ l2Rdata.unionHours }} Hours</div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6">${{ l2Rdata.unionCost }}</div>
+          <div class="col-md-6"><b>Non Union</b></div>
+          <div class="col-md-6">{{ l2Rdata.nonUnionHours | number: "1.2-2"}} Hours</div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6">${{ l2Rdata.nonUnionCost | number: "1.2-2"}}</div>
+          <div class="col-md-6"><b>Total Cost</b></div>
+          <div class="col-md-6">${{ l2Rdata.nonUnionCost | number: "1.2-2"}}</div>
+          <div class="col-md-6"><b>Invoiced</b></div>
+          <div class="col-md-6">
+            ${{ l2Rdata.totalInvoiced | number: "1.2-2" }}
+          </div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6 border-top">
+            <p class="percentage-div">{{ l2Rdata.l2R }}%</p>
+          </div>
+          <div class="col-md-12 text-center pb-3">
+            <button
+              class="btn w-auto p-2 pl-4 pr-4"
+              type="button"
+              (click)="onLaborToRevPumpWatch()"
+              kendoRippleContainer
+              kendoButton
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </kendo-popup>
+</div>
+<kendo-dialog
+  title="Project Activation Form (PAF)"
+  *ngIf="displayPAF"
+  (close)="onPAF()"
+  [minWidth]="250"
+  [width]="950"
+>
+  <app-paf
+    [detailJobNumber]="jobNumber"
+    (backButtonEvent)="backButtonEvent($event)"
+  >
+  </app-paf>
+</kendo-dialog>

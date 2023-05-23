@@ -1,0 +1,109 @@
+<form [formGroup]="form" name="loginForm" class="cust-form">
+    <div class="col-md-12 pane-content">
+        <div class="row my-3">
+            <div class="col-md-12">
+
+                <div class="register-box box-shadow-none card mb-0">
+                    <div class="card-block p-0">
+                        <div class="row no-gutters">
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">Name<em>*</em>:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="">
+                                            <kendo-textbox formControlName="name"
+                                                class="form-control form-control-round" placeholder="Name">
+                                            </kendo-textbox>
+                                            <div class="required-text"
+                                                *ngIf="form.get('name').hasError('required') && form.get('name').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">Report To<em>*</em>:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-combobox class="form-control form-control-round" [data]="activeTitles"
+                                            [textField]="'name'" formControlName="reportTo" [valueField]="'id'"
+                                          [suggest]="true"  [filterable]="true" [valuePrimitive]="true"  (filterChange)="reporthandleFilter($event)">
+                                        </kendo-combobox>
+                                        <div class="required-text"
+                                            *ngIf="form.get('reportTo').hasError('required') && form.get('reportTo').touched">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">POR Approval Value:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-textbox formControlName="value" class="form-control form-control-round"
+                                            placeholder="Value">
+                                        </kendo-textbox>
+                                        <div class="required-text"
+                                            *ngIf="form.get('value').hasError('required') && form.get('value').touched">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">SSG:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-switch onLabel="Yes" formControlName="ssg" offLabel="No">
+                                        </kendo-switch>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">Time Approver:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-combobox class="form-control form-control-round" [data]="allTitles"
+                                            [textField]="'name'" formControlName="timeApprover" [valueField]="'id'"
+                                         [suggest]="true" [filterable]="true" [valuePrimitive]="true" (filterChange)="timeApproverHandleFilter($event)"></kendo-combobox>
+                                        <div class="required-text"
+                                            *ngIf="form.get('timeApprover').hasError('required') && form.get('timeApprover').touched">
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">Web Testing:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-textbox formControlName="webTesting"
+                                            class="form-control form-control-round"
+                                            placeholder="Web Testing"></kendo-textbox>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr>
+    </div>
+</form>

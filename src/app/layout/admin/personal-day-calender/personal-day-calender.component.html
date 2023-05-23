@@ -1,0 +1,326 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">MDIEXULT - Personal Day Calendar</h4>
+        </div>
+    </div>
+    <div class="card-block table-border-style pb-0 pane-content overflow-auto">
+        <form [formGroup]="form" class="cust-form">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="35%">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-2 mb-2">
+                                        <label class="col-form-label"> Branch </label>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <kendo-combobox [(ngModel)]="branchCode" [suggest]="true"
+                                            placeholder="Select Branch" class="form-control form-control-round"
+                                            [ngModelOptions]="{standalone: true}" [textField]="'value'" [data]="branch"
+                                            (valueChange)="GetList()" [valuePrimitive]="true" [valueField]="'code'">
+                                        </kendo-combobox>
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <label class="col-form-label"> Group By </label>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <kendo-combobox [(ngModel)]="pdcGroup" [ngModelOptions]="{standalone: true}"
+                                            [suggest]="true" placeholder="Select Group"
+                                            class="form-control form-control-round" [textField]="'label'"
+                                            [data]="pdcGroups" [valueField]="'value'"
+                                            (valueChange)="onChangeValue($event)">
+                                        </kendo-combobox>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true"
+                                            [resizable]="true" [reorderable]="true"
+                                            (columnResize)="onResizeColumn($event)"
+                                            (selectionChange)="onRowSelect($event)" [data]="pdcData" [sort]="sort"
+                                            (sortChange)="sortChange($event)" kendoGridSelectBy
+                                            [selectedKeys]="mySelection" [sortable]="true"
+                                            (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                            style="height: 70vh;" (dataStateChange)="onDataStateChange($event)"
+                                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                            [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+                                            (groupChange)="groupChange()" [groupable]="false">
+                                            <kendo-grid-column field="workDate" title="Work Date" [width]="50">
+                                                <ng-template kendoGridGroupHeaderTemplate let-group="group">
+                                                    <span style="text-decoration: underline;">
+                                                        {{ group.items[0].workDate | date}}
+                                                    </span>
+                                                </ng-template>
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <lable>
+                                                        {{dataItem.workDate | date}}
+                                                    </lable>
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column *ngFor="let column of viewColumn" [width]="column.width"
+                                                field="{{column.Name}}" title="{{column.Text}}" [hidden]="column.hide">
+                                            </kendo-grid-column>
+                                        </kendo-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane>
+                            <div>
+                                <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate"
+                                    (dateChange)="dateChangeHandler($event)" (cancel)=" cancelHandler($event)"
+                                    (save)="saveHandler($event)" (slotDblClick)="slotDblClickHandler($event)"
+                                    style="height: 850px;">
+                                    <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate">
+                                        <div kendoschedulertoolbarnavigation
+                                            class="d-flex justify-content-center w-100">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-8 d-flex justify-content-center">
+                                                    <button kendoButton class="k-nav-today k-button"
+                                                        icon="arrow-60-left" (click)="setPrevMonth()"></button>
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center pl-1 pr-1">
+                                                        <kendo-datepicker
+                                                            class="scheduler-date form-control form-control-round"
+                                                            (valueChange)="datechange($event)"
+                                                            style="width: 5% !important;" [(value)]="datepickerdate"
+                                                            calendarType="classic" bottomView="year" topView="decade"
+                                                            format="MMMM yyyy">
+                                                        </kendo-datepicker>
+                                                        <span class="pt-1 pl-1" style="font-weight: bold;">
+                                                            {{selectedDate | date:
+                                                            'MMMM yyyy'}}
+                                                        </span>
+                                                    </div>
+                                                    <div kendoschedulertoolbarnavigation
+                                                        style="display: flex;justify-content: end;">
+                                                        <button kendoButton class="k-nav-today k-button"
+                                                            icon="arrow-60-right" (click)="setNextMonth()"></button>
+                                                    </div>
+                                                    <label class="col-form-label"
+                                                        style="padding: inherit; font-weight: bold; font-size: 16px;">Note
+                                                        - Double click a day to Add/Remove</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template kendoSchedulerMonthDaySlotTemplate let-date="date" ng-disabled="all">
+                                        <strong>{{ getCalendarDate(date) }}</strong>
+                                    </ng-template>
+                                    <kendo-scheduler-month-view>
+                                    </kendo-scheduler-month-view>
+
+                                </kendo-scheduler>
+                                <kendo-dialog *ngIf="displayEventpopup" title="Event" (close)="closeEvent('cancel')"
+                                    [minWidth]="900" [width]="900">
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-6 border-right p-1">
+                                            <div class="row no-gutters m-0">
+
+                                                <div class="col-md-12 p-1 text-center">
+                                                    <label><b>Date: </b><b>{{eventDate | date}}</b></label>
+                                                </div>
+                                                <div class="col-md-12 p-1 text-center">
+                                                    <label> Select Date Range
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            (valueChange)="CheckDateRange($event)" style="width: auto;"
+                                                            formControlName="selectDateRange">
+                                                        </kendo-switch>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6 p-1">
+                                                    <kendo-datepicker class="form-control form-control-round"
+                                                        [disabled]="enabledCheckDateRange" formControlName="fromDt"
+                                                        calendarType="classic">
+                                                    </kendo-datepicker>
+                                                    <div class="required-text"
+                                                        *ngIf="form.get('fromDt').hasError('required') && form.get('fromDt').touched">
+                                                        This field is required!
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 p-1">
+                                                    <kendo-datepicker class="form-control form-control-round"
+                                                        [disabled]="enabledCheckDateRange" formControlName="toDt"
+                                                        calendarType="classic">
+                                                    </kendo-datepicker>
+                                                    <div class="required-text"
+                                                        *ngIf="form.get('toDt').hasError('required') && form.get('toDt').touched">
+                                                        This field is required!
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-1 text-center">
+                                                    <label><b>Employee</b></label>
+                                                </div>
+                                                <div class="col-md-12 p-1">
+                                                    <button class="btn w-100 p-2" kendoRippleContainer
+                                                        (click)="onEmployeeDialog()" kendoButton>{{selectedEmp[0]}}
+                                                    </button>
+                                                    <div class="required-text"
+                                                        *ngIf="form.get('employeeId').hasError('required') && form.get('employeeId').touched">
+                                                        This field is required!
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-1 text-center">
+                                                    <label><b>Type</b></label>
+                                                </div>
+                                                <div class="col-md-12 p-1">
+
+                                                    <kendo-combobox formControlName="job" [suggest]="true"
+                                                        (click)="onType()" placeholder="Select PTO Type"
+                                                        class="form-control form-control-round"
+                                                        [textField]="'lookupValue'" [data]="ptoList"
+                                                        [valueField]="'lookUpCode'" [filterable]="true"
+                                                        [valuePrimitive]="true" required>
+                                                    </kendo-combobox>
+                                                    <div class="required-text"
+                                                        *ngIf="form.get('job').hasError('required') && form.get('job').touched">
+                                                        This field is required!
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-1 text-center">
+                                                    <label><b>Approved By</b></label>
+                                                </div>
+                                                <div class="col-md-12 p-1">
+                                                    <button kendoTooltip class="btn w-100 p-2"
+                                                        (click)="onApprovedEmployeeDialog()" kendoRippleContainer
+                                                        kendoButton>{{selectedApprover[0]}}
+                                                    </button>
+                                                    <div class="required-text"
+                                                        *ngIf="form.get('approved').hasError('required') && form.get('approved').touched">
+                                                        This field is required!
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-1  text-center">
+                                                    <label><b>Personal Days Taken</b></label>
+                                                </div>
+                                                <div class="col-md-12 p-1">
+                                                    <kendo-grid [data]="personalDayList" style="height: 15vh;">
+                                                        <kendo-grid-column field="workDate" title="Personal Days"
+                                                            [width]="50">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                {{dataItem.workDate |date}}</ng-template>
+                                                        </kendo-grid-column>
+                                                    </kendo-grid>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6  p-1 text-center">
+                                            <label><b>Scheduled Personal days for {{eventDate |
+                                                    date}}</b></label>
+                                            <kendo-grid [kendoGridBinding]="viewScheduledData" kendoGridSelectBy
+                                                [navigable]="true" [sortable]="true"
+                                                style="height: 100%; max-height:500px" [resizable]="true"
+                                                [reorderable]="true">
+                                                <kendo-grid-column field="employeeName" title="Employee Number"
+                                                    [width]="150">
+                                                </kendo-grid-column>
+                                                <kendo-grid-column field="action" title="Action" [width]="50">
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <i class="fa fa-2x fa-trash mr-2" style="cursor: pointer;"
+                                                            (click)="removeItem(dataItem)"></i>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                            </kendo-grid>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="k-dialog-buttongroup k-actions k-actions-stretched">
+                                                <button kendoTooltip class="k-button" (click)="closeEvent('cancel')"
+                                                    kendoButton>Close
+                                                </button>
+                                                <button kendoTooltip class="k-button k-primary" (click)="onAdd()"
+                                                    *ngIf="menuService.isAddRight" kendoButton>Save
+                                                </button>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </kendo-dialog>
+                            </div>
+
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+            <kendo-dialog *ngIf="displayEmpDialog" title="Employee" (close)="close('cancel')" [minWidth]="550"
+                [width]="550">
+                <div class="row m-0">
+                    <div class="col-md-12 m-0">
+                        <kendo-grid [kendoGridBinding]="viewEmpData" [navigable]="true" [resizable]="true"
+                            [sortable]="true" (selectionChange)="selectionChange($event.selectedRows[0].dataItem)"
+                            (dblclick)="dblClickEvent($event)" kendoGridSelectBy [selectedKeys]="selectedEmp"
+                            style="height: 50vh;" [reorderable]="true">
+                            <ng-template kendoGridToolbarTemplate>
+                                <kendo-textbox class="col-md-8" (input)="onFilter($event.target.value)"
+                                    placeholder="Search in all columns...">
+                                </kendo-textbox>
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                                <span> Total : {{viewEmpData.length}}</span>
+                            </ng-template>
+                            <kendo-grid-column field="employeeNumber" title="Employee Number" [width]="50">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="name" title="Name" [width]="50">
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                </div>
+            </kendo-dialog>
+            <kendo-dialog *ngIf="displayApprovedEmpDialog" title="Employee" (close)="closeApprovedEmp('cancel')"
+                [minWidth]="550" [width]="550">
+                <div class="row m-0">
+                    <div class="col-md-12 m-0">
+                        <kendo-grid [kendoGridBinding]="viewEmpData" kendoGridSelectBy [navigable]="true"
+                            [resizable]="true" [sortable]="true" kendoGridSelectBy [selectedKeys]="selectedApprover"
+                            style="height: 50vh;"
+                            (selectionChange)="selectionApproveChange($event.selectedRows[0].dataItem)"
+                            (dblclick)="dblClickEventApprover($event)" [reorderable]="true">
+                            <ng-template kendoGridToolbarTemplate>
+                                <kendo-textbox class="col-md-8" (input)="onFilter($event.target.value)"
+                                    placeholder="Search in all columns...">
+                                </kendo-textbox>
+                                <kendo-grid-spacer></kendo-grid-spacer>
+                                <span> Total : {{viewEmpData.length}}</span>
+                            </ng-template>
+                            <kendo-grid-column field="employeeNumber" title="Employee Number" [width]="50">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="name" title="Name" [width]="50">
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                </div>
+            </kendo-dialog>
+            <kendo-dialog *ngIf="displayAddDialog" title="MDI3.0" (close)="closeAdd('cancel')" [minWidth]="550"
+                [width]="550">
+                <p style="margin: 30px; text-align: center;">
+                    Is this a Paid Personal Day for {{this.selectedEmp}} on {{form.get('fromDt').value |date:
+                    'MM/dd/yyyy'}} -
+                    {{form.get('toDt').value | date: 'MM/dd/yyyy'}}
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeAdd('no')">No</button>
+                    <button kendoButton (click)="closeAdd('yes')" primary="true">Yes</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog *ngIf="displayRemoveDialog" title="MDI3.0" (close)="closeRemove('cancel')" [minWidth]="550"
+                [width]="550">
+                <p style="margin: 30px; text-align: center;">
+                    Are you sure you want to remove?
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeRemove('no')">No</button>
+                    <button kendoButton (click)="closeRemove('yes')" primary="true">Yes</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog *ngIf="displaySuccRemoveDialog" title="MDI3.0" (close)="closeSuccRemove('cancel')"
+                [minWidth]="550" [width]="550">
+                <p style="margin: 30px; text-align: center;">
+                    Successfully removed
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeSuccRemove('ok')" primary="true">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+
+        </form>
+    </div>
+</div>

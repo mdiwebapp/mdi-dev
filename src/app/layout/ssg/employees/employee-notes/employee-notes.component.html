@@ -1,0 +1,57 @@
+<div class="card-header">
+    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" (click)="onNewNote()">
+    </button>
+</div>
+<kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+    (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]="notes"
+    [sort]="notesSort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="notes" [sortable]="true"
+    (columnReorder)="onReOrderColumns($event)" [skip]="skip" (dataStateChange)="onDataStateChange($event)"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 40vh;">
+    <kendo-grid-column field="createdDate" title="Created Date" [width]="50">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>
+                {{dataItem.createdDate | date: 'MM/dd/yyyy'}}
+            </lable>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="userName" title="User Name" [width]="50">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>
+                {{dataItem.userName}}
+            </lable>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="subject" title="Subject" [width]="130">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>
+                {{dataItem.subject}}
+            </lable>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="note" title="Note" [width]="130">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>
+                {{dataItem.note}}
+            </lable>
+        </ng-template>
+    </kendo-grid-column>
+</kendo-grid>
+
+<kendo-dialog *ngIf="isNewNotes" [minWidth]="250" [height]="300" [width]="550">
+    <div class="row">
+        <div class="col-md-2">Subject</div>
+        <div class="col-md-10">
+            <kendo-textbox></kendo-textbox>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-2">Note</div>
+        <div class="col-md-10">
+            <kendo-textarea [cols]="130" [rows]="3"></kendo-textarea>
+        </div>
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onNewNote()">Cancel</button>
+        <button kendoButton (click)="onNewNote()">Save</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

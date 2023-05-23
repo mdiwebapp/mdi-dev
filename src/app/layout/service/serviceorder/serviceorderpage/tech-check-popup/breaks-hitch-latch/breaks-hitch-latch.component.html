@@ -1,0 +1,160 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 60vh;">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>BRAKES- <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBrakeFluidLevel" class="w-100"
+                                (click)="onHandleOperations('brake_fluid_level')" kendoTooltip kendoRippleContainer
+                                kendoButton>BRAKE FLUID LEVEL: {{f.brakeFluidLevel.value}}
+                            </button> --> <label class="col-form-label">BRAKE FLUID LEVEL:</label>
+                            <kendo-combobox *ngIf="!displayBrakeFluidLevel" [suggest]="true"
+                                (valueChange)="onHandleOperations('brake_fluid_level')" placeholder="Select Screen"
+                                [valuePrimitive]="true"  class="form-control form-control-round" [textField]="'value'"
+                                [data]="brakeFluidLevelList" [valueField]="'value'" formControlName="brakeFluidLevel">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('brakeFluidLevel').hasError('required') && form.get('brakeFluidLevel').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBrakeFluidLeaks" class="w-100"
+                                (click)="onHandleOperations('brake_fluid_leaks')" kendoTooltip kendoRippleContainer
+                                kendoButton>BRAKE FLUID LEAKS:
+                            </button> --> <label class="col-form-label">BRAKE FLUID LEAKS:</label>
+                            <kendo-combobox *ngIf="!displayBrakeFluidLeaks" [suggest]="true"
+                                (valueChange)="onHandleOperations('brake_fluid_leaks')" placeholder="Select Screen"
+                                [valuePrimitive]="true"  class="form-control form-control-round" [textField]="'value'"
+                                [data]="brakeFluidLeaksList" [valueField]="'value'" formControlName="brakeFluidLeaks">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('brakeFluidLeaks').hasError('required') && form.get('brakeFluidLeaks').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayActuator" class="w-100" (click)="onHandleOperations('actuator')"
+                                kendoTooltip kendoRippleContainer kendoButton>ACTUATOR: {{f.actuator.value}}
+                            </button> --> <label class="col-form-label">ACTUATOR:</label>
+                            <kendo-combobox *ngIf="!displayActuator" [suggest]="true"
+                                (valueChange)="onHandleOperations('actuator')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="actuatorList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="actuator">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('actuator').hasError('required') && form.get('actuator').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayShoes" class="w-100" (click)="onHandleOperations('shoes')"
+                                kendoTooltip kendoRippleContainer kendoButton>SHOES: {{f.shoes.value}}
+                            </button> --> <label class="col-form-label">SHOES:</label>
+                            <kendo-combobox *ngIf="!displayShoes" [suggest]="true"
+                                (valueChange)="onHandleOperations('shoes')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="shoesList"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="shoes">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('shoes').hasError('required') && form.get('shoes').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayBreakAway" class="w-100" (click)="onHandleOperations('brake_away')"
+                                kendoTooltip kendoRippleContainer kendoButton>BRAKE-AWAY: 
+                            </button> --> <label class="col-form-label">BRAKE-AWAY:</label>
+                            <kendo-combobox *ngIf="!displayBreakAway" [suggest]="true"
+                                (valueChange)="onHandleOperations('brake_away')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="breakAwayList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="breakAway">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('breakAway').hasError('required') && form.get('breakAway').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>HITCH AND LATCH </legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPintleHook" class="w-100" (click)="onHandleOperations('pintle_hook')"
+                                kendoTooltip kendoRippleContainer kendoButton>PINTLE HOOK: {{f.pintleHook.value}}
+                            </button> --> <label class="col-form-label">PINTLE HOOK:</label>
+                            <kendo-combobox *ngIf="!displayPintleHook" [suggest]="true"
+                                (valueChange)="onHandleOperations('pintle_hook')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="pintleHookList"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="pintleHook">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('pintleHook').hasError('required') && form.get('pintleHook').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPintleHookBolts" class="w-100"
+                                (click)="onHandleOperations('pintle_hook_bolts')" kendoTooltip kendoRippleContainer
+                                kendoButton>PINTLE HOOK BOLTS: {{f.pintleHookBolts.value}}
+                            </button> --> <label class="col-form-label">PINTLE HOOK BOLTS:</label>
+                            <kendo-combobox *ngIf="!displayPintleHookBolts" [suggest]="true"
+                                (valueChange)="onHandleOperations('pintle_hook_bolts')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [valuePrimitive]="true"  [data]="pintleHookBoltsList" [valueField]="'value'" formControlName="pintleHookBolts">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('pintleHookBolts').hasError('required') && form.get('pintleHookBolts').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaySafetyChain" class="w-100"
+                                (click)="onHandleOperations('safety_chain')" kendoTooltip kendoRippleContainer
+                                kendoButton>SAFETY CHAIN: {{f.safetyChain.value}}
+                            </button> --> <label class="col-form-label">SAFETY CHAIN:</label>
+                            <kendo-combobox *ngIf="!displaySafetyChain" [suggest]="true"
+                                (valueChange)="onHandleOperations('safety_chain')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="safetyChainList"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="safetyChain">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('safetyChain').hasError('required') && form.get('safetyChain').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayJack" class="w-100" (click)="onHandleOperations('jack')" kendoTooltip
+                                kendoRippleContainer kendoButton>JACK: {{f.jack.value}}
+                            </button> --> <label class="col-form-label">JACK:</label>
+                            <kendo-combobox *ngIf="!displayJack" [suggest]="true"
+                                (valueChange)="onHandleOperations('jack')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="jackList"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="jack">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('jack').hasError('required') && form.get('jack').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayLatch" class="w-100" (click)="onHandleOperations('litch')"
+                                kendoTooltip kendoRippleContainer kendoButton>LITCH: {{f.litch.value}}
+                            </button> --> <label class="col-form-label">LITCH:</label>
+                            <kendo-combobox *ngIf="!displayLatch" [suggest]="true"
+                                (valueChange)="onHandleOperations('litch')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="latchList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="litch">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('litch').hasError('required') && form.get('litch').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

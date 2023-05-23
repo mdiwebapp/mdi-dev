@@ -1,0 +1,159 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Pipeline Reports</h4>
+        </div>
+    </div>
+    <div class="card-block table-border-style pane-content" style="max-height: 90vh; ">
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-6">
+                <div class="card">
+                    <div class="row mt-3">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label">Branch</label>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('branch')">{{selectedBranchname}}</button>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label">Account Manager</label>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('account')">{{selectedAccountname}}</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-3">
+                            <button class="k-button w-100 m-4" type="button" style="font-size: 12px;"
+                                (click)="onHandleFilters('doit')">DO IT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<kendo-dialog title="Select Branch" *ngIf="isbranchVisible" (close)="onHandleFilters('branch')" [minWidth]="250"
+    [height]="600" [width]="550">
+    <div class="row m-0">
+        <!-- <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="OnfilterBranch($event.target.value)" [(ngModel)]="filterbranch">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{branchData.length}}
+                </div>
+            </div>
+        </div> -->
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'branch')"
+                [data]="branchData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="branchselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 55vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" class="col-md-8" (keyup)="OnfilterBranch($event.target.value)"
+                        [(ngModel)]="filterbranch">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{branchData.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+                <kendo-grid-column field="value" title="Value">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.value }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="code" title="Code">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.code }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+<kendo-dialog title="Select Account Manager" *ngIf="isaccountVisible" (close)="onHandleFilters('account')" [minWidth]="250"
+    [height]="600" [width]="550">
+    <div class="row m-0">
+        <!-- <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="OnfilterAM($event.target.value)" [(ngModel)]="filterAM">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{accountData.length}}
+                </div>
+            </div>
+        </div> -->
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'account_manager')"
+                [data]="accountData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="AMselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 55vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                    class="col-md-8"  placeholder="" (keyup)="OnfilterAM($event.target.value)" [(ngModel)]="filterAM">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{accountData.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+                <kendo-grid-column field="id" title="Id">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.id }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="name" title="Name">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.name }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>
+<!-- <kendo-dialog title="Your report is being generated" *ngIf="isdoitVisible" (close)="onHandleFilters('doit')"
+    [minWidth]="200" [height]="200" [width]="550" class="m-0 p-0">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-10 p-1">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="p-r-10">Pipeline Report Processing(ALL)...</h4>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <kendo-progressbar [value]="10" [animation]="true" style="height: 30px;width: 100%;" [label]="''">
+                    </kendo-progressbar>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</kendo-dialog> -->

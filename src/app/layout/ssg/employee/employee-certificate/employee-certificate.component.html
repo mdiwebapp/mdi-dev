@@ -1,0 +1,44 @@
+<kendo-grid [data]="data" [group]="groups" [height]="400" [sortable]="true" [sort]="sort" [navigable]="true">
+    <kendo-grid-column field="certification" title="Certification"></kendo-grid-column>
+    <kendo-grid-column field="dateType" title="Date Type"></kendo-grid-column>
+    <kendo-grid-column field="date" title="Date" [width]="180">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.date |  date:'MM/dd/yyyy' }}
+        </ng-template>
+    </kendo-grid-column>
+    <!-- <kendo-grid-column field="group" title="Group"></kendo-grid-column> -->
+  
+    <kendo-grid-column field="hasMultiple" title="" [width]="100" >
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <div class="text-center">
+                <input type="checkbox" kendoCheckBox [disabled]="disable"  
+                [checked]="dataItem.hasMultiple" (change)="DateChange(dataItem)"/>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+</kendo-grid>
+<!-- 
+<kendo-treelist kendoTreeListExpandable [kendoTreeListHierarchyBinding]="data" childrenField="child" [sortable]="true"
+    [groupable]="true" [group]="groups" [sort]="sort" [navigable]="true" [height]="400">
+    <kendo-treelist-column [expandable]="true" field="certification" title="Name" [width]="150">
+        <ng-template kendoTreeListCellTemplate let-dataItem>
+            {{ dataItem.certification }}
+        </ng-template>
+    </kendo-treelist-column>
+    <kendo-treelist-column field="dateType" title="Date Type" [width]="100">
+    </kendo-treelist-column>
+    <kendo-treelist-column field="date" title="Date" [width]="100">
+        <ng-template kendoTreeListCellTemplate let-dataItem>
+            <kendo-datepicker [(ngModel)]="dataItem.date" [value]="DateConvert(dataItem.date)" *ngIf="dataItem.isCheck"
+                (valueChange)="DateChange(dataItem)" kendo-datepicker class="form-control form-control-round">
+            </kendo-datepicker>
+        </ng-template>
+    </kendo-treelist-column>
+    <kendo-treelist-column field="group" title="Group"></kendo-treelist-column>
+    <kendo-treelist-column [width]="50">
+        <ng-template kendoTreeListCellTemplate let-dataItem>
+            <input type="checkbox" [(ngModel)]="dataItem.isCheck" (change)="DeleteCertificate(dataItem, $event)"
+                *ngIf="dataItem.isParent == false" [checked]="dataItem.isCheck" kendoCheckBox />
+        </ng-template>
+    </kendo-treelist-column>
+</kendo-treelist> -->

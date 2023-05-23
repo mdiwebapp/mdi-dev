@@ -1,0 +1,64 @@
+<div>
+    <form [formGroup]="form" class="cust-form">
+        <div class="row  no-gutters m-2">
+            <div class="col-md-6 mb-1">
+                <div class="row">
+                    <div class="col-md-6"><label>Job Number:</label></div>
+                    <div class="col-md-6">
+                        <p><b>32766</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-1">
+                <div class="row">
+                    <div class="col-md-6"><label>Change Order:</label></div>
+                    <div class="col-md-6">
+                        <p><b>0</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-1">
+                <div class="row">
+                    <div class="col-md-6"><label>Usage:</label></div>
+                    <div class="col-md-6">
+                        <p><b>Single Shift</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-1">
+                <div class="row">
+                    <div class="col-md-6"><label>Period:</label></div>
+                    <div class="col-md-6">
+                        <p><b>Monthly</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <div class="row">
+                    <div class="col-md-3"><label>Kits:</label></div>
+                    <div class="col-md-9">
+                        <kendo-combobox formControlName="kitsType" [suggest]="true" placeholder=""
+                            class="form-control form-control-round" [textField]="'value'" [data]="kitsData"
+                            [valueField]="'value'" [filterable]="true" [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <kendo-grid [data]="kitaData" kendoGridSelectBy class="h-grid" columns="false" [navigable]="true"
+                    [resizable]="true" [reorderable]="true" (selectionChange)='onGridSelect($event)'>
+                </kendo-grid>
+            </div>
+        </div>
+    </form>
+</div>
+
+<kendo-dialog title="Add Kit Items to Rental" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;" class="fs-16">
+        Do you want to add items for 160ft horsehoe Wellpoint System to this rental?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="close('yes')" themeColor="primary">Yes</button>
+        <button kendoButton (click)="close('no')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

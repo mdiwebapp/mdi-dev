@@ -1,0 +1,205 @@
+<form [formGroup]="form" class="cust-form">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Cycle Counts</h4>
+            </div>
+            <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+                <div class="form-control1 displayFlex alignFlexEnd">
+                    <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+
+                        <button kendoTooltip kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button"
+                            (click)="openExcel()">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-block table-border-style pane-content">
+            <div class="row no-gutters ">
+                <div class="col-md-12 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-3">
+                            <!-- <kendo-combobox formControlName="branch" [suggest]="true" placeholder="Select Branch"
+                                class="form-control form-control-round" [textField]="'value'" [data]="branchList"
+                                [valueField]="'value'">
+                            </kendo-combobox> -->
+                            <label class="mr-1">Branch</label>
+                            <kendo-combobox [(ngModel)]="branchCode" [suggest]="true" placeholder="Select Branch"
+                                (valueChange)="loadCyclecount($event)" class="form-control form-control-round"
+                                [ngModelOptions]="{standalone: true}" [textField]="'value'" [data]="branch"
+                                [valuePrimitive]="true" [valueField]="'code'" style="width:auto;">
+                            </kendo-combobox>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <label>Manually Add Count Items
+                                <kendo-switch onLabel="Yes" offLabel="No" class="w-auto ml-2"
+                                    formControlName="addCountItem" (click)="onAddCount()">
+                                </kendo-switch>
+                            </label>
+                        </div>
+                        <div class="col-md-4 ml-2">
+                            <button type="submit" (click)="onInventoryType()" [disabled]="disabledAddCount"
+                                class="btn   btn-md btn-block text-center">
+                                Click to add inventory type
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <kendo-grid [data]="cycleCountData" kendoGridSelectBy class="h-grid" [navigable]="true"
+                        (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+                        style="height: 62vh;" [resizable]="true" [reorderable]="true" [sort]="sort"
+                        (sortChange)="sortChange($event)" kendoGridSelectBy [selectedKeys]="mainSelection"
+                        [sortable]="true" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <ng-template kendoGridToolbarTemplate>
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <span> Total : {{cycleCountData.length}}</span>
+                        </ng-template>
+                        <kendo-grid-column field="inventoryType" kendoTooltip title="Inventory Type" [width]="50"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="inventoryNumber" kendoTooltip title="Inventory Number" [width]="50"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" kendoTooltip title="Description" [width]="200"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="onHandQty" kendoTooltip title="On Hand" [width]="50"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="countedQty" kendoTooltip title="Counted" [width]="50">
+                            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                                <kendo-numerictextbox class="form-control form-control-round" [min]="0" format="n"
+                                (keyup)="onKeyDown($event)"  formControlName="countedText">
+                                   
+                                </kendo-numerictextbox>
+                            </ng-template> -->
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2"> <button *ngIf="showSubmitCount"
+                                class="btn  w-auto  btn-md btn-block text-center" (click)="onSubmit()">
+                                Submit Cycle Sheet
+                            </button></div>
+                        <div class="col-md-5"></div>
+                    </div>
+                </div>
+            </div>
+            <kendo-dialog *ngIf="openInventoryType" (close)="close('cancel')" [minWidth]="700" [width]="700">
+                <div class="row m-0">
+                    <kendo-grid [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true" [sortable]="true"
+                        kendoGridSelectBy [selectedKeys]="mySelection" [selectable]="true" [height]="400"
+                        (selectionChange)="selectionChange()" (dblclick)="dblClickEvent($event)" [resizable]="true"
+                        [columnMenu]="{ filter: true }">
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search in all columns..." kendoTextBox
+                                (input)="onFilter($event.target.value)" />
+                        </ng-template>
+                        <kendo-grid-column field="invType" title="Inventory Type" [width]="150">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="row ml-2">
+                    <div class="k-actions k-actions-end">
+                        <div class="k-columnmenu-actions">
+                            <button class="k-button" type="button" (click)="addInventoryItem()">Add</button>
+                            <button class="k-button k-primary" (click)="close('cancel')" type="button">Close</button>
+                        </div>
+                        <div>
+                            <label style="color: red;">{{errorMsg}}</label>
+                        </div>
+                    </div>
+                </div>
+            </kendo-dialog>
+
+            <kendo-dialog title="Verify Cycle Count Submit" *ngIf="opened" (close)="closeSubmit('Cancel')"
+                [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;">
+                    You are about to submit the Cycle Counts entered.All current 'YARD' inventory quantities all be
+                    overwritten. Are you sure you want to continue?
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeSubmit('Yes')" primary="true">Yes</button>
+                    <button kendoButton (click)="closeSubmit('No')">No</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+
+            <kendo-dialog title="Items not counted" *ngIf="openedConfirmed" (close)="closeConfirmed('Cancel')"
+                [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;">
+                    No quantity was entered for the following items:
+                </p>
+
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeConfirmed('Ok')" primary="true">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Done" *ngIf="openedDone" (close)="closeDone('Cancel')" [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;">
+
+                    Cycle Counts were successfully recorded
+                </p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeDone('Ok')" primary="true">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="Non-number value entered" *ngIf="openedNoDialog" (close)="closeNoDialog('Cancel')"
+                [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;">
+                    Please enter a number.</p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeNoDialog('Ok')" primary="true">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog title="More than one serialized item counted" *ngIf="openedTextDialog"
+                (close)="closeTextDialog('Cancel')" [minWidth]="250" [width]="450">
+                <p style="margin: 30px; text-align: center;">
+                    Counts on serialized items must be zero or one.</p>
+                <kendo-dialog-actions>
+                    <button kendoButton (click)="closeTextDialog('Ok')" primary="true">OK</button>
+                </kendo-dialog-actions>
+            </kendo-dialog>
+            <kendo-dialog *ngIf="openedExcelDialog" title="Excel Print" (close)="openExcel()" [minWidth]="550"
+                [width]="550">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-6 p-1">
+                        <button class="btn btn-md btn-block text-center" (click)="ExportPumpsData()">
+                            Pumps & Gens
+                        </button>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button class="btn btn-md btn-block text-center" (click)="ExportTrailersData()">
+                            Trailers
+                        </button>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button class="btn btn-md btn-block text-center" (click)="ExportCyclesheetData()">
+                            Print Cycle Sheet
+                        </button>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <button class="btn btn-md btn-block text-center" (click)="ExportSubmersiblesData()">
+                            Submersibles & Cords
+                        </button>
+                    </div>
+                </div>
+            </kendo-dialog>
+        </div>
+    </div>
+</form>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!isLoading">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

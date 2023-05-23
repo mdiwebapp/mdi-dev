@@ -1,0 +1,10 @@
+<kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+    (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]="equips"
+    [sort]="equipSort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="equipSelection"
+    [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+    (dataStateChange)="onDataStateChange($event)"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+    <kendo-grid-column *ngFor="let column of equipColumns" [width]="column.width" field="{{column.Name}}"
+        title="{{column.Text}}">
+    </kendo-grid-column>
+</kendo-grid>

@@ -1,0 +1,77 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>REGULATORY/REQUIREMENT - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayVehicleRegistration" class="w-100"
+                                (click)="onHandleOperations('vehicle_registration')" kendoTooltip kendoRippleContainer
+                                kendoButton>VEHICLE/TRAILER REGISTRATION: {{f.vehicleRegistration.value}}
+                            </button> --><label class="col-form-label">VEHICLE/TRAILER REGISTRATION:</label>
+                            <kendo-combobox *ngIf="!displayVehicleRegistration" [suggest]="true"
+                                (valueChange)="onHandleOperations('vehicle_registration')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [data]="vehicleRegistrationList" [valueField]="'value'"
+                                [valuePrimitive]="true" formControlName="vehicleRegistration">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('vehicleRegistration').hasError('required') && form.get('vehicleRegistration').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayLicensePlate" class="w-100"
+                                (click)="onHandleOperations('license_plate')" kendoTooltip kendoRippleContainer
+                                kendoButton>LICENSE PLATE: {{f.licensePlate.value}}
+                            </button> --><label class="col-form-label">LICENSE PLATE:</label>
+                            <kendo-combobox *ngIf="!displayLicensePlate" [suggest]="true"
+                                (valueChange)="onHandleOperations('license_plate')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="licensePlateList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="licensePlate">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('licensePlate').hasError('required') && form.get('licensePlate').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayCertificateOfInsurance" class="w-100"
+                                (click)="onHandleOperations('certificateOfInsurance')" kendoTooltip kendoRippleContainer
+                                kendoButton>CERTIFICATE OF INSURANCE: {{f.certificateOfInsurance.value}}
+                            </button> --><label class="col-form-label">CERTIFICATE OF INSURANCE:</label>
+                            <kendo-combobox *ngIf="!displayCertificateOfInsurance" [suggest]="true"
+                                (valueChange)="onHandleOperations('certificateOfInsurance')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [data]="certificateOfInsuranceList" [valueField]="'value'"
+                                [valuePrimitive]="true" formControlName="certificateOfInsurance">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('certificateOfInsurance').hasError('required') && form.get('certificateOfInsurance').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayDocumentHolder" class="w-100"
+                                (click)="onHandleOperations('document_holder')" kendoTooltip kendoRippleContainer
+                                kendoButton>DOCUMENT HOLDER: {{f.documentHolder.value}}
+                            </button> --><label class="col-form-label">DOCUMENT HOLDER:</label>
+                            <kendo-combobox *ngIf="!displayDocumentHolder" [suggest]="true"
+                                (valueChange)="onHandleOperations('document_holder')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [valuePrimitive]="true" [data]="documentHolderList" [valueField]="'value'" formControlName="documentHolder">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('documentHolder').hasError('required') && form.get('documentHolder').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

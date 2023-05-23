@@ -1,0 +1,29 @@
+<div class="table-responsive  pane-content">
+
+  <kendo-grid [sortable]="true" [resizable]="true" style="height: 64vh;" [sort]="sort" (sortChange)="sortChange($event)"
+    [data]="data" kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+    <ng-template kendoGridToolbarTemplate>
+      <span>Unit Movement</span>
+      <!--
+  <input placeholder="Type here to filter customers history" kendoTextBox class="col-md-9"
+         (input)="onFilter($event.target.value)" />
+   -->
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <span> Total : {{total}}</span>
+
+    </ng-template>
+    <kendo-grid-column *ngFor=" let column of activityGridColumn" [width]="column.width" field="{{column.Name}}"
+      title="{{column.Text}}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span *ngIf="column.Name!='from' && column.Name!='to'">{{dataItem[column.Name]}}</span>
+        <span *ngIf="column.Name=='from' && dataItem.from">
+          {{dataItem.from | date: 'MM-dd-yyyy'}}
+        </span>
+        <span *ngIf="column.Name=='to' && dataItem.to">
+          {{dataItem.to | date: 'MM-dd-yyyy'}}
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</div>

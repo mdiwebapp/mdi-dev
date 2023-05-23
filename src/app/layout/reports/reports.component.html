@@ -1,0 +1,419 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Executive Dashboard</h4>
+  </div>
+  <div class="card-block table-border-style pb-0">
+    <kendo-tabstrip class="custom mt-2" #tabstrip>
+      <kendo-tabstrip-tab class="text-success" [title]="'Branch Metrics'" [selected]="true">
+        <ng-template kendoTabContent>
+          <div class="row col-12 mb-5">
+            <div class="col-md-12">
+
+
+
+              <h5 class="card-category">Revenue - Actual vs Forecast</h5>
+
+
+
+              <kendo-chart (seriesClick)="show()" [seriesColors]="['#20c997', '#ffc107']" [transitions]="false">
+                <!--Hiding as per Jeff's review-->
+                <!--<kendo-chart-legend position="top" orientation="horizontal">
+          </kendo-chart-legend>-->
+                <!--<kendo-chart-tooltip background="#454544">
+            <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+              {{dataItem.title}} : ${{dataItem.value}}
+            </ng-template>
+          </kendo-chart-tooltip>-->
+
+
+
+
+                <kendo-chart-category-axis>
+                  <kendo-chart-category-axis-item [categories]="actualVsForecastAxisData" font="inherit">
+                    <kendo-chart-value-axis-item-labels>
+                    </kendo-chart-value-axis-item-labels>
+                  </kendo-chart-category-axis-item>
+                </kendo-chart-category-axis>
+                <!-- <kendo-chart-tooltip format='{0}'></kendo-chart-tooltip> -->
+                <kendo-chart-value-axis>
+                  <kendo-chart-value-axis-item [labels]="valueAxisLables">
+                    <kendo-chart-value-axis-item-labels>
+                    </kendo-chart-value-axis-item-labels>
+                  </kendo-chart-value-axis-item>
+                </kendo-chart-value-axis>
+
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="bar" [data]="item.items" field="value"
+                    *ngFor="let item of actualVsForecastDataStacked" [stack]="{group: item.items[0].stack}"
+                    [labels]="seriesLabelsActualVsForecast">
+                    <kendo-chart-series-item-tooltip>
+                      <ng-template let-value="value" let-category="category" let-dataItem="dataItem">
+                        {{ dataItem.title}} (10)%
+                      </ng-template>
+                    </kendo-chart-series-item-tooltip>
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+          </div>
+          <div class="row col-12">
+            <div class="container-fluid" id="otherchartdetails" *ngIf="isShow">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Call Stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="donut" [data]="data1" categoryField="kind" field="share">
+
+                              <kendo-chart-tooltip>
+                                <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+                                  Month : {{dataItem.mnth}} <br>
+                                  TYD : {{dataItem.ytd}} <br>
+                                </ng-template>
+                              </kendo-chart-tooltip>
+
+                              <kendo-chart-series-item-labels [content]="labelContent" color="#fff" background="none">
+                              </kendo-chart-series-item-labels>
+
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-category">Pipeline Stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="funnel" [data]="model" field="count" categoryField="stat"
+                              colorField="color">
+                              <kendo-chart-series-item-labels background="none" color="white" format="N0">
+                              </kendo-chart-series-item-labels>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-tooltip>
+                            <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                              {{ category }}
+                            </ng-template>
+                          </kendo-chart-tooltip>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Labour stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="donut" [data]="data2" categoryField="kind" field="share">
+                              <kendo-chart-tooltip>
+                                <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+                                  Month : {{dataItem.mnth}} <br>
+                                  TYD : {{dataItem.ytd}} <br>
+                                </ng-template>
+                              </kendo-chart-tooltip>
+                              <kendo-chart-series-item-labels [content]="labelContent1" color="#fff" background="none">
+                              </kendo-chart-series-item-labels>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Account Receivable</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item [color]="'#de2b22'" type="rangeColumn" [data]="accData"
+                              fromField="min" toField="max" categoryField="month">
+                              <kendo-chart-series-item-labels-from [content]="">
+                              </kendo-chart-series-item-labels-from>
+                              <kendo-chart-series-item-labels-to [content]="">
+                              </kendo-chart-series-item-labels-to>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Worst L2R</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item [color]="'#de2b22'" type="rangeColumn" [data]="weatherData"
+                              fromField="min" toField="max" categoryField="month">
+                              <kendo-chart-series-item-labels-from [content]="">
+                              </kendo-chart-series-item-labels-from>
+                              <kendo-chart-series-item-labels-to [content]="">
+                              </kendo-chart-series-item-labels-to>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-category-axis>
+                            <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                            </kendo-chart-category-axis-item>
+                          </kendo-chart-category-axis>
+                          <kendo-chart-tooltip background="#454544">
+                            <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                              Customer : Pamarer Enterprises<br>
+                              AM : T.Hutcinson <br>
+                              L2R% : 252.850% <br>
+                              Revenue : 5500 <br>
+                              Hours : 240.517 <br>
+                            </ng-template>
+                          </kendo-chart-tooltip>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </ng-template>
+      </kendo-tabstrip-tab>
+      <kendo-tabstrip-tab [title]="'AM Metrics'">
+        <ng-template kendoTabContent>
+          <div class="row col-12 mb-5">
+            <div class="col-md-12">
+              <h5 class="card-category">Revenue - Actual vs Forecast</h5>
+
+              <kendo-chart (seriesClick)="show()" [seriesColors]="['#20c997', '#ffc107']" [transitions]="false">
+                <!--Hiding as per Jeff's review-->
+                <!--<kendo-chart-legend position="top" orientation="horizontal">
+          </kendo-chart-legend>-->
+                <!--<kendo-chart-tooltip background="#454544">
+            <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+              {{dataItem.title}} : ${{dataItem.value}}
+            </ng-template>
+          </kendo-chart-tooltip>-->
+
+
+
+
+                <kendo-chart-category-axis>
+                  <kendo-chart-category-axis-item [categories]="actualVsForecastAMData" font="inherit">
+                    <kendo-chart-value-axis-item-labels>
+                    </kendo-chart-value-axis-item-labels>
+                  </kendo-chart-category-axis-item>
+                </kendo-chart-category-axis>
+                <!-- <kendo-chart-tooltip format='{0}'></kendo-chart-tooltip> -->
+                <kendo-chart-value-axis>
+                  <kendo-chart-value-axis-item [labels]="valueAxisLables">
+                    <kendo-chart-value-axis-item-labels>
+                    </kendo-chart-value-axis-item-labels>
+                  </kendo-chart-value-axis-item>
+                </kendo-chart-value-axis>
+
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="bar" [data]="item.items" field="value"
+                    *ngFor="let item of actualVsForecastDataStacked" [stack]="{group: item.items[0].stack}"
+                    [labels]="seriesLabelsActualVsForecast">
+                    <kendo-chart-series-item-tooltip>
+                      <ng-template let-value="value" let-category="category" let-dataItem="dataItem">
+                        {{ dataItem.title}} (10)%
+                      </ng-template>
+                    </kendo-chart-series-item-tooltip>
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+          </div>
+          <div class="row col-12">
+            <div class="container-fluid" id="otherchartdetails" *ngIf="isShow">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Call Stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="donut" [data]="data1" categoryField="kind" field="share">
+
+                              <kendo-chart-tooltip>
+                                <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+                                  Month : {{dataItem.mnth}} <br>
+                                  TYD : {{dataItem.ytd}} <br>
+                                </ng-template>
+                              </kendo-chart-tooltip>
+
+                              <kendo-chart-series-item-labels [content]="labelContent" color="#fff" background="none">
+                              </kendo-chart-series-item-labels>
+
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-category">Pipeline Stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="funnel" [data]="model" field="count" categoryField="stat"
+                              colorField="color">
+                              <kendo-chart-series-item-labels background="none" color="white" format="N0">
+                              </kendo-chart-series-item-labels>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-tooltip>
+                            <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                              {{ category }}
+                            </ng-template>
+                          </kendo-chart-tooltip>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Labour stats</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item type="donut" [data]="data2" categoryField="kind" field="share">
+                              <kendo-chart-tooltip>
+                                <ng-template kendoChartSeriesTooltipTemplate let-value="value" let-dataItem="dataItem">
+                                  Month : {{dataItem.mnth}} <br>
+                                  TYD : {{dataItem.ytd}} <br>
+                                </ng-template>
+                              </kendo-chart-tooltip>
+                              <kendo-chart-series-item-labels [content]="labelContent1" color="#fff" background="none">
+                              </kendo-chart-series-item-labels>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Account Receivable</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+                          <kendo-chart-area background="none"></kendo-chart-area>
+                          
+                          <kendo-chart-series>
+                            <kendo-chart-series-item [color]="'#de2b22'" type="rangeColumn" [data]="accData"
+                              fromField="min" toField="max" categoryField="month">
+                              <kendo-chart-series-item-labels-from [content]="">
+                              </kendo-chart-series-item-labels-from>
+                              <kendo-chart-series-item-labels-to [content]="">
+                              </kendo-chart-series-item-labels-to>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="card card-chart">
+                    <div class="card-header">
+                      <h5 class="card-category">Worst L2R</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <kendo-chart>
+                          <kendo-chart-series>
+                            <kendo-chart-series-item [color]="'#de2b22'" type="rangeColumn" [data]="weatherData"
+                              fromField="min" toField="max" categoryField="month">
+                              <kendo-chart-series-item-labels-from [content]="">
+                              </kendo-chart-series-item-labels-from>
+                              <kendo-chart-series-item-labels-to [content]="">
+                              </kendo-chart-series-item-labels-to>
+                            </kendo-chart-series-item>
+                          </kendo-chart-series>
+                          <kendo-chart-category-axis>
+                            <kendo-chart-category-axis-item [labels]="{ rotation: 'auto' }">
+                            </kendo-chart-category-axis-item>
+                          </kendo-chart-category-axis>
+                          <kendo-chart-tooltip background="#454544">
+                            <ng-template kendoChartSeriesTooltipTemplate let-value="value">
+                              Customer : Pamarer Enterprises<br>
+                              AM : T.Hutcinson <br>
+                              L2R% : 252.850% <br>
+                              Revenue : 5500 <br>
+                              Hours : 240.517 <br>
+                            </ng-template>
+                          </kendo-chart-tooltip>
+                        </kendo-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </ng-template>
+      </kendo-tabstrip-tab>
+    </kendo-tabstrip>
+  </div>
+</div>

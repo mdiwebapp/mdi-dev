@@ -1,0 +1,553 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <kendo-expansionpanel [expanded]="true">
+            <ng-template kendoExpansionPanelTitleDirective><div class="header-content">Production</div></ng-template>
+            <div class="content">
+                <div class="card-block p-0">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Engine:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="engine"
+                                        placeholder="Engine" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('engine').hasError('required') && form.get('engine').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Transmission:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="transmission" placeholder="Transmission" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('transmission').hasError('required') && form.get('transmission').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Length:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="length"
+                                        placeholder="Length" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('length').hasError('required') && form.get('length').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Width:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="width"
+                                        placeholder="Width" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('width').hasError('required') && form.get('width').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Built Date:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="builtDate"
+                                        placeholder="Built Date" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('builtDate').hasError('required') && form.get('builtDate').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Key Tag:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="keyTag"
+                                        placeholder="Key Tag" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('keyTag').hasError('required') && form.get('keyTag').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Purchase From:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="purchaseFrom" placeholder="Purchase From" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('purchaseFrom').hasError('required') && form.get('purchaseFrom').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Actual Weight:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="actualWeight" placeholder="Actual Weight" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('actualWeight').hasError('required') && form.get('actualWeight').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+
+        <kendo-expansionpanel >
+            <ng-template kendoExpansionPanelTitleDirective><div class="header-content">Chassis</div></ng-template>
+            <div class="content">
+
+                <div class="card-block p-0">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Number of Axles:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="noOfAxles"
+                                        placeholder="Number of Axles" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('noOfAxles').hasError('required') && form.get('noOfAxles').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Spacing:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="spacing"
+                                        placeholder="Spacing" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('spacing').hasError('required') && form.get('spacing').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Rear Axle Ratio:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="rearAxleRatio" placeholder="Rear Axle Ratio" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('rearAxleRatio').hasError('required') && form.get('rearAxleRatio').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Rear GAWR:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="rearGAWR"
+                                        placeholder="Rear GAWR" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('rearGAWR').hasError('required') && form.get('rearGAWR').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Front GAWR:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="frontGAWR"
+                                        placeholder="Front GAWR" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('frontGAWR').hasError('required') && form.get('frontGAWR').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">CVWR:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="cvwr"
+                                        placeholder="CVWR" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('cvwr').hasError('required') && form.get('cvwr').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">GVWR:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="gvwr"
+                                        placeholder="GVWR" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('gvwr').hasError('required') && form.get('gvwr').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Adjustable Button:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-switch  onLabel="Yes" offLabel="No">
+                                    </kendo-switch>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+
+
+        <kendo-expansionpanel>
+            <ng-template kendoExpansionPanelTitleDirective><div class="header-content">Parts</div></ng-template>
+            <div class="content">
+                <div class="card-block p-0">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Tires:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="tires"
+                                        placeholder="Tires" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('tires').hasError('required') && form.get('tires').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Tire Brand:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="tireBrand"
+                                        placeholder="Tire Brand" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('tireBrand').hasError('required') && form.get('tireBrand').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Rims:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="rims"
+                                        placeholder="Rims" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('rims').hasError('required') && form.get('rims').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">PSI (Cold):</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="psi"
+                                        placeholder="PSI" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('psi').hasError('required') && form.get('psi').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">ABS System:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="absSystem"
+                                        placeholder="ABS System" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('absSystem').hasError('required') && form.get('absSystem').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Oil Filter:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="oilFilter"
+                                        placeholder="Oil Filter" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('oilFilter').hasError('required') && form.get('oilFilter').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Air Filter:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="airFilter"
+                                        placeholder="Air Filter" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('airFilter').hasError('required') && form.get('airFilter').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Fuel Filter:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="fuelFilter"
+                                        placeholder="Fuel Filter" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('fuelFilter').hasError('required') && form.get('fuelFilter').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+
+
+        <kendo-expansionpanel >
+            <ng-template kendoExpansionPanelTitleDirective><div class="header-content">Packages</div></ng-template>
+            <div class="content">
+                <div class="card-block p-0">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Utility Box Brand:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="utilityBoxBrand" placeholder="Utility Box Brand" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('utilityBoxBrand').hasError('required') && form.get('utilityBoxBrand').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Utility Box Model:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="utilityBoxModel" placeholder="Utility Box Model" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('utilityBoxModel').hasError('required') && form.get('utilityBoxModel').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Utility Box S/N:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="utilityBoxSN" placeholder="Utility Box S/N" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('utilityBoxSN').hasError('required') && form.get('utilityBoxSN').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Utility Box Type:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="utilityBoxType" placeholder="Utility Box Type" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('utilityBoxType').hasError('required') && form.get('utilityBoxType').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Fifth Wheel:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="fifthWheel"
+                                        placeholder="Fifth Wheel" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('fifthWheel').hasError('required') && form.get('fifthWheel').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Trailer Hitch::</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="trailerHitch" placeholder="Trailer Hitch:" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('trailerHitch').hasError('required') && form.get('trailerHitch').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Purchase From:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round"
+                                        formControlName="pkgpurchaseFrom" placeholder="Purchase From" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('pkgpurchaseFrom').hasError('required') && form.get('pkgpurchaseFrom').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Key Tag:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="pkgkeyTag"
+                                        placeholder="Key Tag" required>
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('pkgkeyTag').hasError('required') && form.get('pkgkeyTag').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+    </form>
+</div>

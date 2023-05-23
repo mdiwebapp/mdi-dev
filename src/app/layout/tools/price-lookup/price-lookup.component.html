@@ -1,0 +1,117 @@
+<div>
+  <form [formGroup]="form">
+    <div class="card">
+      <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+          <h4 class="p-r-10">Price-Lookup</h4>
+        </div>
+      </div>
+      <div>
+        <div class="row justify-content-center m-3">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="row">
+                <div class="col-md-12">
+                  <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                    (columnResize)="onResizeColumn($event)"
+                    (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)" [data]="priceLookupData"
+                    [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                    [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                    (dataStateChange)="onDataStateChange($event)"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: calc(100vh - 220px);">
+                    <ng-template kendoGridToolbarTemplate>
+                      <!-- <div class="example-config">
+                                <a #anchor (click)="onToggle()">
+                                    <span class="k-icon k-i-more-vertical"></span>
+                                </a>
+                            </div> -->
+                      <input placeholder="Search in all columns..." kendoTextBox class="col-md-7"
+                        [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (keydown.enter)="$event.preventDefault();GetPriceLookUpData();"/>
+                      <div class="col-1">
+                        <button class="k-button d-flex align-items-center" type="button" style="font-size: 12px;"
+                          (click)="GetPriceLookUpData()"> <i class="fa fa-search"></i></button>
+                      </div>
+                      <kendo-grid-spacer></kendo-grid-spacer>
+
+                      <span> {{totalData}} Records </span>
+                      <kendo-grid-spacer></kendo-grid-spacer>
+                    </ng-template>
+
+                    <!-- <kendo-grid-column *ngFor=" let column of priceLookupcolumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                              <span *ngIf="column.Name!='dailyRate'">{{column[column.Name]}}</span>
+                              <span *ngIf="column.Name=='dailyRate' && column.dailyRate">
+                                $ {{column.dailyRate | number :
+                                '1.2-2'}}
+                              </span>
+
+                            </ng-template>
+                            </kendo-grid-column> -->
+                    <kendo-grid-column field="invType" title="Inventory">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.invType }}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="description" title="Description">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.description }}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="branchName" title="Branch">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.branchName }}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="dailyRate" title="Daily Rate">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>${{ dataItem.dailyRate | number : '1.2-2':"en-US" }}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="weeklyRate" title="Weekly Rate">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>${{ dataItem.weeklyRate | number : '1.2-2':"en-US"}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="monthlyRate" title="Monthly Rate">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>${{ dataItem.monthlyRate | number : '1.2-2':"en-US" }}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="listPrice" title="List Price">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>${{ dataItem.listPrice | number : '1.2-2':"en-US"}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                  </kendo-grid>
+                  <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                    style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                    <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                      <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                      <kendo-datapager-numeric-buttons [buttonCount]="5">
+                      </kendo-datapager-numeric-buttons>
+                      <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                      <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                        [data]="pageSizeList" [(ngModel)]="pageSize" (valueChange)="onPageSizechange($event)"
+                        [ngModelOptions]="{standalone: true}" [valuePrimitive]="true" [textField]="'value'"
+                        [valueField]="'value'">
+                      </kendo-dropdownlist>
+                    </ng-template>
+                  </kendo-datapager>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>

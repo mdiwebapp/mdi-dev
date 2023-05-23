@@ -1,0 +1,179 @@
+<div class="card mb-1" style="width: 99%;">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Maintain Unions</h4>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!disable">
+                <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+                    *ngIf="menuService.isAddRight" (click)="onHandleOperation('new')">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!disable">
+                <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                    *ngIf="menuService.isEditRight" (click)="onHandleOperation('edit')">
+                </button>
+            </div>
+
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="disable">
+                <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                    *ngIf="menuService.isAddRight || menuService.isEditRight" (click)="onHandleOperation('cancel')">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="disable">
+                <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                    *ngIf="menuService.isAddRight || menuService.isEditRight" (click)="onHandleOperation('save')">
+                </button>
+            </div>
+        </div>
+        <div class="form-control1 displayFlex alignFlexEnd">
+            <label>Active Union Codes</label>
+            <kendo-switch onLabel="Yes" offLabel="All" class="" style="width: auto;"
+                (valueChange)="onGroupChange($event)" [(ngModel)]="active">
+            </kendo-switch>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="30%">
+                            <div class="row no-gutters disble-table">
+                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                    [ngClass]="disableLaborType==true ? '' :  'k-state-disabled'" [data]="laborTypeData"
+                                    [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                    [selectedKeys]="selections" [sortable]="true"
+                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 68vh;"
+                                    (dataStateChange)="onDataStateChange($event)"
+                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                    <kendo-grid-column *ngFor="let column of labaorTypeColumns" [width]="column.width"
+                                        field="{{column.Name}}" title="{{column.Text}}">
+                                    </kendo-grid-column>
+                                    <kendo-grid-column [width]="40">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-center">
+                                                <input class="text-center" type="checkbox" [checked]="dataItem.duties"
+                                                    [(ngModel)]="dataItem.duties" kendoCheckBox />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane [collapsible]="true">
+                            <div class="row no-gutters disble-table">
+                                <kendo-grid [ngClass]="disable==false ? '' :  'k-state-disabled'" kendoGridExpandGroupBy
+                                    [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                    (columnResize)="onResizeColumn($event)"
+                                    (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)"
+                                    [data]="unions" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                    [selectedKeys]="selectionsUnion" [sortable]="true"
+                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 68vh;"
+                                    (dataStateChange)="onDataStateChange($event)"
+                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                    [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+                                    (groupChange)="groupChange()" [groupable]="false">
+                                    <ng-template kendoGridToolbarTemplate>
+                                        <input placeholder="Search in all columns..." kendoTextBox class="col-md-8"
+                                            (keydown.enter)="onFilter()" [(ngModel)]="searchText" />
+                                        <i class="fa fa-search" (click)="onFilter();"></i>
+                                        <kendo-grid-spacer></kendo-grid-spacer>
+
+                                    </ng-template>
+                                    <kendo-grid-column *ngFor=" let column of unionTypeColumns" [width]="column.width"
+                                        field="{{column.Name}}" title="{{column.Text}}">
+                                    </kendo-grid-column>
+                                    <kendo-grid-column [width]="40" title="Active">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-center">
+                                                <input class="text-center" type="checkbox"
+                                                    [checked]="!dataItem.inactive" [disabled]="true" kendoCheckBox />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </div>
+    </div>
+    <div class="card">
+        <form [formGroup]="maintainUnionsForm">
+            <div class="row m-2">
+                <div class="col-md-1">
+                    <label class="col-form-label">Union Code:</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-textbox class="form-control form-control-round" formControlName="unionCode"
+                        [disabled]="!unionCodedisable">
+                    </kendo-textbox>
+                    <div class="required-text"
+                        *ngIf="maintainUnionsForm.get('unionCode').hasError('required') && maintainUnionsForm.get('unionCode').touched">
+                        This field is required!
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label class="col-form-label">Rate:</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-numerictextbox class="form-control form-control-round" [format]="'n'" formControlName="rate"
+                        [disabled]="!disable">
+                    </kendo-numerictextbox>
+                    <div class="required-text"
+                        *ngIf="maintainUnionsForm.get('rate').hasError('required') && maintainUnionsForm.get('rate').touched">
+                        This field is required!
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="k-button" type="button" (click)="onHandleOperation('new_btn')"
+                        [disabled]="disable">New</button>
+                </div>
+            </div>
+            <div class="row m-2">
+                <div class="col-md-1">
+                    <label class="col-form-label">Description:</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-textbox class="form-control form-control-round" formControlName="description"
+                        [disabled]="!disable">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-1">
+                    <label class="col-form-label">Class:</label>
+                </div>
+                <div class="col-md-4">
+                    <kendo-textbox class="form-control form-control-round" formControlName="type" [disabled]="!disable">
+                    </kendo-textbox>
+                    <div class="required-text"
+                        *ngIf="maintainUnionsForm.get('type').hasError('required') && maintainUnionsForm.get('type').touched">
+                        This field is required!
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Active</label>
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;padding-left: 10px;"
+                        [disabled]="!disable" formControlName="active">
+                    </kendo-switch>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<kendo-dialog title="Enter a New Union Code" *ngIf="isNewVisible" (close)="onHandleOperation('new_btn')"
+    [minWidth]="250" [width]="450">
+    <p>Input New Union Code </p>
+    <kendo-textbox [(ngModel)]="newUnionCode"></kendo-textbox>
+    <div class="required-text" *ngIf="!newUnionCode">
+        This field is required!
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="saveNew()" primary="true">OK</button>
+        <button kendoButton (click)="onHandleOperation('close')">Cancel</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

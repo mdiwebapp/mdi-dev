@@ -1,0 +1,90 @@
+<form class="cust-form">
+  <div class="register-box box-shadow-none card mb-0">
+    <div class="card-block p-0">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="col-md-12 mb-2 px-0">
+            <div class="form-group row">
+              <div class="col-md-6 text-right px-0">
+                <label class="col-form-label pr-2">Beginning</label>
+              </div>
+              <div class="col-md-6 px-0">
+                <kendo-textbox [disabled]="isbeginningVisible" class="form-control form-control-round"
+                  (valueChange)="beginningChange()" [ngModelOptions]="{standalone: true}" [(ngModel)]="beginning"
+                  placeholder="Beginning">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mb-2 px-0">
+            <div class="form-group row no-gutters">
+              <div class="col-md-6 text-right px-0">
+                <label class="col-form-label pr-2">Used</label>
+              </div>
+              <div class="col-md-6 px-0">
+                <label class="col-form-label pr-2">{{used}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mb-2 px-0">
+            <div class="form-group row no-gutters">
+              <div class="col-md-6 text-right px-0">
+                <label class="col-form-label pr-2">Remaining</label>
+              </div>
+              <div class="col-md-6 px-0">
+                <label class="col-form-label pl-3"> {{ " " + remaining }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <h5>Personal Time Off</h5>
+          <kendo-grid class="mt-2" style="height: 50vh;" [ngClass]="(!isEdit) ? '' :  'k-state-disabled'"
+            [data]="activity" [sortable]="true"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <ng-template kendoGridToolbarTemplate>
+              <input class="col-md-9" placeholder="Search in all columns..." (input)="onFilter($event.target.value)"
+                kendoTextBox />
+              <kendo-grid-spacer></kendo-grid-spacer>
+              <span> Total : {{activity?.length}}</span>
+            </ng-template>
+            <kendo-grid-column field="workDate" title="Work Date" [width]="130">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                {{ dataItem.workDate | date:'MM/dd/yyyy' }}
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="approvedBy" title="Approved By" [width]="130">
+            </kendo-grid-column>
+            <kendo-grid-column title="paid" [width]="130">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <input [checked]="dataItem.paid" type="checkbox" kendoCheckBox />
+              </ng-template>
+
+            </kendo-grid-column>
+          </kendo-grid>
+
+        </div>
+        <div class="col-md-5">
+          <h5>Other</h5>
+          <kendo-grid class="mt-2" style="height: 50vh;" [ngClass]="(!isEdit) ? '' :  'k-state-disabled'"
+            [data]="otherActivity" [selectable]="true" [sortable]="true"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <ng-template kendoGridToolbarTemplate>
+              <input class="col-md-9" placeholder="Search in all columns..." kendoTextBox (input)="onFilterOther($event.target.value)"/>
+              <kendo-grid-spacer></kendo-grid-spacer>
+            </ng-template>
+            <kendo-grid-column title="Date" field="date" [width]="130">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                {{ dataItem.date | date:'MM/dd/yyyy' }}
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column title="Type" field="type" [width]="130">
+            </kendo-grid-column>
+            <kendo-grid-column title="Paid" field="paid" [width]="130">
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

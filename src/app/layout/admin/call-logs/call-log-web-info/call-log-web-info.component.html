@@ -1,0 +1,220 @@
+<div class="register-box box-shadow-none card mb-0 pane-content">
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+        <div *ngIf="selectedLog">
+            <label class="label label-primary label-mersino">Log ID # {{selectedLog.logId}}</label>
+            <label class="label label-primary  label-mersino">Log Date : {{selectedLog.logDate | date :
+                "MM/dd/yyyy"}}</label>
+            <label class="label label-primary  label-mersino">Log By : {{selectedLog.logBy}}</label>
+        </div>
+    </div>
+    <form class="cust-form" [formGroup]="form">
+        <div class="card-block p-0">
+            <div class="row justify-content-center m-3">
+                <div class="font-weight-bold h5 px-5 mx-5 text-center">Website: Contact Form</div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Contact ID:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Contact ID"
+                                formControlName="contactID" [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Name:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Name"
+                                formControlName="name" [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Email/Phone:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Email/Phone"
+                                formControlName="phone" [disabled]="disable">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Company:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Company name"
+                                formControlName="company" [disabled]="disable">
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('company').hasError('required') && form.get('company').touched">
+                                Company is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Off. Phone:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Office Phone"
+                                [disabled]="disable" formControlName="oPhone">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">City:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="City"
+                                [disabled]="disable" formControlName="city">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">State:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="State"
+                                [disabled]="disable" formControlName="state">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">County:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="County"
+                                [disabled]="disable" formControlName="county">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Country:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Country"
+                                [disabled]="disable" formControlName="country">
+                            </kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Comments:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-textarea placeholder="Reason" [cols]="130" [rows]="3" [disabled]="disable"
+                                class="form-control form-control-round" formControlName="note">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Assigned To:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <button class="k-button w-100" type="button" style="font-size: 12px;" [disabled]="disable"
+                                (click)="handleEmployeeDialog()">{{form.get('assignTo')?.value?.value || "Select
+                                Employee"}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters m-0">
+                <div class="col-md-8">
+                    <div class="row no-gutters m-2">
+                        <div class="col-md-3 text-right">
+                            <label class="col-form-label pr-2">Send Email:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="disable"
+                                formControlName="emailSent">
+                            </kendo-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <kendo-dialog title="Employees" *ngIf="isEmployeeVisible" (close)="handleEmployeeDialog()" [minWidth]="250"
+            [height]="500" [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-3 p-1">
+                            Employee Search
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <kendo-textbox class="form-control form-control-round" placeholder="Search Employee">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-3 p-1 text-right">
+                            EE Count: {{allEmployees.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event,employee)"
+                        [data]="allEmployees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                        [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                        [skip]="skip" style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <kendo-grid-column *ngFor="let column of employeeColumn" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </div>
+            </div>
+        </kendo-dialog>

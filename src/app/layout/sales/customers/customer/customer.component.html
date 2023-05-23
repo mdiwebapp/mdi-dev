@@ -1,0 +1,436 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Maintain Customers</h4>
+      <div *ngIf="menuService.isAddRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" *ngIf="!isAdd" filter="button"
+          (click)="btnAdd();">
+        </button>
+      </div>
+      <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" *ngIf="!isEdit" filter="button"
+          (click)="btnEdit();">
+        </button>
+      </div>
+
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="btnCancel();"
+          *ngIf="!isCancel">
+        </button>
+      </div>
+      <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+          (click)="onSave();">
+        </button>
+      </div>
+
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+
+      <div>
+        <label class="label label-primary label-mersino">{{customerName}}</label>
+        <label class="label label-primary label-mersino">Cust # {{id}}</label>
+        <label class="label label-primary  label-mersino">Date Created : {{cdate | date}}</label>
+      </div>
+
+      <div class="form-control1 displayFlex alignFlexEnd">
+
+        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button">
+            <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+          </button>
+          <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button">
+            <!-- <img src="assets/images/PNG-48/Print.png" width="25" alt="" class="img-responsive"> -->
+          </button>
+        </div>
+        <label>Active</label>
+        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="isDisable"
+          [(ngModel)]="active">
+        </kendo-switch>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-block table-border-style pb-0">
+    <div class="row">
+      <div class="custom_slider_popup" *ngIf="show">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+          <div class="content">
+            <h5 class="k-window-titlebar k-dialog-titlebar">Advanced Filters</h5>
+          </div>
+          <div class="row m-0">
+            <div class="col-md-8 p-0">
+              <div class="row no-gutters m-2">
+                <div class="col-md-5 text-right">
+                  <label class="col-form-label pr-1">Account manager<em></em>:</label>
+                </div>
+                <div class="col-md-7">
+                  <kendo-combobox [data]="accountManagers" [filterable]="true" placeholder='Account Manager'
+                    [valueField]="'id'" [textField]="'name'" [valuePrimitive]="true"
+                    (valueChange)="valueChange($event,'a')" placeholder="All Account manager" [suggest]="true"
+                    [(ngModel)]="filterAM" (filterChange)="accountHandleFilter($event)" [value]="'All Account'">
+                  </kendo-combobox>
+                </div>
+              </div>
+              <div class="row no-gutters m-2">
+                <div class="col-md-5 text-right">
+                  <label class="col-form-label">Customer Type<em></em>:</label>&nbsp;
+                </div>
+                <div class="col-md-7">
+                  <kendo-combobox [data]="customerTypes" [filterable]="true" [textField]="'value'"
+                    (valueChange)="valueChange($event,'c')" [valueField]="'value'" [valuePrimitive]="true"
+                    [suggest]="true" [(ngModel)]="filterCustType" placeholder='Customer Type' [filterable]="true"
+                    (filterChange)="customerTypesHandleFilter($event)" [value]="'Agricultural'">
+                  </kendo-combobox>
+
+                </div>
+              </div>
+              <div class="row no-gutters m-2">
+
+                <div class="col-md-8">
+                  <div class="form-control1 displayFlex">
+                    <label>Collections</label>
+                    <kendo-switch [disabled]="id == 0 || (id > 0 && !isEdit) ? false :  true" onLabel="Yes"
+                      offLabel="No" class="widthAuto" [(ngModel)]="filterColle">
+                    </kendo-switch>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 p-0">
+              <div class="waves-effect waves-light" style="padding: 5px; border-radius: 5px; margin-top: 3px;">
+                <div *ngFor="let column of columns" class="col-xs-12 example-col">
+                  <input type="checkbox" id="{{ column.Name }}" class="k-checkbox"
+                    [disabled]="isDisabledColumn(column.Name)" [checked]="column.isCheck" [(ngModel)]="column.isCheck"
+                    (change)="hideColumn()" />
+                  <label class="k-checkbox-label" for="{{ column.Name }}">{{ column.Text
+                    }}</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row ml-2">
+            <div class="k-actions k-actions-end">
+              <div class="k-columnmenu-actions">
+                <button class="k-button" type="button" (click)="resetpopup()">Reset</button>
+                <button class="k-button" (click)="columnApply()" type="button">Apply</button>
+                <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+              </div>
+            </div>
+          </div>
+
+        </kendo-popup>
+      </div>
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="33%">
+              <div class="col-md-12">
+                <div class="row no-gutters">
+                  <div class="col-md-12 mb-1">
+
+                    <div>
+                      <div class="row mb-2">
+                        <div class="col-xs-6 col-sm-6 example-col"
+                          [ngClass]="id == 0 || (id > 0 && !isEdit) ? '' :  'k-state-disabled'">
+                          <kendo-combobox [data]="branches" [filterable]="true" [valueField]="'code'" [suggest]="true"
+                            (valueChange)="valueChange($event,'b')" [textField]="'value'" placeholder="All Branches"
+                            [(ngModel)]="filterBrance" (filterChange)="branchesHandleFilter($event)"
+                            [valuePrimitive]="true" class="kendodropdownlist"></kendo-combobox>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-control1 displayFlex alignFlexEnd">
+                            <label>Active</label>
+                            <kendo-switch [disabled]="id == 0 || (id > 0 && !isEdit) ? false :  true" onLabel="Yes"
+                              offLabel="No" (valueChange)="loadItems()" class="" style="width: auto;"
+                              [(ngModel)]="status">
+                            </kendo-switch>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                </div>
+                <div class="table-responsive">
+                  <kendo-grid [pageSize]="pageSize" #grid scrollable="virtual" [rowHeight]="36" style="height: 68vh;"
+                    [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                    [ngClass]="id == 0 || (id > 0 && !isEdit) ? '' :  'k-state-disabled'"
+                    (selectionChange)="editClick($event.selectedRows[0].dataItem.id)" [data]="data" [sort]="sort"
+                    (sortChange)="sortChange($event)" [sortable]="true" [skip]="skip" kendoGridSelectBy
+                    [selectedKeys]="mySelection"
+                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <ng-template kendoGridToolbarTemplate>
+                      <div class="example-config">
+                        <a #anchor (click)="onToggle()">
+                          <span class="k-icon k-i-more-vertical"></span>
+                        </a>
+                      </div>
+                      <input placeholder="Type here to filter customers" kendoTextBox class="col-md-9"
+                        (input)="onFilter($event.target.value)" />
+                      <kendo-grid-spacer></kendo-grid-spacer>
+                      <span> Total : {{recordCount}}</span>
+
+                      <kendo-grid-spacer></kendo-grid-spacer>
+
+                    </ng-template>
+                    <kendo-grid-column field="customerName" title="Customer" [width]="150">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.customerName}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="branch" title="Branch" [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.branch}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="customerType" title="Customer Type" [width]="150">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.customerType}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="phone" title="Phone" [width]="150">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.phone}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="city" title="City" [width]="150">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.city}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="state" title="State" [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.state}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="inactive" title="Status" [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.inactive}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+
+            <kendo-splitter-pane>
+              <div class="col-md-12 pane-content">
+                <div class="col-md-12">
+                  <!-- <div class="d-flex justify-content-between alignItemsCenter mt-1">
+                    <label class="label label-primary label-mersino">Cust # {{id}}</label>
+                    <label class="label label-primary  label-mersino">Date Created : {{cdate | date}}</label>
+                    <div class="form-control1 displayFlex alignFlexEnd">
+                      <label>Active</label>
+                      <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [disabled]="isDisable"
+                        [(ngModel)]="active">
+                      </kendo-switch>
+                    </div>
+                  </div> -->
+                  <hr>
+                  <kendo-tabstrip (tabSelect)="onTabSelect($event)" #tabstrip class="nav nav-tabs">
+                    <kendo-tabstrip-tab class="nav-link pt-4" [title]="'Customer Info'" [selected]="true"
+                      [disabled]="(tabList.CustomerInfo && isEdit) || isTab1">
+                      <ng-template kendoTabContent>
+                        <app-customer-info #cInfos [onChange]="SaveChange">
+                        </app-customer-info>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Other Info'" class="pt-4"
+                      [disabled]="isTab2 || (tabList.OtherInfo && isEdit) || id <= 0">
+                      <ng-template kendoTabContent>
+                        <app-other-info [onChange]="SaveChange"></app-other-info>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Contacts'"
+                      [disabled]="isTab3 ||  (tabList.Contacts && isEdit) || id <= 0">
+                      <ng-template kendoTabContent>
+                        <app-customer-contact [onChange]="SaveChange"></app-customer-contact>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Notes'" [disabled]=" isTab4 || (tabList.Notes && isEdit) || id <= 0">
+                      <ng-template kendoTabContent>
+                        <app-customer-notes [onChange]="SaveChange"></app-customer-notes>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                  </kendo-tabstrip>
+                  <kendo-tabstrip class="custom mt-2">
+                    <kendo-tabstrip-tab [title]="'Activity'" [selected]="true" class="text-success">
+                      <ng-template kendoTabContent>
+                        <app-customer-activity [onChange]="SaveChange"></app-customer-activity>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'Collections'">
+                      <ng-template kendoTabContent>
+                        <app-customer-collection></app-customer-collection>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'History'">
+                      <ng-template kendoTabContent>
+                        <app-customer-history [onChange]="SaveChange"></app-customer-history>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                  </kendo-tabstrip>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+    </div>
+    <div class="col-lg-8">
+
+      <!-- Nav tabs -->
+      <!-- <ul class="nav nav-tabs " role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home3" role="tab"
+                aria-selected="true">Customer Info</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile3" role="tab" aria-selected="false">Other
+                Info</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages3" role="tab">Contacts</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages4" role="tab">Notes</a>
+            <div class="slide"></div>
+        </li>
+
+    </ul> -->
+      <!--
+    <div class="tab-content card-block border">
+        <div class="tab-pane active show" id="home3" role="tabpanel">
+            <app-customer-info #cInfos (SaveEditClick)="OnAddUpdate()" [onChange]="SaveChange">
+            </app-customer-info>
+            <hr>
+        </div>
+        <div class="tab-pane" id="profile3" role="tabpanel">
+            <app-other-info></app-other-info>
+            <hr>
+        </div>
+        <div class="tab-pane" id="messages3" role="tabpanel">
+            <app-customer-contact [onChange]="SaveChange"></app-customer-contact>
+        </div>
+        <div class="tab-pane" id="messages4" role="tabpanel">
+            <app-customer-notes [onChange]="SaveChange"></app-customer-notes>
+        </div>
+    </div> -->
+      <!-- <br /> -->
+      <!-- <ul class="nav nav-tabs " role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home4" role="tab"
+                aria-selected="true">Activity</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile4" role="tab"
+                aria-selected="false">Collections</a>
+            <div class="slide"></div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages5" role="tab">History</a>
+            <div class="slide"></div>
+        </li>
+    </ul>
+
+    <div class="tab-content card-block border mb-3">
+        <div class="tab-pane active show" id="home4" role="tabpanel">
+            <app-customer-activity></app-customer-activity>
+        </div>
+
+        <div class="tab-pane" id="profile4" role="tabpanel">
+            <app-customer-collection></app-customer-collection>
+        </div>
+        <div class="tab-pane" id="messages5" role="tabpanel">
+            <app-customer-history></app-customer-history>
+        </div>
+    </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Address</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="col-md-12">
+          <div class="form-group row no-gutters">
+            <div class="col-md-2 text-right">
+              <label class="col-form-label pr-2">Address:</label>
+            </div>
+            <div class="col-md-10">
+              <kendo-textbox class="form-control form-control-round" name="Address2" placeholder="Address2">
+              </kendo-textbox>
+              <!-- <input type="text" name="lname" placeholder="Address2"
+                  class="form-control form-control-round" /> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group row no-gutters">
+            <div class="col-md-2 text-right">
+              <label class="col-form-label pr-2">City:</label>
+            </div>
+            <div class="col-md-10">
+              <div class="row no-gutters">
+                <div class="col-md-5">
+                  <kendo-textbox class="form-control form-control-round" name="City" placeholder="City">
+                  </kendo-textbox>
+                  <!-- <input type="text" name="Phone" placeholder="City"
+                      class="form-control form-control-round" /> -->
+                </div>
+                <div class="col-md-7">
+                  <div class="row no-gutters">
+                    <div class="col-md-3 text-right">
+                      <label class="col-form-label pr-2">ZIP:</label>
+                    </div>
+                    <div class="col-md-9">
+                      <kendo-textbox class="form-control form-control-round" name="ZIP" placeholder="ZIP">
+                      </kendo-textbox>
+                      <!-- <input type="text" name="sprofile" placeholder="ZIP"
+                          class="form-control form-control-round" /> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="row col-lg-12">
+          <div class="col-lg-6" style="text-align: center;">
+            <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+          </div>
+          <div class="col-lg-6" style="text-align: center;">
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

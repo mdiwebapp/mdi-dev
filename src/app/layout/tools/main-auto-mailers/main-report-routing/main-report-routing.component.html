@@ -1,0 +1,361 @@
+<form [formGroup]="maintainAutoMailersForm">
+    <div class="card-block table-border-style" style="overflow-x: hidden;">
+            <kendo-splitter orientation="vertical" style="max-height: 68vh; overflow-x: hidden;">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="35%" style="max-height: 68vh;">
+                             
+                                <kendo-textbox class="form-control form-control-round mb-2" placeholder="" (keyup)="OnFilterAutoMailerGridData($event.target.value)">
+                                </kendo-textbox>
+                                <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true"
+                                [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                (selectionChange)="onRowSelect($event, 'automailer')" [data]="AutoMailerGridData" [sort]="autoMailersort"
+                                (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="autoMailerselections" [sortable]="false"
+                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="max-height: 60vh; height: 100vh;"
+                                [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys" (groupChange)="groupChange()"
+                                [groupable]="false">
+                                    <kendo-grid-column field="name" title="Name">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <lable>{{ dataItem.name }}</lable>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane [collapsible]="true" style="max-height: 68vh; overflow-x: hidden;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        (click)="onHandleOperation('reports')">{{select_report_btn}}
+                                    </button>
+                                    <input type="hidden" formControlName="reportId">
+                                </div>
+                            </div>
+                            <div [ngClass]="branchSpecificClass != '' ? (branchSpecificClass == 'Yes' ? 'branchSpecificYes':'branchSpecificNo') :''">
+                            <div class="row mb-3">
+                               
+                                <div class="col-md-12">
+                                    <fieldset>
+                                        <legend class="text-left ml-4">{{branchSpecificTitle}}</legend>
+                                        <div class="row justify-content-center mb-3">
+                                            <div class="col-md-6">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <button class="k-button w-100" type="button"
+                                                        style="font-size: 12px;"
+                                                        (click)="onHandleOperation('branch')" [disabled]="isBranchbtndisabled">Branch: {{branch_btn}}
+                                                    </button>
+                                                    <input type="hidden" formControlName="branchCode">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                
+                            </div>
+                        </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend class="text-left ml-4">To</legend>
+                                        <div class="row m-3">
+                                            <div class="col-md-2 d-flex">
+                                                <div class="wp-50 p-l-10 p-r-10 d-flex">
+                                                    <button kendoTooltip id="btnleft1" class="btn_icon" filter="button" [disabled]="isToLeftbtndisabled" (click)="RemoveEmail()">
+                                                    </button>
+                                                </div>
+                                                <div class="wp-50 p-l-10 p-r-10 d-flex">
+                                                    <button kendoTooltip id="btnRight" class="btn_icon" filter="button" [disabled]="isToRightbtndisabled" (click)="AddEmail(false)">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    (selectionChange)="onToSelectionChange($event)" [data]="ToData"
+                                                    [sort]="Tosort" (sortChange)="onToSortChange($event)" kendoGridSelectBy
+                                                    [selectedKeys]="Toselections" [sortable]="true"
+                                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                    style="max-height: 42vh; height: 100vh;" (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="name" title="Name">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.name }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend class="text-left ml-4">CC</legend>
+                                        <div class="row m-3">
+                                            <div class="col-md-2 d-flex">
+                                                <div class="wp-50 p-l-10 p-r-10">
+                                                    <button kendoTooltip id="btnleft1" class="btn_icon" filter="button" [disabled]="isCCLeftbtndisabled" (click)="RemoveEmail()">
+                                                    </button>
+                                                </div>
+                                                <div class="wp-50 p-l-10 p-r-10">
+                                                    <button kendoTooltip id="btnRight" class="btn_icon" filter="button" [disabled]="isToRightbtndisabled" (click)="AddEmail(true)">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <kendo-grid  [data]="CCData" [selectable]="true" [navigable]="true" [resizable]="true"
+                                                    [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                                    (selectionChange)="onCCSelectionChange($event)"
+                                                    [sort]="CCsort" (sortChange)="onCCsortChange($event)" kendoGridSelectBy
+                                                    [selectedKeys]="CCselections" [sortable]="true"
+                                                    (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                    style="max-height: 42vh; height: 100vh;" (dataStateChange)="onDataStateChange($event)"
+                                                    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                    <kendo-grid-column field="name" title="Name">
+                                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                                            <lable>{{ dataItem.name }}</lable>
+                                                        </ng-template>
+                                                    </kendo-grid-column>
+                                                </kendo-grid>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="setallBranch()" [disabled]="isSetAllBranchbtndisabled">Set These Recipients For All
+                    Branches
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button class="k-button w-100" type="button" style="font-size: 12px;"
+                    (click)="onHandleOperation('oldrecipient')">Find Replace(All Reports) {{replace_btn}}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select a Report" *ngIf="isselectReportVisible" (close)="onHandleOperation('reports')"
+    [minWidth]="250" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="onFilterReportList($event.target.value)" [(ngModel)]="filterReports">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{ReportData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'select_report')"
+                [data]="ReportData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column field="pk" title="PK">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.pk }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="subject" title="Subject">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.subject }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select a Branch" *ngIf="isbranchVisible" (close)="onHandleOperation('branch')" [minWidth]="250" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="onBranchFilter($event.target.value)" [(ngModel)]="filterBranch">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{branchData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'branch')"
+                [data]="branchData" [sort]="branchsort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="branchselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column field="value" title="Value">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.value }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="code" title="Code">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.code }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select a Branch" *ngIf="isReplaceVisible" (close)="onHandleOperation('replace')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{ReplaceData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'select_report')"
+                [data]="ReplaceData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Caution!" *ngIf="issetAllbranchVisible" (close)="closesetAllbranch('no')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Warning! This will set ALL branches to the listed recipients for this report! Do you wish to continue?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton class="k-button w-100" type="button" style="font-size: 12px;"
+            (click)="closesetAllbranch('yes')" primary="true">Yes</button>
+        <button kendoButton class="k-button w-100" type="button" style="font-size: 12px;"
+            (click)="closesetAllbranch('no')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Alert" *ngIf="isreplaceAlldialogVisible" (close)="closereplaceAlldialog('no')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        This will route all of {{oldrecipientname}} auto-mailers to {{newrecipientname}}. Proceed?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton class="k-button w-100" type="button" style="font-size: 12px;"
+            (click)="closereplaceAlldialog('yes')" primary="true">Yes</button>
+        <button kendoButton class="k-button w-100" type="button" style="font-size: 12px;"
+            (click)="closereplaceAlldialog('no')">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Choose recipient to replace" *ngIf="isoldrecipientVisible" (close)="onHandleOperation('oldrecipient')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="onoldRecipientFilter($event.target.value)" [(ngModel)]="filterOldRecipient">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{oldRecipientData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'oldrecipient')"
+                [data]="oldRecipientData" [sort]="oldrecipientsort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="oldrecipientselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column field="name" title="Name">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.name }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Choose the new recipient" *ngIf="isnewrecipientVisible" (close)="onHandleOperation('newrecipient')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="onnewRecipientFilter($event.target.value)" [(ngModel)]="filterNewRecipient">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{newRecipientData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'newrecipient')"
+                [data]="newRecipientData" [sort]="newrecipientsort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="newrecipientselections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column field="name" title="Name">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{ dataItem.name }}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

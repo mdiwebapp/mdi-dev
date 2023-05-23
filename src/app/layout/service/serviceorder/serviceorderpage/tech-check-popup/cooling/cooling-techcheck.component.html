@@ -1,0 +1,144 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>COOLING SYSTEM - <span class="pl-1">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                    (valueChange)="changeMarkAll($event)">
+                                </kendo-switch>
+                                Mark All N/A
+                            </span></legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>GLYCOL HYDROMETER READING</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="glycolHydrometerReading"
+                                                (valueChange)="onHydrometer()" placeholder="">
+                                            </kendo-textbox>
+                                            <div class="required-text"
+                                                *ngIf="form.get('glycolHydrometerReading').hasError('required') && form.get('glycolHydrometerReading').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0 mt-3"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-temperature-fahrenheit"
+                                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <circle cx="6" cy="8" r="2" />
+                                                    <line x1="13" y1="12" x2="18" y2="12" />
+                                                    <path d="M20 6h-6a1 1 0 0 0 -1 1v11" />
+                                                </svg></h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaycoolBtn" class="w-100" (click)="onCoolantLevel()" kendoTooltip
+                                    kendoRippleContainer kendoButton>COOLANT LEVEL - {{f.coolantLevel.value}}
+                                </button> -->
+                                <label class="col-form-label">COOLANT LEVEL:</label>
+                                <kendo-combobox *ngIf="!displaycoolBtn" formControlName="coolantLevel" [suggest]="true"
+                                    (valueChange)="onCoolantLevel()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="coolantLevelList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('coolantLevel').hasError('required') && form.get('coolantLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaywaterpumpBtn" class="w-100" (click)="onwaterPump()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CONDITION OF THE
+                                    WATER PUMP - {{f.waterLevel.value}}
+                                </button> -->
+                                <label class="col-form-label">CONDITION OF THE WATER PUMP:</label>
+                                <kendo-combobox *ngIf="!displaywaterpumpBtn" formControlName="waterLevel"
+                                    [valuePrimitive]="true" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    (valueChange)="onwaterPump()" [data]="waterlevelList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('waterLevel').hasError('required') && form.get('waterLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayfanBtn" class="w-100" (click)="onFan()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CONDITION OF THE FAN - {{f.fanLevel.value}}
+                                </button> --><label class="col-form-label">CONDITION OF THE FAN:</label>
+                                <kendo-combobox *ngIf="!displayfanBtn" formControlName="fanLevel" [suggest]="true"
+                                    (valueChange)="onFan()" placeholder="Select Choice" [valuePrimitive]="true"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="fanList"
+                                    [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('fanLevel').hasError('required') && form.get('fanLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaypumpBearingBtn" class="w-100" (click)="onPumpBearings()"
+                                    kendoTooltip kendoRippleContainer kendoButton>CONDITION OF THE WATER PUMP
+                                    BEARINGS - {{f.pumpingbearingLevel.value}}
+                                </button> --><label class="col-form-label">CONDITION OF THE WATER PUMP
+                                    BEARINGS:</label>
+                                <kendo-combobox *ngIf="!displaypumpBearingBtn" formControlName="pumpingbearingLevel"
+                                    (valueChange)="onPumpBearings()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="pumpingbearingList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('pumpingbearingLevel').hasError('required') && form.get('pumpingbearingLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displayradiatorBtn" class="w-100" (click)="onRadiator()" kendoTooltip
+                                    kendoRippleContainer kendoButton>CONDITION OF THE RADIATOR -
+                                    {{f.radiatorLevel.value}}
+                                </button> --><label class="col-form-label">CONDITION OF THE RADIATOR:</label>
+                                <kendo-combobox *ngIf="!displayradiatorBtn" formControlName="radiatorLevel"
+                                    (valueChange)="onRadiator()" [suggest]="true" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="radiatorList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('radiatorLevel').hasError('required') && form.get('radiatorLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-1" *ngIf="isControlPanel">
+                                <!-- <button *ngIf="displayleakingBtn" class="w-100" (click)="onLeaking()" kendoTooltip
+                                    kendoRippleContainer kendoButton>LEAKS - {{f.leaksLevel.value}}
+                                </button> --><label class="col-form-label">LEAKS:</label>
+                                <kendo-combobox *ngIf="!displayleakingBtn" formControlName="leaksLevel" [suggest]="true"
+                                    (valueChange)="onLeaking()" placeholder="Select Choice"
+                                    class="form-control form-control-round" [textField]="'value'" [data]="leaksList"
+                                    [valuePrimitive]="true" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('leaksLevel').hasError('required') && form.get('leaksLevel').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,190 @@
+<div class="card">
+  <div class="card-header col-md-12">
+    <h4 class="col-md-3">Inventory Transfer</h4>
+    <div class="row mx-0 actionItemsContainer  col-md-2">
+      <div kendoTooltip title="Add">
+        <button [disabled]="isAdd"
+                id="btnAdd" class="btn_icon" filter="button" (click)="btnAdd();">
+        </button>
+      </div>
+      <div kendoTooltip title="Cancel">
+        <button id="btnCancel" class="btn_icon" filter="button"
+                (click)="btnCancel();" [disabled]="isCancel">
+        </button>
+      </div>
+      <div kendoTooltip title="Save">
+        <button id="btnSave" class="btn_icon" filter="button"
+                [disabled]="isSave" (click)="onSave();">
+        </button>
+      </div>
+    </div>
+    <div class="col-md-7 d-flex justify-content-between alignItemsCenter mt-1">
+      <label class="label label-primary label-mersino">Created By: {{id}}</label>
+      <label class="label label-primary  label-mersino">
+        Created Date: {{
+cdate |
+                date
+        }}
+      </label>
+      <label class="label label-primary label-mersino">Sent By # {{id}}</label>
+      <label class="label label-primary  label-mersino">
+        Sent Date: {{
+cdate |
+                date
+        }}
+      </label>
+      <label class="label label-primary label-mersino">Received By: {{id}}</label>
+      <label class="label label-primary  label-mersino">
+        Received Date: {{
+cdate |
+                date
+        }}
+      </label>
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <button kendoTooltip title="Transfer Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"></button>
+        <button kendoButton (click)="onButtonClick()">BOL</button>
+        <button kendoButton (click)="onButtonClick()">Receive All</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-block table-border-style">
+    <div class="row">
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="40%">
+              <div class="pane-content">
+                <div class="col-md-12 mb-3">
+
+                  <div class="row no-gutters">
+                    <div class="col-md-12 mb-3">
+                      <div class="row">
+                        <div class="col-sm-3 col-md-6 ">
+                          <kendo-dropdownbutton [data]="settings">
+                            Filter By Status
+                          </kendo-dropdownbutton>
+                        </div>
+                        <div class="col-sm-9 col-md-6">
+                          <kendo-dropdownbutton [data]="settings2">
+                            Filter By Branch
+                          </kendo-dropdownbutton>
+                        </div>
+                      </div>
+                      <br/>
+                      <div class="row" >
+                        <div class="col-sm-3">
+                          <button>
+                            Send
+                          </button>
+                        </div>
+                        <div class="col-sm-3">
+                          <button>
+                            Receive
+                          </button>
+                        </div>
+                        <div class="col-sm-3">
+                          <button>
+                            Override
+                          </button>
+                        </div>
+                        <div class="col-sm-3">
+                          <button>
+                            Void
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row no-gutters">
+                    <kendo-grid [selectable]="true"
+                                (selectionChange)="editClick($event.selectedRows[0].dataItem.id)"
+                                [data]="data" [sort]="sort" (sortChange)="sortChange($event)"
+                                kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+                                [skip]="skip" style="height: 75vh;"
+                                (dataStateChange)="dataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                      <ng-template kendoGridToolbarTemplate>
+                        <input placeholder="Search in all columns..." kendoTextBox
+                               class="col-md-9" (input)="onFilter($event.target.value)" />
+                        <kendo-grid-spacer></kendo-grid-spacer>
+                        <span> Total : {{data?.length}}</span>
+                      </ng-template>
+                      <kendo-grid-column field="invTransferNumber" title="Inv Transfer #   " [width]="100">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <lable>{{dataItem.invTransferNumber}}</lable>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="Status" title="Status   " [width]="80">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <lable>{{dataItem.status}}</lable>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="fromBranch" title="From Branch   " [width]="110">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <lable>{{dataItem.fromBranch}}</lable>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="toBranch" title="To Branch   " [width]="110">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <lable>{{dataItem.toBranch}}</lable>
+                          <!-- <lable kendoTooltip title="{{dataItem.description}}">{{dataItem.description.substring(0,40)}}...</lable> -->
+                        </ng-template>
+                      </kendo-grid-column>
+                    </kendo-grid>
+                  </div>
+                </div>
+
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <div class="col-md-12 pane-content">
+                <hr>
+                <div class="row no-gutters">
+                  <kendo-grid [selectable]="true"
+                              (selectionChange)="editClick($event.selectedRows[0].dataItem.id)"
+                              [data]="" [sort]="sort" (sortChange)="sortChange($event)"
+                              kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true"
+                              [skip]="skip" style="height: 75vh;"
+                              (dataStateChange)="dataStateChange($event)"
+                              [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                    <!-- <ng-template kendoGridToolbarTemplate> -->
+                    <!-- <input placeholder="Search in all columns..." kendoTextBox
+                        class="col-md-9" (input)="onFilter($event.target.value)" />
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{data?.length}}</span> -->
+                    <!-- </ng-template> -->
+                    <kendo-grid-column field="InventoryType" title="Inv Type   " [width]="100">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.invTransferNumber}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="InventoryNumber" title="Inv Number   " [width]="80">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.Status}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="desc" title="Description   " [width]="110">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.fromBranch}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="Quantity" title="Quantity   " [width]="110">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <!-- <lable kendoTooltip title="{{dataItem.description}}">{{dataItem.description.substring(0,40)}}...</lable> -->
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="recQty" title="Received Qty   " [width]="110">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.fromBranch}}</lable>
+                      </ng-template>
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+    </div>
+  </div>
+</div>

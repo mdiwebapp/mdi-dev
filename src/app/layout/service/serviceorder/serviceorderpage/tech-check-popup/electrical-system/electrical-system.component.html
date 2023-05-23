@@ -1,0 +1,157 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>ELECTRICAL SYSTEM - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayLfTurnSignals" class="w-100"
+                                (click)="onHandleOperations('lf_turn_signals')" kendoTooltip kendoRippleContainer
+                                kendoButton>LF TURN SIGNALS: {{f.lfTurnSignals.value}}
+                            </button> --> <label class="col-form-label">LF TURN SIGNALS:</label>
+                            <kendo-combobox *ngIf="!displayLfTurnSignals" [suggest]="true"
+                                (valueChange)="onHandleOperations('lf_turn_signals')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="lfTurnSignalsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="lfTurnSignals">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('lfTurnSignals').hasError('required') && form.get('lfTurnSignals').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayRfTurnSignals" class="w-100"
+                                (click)="onHandleOperations('rf_turn_signals')" kendoTooltip kendoRippleContainer
+                                kendoButton>RF TURN SIGNALS: {{f.rfTurnSignals.value}}
+                            </button> -->
+                            <label class="col-form-label">RF TURN SIGNALS:</label>
+                            <kendo-combobox *ngIf="!displayRfTurnSignals" [suggest]="true"
+                                (valueChange)="onHandleOperations('rf_turn_signals')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="rfTurnSignalsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="rfTurnSignals">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('rfTurnSignals').hasError('required') && form.get('rfTurnSignals').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayLrTurnSignals" class="w-100"
+                                (click)="onHandleOperations('lr_turn_signals')" kendoTooltip kendoRippleContainer
+                                kendoButton>LR TURN SIGNALS: {{f.lrTurnSignals.value}}
+                            </button> -->
+                            <label class="col-form-label">LR TURN SIGNALS:</label>
+                            <kendo-combobox *ngIf="!displayLrTurnSignals" [suggest]="true"
+                                (valueChange)="onHandleOperations('lr_turn_signals')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="lrTurnSignalsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="lrTurnSignals">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('lrTurnSignals').hasError('required') && form.get('lrTurnSignals').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayRrTurnSignals" class="w-100"
+                                (click)="onHandleOperations('rr_turn_signals')" kendoTooltip kendoRippleContainer
+                                kendoButton>RR TURN SIGNALS: {{f.rrTurnSignals.value}}
+                            </button> -->
+                            <label class="col-form-label">RR TURN SIGNALS:</label>
+                            <kendo-combobox *ngIf="!displayRrTurnSignals" [suggest]="true"
+                                (valueChange)="onHandleOperations('rr_turn_signals')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="rrTurnSignalsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="rrTurnSignals">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('rrTurnSignals').hasError('required') && form.get('rrTurnSignals').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBrakeLights" class="w-100"
+                                (click)="onHandleOperations('brake_lights')" kendoTooltip kendoRippleContainer
+                                kendoButton>BRAKE LIGHTS: {{f.brakeLights.value}}
+                            </button> -->
+                            <label class="col-form-label">BRAKE LIGHTS:</label>
+                            <kendo-combobox *ngIf="!displayBrakeLights" [suggest]="true"
+                                (valueChange)="onHandleOperations('brake_lights')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="brakeLightsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="brakeLights">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('brakeLights').hasError('required') && form.get('brakeLights').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPigTailCord" class="w-100"
+                                (click)="onHandleOperations('pig_tail_cord')" kendoTooltip kendoRippleContainer
+                                kendoButton>PIG TAIL CORD: {{f.pigTailCord.value}}
+                            </button> -->
+                            <label class="col-form-label">PIG TAIL CORD:</label>
+                            <kendo-combobox *ngIf="!displayPigTailCord" [suggest]="true"
+                                (valueChange)="onHandleOperations('pig_tail_cord')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="pigTailCordList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="pigTailCord">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('pigTailCord').hasError('required') && form.get('pigTailCord').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFrontMarkerLights" class="w-100"
+                                (click)="onHandleOperations('front_marker_lights')" kendoTooltip kendoRippleContainer
+                                kendoButton>FRONT MARKER LIGHTS: {{f.frontMarkerLights.value}}
+                            </button> -->
+                            <label class="col-form-label">FRONT MARKER LIGHTS:</label>
+                            <kendo-combobox *ngIf="!displayFrontMarkerLights" [suggest]="true"
+                                (valueChange)="onHandleOperations('front_marker_lights')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [data]="frontMarkerLightsList" [valueField]="'value'"
+                                [valuePrimitive]="true" formControlName="frontMarkerLights">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('frontMarkerLights').hasError('required') && form.get('frontMarkerLights').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBackMarkerLights" class="w-100"
+                                (click)="onHandleOperations('back_marker_lights')" kendoTooltip kendoRippleContainer
+                                kendoButton>BACK MARKET LIGHTS: {{f.backMarkerLights.value}}
+                            </button> -->
+                            <label class="col-form-label">BACK MARKET LIGHTS:</label>
+                            <kendo-combobox *ngIf="!displayBackMarkerLights" [suggest]="true"
+                                (valueChange)="onHandleOperations('back_marker_lights')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [valuePrimitive]="true" [data]="backMarkerLightsList" [valueField]="'value'" formControlName="backMarkerLights">
+                            </kendo-combobox>
+                            <div class="required-text"
+                            *ngIf="form.get('backMarkerLights').hasError('required') && form.get('backMarkerLights').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-12 p-1">
+                            <!-- <button *ngIf="displayConditionOfWriting" class="w-100"
+                                (click)="onHandleOperations('condition_of_writing')" kendoTooltip kendoRippleContainer
+                                kendoButton>CONDITION OF WRITING: {{f.conditionOfWriting.value}}
+                            </button> -->
+                            <label class="col-form-label">CONDITION OF WRITING:</label>
+                            <kendo-combobox *ngIf="!displayConditionOfWriting" [suggest]="true"
+                                (valueChange)="onHandleOperations('condition_of_writing')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [data]="conditionOfWritingList" [valueField]="'value'"
+                                [valuePrimitive]="true" formControlName="conditionOfWriting">
+                            </kendo-combobox>
+                            <div class="required-text"
+                            *ngIf="form.get('conditionOfWriting').hasError('required') && form.get('conditionOfWriting').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,69 @@
+<div class="branch">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <kendo-grid [data]="data" [sort]="sort" [sortable]="true" (sortChange)="sortChange($event)" [resizable]="true"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [skip]="skip" [height]="500"
+        [columnMenu]="{ filter: true, columnChooser: true  }" [selectable]="true">
+        <ng-template kendoGridToolbarTemplate>
+            <button kendoButton *ngIf="gridViewAdd.length > 0" (click)="deleteFolder(dataItem)"
+                class="col-md-1 btn waves-effect waves-light btn-primary btn-outline-primary">
+                Delete</button>
+            <button kendoButton (click)="goUpFolder()"
+                class="col-md-2 btn waves-effect waves-light btn-primary btn-outline-primary" title="Go Up Folder">
+                Go Up Folder</button>
+            <input class="col-md-7" placeholder="Filter..." kendoTextBox (input)="onFilter($event.target.value)" />
+            <button kendoButton class="col-md-1 btn waves-effect waves-light btn-primary btn-outline-primary"
+                title="Add"><i class="fa fa-1x fa-search"></i></button>
+            <kendo-grid-spacer></kendo-grid-spacer>
+        </ng-template>
+
+        <kendo-grid-column field="check" title="check" [width]="100">
+            <ng-template kendoGridHeaderTemplate let-dataItem>
+                <input style="zoom: 1.2;" type="checkbox" name="selectAll" (change)="selectAllItemChange($event)"
+                    [disabled]="dataItem.count>0" [checked]="dataItem.check" />
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input style="zoom: 1.2;" type="checkbox" (change)="selectItem(dataItem.id)"
+                    [disabled]="dataItem.count>0" [checked]="dataItem.check" />
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="actions" title="Go to subfolder" [width]="175">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable style="cursor: pointer;" *ngIf="dataItem.count > 0">
+                    <i class="fa fa-1x fa-folder-open" (click)="viewClick(dataItem.id,dataItem.parent)"></i>
+                </lable>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="name" title="Name">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable *ngIf="dataItem.fileType=='File'">
+                    <!-- <a download="{{dataItem.name}}" ng-href="{{dataItem.filePath}}" title="ImageName">
+                        <img alt="ImageName" src="{{dataItem.filePath}}">
+                    </a> -->
+                    <a [href]="dataItem.filePath+dataItem.name" target="_blank" style="color: rgb(76, 76, 235)"
+                        download="{{dataItem.name}}">{{dataItem.name}}</a>
+                    <!-- <a style="color: rgb(76, 76, 235)"  href="#" >{{dataItem.filePath}} -{{dataItem.name}}</a>-->
+                </lable>
+                <lable *ngIf="dataItem.fileType=='Directory'">
+                    {{dataItem.name}}
+                </lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="size" title="Size" [width]="100">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable *ngIf="dataItem.size>0">{{niceBytes(dataItem.size)}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+</div>
+
+<div *ngIf="loader" class="k-i-loading"></div>
+<kendo-dialog title="Please confirm" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Are you sure you want to delete?
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="close('no')">No</button>
+        <button kendoButton (click)="close('yes')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

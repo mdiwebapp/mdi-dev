@@ -1,0 +1,142 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Spare Parts</h4>
+        </div>
+        <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+            <div class="form-control1 displayFlex alignFlexEnd">
+                <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button"
+                    (click)="downloadFile()">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style pane-content">
+
+        <!-- <fieldset>
+                <legend>Pump End</legend> -->
+        <kendo-tabstrip class="custom mt-2">
+            <kendo-tabstrip-tab class="text-success" [title]="'Pump End'" [selected]="true">
+                <ng-template kendoTabContent>
+                    <div class="row no-gutters m-0" style="height:70vh ;">
+                        <div class="col-md-12">
+                            <form [formGroup]="form" class="cust-form">
+                                <div class="row  no-gutters m-0">
+                                    <div class="col-md-4 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <label class="p-2">Select Pump Model:</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="spareScreenList" placeholder="Spare Parts" [suggest]="true"
+                                                    [textField]="'value'" formControlName="pumpEnd"
+                                                    (valueChange)="loadItems()" [valueField]="'value'"
+                                                    (filterChange)="PumpEndFilter($event)"
+                                                    [valuePrimitive]="true">
+                                                </kendo-combobox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <label class="p-2  text-right">CD4M:</label>
+
+                                        <kendo-switch onLabel="Yes" offLabel="No" class="p-2 ml-2" style="width: auto;"
+                                            (valueChange)="loadItems()" formControlName="cD4">
+                                        </kendo-switch>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <label class="p-2  text-right">Parts:</label>
+
+                                        <kendo-switch onLabel="All" offLabel="Wear" class="p-2 ml-2"
+                                            (valueChange)="loadParts()" style="width: 90px;" formControlName="parts">
+                                        </kendo-switch>
+                                    </div>
+                                    <div class="col-md-4 p-1 text-right">
+                                        <label class="text-right">Active Only:</label>
+
+                                        <kendo-switch onLabel="Yes" offLabel="No" class="p-2 mr-5"
+                                            (valueChange)="loadItems()" formControlName="active">
+                                        </kendo-switch>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-2  p-2 pr-0 pb-1 pt-0">
+                                <div class="p-2 pt-0 pb-0">
+                                    <fieldset>
+                                        <legend>Filters</legend>
+                                        <div class="row no-gutters m-0">
+                                            <div class="col-md-12 p-1 mb-4  mt-4">
+
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div> -->
+                        <div class="col-md-12 p-2 pb-1 pt-0">
+                            <kendo-grid [data]="data" [resizable]="true" [selectable]="true" [navigable]="true"
+                                kendoGridSelectBy [selectedKeys]="mySelection" [sortable]="true" [sort]="sort"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                (sortChange)="sortChange($event)" (columnReorder)="reorderColumns($event)"
+                                (columnResize)="resizeColumns($event)"
+                                (selectionChange)="partClick($event.selectedRows[0].dataItem.parentPart)" height="300"
+                                [resizable]="true" [reorderable]="true" class="set-width">
+                                <!-- <kendo-grid-column field="parentPart" title="Parent Part" [width]="175">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="description" title="Description">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="inactive" title="Inactive" [width]="100"> 
+                                </kendo-grid-column> -->
+                                <kendo-grid-column *ngFor="let column of viewColumns" field="{{column.Name}}"
+                                    title="{{column.Text}}">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span *ngIf="column.Name=='inactive'">
+                                            <input type="checkbox" [checked]="dataItem[column.Name]" [disabled]="true"
+                                                kendoCheckBox />
+                                        </span>
+                                        <span *ngIf="column.Name!='inactive'">
+                                            {{dataItem[column.Name]}}
+                                        </span>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                        <div class="col-md-12 p-2 pt-0">
+                            <kendo-grid [data]="viewSubData" [resizable]="true" [selectable]="true" [navigable]="true"
+                                height="300" [resizable]="true" [reorderable]="true" [sortable]="true" [sort]="sortSub"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                (columnReorder)="reorderColumnsSub($event)" (columnResize)="resizeColumnsSub($event)"
+                                (sortChange)="sortChangeSubgrid($event)" class="set-width">
+                                <kendo-grid-column *ngFor="let column of viewColumnSub" field="{{column.Name}}"
+                                    title="{{column.Text}}">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span *ngIf="column.Name=='wearPart'">
+                                            <input type="checkbox" [checked]="dataItem[column.Name]" [disabled]="true"
+                                                kendoCheckBox />
+                                        </span>
+                                        <span *ngIf="column.Name!='wearPart'">
+                                            {{dataItem[column.Name]}}
+                                        </span>
+                                    </ng-template>
+                                </kendo-grid-column>
+
+                                <!-- <kendo-grid-column field="childPart" title="Part Number" [width]="175">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="description" title="Description">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="qty" title="QTY" [width]="100">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="wearPart" title="Wear Part" [width]="100">
+                                </kendo-grid-column> -->
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+
+    </div>
+</div>

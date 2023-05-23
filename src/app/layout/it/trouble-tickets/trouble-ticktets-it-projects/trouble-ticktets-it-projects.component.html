@@ -1,0 +1,233 @@
+<div class="row">
+    <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+            <kendo-splitter>
+                <kendo-splitter-pane [collapsible]="true" size="35%">
+                    <div class="pane-content">
+                        <div class="row no-gutters m-3">
+                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (columnResize)="onResizeColumn($event)"
+                                (selectionChange)="onSelectionChange($event, 'project')" [data]="projects" [sort]="sort"
+                                (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+                                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                style="height: 70vh;" (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                <kendo-grid-column *ngFor="let column of projectColumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                                <ng-template kendoGridToolbarTemplate>
+                                    <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                                        (input)="onFilter($event.target.value)" />
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                    <label>Active:</label>
+                                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;">
+                                    </kendo-switch>
+                                </ng-template>
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </kendo-splitter-pane>
+                <kendo-splitter-pane>
+                    <div class="pane-content" style="max-height: 70vh; overflow: auto;">
+                        <form [formGroup]="projectForm">
+                            <div class="card-header d-flex flex-row justify-content-start">
+                                <div class="wp-50 p-l-10 p-r-10">
+                                    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+                                        [disabled]="!isDisable || isEditable" (click)="onHandleOperation('new')">
+                                    </button>
+                                </div>
+                                <div class=" wp-50 p-l-10 p-r-10">
+                                    <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                                        [disabled]="!isDisable || isEditable" (click)="onHandleOperation('edit')">
+                                    </button>
+                                </div>
+                                <div class="wp-50 p-l-10 p-r-10">
+                                    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                                        [disabled]="isDisable || !isEditable" (click)="onHandleOperation('cancel')">
+                                    </button>
+                                </div>
+                                <div class="wp-50 p-l-10 p-r-10">
+                                    <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                                        [disabled]="isDisable || !isEditable" (click)="onHandleOperation('save')">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <label class="col-form-label">User Input:</label>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <kendo-textarea placeholder="" [cols]="130" [rows]="8" [disabled]="isDisable"
+                                    class="form-control form-control-round" formControlName="userRequest">
+                                </kendo-textarea>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable" (click)="onHandleOperation('employees')">Requested By:
+                                        {{projectForm.get('requestedBy').value}}</button>
+                                </div>
+                                <div class="col-md-4"><button class="k-button w-100 request-date" type="button"
+                                        style="font-size: 12px;" [disabled]="isDisable"
+                                        (click)="req_date_btn.toggle()">Requested Date:
+                                        {{projectForm.get('requestedDate').value | date: 'MM/dd/yyyy hh:mm:ss aa'}}
+                                        <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                            #req_date_btn (valueChange)="onHandleOperation('request_date', $event)">
+                                        </kendo-datepicker>
+                                    </button>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
+                            <div class="row mt-5 mx-2">
+                                <div class="col-md-4">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable">Supervisor:
+                                        {{projectForm.get('supervisor').value}}</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable"
+                                        (click)="onHandleOperation('supervisor_approved')">Supervisor Approved:
+                                        {{projectForm.get('supervisorApproved').value}}</button>
+                                </div>
+                                <div class="col-md-4"><button class="k-button w-100 request-date" type="button"
+                                        style="font-size: 12px;" [disabled]="isDisable"
+                                        (click)="sup_app_date_btn.toggle()">Supervisor Approved Date:
+                                        {{projectForm.get('supervisorApprovedDate').value | date: 'MM/dd/yyyy hh:mm:ss
+                                        aa'}}
+                                        <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                            #sup_app_date_btn
+                                            (valueChange)="onHandleOperation('supervisor_approved_date', $event)">
+                                        </kendo-datepicker>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable" (click)="onHandleOperation('gino_approved')">Gino
+                                        Approved:
+                                        {{projectForm.get('ginoApproved').value}}</button>
+                                </div>
+                                <div class="col-md-4"><button class="k-button w-100 request-date" type="button"
+                                        style="font-size: 12px;" [disabled]="isDisable"
+                                        (click)="gino_app_date_btn.toggle()">Gino Approved Date:
+                                        {{projectForm.get('ginoApprovedDate').value | date: 'MM/dd/yyyy hh:mm:ss
+                                        aa'}}
+                                        <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                            #gino_app_date_btn
+                                            (valueChange)="onHandleOperation('gino_approved_date', $event)">
+                                        </kendo-datepicker>
+                                    </button>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <label class="col-form-label">Notes:</label>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <kendo-textarea placeholder="" [cols]="130" [rows]="8" [disabled]="isDisable"
+                                    class="form-control form-control-round" formControlName="notes">
+                                </kendo-textarea>
+                            </div>
+                            <div class="row mt-5 mx-2">
+                                <div class="col-md-3">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable" (click)="onHandleOperation('priority')">Prority:
+                                        {{projectForm.get('priority').value}}</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="isDisable" (click)="onHandleOperation('assigned_to')">Assigned To:
+                                        {{projectForm.get('assignedTo').value}}</button>
+                                </div>
+                                <div class="col-md-3"><button class="k-button w-100 request-date" type="button"
+                                        style="font-size: 12px;" [disabled]="isDisable"
+                                        (click)="assigned_date_btn.toggle()">Assigned Date:
+                                        {{projectForm.get('assignedDate').value | date: 'MM/dd/yyyy hh:mm:ss
+                                        aa'}}
+                                        <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                            #assigned_date_btn
+                                            (valueChange)="onHandleOperation('assigned_date', $event)">
+                                        </kendo-datepicker>
+                                    </button>
+                                </div>
+                                <div class="col-md-3"><button class="k-button w-100" type="button"
+                                        style="font-size: 12px;" [disabled]="isDisable"
+                                        (click)="onHandleOperation('close')">Close:
+                                        {{projectForm.get('close').value}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </kendo-splitter-pane>
+    </kendo-splitter>
+</div>
+
+<kendo-dialog title="Employees" *ngIf="isEmployeeVisible" (close)="onHandleOperation('employees')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Employee Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="Search Employee">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    EE Count: {{employees.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'employees')"
+                [data]="employees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="employeeSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of employeeColumn" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Screen" *ngIf="isAssignedVisible" (close)="onHandleOperation('assigned_to')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-9 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="Search Employee">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{employees.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'assigned_to')"
+                [data]="employees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="employeeSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of assignedColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

@@ -1,0 +1,354 @@
+<div style="height: 70vh;">
+    <div class="col-md-12 mb-3">
+        <form [formGroup]="form" name="loginForm" class="k-form row">
+            <div class="row my-3">
+                <div class="col-md-12">
+                    <div class="register-box box-shadow-none card mb-0">
+                        <div class="card-block p-0">
+                            <div class="k-form-fieldset">
+                                <div class="k-form-legend">PART TYPE <a #anchor (click)="showPartType=true"> <i
+                                            class="fa fa-question-circle" aria-hidden="true"></i></a></div>
+
+                                <div class="row no-gutters">
+
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Rental Feet:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    (valueChange)="changeRentalStatus($event)"
+                                                    formControlName="rentalFleet">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Components:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    formControlName="components">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Category:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="categoryList" [suggest]="true" [textField]="'value'"
+                                                    [valueField]="'value'" formControlName="category"
+                                                    (valueChange)="GetSubCategory($event)" [filterable]="true"
+                                                    [valuePrimitive]="true">
+                                                </kendo-combobox>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">GPC Parts:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    (valueChange)="changeGPCStatus($event)" formControlName="gpcParts">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Service Parts:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    formControlName="serviceParts">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Sub-Category:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="subCategoryList" [suggest]="true" [textField]="'value'"
+                                                    (valueChange)="GetCategoryBySubcategory($event)"
+                                                    [valueField]="'value'" formControlName="subCategory"
+                                                    [filterable]="true" [valuePrimitive]="true">
+                                                </kendo-combobox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="k-form-fieldset">
+                                <div class="k-form-legend">PRICING <a #anchor (click)="showPricing=true"> <i
+                                            class="fa fa-question-circle" aria-hidden="true"></i></a></div>
+
+                                <div class="row no-gutters">
+
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Is Taxed:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    formControlName="isTaxed">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">One Time Charge:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    formControlName="oneTimeCharge">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <!-- <div class="mb-0 row no-gutters">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label pr-2">Show Price:</label>
+                                    </div>
+                                    <div class="col-md-8" style="margin-top: 3px;">
+                                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                            formControlName="pricing">
+                                        </kendo-switch>
+                                    </div>
+                                </div> -->
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3">
+                                        <div class="mb-0 row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Usage:</label>
+                                            </div>
+                                            <div class="col-md-8" style="margin-top: 3px;">
+                                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                                    formControlName="hasUsage">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mb-3"></div>
+                                    <div class="col-md-4 mt-3 mb-3"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="k-form-fieldset">
+                                <div class="k-form-legend">SYSTEM <a #anchor (click)="showSystem=true"> <i
+                                            class="fa fa-question-circle" aria-hidden="true"></i></a></div>
+
+                                <div class="row no-gutters">
+                                    <div class="col-md-8">
+                                        <div class="row">
+
+
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Serialized:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="hasMultiple">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Inventoried:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="inventoryPart">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">BOM:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="bom">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Custom:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="custom">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Componentized:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="componentized">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">PESerialized:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="peSerialized">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Record Hours:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="recordHours">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Auto Generate:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="autoGenerate">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Spare Part:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="sparePart">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+                                                <div class="mb-0 row no-gutters">
+                                                    <div class="col-md-6 text-right">
+                                                        <label class="col-form-label pr-2">Long Lead:</label>
+                                                    </div>
+                                                    <div class="col-md-6" style="margin-top: 3px;">
+                                                        <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                            style="width: auto;" formControlName="longLead">
+                                                        </kendo-switch>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mb-3">
+
+                                            </div>
+                                            <!-- <div class="col-md-4 mt-3 mb-3">
+                                            <div class="mb-0 row no-gutters">
+                                                <div class="col-md-6 text-right">
+                                                    <label class="col-form-label pr-2">Inspection:</label>
+                                                </div>
+                                                <div class="col-md-6" style="margin-top: 3px;">
+                                                    <kendo-switch onLabel="Yes" offLabel="No" class=""
+                                                        style="width: auto;" formControlName="inspection">
+                                                    </kendo-switch>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <kendo-grid [selectable]="true" [data]="dataBarcode" class="mb-3"
+                                        [ngClass]="((isEdit))  ? '' :  'k-state-disabled'"  style="width: 95%;">
+                                            <kendo-grid-column title="Barcode">
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <lable>{{dataItem}}</lable>
+                                                </ng-template>
+
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="action" title="Action" [width]="80">
+                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                    <i class="fa fa-2x fa-trash mr-2"
+                                                        (click)="removeItem(dataItem)"></i>
+                                                </ng-template>
+                                            </kendo-grid-column>
+                                        </kendo-grid>
+                                        <div class="row no-gutters">
+                                            <div class="col-md-5 text-right">
+                                                <label class="col-form-label pr-2">Cycle Count Class:</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="">
+                                                    <kendo-combobox class="form-control form-control-round"
+                                                        [data]="cycleList" style="width: 95%;" [suggest]="true"
+                                                        [textField]="'value'" formControlName="cycleCountClass"
+                                                        [valueField]="'value'" [filterable]="true"
+                                                        [valuePrimitive]="true">
+                                                    </kendo-combobox>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <kendo-dialog title="Delete barcode" *ngIf="opened" (close)="closeSubmit('Cancel')"
+                                        [minWidth]="250" [width]="450">
+                                        <p style="margin: 30px; text-align: center;">
+                                            Are you sure you want to delete barcode?
+                                        </p>
+                                        <kendo-dialog-actions>
+                                            <button kendoButton (click)="closeSubmit('Yes')" primary="true">Yes</button>
+                                            <button kendoButton (click)="closeSubmit('No')">No</button>
+                                        </kendo-dialog-actions>
+                                    </kendo-dialog>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

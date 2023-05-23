@@ -1,0 +1,11 @@
+<kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+    (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)" [data]="certifications"
+    [sort]="certificationSort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+    [selectedKeys]="certificationSelection" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+    (dataStateChange)="onDataStateChange($event)"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [group]="state.group"
+    [(expandedGroupKeys)]="expandedGroupKeys" (groupChange)="groupChange()" [groupable]="false">
+    <kendo-grid-column *ngFor="let column of certificationsColumns" [width]="column.width" field="{{column.Name}}"
+        title="{{column.Text}}">
+    </kendo-grid-column>
+</kendo-grid>

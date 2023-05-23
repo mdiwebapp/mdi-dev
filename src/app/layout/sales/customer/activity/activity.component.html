@@ -1,0 +1,54 @@
+<form>
+    <div class="row">
+        <div class="col-md-12">
+            <div style="float: right;margin-bottom: 5px;">
+                <button kendoButton class="callLog" (click)="onHandleFilters('sales-call')"
+                    [ngClass]="activityFilters.salesCall ? 'callLog' : 'noclick'">Sales
+                    Call</button>
+                <button kendoButton (click)="onHandleFilters('notes')" class="notes"
+                    [ngClass]="activityFilters.notes ? 'notes' : 'noclick'">Notes</button>
+                <button kendoButton (click)="onHandleFilters('all-jobs')" class="alljobs"
+                    [ngClass]="activityFilters.allJobs ? 'alljobs' : 'noclick'">All
+                    Jobs</button>
+                <button kendoButton (click)="onHandleFilters('active-jobs')" class="activatedjobs"
+                    [ngClass]="activityFilters.activeJobs ? 'activatedjobs' : 'noclick'">Activated Jobs</button>
+            </div>
+        </div>
+        <div class="col-md-12" style="overflow-x: auto;height: 22vh;">
+            <table class="table mt-2">
+                <tr>
+                    <th>
+                        Date Called
+                    </th>
+                    <th>
+                        M D I Rep
+                    </th>
+                    <th>
+                        Contact Type
+                    </th>
+                    <th>
+                        Activity Type
+                    </th>
+                </tr>
+                <tr *ngFor="let d of activities" (dblclick)="callLogDetail(d)"
+                    [ngClass]="d.activityType == 'Call Log' ? 'callLog': 
+                                                      d.activityType == 'Notes' ? 'notes':  
+                                                      d.id.charAt(0) == 'J' &&  d.status == null ? 'alljobs': 
+                                                      d.id.charAt(0) == 'J' &&  d.status != null ? 'activatedjobs' : 'table-dark'">
+                    <td>
+                        {{d.dateCalled | date}}
+                    </td>
+                    <td>
+                        {{ d.mdiRep }}
+                    </td>
+                    <td>
+                        {{ d.contactType }}
+                    </td>
+                    <td style="cursor: pointer;">
+                        {{ d.activityType }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

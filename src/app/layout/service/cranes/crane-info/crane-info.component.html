@@ -1,0 +1,165 @@
+<form [formGroup]="cranes">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row-mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" *ngIf="!isBranchVisible"
+                    (click)="onHandleOperation('branch')" [disabled]="disableCranes">Branch:
+                    {{cranes.get('branchName').value}}</button>
+                <kendo-combobox placeholder="" [suggest]="true" [textField]="'value'" [valueField]="'code'"
+                    [filterable]="true" [valuePrimitive]="true" formControlName="branchName" [data]="branches"
+                    *ngIf="isBranchVisible" (selectionChange)="onSelectionChange($event, 'branch')">
+                </kendo-combobox>
+            </div>
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" *ngIf="!isCraneVisible"
+                    (click)="onHandleOperation('crane')" [disabled]="true">Crane #:
+                    {{cranes.get('craneNumber').value}}</button>
+            </div>
+            <div class="row" *ngIf="isCraneVisible">
+                <div class="col-md-9 mt-1">
+                    <kendo-textbox formControlName="craneNumber"></kendo-textbox>
+                </div>
+                <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+                        (click)="onHandleOperation('crane')">OK</button>
+                </div>
+            </div>
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" *ngIf="!isMakeVisible"
+                    (click)="onHandleOperation('make')" [disabled]="disableCranes">Make:
+                    {{cranes.get('make').value}}</button>
+            </div>
+            <div class="row" *ngIf="isMakeVisible">
+                <div class="col-md-9 mt-1">
+                    <kendo-textbox formControlName="make"></kendo-textbox>
+                </div>
+                <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+                        (click)="onHandleOperation('make')">OK</button>
+                </div>
+            </div>
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" [disabled]="true"
+                    *ngIf="cranes.get('lastMonthly').value === 'No monthly inspection on file'">{{cranes.get('lastMonthly').value}}</button>
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" [disabled]="true"
+                    *ngIf="cranes.get('lastMonthly').value !== 'No monthly inspection on file'">Last
+                    Monthly : {{cranes.get('lastMonthly').value | date: 'MM/dd/yyyy'}}</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row-mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+                    *ngIf="!isCraneTypeVisible" (click)="onHandleOperation('cranetype')"
+                    [disabled]="disableCranes">Crane
+                    Type: {{cranes.get('craneType').value}}</button>
+                <kendo-combobox placeholder="" [suggest]="true" [textField]="'label'" [valueField]="'value'"
+                    [filterable]="true" [valuePrimitive]="true" formControlName="craneType" [data]="craneTypes"
+                    *ngIf="isCraneTypeVisible" (valueChange)="onSelectionChange( $event ,'crane_type')">
+                </kendo-combobox>
+            </div>
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;
+                " *ngIf="!isSerialVisible" (click)="onHandleOperation('serial')" [disabled]="disableCranes">Serial
+                    #: {{cranes.get('serialNumber').value}}</button>
+            </div>
+            <div class="row" *ngIf="isSerialVisible">
+                <div class="col-md-9 mt-1">
+                    <kendo-textbox formControlName="serialNumber"></kendo-textbox>
+                </div>
+                <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+                        (click)="onHandleOperation('serial')">OK</button>
+                </div>
+            </div>
+            <div class="mt-2">
+
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" *ngIf="!isModelVisible"
+                    (click)="onHandleOperation('model')" [disabled]="disableCranes">Model:
+                    {{cranes.get('model').value}}</button>
+            </div>
+            <div class="row" *ngIf="isModelVisible">
+                <div class="col-md-9 mt-1">
+                    <kendo-textbox formControlName="model"></kendo-textbox>
+                </div>
+                <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+                        (click)="onHandleOperation('model')">OK</button>
+                </div>
+            </div>
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" [disabled]="true"
+                    *ngIf="cranes.get('lastAnnual').value === 'No annual inspection on file'">{{cranes.get('lastAnnual').value}}</button>
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;" [disabled]="true"
+                    *ngIf="cranes.get('lastAnnual').value !== 'No annual inspection on file'">Last
+                    Annual : {{cranes.get('lastAnnual').value | date: 'MM/dd/yyyy'}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="mt-2">
+                <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+                    *ngIf="!isVehicleVisible" (click)="onHandleOperation('vehicle')"
+                    [disabled]="disabledCranesVehicle">Vehicle:
+                    {{vehicleNumberValue || 'N/A'}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="col-form-label">Description:</label>
+            <kendo-textarea [cols]="130" [rows]="3" class="form-control form-control-round"
+                formControlName="description" [disabled]="disableCranes"> </kendo-textarea>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <label class="col-form-label">Location:</label>
+            </div>
+            <kendo-textarea [cols]="130" [rows]="3" class="form-control form-control-round" formControlName="location"
+                [disabled]="disableCranes">
+            </kendo-textarea>
+        </div>
+    </div>
+    <div class="row mt-2" *ngIf="!cranes.get('active').value">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="col-form-label">Inactive Reason:</label>
+                </div>
+            </div>
+            <kendo-textarea [cols]="160" [rows]="3" class="form-control form-control-round"
+                formControlName="inactiveReason">
+            </kendo-textarea>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select Vehicle" *ngIf="isVehicleVisible" (close)="onHandleOperation('vehicle')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{vehicle.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'vehicle')"
+                [data]="vehicle" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                style="height:50vh" (dataStateChange)="onDataVehicleChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>

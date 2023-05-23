@@ -1,0 +1,26 @@
+<div class="table-responsive">
+
+  <kendo-grid [data]="history" [sortable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+    [selectedKeys]="mySelection" [sortable]="true" [resizable]="true" [reorderable]="true"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+    <ng-template kendoGridToolbarTemplate>
+      <input placeholder="Type here to filter history" kendoTextBox class="col-md-9"
+        (input)="onFilter($event.target.value)" />
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <span> Total : {{history?.length}}</span>
+    </ng-template>
+    <kendo-grid-column field="createdDate" title="Date" [width]="130">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{dataItem.createdDate | date}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="createdBy" title="User" [width]="130">
+    </kendo-grid-column>
+    <kendo-grid-column field="field" title="Field" [width]="130">
+    </kendo-grid-column>
+    <kendo-grid-column field="oldValue" title="Old Value" [width]="130">
+    </kendo-grid-column>
+    <kendo-grid-column field="newValue" title="New Value" [width]="130">
+    </kendo-grid-column>
+  </kendo-grid>
+</div>

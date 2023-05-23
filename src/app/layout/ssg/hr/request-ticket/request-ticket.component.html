@@ -1,0 +1,143 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">HR Request Tickets</h4>
+        </div>
+    </div>
+    <form [formGroup]="requestTicketForm">
+        <div class="card-block table-border-style">
+            <div class="row">
+                <kendo-splitter orientation="vertical">
+                    <kendo-splitter-pane>
+                        <kendo-splitter>
+                            <kendo-splitter-pane>
+                                <div class="pane-content">
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-3">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="row no-gutters m-0">
+                                                <div class="col-md-1 p-1">
+                                                    Filter:
+                                                </div>
+                                                <div class="col-md-5 p-1">
+                                                    <kendo-textbox class="form-control form-control-round"
+                                                        placeholder="" formControlName="description">
+                                                    </kendo-textbox>
+
+                                                </div>
+                                                <div class="col-md-1 p-2 ">
+                                                    <i class="fa fa-search fa-2x" (click)="onSearchClick();"></i>
+                                                </div>
+                                                <div class="col-md-3 p-1 text-right">
+                                                    <div class="d-flex align-items-center">
+                                                        <input type="checkbox" kendoCheckBox
+                                                            (change)="onCheckBoxChecked($event)" checked="isOpen" />
+                                                        <label class="col-form-label pl-2">Open</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 p-1 text-right">
+                                                    <button kendoTooltip kendoTooltip title="Excel" id="btnPrint"
+                                                        (click)="exportToExcel()" class="btn_icon" filter="button">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row no-gutters m-0">
+                                        <kendo-grid kendoGridExpandGroupBy [selectable]="true" [navigable]="true"
+                                            [resizable]="true" [reorderable]="true"
+                                            (columnResize)="onResizeColumn($event)"
+                                            (selectionChange)="onRowSelect($event)" [data]="tickets" [sort]="sortGrid"
+                                            (sortChange)="sortGridChange($event)" kendoGridSelectBy
+                                            [selectedKeys]="selections" [sortable]="true"
+                                            (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                            style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+                                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                            [group]="state.group" [(expandedGroupKeys)]="expandedGroupKeys"
+                                            (groupChange)="groupChange()" [groupable]="false">
+                                            <kendo-grid-column *ngFor="let column of ticketsColumns"
+                                                [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                            </kendo-grid-column>
+                                        </kendo-grid>
+                                    </div>
+                                </div>
+                            </kendo-splitter-pane>
+                            <kendo-splitter-pane [collapsible]="true" size="35%">
+                                <div class="pane-content">
+                                    <div class="row no-gutters m-2 justify-content-center" *ngIf="selectedTicket">
+                                        {{selectedTicket.ticketNumber}} - Re: {{selectedTicket.forEmployee}} -
+                                        {{selectedTicket.branch}} - {{selectedTicket.submitDate}}
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <label class="col-form-label">User Input:</label>
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <kendo-textarea placeholder="" [cols]="130" [rows]="3"
+                                            class="form-control form-control-round" [value]="message" [disabled]="true">
+                                        </kendo-textarea>
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <label class="col-form-label">Response:</label>
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <kendo-textarea placeholder="Comments" [cols]="130" [rows]="3"
+                                            formControlName="userEmail" class="form-control form-control-round"
+                                            [disabled]="isDisableReply">
+                                        </kendo-textarea>
+                                    </div>
+                                    <div class="row no-gutters m-2">
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                [disabled]="false">{{"Employee Folder"}}</button>
+                                        </div>
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                (click)="onHandleNotes('reply')" [disabled]="false"
+                                                [disabled]="isDisableReply">{{"Reply"}}</button>
+                                        </div>
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                (click)="onHandleNotes('replyAndClose')" [disabled]="false"
+                                                [disabled]="isDisableReply">{{"Reply and Close"}}</button>
+                                        </div>
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <label class="col-form-label">HR Notes:</label>
+                                    </div>
+                                    <div class="row no-gutters mx-2">
+                                        <kendo-textarea placeholder="" [cols]="130" [rows]="3"
+                                            class="form-control form-control-round" [disabled]="isNotesDisabled"
+                                            formControlName="notes" [value]="selectedTicket.notes">
+                                        </kendo-textarea>
+                                    </div>
+                                    <div class="row no-gutters m-2">
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                [disabled]="false" (click)="onHandleNotes('edit')"
+                                                *ngIf="menuService.isEditRight"  [disabled]="!isNotesSaveDisabled">{{"Edit"}}</button>
+                                        </div>
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                [disabled]="false" (click)="onHandleNotes('save')"
+                                                [disabled]="isNotesSaveDisabled">{{"Save"}}</button>
+                                        </div>
+                                        <div class="col-md-3 mx-2">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                [disabled]="false" (click)="onHandleNotes('cancel')"
+                                                [disabled]="isNotesSaveDisabled">{{"Cancel"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </kendo-splitter-pane>
+                        </kendo-splitter>
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

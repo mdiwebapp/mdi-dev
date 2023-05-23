@@ -1,0 +1,187 @@
+<div class="register-box box-shadow-none card mb-0" style="height: 60vh;"> 
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>PEELAR VALVE - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPeelarValve" class="w-100"
+                                (click)="onHandleOperations('peelar_valve')" kendoTooltip kendoRippleContainer
+                                kendoButton>PEELAR VALVE: {{f.peelarValve.value}}
+                            </button> --><label class="col-form-label">PEELAR VALVE:</label>
+                            <kendo-combobox *ngIf="!displayPeelarValve" [suggest]="true"
+                                (valueChange)="onHandleOperations('peelar_valve')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]=" peelarValvesList"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="peelarValve" [data]="peelarValvesList">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('peelarValve').hasError('required') && form.get('peelarValve').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFloatBall" class="w-100" (click)="onHandleOperations('float_ball')"
+                                kendoTooltip kendoRippleContainer kendoButton>FLOAT BALL: {{f.floatBall.value}}
+                            </button> --><label class="col-form-label">FLOAT BALL:</label>
+                            <kendo-combobox *ngIf="!displayFloatBall" [suggest]="true"
+                                (valueChange)="onHandleOperations('float_ball')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]=" floatBallsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="floatBall">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('floatBall').hasError('required') && form.get('floatBall').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBackFlowValve" class="w-100"
+                                (click)="onHandleOperations('back_flow_valve')" kendoTooltip kendoRippleContainer
+                                kendoButton>BACK FLOW VALVE: {{f.backFlowValve.value}}
+                            </button> --><label class="col-form-label">BACK FLOW VALVE:</label>
+                            <kendo-combobox *ngIf="!displayBackFlowValve" [suggest]="true"
+                                (valueChange)="onHandleOperations('back_flow_valve')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [valuePrimitive]="true" [data]=" backFlowValvesList" [valueField]="'value'" formControlName="backFlowValve">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('backFlowValve').hasError('required') && form.get('backFlowValve').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayHoses" class="w-100" (click)="onHandleOperations('hoses')"
+                                kendoTooltip kendoRippleContainer kendoButton>HOSES/CONNECTIONS: {{f.hoses.value}}
+                            </button> --><label class="col-form-label">HOSES/CONNECTIONS:</label>
+                            <kendo-combobox *ngIf="!displayHoses" [suggest]="true"
+                                (valueChange)="onHandleOperations('hoses')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="hosessList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="hoses">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('hoses').hasError('required') && form.get('hoses').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayPeerlarCooler" class="w-100"
+                                (click)="onHandleOperations('peelar_cooler')" kendoTooltip kendoRippleContainer
+                                kendoButton>COOLER: {{f.peelarCooler.value}}
+                            </button> --><label class="col-form-label">COOLER:</label>
+                            <kendo-combobox *ngIf="!displayPeerlarCooler" [suggest]="true"
+                                (valueChange)="onHandleOperations('peelar_cooler')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'"
+                                [valuePrimitive]="true" [data]="peerlarCoolersList" [valueField]="'value'" formControlName="peelarCooler">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('peelarCooler').hasError('required') && form.get('peelarCooler').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayTank" class="w-100" (click)="onHandleOperations('tank')" kendoTooltip
+                                kendoRippleContainer kendoButton>TANK: {{f.tank.value}}
+                            </button> --><label class="col-form-label">TANK:</label>
+                            <kendo-combobox *ngIf="!displayTank" [suggest]="true"
+                                (valueChange)="onHandleOperations('tank')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="tanksList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="tank">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('tank').hasError('required') && form.get('tank').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>OIL RECLAIMER TANK</legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayOilLevel" class="w-100" (click)="onHandleOperations('oil_level')"
+                                kendoTooltip kendoRippleContainer kendoButton>OIL LEVEL: {{f.oilLevel.value}}
+                            </button> --><label class="col-form-label">OIL LEVEL:</label>
+                            <kendo-combobox *ngIf="!displayOilLevel" [suggest]="true"
+                                (valueChange)="onHandleOperations('oil_level')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]=" oilLevelsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="oilLevel" [data]="oilLevelsList">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('oilLevel').hasError('required') && form.get('oilLevel').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayOilCondition" class="w-100"
+                                (click)="onHandleOperations('oil_condition')" kendoTooltip kendoRippleContainer
+                                kendoButton>OIL CONDITION: {{f.oilCondition.value}}
+                            </button> --><label class="col-form-label">OIL CONDITION:</label>
+                            <kendo-combobox *ngIf="!displayOilCondition" [suggest]="true"
+                                (valueChange)="onHandleOperations('oil_condition')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="oilConditionsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="oilCondition">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('oilCondition').hasError('required') && form.get('oilCondition').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaySmokeFilter" class="w-100"
+                                (click)="onHandleOperations('smoke_filter')" kendoTooltip kendoRippleContainer
+                                kendoButton>SMOKE FILTER: {{f.smokeFilter.value}}
+                            </button> --><label class="col-form-label">SMOKE FILTER:</label>
+                            <kendo-combobox *ngIf="!displaySmokeFilter" [suggest]="true"
+                                (valueChange)="onHandleOperations('smoke_filter')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="smokeFiltersList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="smokeFilter">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('smokeFilter').hasError('required') && form.get('smokeFilter').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayOilTank" class="w-100" (click)="onHandleOperations('oil_tank')"
+                                kendoTooltip kendoRippleContainer kendoButton>OIL TANK: {{f.oilTank.value}}
+                            </button> --><label class="col-form-label">OIL TANK:</label>
+                            <kendo-combobox *ngIf="!displayOilTank" [suggest]="true"
+                                (valueChange)="onHandleOperations('oil_tank')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="oilTanksList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="oilTank">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('oilTank').hasError('required') && form.get('oilTank').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayGasket" class="w-100" (click)="onHandleOperations('gasket')"
+                                kendoTooltip kendoRippleContainer kendoButton>GASKETS/HOSES: {{f.gasket.value}}
+                            </button> --><label class="col-form-label">GASKETS/HOSES:</label>
+                            <kendo-combobox *ngIf="!displayGasket" [suggest]="true"
+                                (valueChange)="onHandleOperations('gasket')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="gasketsList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="gasket">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('gasket').hasError('required') && form.get('gasket').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayOilCooler" class="w-100" (click)="onHandleOperations('oil_cooler')"
+                                kendoTooltip kendoRippleContainer kendoButton>COOLER: {{f.oilCooler.value}}
+                            </button> --><label class="col-form-label">COOLER:</label>
+                            <kendo-combobox *ngIf="!displayOilCooler" [suggest]="true"
+                                (valueChange)="onHandleOperations('oil_cooler')" placeholder="Select Screen"
+                                class="form-control form-control-round" [textField]="'value'" [data]="oilCoolersList"
+                                [valuePrimitive]="true" [valueField]="'value'" formControlName="oilCooler">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('oilCooler').hasError('required') && form.get('oilCooler').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

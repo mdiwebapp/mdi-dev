@@ -1,0 +1,192 @@
+<div class="col-md-12 mb-3" style="height: 65vh;">
+    <form [formGroup]="form" name="loginForm" class="cust-form">
+        <div class="row no-gutters">
+
+            <div class="col-md-12 mb-2">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 example-col">
+                        <kendo-combobox class="form-control form-control-round" [data]="lstVendors" [suggest]="true"
+                            [textField]="'vendorName'" [valueField]="'id'" [filterable]="true"
+                            formControlName="vendorId" (filterChange)="vendorFilter($event)" [valuePrimitive]="true"
+                            required>
+                        </kendo-combobox>
+                        <div class="required-text"
+                            *ngIf="form.get('vendorId').hasError('required') && form.get('vendorId').touched">
+                            This field is required!
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 example-col">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Vendor Part#:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round"
+                                    formControlName="vendorPartNumber" placeholder="Vendor Part#">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-3">
+
+                    <div class="col-md-4 col-sm-6 example-col">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Price:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-numerictextbox class="form-control form-control-round" [min]="0"
+                                    formControlName="vendorPrice" placeholder="Price">
+                                </kendo-numerictextbox>
+                                <kendo-formerror *ngIf="form.controls.vendorPrice.errors">Price should not be negative
+                                </kendo-formerror>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 example-col">
+                        <kendo-combobox [data]="UOM" [filterable]="true" placeholder='UOM' [valueField]="'value'"
+                            (filterChange)="uomFilter($event)" [textField]="'value'" [valuePrimitive]="true"
+                            formControlName="uom" [suggest]="true" required>
+                        </kendo-combobox>
+                        <div class="required-text"
+                            *ngIf="form.get('uom').hasError('required') && form.get('uom').touched">
+                            This field is required!
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-0 row no-gutters">
+                            <div class="col-md-6 text-right">
+                                <label class="col-form-label pr-2">Preferred vendor:</label>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 3px;">
+                                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                    formControlName="preferred">
+                                </kendo-switch>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <kendo-dialog title="Please confirm" *ngIf="openedOffload" (close)="closeOffload('cancel')" [minWidth]="250"
+        [width]="450">
+        <p style="margin: 30px; text-align: center;">
+            Are you sure you want to add this vendor without either a part number or a vendor price?
+        </p>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="closeOffload('no')">No</button>
+            <button kendoButton (click)="closeOffload('yes')" themeColor="primary">Yes</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+    <div class="row no-gutters">
+        <kendo-grid [selectable]="true" [data]="lstVendor" [sort]="sort" kendoGridSelectBy
+            (selectionChange)="setValue($event.selectedRows[0].dataItem)" [selectedKeys]="vendorSelection"
+            [sortable]="true" [skip]="skip" style="height: 31vh;" [resizable]="true" [reorderable]="true"
+            (sortChange)="sortChangeVendor($event)" [ngClass]="isAdd || isEdit ? '': 'k-state-disabled'"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <!-- <ng-template kendoGridToolbarTemplate>
+                <div class="d-flex justify-content-between">
+                    <div *ngIf="menuService.isAddRight" class="wp-50 p-l-10 p-r-10">
+                        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" *ngIf="!isAdd"
+                            (click)="btnAdd()">
+                        </button>
+                    </div>
+                    <div *ngIf="menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+                        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button" *ngIf="!isEdit"
+                            (click)="btnEdit()">
+                        </button>
+                    </div>
+
+                    <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+                        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                            (click)="btnCancel();" *ngIf="!isCancel">
+                        </button>
+                    </div>
+                    <div *ngIf="menuService.isAddRight || menuService.isEditRight" class="wp-50 p-l-10 p-r-10">
+                        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                            (click)="openOffload();" *ngIf="!isSave">
+                        </button>
+                    </div>
+                </div>
+            </ng-template> -->
+            <kendo-grid-column title="Vendor Name" field="vendorName">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.vendorName}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="Vendor Part #" field="vendorPartNumber">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.vendorPartNumber}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="UOM" field="uom">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    {{dataItem.uom ? dataItem?.uom : dataItem?.uomDescription}}
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column title="Vendor Price" field="vendorPrice" format="{0:c}">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>${{(!dataItem.vendorPrice?0:dataItem.vendorPrice) | number :
+                        '1.2-2'}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="Preferred Vendor" field="preferred">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.preferred}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="Last Modified" field="createdDate">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.createdDate | date}}</lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="action" title="Action" [width]="50">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <i class="fa fa-2x fa-trash mr-2" (click)="removeItem(dataItem)"></i>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+    </div>
+    <h5>Purchasing History</h5>
+    <div class="row no-gutters">
+        <kendo-grid [selectable]="true" [data]="lstPurchaseHistory" [sort]="sort" kendoGridSelectBy
+            [selectedKeys]="mySelection" [sortable]="true" [skip]="skip" style="height: 40vh;"
+            (sortChange)="sortChange($event)" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <ng-template kendoGridToolbarTemplate>
+                <input class="col-md-9" placeholder="Search in all columns..." [(ngModel)]="filterText" kendoTextBox
+                    (input)="onFilter($event.target.value)" />
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <span> Total : {{lstPurchaseHistory?.length}}</span>
+            </ng-template>
+            <kendo-grid-column title="Branch" field="branch">
+            </kendo-grid-column>
+            <kendo-grid-column title="POR Number" field="poNumber">
+            </kendo-grid-column>
+            <kendo-grid-column title="QTY Ordered" field="quantity">
+            </kendo-grid-column>
+            <kendo-grid-column title="Purchase Price" field="purchasePrice" format="{0:c}">
+            </kendo-grid-column>
+            <kendo-grid-column title="Order Date" field="createdDate">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.createdDate | date}}</lable>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+    </div>
+    <kendo-dialog title="Delete Vendor" *ngIf="opened" (close)="closeSubmit('Cancel')" [minWidth]="250" [width]="450">
+        <p style="margin: 30px; text-align: center;">
+            Are you sure you want to delete Vendor?
+        </p>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="closeSubmit('Yes')" primary="true">Yes</button>
+            <button kendoButton (click)="closeSubmit('No')">No</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+</div>

@@ -1,0 +1,17 @@
+.card .card-header h5 {
+    font-size: 20px;
+}
+.k-treeview .k-content, .k-treeview .k-item>.k-group, .k-treeview>.k-group {
+    margin: 0;
+    padding: 0;
+    background: none;
+    list-style: none;
+    position: relative;
+}
+.k-treeview .k-item {
+    outline-style: none;
+    margin: 0;
+    padding: 0 0 0 16px;
+    border-width: 0;
+    display: block;
+}

@@ -1,0 +1,102 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>BATTERY SYSTEM - <span class="pl-1">
+                            <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="changeMarkAll($event)">
+                            </kendo-switch>
+                            Mark All N/A
+                        </span></legend>
+                        <div class="row no-gutters p-2">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 p-2">
+                                <fieldset>
+                                    <legend>LOAD TEST READING</legend>
+                                    <div class="row no-gutters m-0">
+                                        <div class="col-md-11">
+                                            <kendo-textbox class="form-control form-control-round m-2 "
+                                                style="width:96% !important" formControlName="loadTestReading"
+                                                (valueChange)="onBatteryLoad()"  placeholder="">
+                                            </kendo-textbox><div class="required-text"
+                                            *ngIf="form.get('loadTestReading').hasError('required') && form.get('loadTestReading').touched">
+                                            This field is required!
+                                        </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h3 class="mb-0 mt-3">V</h3>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaybatteryConditionBtn" class="w-100" (click)="onBatteryCondition()"
+                                    kendoTooltip kendoRippleContainer kendoButton>BATTERY : {{f.batteryCondition.value}}
+                                </button> -->
+                                <label class="col-form-label">BATTERY:</label>
+                                <kendo-combobox *ngIf="!displaybatteryConditionBtn" formControlName="batteryCondition"
+                                    (valueChange)="onBatteryCondition()" [suggest]="true" placeholder="Select Choice" 
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="batteryConditionList" [valueField]="'value'">
+                                </kendo-combobox> <div class="required-text"
+                                *ngIf="form.get('batteryCondition').hasError('required') && form.get('batteryCondition').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaybatteryPostBtn" class="w-100" (click)="onBatteryPost()"
+                                    kendoTooltip kendoRippleContainer kendoButton>BATTERY
+                                    POSTS : {{f.batteryPost.value}}
+                                </button> --><label class="col-form-label">BATTERY
+                                    POSTS:</label>
+                                <kendo-combobox *ngIf="!displaybatteryPostBtn" formControlName="batteryPost"
+                                    (valueChange)="onBatteryPost()" [suggest]="true" placeholder="Select Choice" 
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="batteryPostList" [valueField]="'value'">
+                                </kendo-combobox><div class="required-text"
+                                *ngIf="form.get('batteryPost').hasError('required') && form.get('batteryPost').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <!-- <button *ngIf="displaybatteryComponentBtn" class="w-100" (click)="onBatteryComponent()"
+                                    kendoTooltip kendoRippleContainer kendoButton>BATTERY
+                                    COMPONENT : {{f.batteryComponent.value}}
+                                </button> --><label class="col-form-label">BATTERY
+                                    COMPONENT:</label>
+                                <kendo-combobox *ngIf="!displaybatteryComponentBtn" formControlName="batteryComponent"
+                                    (valueChange)="onBatteryComponent()" [suggest]="true" placeholder="Select Choice" 
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="batteryComponentList" [valueField]="'value'">
+                                </kendo-combobox><div class="required-text"
+                                *ngIf="form.get('batteryComponent').hasError('required') && form.get('batteryComponent').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                            <div class="col-md-6 p-1" *ngIf="isControlPanel">
+                                <!-- <button *ngIf="displaybatteryLeaksBtn" class="w-100" (click)="onBatteryLeaks()"
+                                    kendoTooltip kendoRippleContainer kendoButton>BATTERY LEAKS :
+                                    {{f.batteryLeaks.value}}
+                                </button> --><label class="col-form-label">BATTERY LEAKS:</label>
+                                <kendo-combobox *ngIf="!displaybatteryLeaksBtn" formControlName="batteryLeaks"
+                                    (valueChange)="onBatteryLeaks()" [suggest]="true" placeholder="Select Choice" 
+                                    class="form-control form-control-round" [textField]="'value'"
+                                    [valuePrimitive]="true" [data]="batteryLeaksList" [valueField]="'value'">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                *ngIf="form.get('batteryLeaks').hasError('required') && form.get('batteryLeaks').touched">
+                                This field is required!
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                   
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

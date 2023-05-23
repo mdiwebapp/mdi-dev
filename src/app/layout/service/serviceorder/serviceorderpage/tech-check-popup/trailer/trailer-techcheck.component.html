@@ -1,0 +1,269 @@
+<div class="register-box box-shadow-none card mb-0" style="height:60vh;">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <fieldset>
+                <legend>TRAILER</legend>
+                <div class="row no-gutters pl-2 pb-2 pr-2">
+                    <div class="col-md-6 p-1">
+                        <fieldset>
+                            <legend>TIRE PRESSURE (PSI)</legend>
+                            <div class="row no-gutters p-2">
+                                <div class="col-md-6 p-2 pr-3 br_div">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2">LF</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round m-1"
+                                            (valueChange)="ontirePSILF()"  style="width:96% !important" formControlName="tirePSILF" placeholder="">
+                                            </kendo-textbox>
+                                             
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2 ">LM</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1"
+                                            (valueChange)="ontirePSILM()"  style="width:96% !important" formControlName="tirePSILM" placeholder="">
+                                            </kendo-textbox>  
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2 ">LR</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round m-1"
+                                            (valueChange)="ontirePSILR()"  style="width:96% !important" formControlName="tirePSILR" placeholder="">
+                                            </kendo-textbox> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 p-2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontirePSIRF()"  style="width:96% !important" formControlName="tirePSIRF" placeholder="">
+                                            </kendo-textbox>  
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label  pr-2">RF</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontirePSIRM()"   style="width:96% !important" formControlName="tirePSIRM" placeholder="">
+                                            </kendo-textbox> 
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pr-2 ">RM</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontirePSIRR()"   style="width:96% !important" formControlName="tirePSIRR" placeholder="">
+                                            </kendo-textbox> 
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pr-2 ">RR</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6 P-1">
+                        <fieldset>
+                            <legend>TIRE TRED (IN)</legend>
+                            <div class="row no-gutters p-2">
+                                <div class="col-md-6 p-2 pr-3 br_div">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2">LF</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadLF()"  style="width:96% !important;" formControlName="tireTreadLF" placeholder="">
+                                            </kendo-textbox>  
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2 ">LM</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadLM()"   style="width:96% !important" formControlName="tireTreadLM" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pl-2 ">LR</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadLR()"   style="width:96% !important" formControlName="tireTreadLR" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 p-2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadRF()"   style="width:96% !important" formControlName="tireTreadRF" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label  pr-2">RF</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadRM()"  style="width:96% !important" formControlName="tireTreadRM" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pr-2 ">RM</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-textbox class="form-control form-control-round  m-1 "
+                                            (valueChange)="ontireTreadRR()"  style="width:96% !important" formControlName="tireTreadRR" placeholder="">
+                                            </kendo-textbox>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="col-form-label pr-2 ">RR</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayFrameBtn" class="w-100" (click)="onBatteryLeaks()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT CONDITION OF THE FRAME: {{f.framData.value}}
+                        </button> --><label class="col-form-label">SELECT CONDITION OF THE FRAME:</label>
+                        <kendo-combobox *ngIf="!displayFrameBtn" formControlName="framData"
+                            (valueChange)="onBatteryLeaks()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="frameList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('framData').hasError('required') && form.get('framData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayPintleHitchBtn" class="w-100" (click)="onPintleHitch()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT CONDITION OF THE PINTLE HITCH: {{f.pintleHitchData.value}}
+                        </button> --><label class="col-form-label">SELECT CONDITION OF THE PINTLE HITCH:</label>
+                        <kendo-combobox *ngIf="!displayPintleHitchBtn" formControlName="pintleHitchData"
+                            (valueChange)="onPintleHitch()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="pintleHitchList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('pintleHitchData').hasError('required') && form.get('pintleHitchData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displaySafetyLatchesBtn" class="w-100" (click)="onSafetyLatches()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE SAFETY LATCHES: {{f.safetyLatchesData.value}}
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE SAFETY LATCHES:</label>
+                        <kendo-combobox *ngIf="!displaySafetyLatchesBtn" formControlName="safetyLatchesData"
+                            (valueChange)="onSafetyLatches()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="safetyLatchesList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('safetyLatchesData').hasError('required') && form.get('safetyLatchesData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayWiringHarnessBtn" class="w-100" (click)="onWiringHarness()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE WIRING HARNESS: {{f.harness.value}}
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE WIRING HARNESS:</label>
+                        <kendo-combobox *ngIf="!displayWiringHarnessBtn" formControlName="harness"
+                            (valueChange)="onWiringHarness()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wiringHarnessList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('harness').hasError('required') && form.get('harness').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayLightsBtn" class="w-100" (click)="onLights()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE LIGHTS: {{f.lightsData.value}}
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE LIGHTS:</label>
+                        <kendo-combobox *ngIf="!displayLightsBtn" formControlName="lightsData"
+                            (valueChange)="onLights()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="lightsList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('lightsData').hasError('required') && form.get('lightsData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1" *ngIf="isGenerator">
+                        <!-- <button *ngIf="displayTiresBtn" class="w-100" (click)="onTires()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE TIRES
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE TIRES:</label>
+                        <kendo-combobox *ngIf="!displayTiresBtn" formControlName="tiresData" (valueChange)="onTires()"
+                            [suggest]="true" placeholder="Select Screen" class="form-control form-control-round"
+                            [valuePrimitive]="true"   [textField]="'value'" [data]="tiresList" [valueField]="'value'">
+                        </kendo-combobox> 
+                       
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayWheelsBtn" class="w-100" (click)="onWheels()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE WHEELS: {{f.wheelsData.value}}
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE WHEELS:</label>
+                        <kendo-combobox *ngIf="!displayWheelsBtn" formControlName="wheelsData"
+                            (valueChange)="onWheels()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wheelsList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('wheelsData').hasError('required') && form.get('wheelsData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayWheelsBearingBtn" class="w-100" (click)="onWheelsBearings()" kendoTooltip
+                            kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE WHEEL BEARINGS: {{f.wheelsBearingData.value}}
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE WHEEL BEARINGS:</label>
+                        <kendo-combobox *ngIf="!displayWheelsBearingBtn" formControlName="wheelsBearingData"
+                            (valueChange)="onWheelsBearings()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wheelsBearingList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('wheelsBearingData').hasError('required') && form.get('wheelsBearingData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+
+                    <div class="col-md-6 p-1" *ngIf="isGenerator">
+                        <!-- <button *ngIf="displayWheelsBearingLUGSBtn" class="w-100" (click)="onWheelsBearingsLUGS()"
+                            kendoTooltip kendoRippleContainer kendoButton>SELECT THE CONDITION OF THE HUBS/LUGS
+                        </button> --><label class="col-form-label">SELECT THE CONDITION OF THE HUBS/LUGS:</label>
+                        <kendo-combobox *ngIf="!displayWheelsBearingLUGSBtn" formControlName="wheelsBearingLUGSData"
+                            (valueChange)="onWheelsBearingsLUGS()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="wheelsBearingLUGSList"
+                            [valuePrimitive]="true" [valueField]="'value'">
+                        </kendo-combobox> 
+                        <!-- <div class="required-text"
+                        *ngIf="form.get('wheelsBearingLUGSData').hasError('required') && form.get('wheelsBearingLUGSData').touched">
+                        This field is required!
+                    </div> -->
+                    </div>
+
+                    <div class="col-md-6 p-1">
+                        <!-- <button *ngIf="displayActuatorConditionBtn" class="w-100" (click)="onActuatorCondition()"
+                            kendoTooltip kendoRippleContainer kendoButton>SELECT BRAKE ACTUATOR CONDITION: {{f.actutorConditionData.value}}
+                        </button> -->
+                        <label class="col-form-label">SELECT BRAKE ACTUATOR CONDITION:</label>
+                        <kendo-combobox *ngIf="!displayActuatorConditionBtn" formControlName="actutorConditionData"
+                            (valueChange)="onActuatorCondition()" [suggest]="true" placeholder="Select Screen"
+                            class="form-control form-control-round" [textField]="'value'" [data]="actutorConditionList"
+                            [valuePrimitive]="true"  [valueField]="'value'">
+                        </kendo-combobox> <div class="required-text"
+                        *ngIf="form.get('actutorConditionData').hasError('required') && form.get('actutorConditionData').touched">
+                        This field is required!
+                    </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>

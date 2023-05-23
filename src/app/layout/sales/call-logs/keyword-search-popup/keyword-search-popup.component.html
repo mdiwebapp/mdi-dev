@@ -1,0 +1,79 @@
+<form [formGroup]="form" class="cust-form">
+  <div class="row no-gutters m-0 border-bottom-1 pb-1">
+    <div class="col-md-12">
+      <div class="row no-gutters m-0">
+        <div class="col-md-4 p-1"><label>Search Term 1</label></div>
+        <div class="col-md-2 p-1"></div>
+        <div class="col-md-4 p-1"><label>Search Term 2</label></div>
+        <div class="col-md-2 p-1"></div>
+        <!-- <div class="d-flex justify-content-between align-items-center">
+            <input kendoTextBox [(ngModel)]="filterCollection.searchTermAnd1" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="filterchange">
+            <input kendoTextBox [(ngModel)]="filterCollection.searchTermOr1" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="!filterchange">
+            <span class="pl-2 pr-2" >
+                <kendo-switch onLabel="AND" offLabel="OR" class="extensionSwitch"
+                style="width: 70px;" (valueChange)="OnChangeFilter($event)" >
+            </kendo-switch>
+            </span>
+            <input kendoTextBox [(ngModel)]="filterCollection.searchTermAnd2" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="filterchange">
+            <input kendoTextBox [(ngModel)]="filterCollection.searchTermOr2" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="!filterchange">
+        </div> -->
+        <div class="col-md-4 p-1">
+          <kendo-textbox
+            formControlName="searchTerm1"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+        </div>
+        <div class="col-md-2 p-1 text-center">
+          <kendo-switch
+            onLabel="AND"
+            offLabel="OR"
+            class="extensionSwitch"
+            style="width: 70px"
+          >
+          </kendo-switch>
+        </div>
+        <div class="col-md-4 p-1">
+          <kendo-textbox
+            formControlName="searchTerm2"
+            class="form-control form-control-round"
+            placeholder=""
+          >
+          </kendo-textbox>
+        </div>
+        <div class="col-md-2 p-1">
+          <button
+            class="btn w-100 p-2 text-center d-block"
+            type="button"
+            kendoRippleContainer
+            kendoButton
+          >
+            Search
+          </button>
+        </div>
+      </div>
+      <div class="row row no-gutters m-0">
+        <div class="col-md-12 p-1">
+          <kendo-grid
+            [data]="viewData"
+            kendoGridSelectBy
+            [navigable]="true"
+            [resizable]="true"
+            [reorderable]="true"
+          >
+            <kendo-grid-column
+              *ngFor="let column of viewColumns"
+              kendoTooltip
+              title="This is the inventory listed on the selected quote."
+              [width]="column.width"
+              field="{{ column.Name }}"
+              title="{{ column.Text }}"
+            >
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

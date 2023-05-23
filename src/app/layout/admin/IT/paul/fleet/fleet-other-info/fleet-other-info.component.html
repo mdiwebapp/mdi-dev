@@ -1,0 +1,26 @@
+<div class="register-box box-shadow-none card mb-0 pane-content">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-6 p-1">
+                    <p><b>Click Edit to unlock the grid for editing</b></p>
+                    <kendo-grid [data]="gridData" [group]="state.group" [sortable]="{ mode: 'multiple' }"
+                        [hideHeader]="true" style="height: 75vh;">
+                        <kendo-grid-column *ngFor="let column of viewGridColumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="col-md-6 p-1">
+                    <p><b>Parts used on Service for this unit</b></p>
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        [data]="viewData" style="height: 75vh;">
+                        <kendo-grid-column *ngFor="let column of viewColumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

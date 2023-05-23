@@ -1,0 +1,116 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Advanced Document Search</h4>
+        </div>
+    </div>
+    <div style="max-height: 80vh; overflow: auto;">
+        <div class="row justify-content-center m-3">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (columnResize)="onResizeColumn($event)" style="height: 70vh;"
+                                (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)"
+                                [data]="docSearchData" [sort]="sort" (sortChange)="onSortChange($event)"
+                                kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                <ng-template kendoGridToolbarTemplate>
+                                    <!-- <div class="example-config">
+                                <a #anchor (click)="onToggle()">
+                                    <span class="k-icon k-i-more-vertical"></span>
+                                </a>
+                            </div> -->
+                                    <!-- <input placeholder="Search in all columns..." kendoTextBox class="col-md-8"
+                                        (input)="onFilter($event.target.value)" /> -->
+                                    <div class="row d-flex w-100 align-items-center justify-content-center">
+                                        <div class="col-md-4">
+                                            <img src="assets/images/logo.png" class="img-fluid" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <input kendoTextBox [(ngModel)]="filterCollection.fileNameAnd1" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="filterchange">
+                                                <input kendoTextBox [(ngModel)]="filterCollection.fileNameOr1" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="!filterchange">
+                                                <span class="pl-2 pr-2" >
+                                                    <kendo-switch onLabel="AND" offLabel="OR" class="extensionSwitch"
+                                                    style="width: 70px;" (valueChange)="OnChangeFilter($event)" >
+                                                </kendo-switch>
+                                                </span>
+                                                <input kendoTextBox [(ngModel)]="filterCollection.fileNameAnd2" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="filterchange">
+                                                <input kendoTextBox [(ngModel)]="filterCollection.fileNameOr2" (keydown.enter)="$event.preventDefault();loadData();" *ngIf ="!filterchange">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-2 mt-2">
+                                            <span><strong>Doc's Found :</strong> {{total}} </span>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex w-100 align-items-center justify-content-center">
+                                        <div class="col-md-5 offset-md-1 d-flex justify-content-between">
+                                            <button class="k-button mt-2 mr-2" type="button" (click)="clearSearch()"
+                                                style="font-size: 12px;">Clear
+                                                Search</button>
+                                            <button class="k-button mt-2" type="button" (click)="filterData()"
+                                                style="font-size: 12px;">Search</button>
+                                        </div>
+
+                                    </div>
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                    <!-- <i class="fa fa-search" (click)="loadItems();"></i> -->
+
+
+                                </ng-template>
+
+                                <!-- <kendo-grid-column *ngFor="let column of docSearchcolumns" [width]="column.width"
+                                    field="{{column.Name}}" title="{{column.Text}}">{{docSearchcolumns.fileName}}
+                                </kendo-grid-column> -->
+                                <kendo-grid-column field="fileName" title="FileName">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{ dataItem.fileName }}
+                                    </ng-template>
+                                  </kendo-grid-column>
+                                  <kendo-grid-column field="fileType" title="Path">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div (click)="downloadDocsFile(dataItem)" class="download-now">
+                                            <a href="javascript:void(0);">{{dataItem.fileType}}</a>                                     
+                                        </div>                                     
+                                    </ng-template>
+                                  </kendo-grid-column>
+                            </kendo-grid>
+                            <kendo-datapager [total]="total" [pageSize]="pageSize" [skip]="skip"
+                                style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                                <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                    let-currentPage="currentPage">
+                                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                    </kendo-datapager-numeric-buttons>
+                                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                                    <kendo-dropdownlist
+                                    class="form-control form-control-round"
+                                    style="width: 16% !important"
+                                    [data]="pageSizeList"
+                                    [(ngModel)]="pageSize"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    (valueChange)="onPageSizechange($event)"
+                                    [valuePrimitive]="true"
+                                    [textField]="'value'"
+                                    [valueField]="'value'"
+                                  >
+                                  </kendo-dropdownlist>
+                                </ng-template>
+                            </kendo-datapager>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

@@ -1,0 +1,259 @@
+<div style="height: 70vh;">
+
+
+  <kendo-expansionpanel [expanded]="showHistory" id="expPanel" (expand)="loadItems()">
+    <ng-template kendoExpansionPanelTitleDirective>
+      <div class="header-content">
+        Vendor Purchase History
+      </div>
+    </ng-template>
+    <div class="table-responsive p-2">
+      <kendo-grid [data]="products" [sortable]="true" [skip]="skip" style="height: 50vh;"
+        (selectionChange)="onSelection($event.selectedRows[0].dataItem.poNumber)" [selectable]="true" [navigable]="true"
+        [resizable]="true" [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+          <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)"
+            style="width: 25% !important;" />
+          <span> Total: {{totalPO}} </span>
+          <kendo-combobox placeholder="Select Branch" style="width: 20% !important;" (valueChange)="onStatuschange('')"
+            [suggest]="true" class="form-control form-control-round" [textField]="'value'" [data]="branch"
+            [valueField]="'value'" [filterable]="true" [(ngModel)]="branchModel"
+            (filterChange)="branchhandleFilter($event)" [valuePrimitive]="true">
+          </kendo-combobox>
+          <div *ngFor="let column of status" class="col-xs-12 example-col">
+            <label class="k-checkbox-label">
+              <input type="checkbox" class="k-checkbox" [checked]="column.isCheck" [(ngModel)]="column.isCheck"
+                (change)="onStatuschange(column.name,$event)" />
+              {{ column.name }}
+            </label>
+          </div>
+
+        </ng-template>
+        <kendo-grid-column field="branch" title="Branch" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+
+            <lable>{{dataItem.branch}}</lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="poNumber" title="PO No." [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable (click)="editContactClick(dataItem.id)">{{dataItem.poNumber}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="orderDate" title="Date" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable (click)="editContactClick(dataItem.id)">{{dataItem.orderDate | date}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="status" title="Status" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable (click)="editContactClick(dataItem.id)">{{dataItem.status}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="total" title="Amount" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable (click)="editContactClick(dataItem.id)">${{dataItem.total | number : '1.2-2' }}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+    <div class="table-responsive p-2">
+      <h5 class="header-content"> POR Line Items </h5>
+      <kendo-grid [data]="productItems" [sortable]="true" [skip]="skip" [selectable]="true" [navigable]="true"
+        [resizable]="true" [reorderable]="true"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <kendo-grid-column field="InvType" title="Inv Type" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.invType}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="description" title="Description" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.description}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="quantity" title="Quantity" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.quantity}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="purchasePrice" title="PricePer" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>${{dataItem.purchasePrice | number : '1.2-2'}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="total" title="Total" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>${{dataItem.total | number : '1.2-2'}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </kendo-expansionpanel>
+  <kendo-expansionpanel [expanded]="showParts" id="expPanel" (expand)="bindVendorParts()">
+    <ng-template kendoExpansionPanelTitleDirective>
+      <div class="header-content">
+        Vendor Parts
+      </div>
+    </ng-template>
+    <div class="table-responsive p-2">
+      <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button" (click)="exportToExcel()">
+      </button>
+
+      <kendo-grid [data]="vendorParts" [sortable]="true" [skip]="skip" [selectable]="true" [navigable]="true"
+        [resizable]="true" [reorderable]="true"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <kendo-grid-column field="InvType" title="Inv Type" [width]="100">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.invType}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Description" title="Description" [width]="200">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.description}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Quantity" title="Vendor Part Number" [width]="100">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.vendorPart}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="PricePer" title="UOM" [width]="100">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.uom}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Total" title="Vendor Price" [width]="100">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>${{dataItem.vendorPrice==null ? 0:(dataItem.vendorPrice | number : '1.2-2')}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+      <!-- <kendo-grid  #grid="kendoGrid"   [kendoGridBinding]="vendorPartsData"   style="visibility: hidden;" >
+      <kendo-grid-column field="invType" title="Inv Type" [width]="100">
+       
+      </kendo-grid-column>
+      <kendo-grid-column field="description" title="Description" [width]="200">
+        
+      </kendo-grid-column>
+      <kendo-grid-column field="qtyOnHand" title="Qty On Hand" [width]="100">
+         
+      </kendo-grid-column>
+      <kendo-grid-column field="qtyOnOrder" title="Qty On Order" [width]="100">
+        
+      </kendo-grid-column>
+      <kendo-grid-column field="rop" title="ROP" [width]="100">
+         
+      </kendo-grid-column>
+      <kendo-grid-column field="roq" title="ROQ" [width]="100">
+         
+      </kendo-grid-column>
+      <kendo-grid-excel fileName="Vendor_Parts.xlsx"></kendo-grid-excel>
+    </kendo-grid> -->
+    </div>
+  </kendo-expansionpanel>
+  <kendo-expansionpanel [expanded]="showReport" id="expPanel" (expand)="bindChartData()">
+    <ng-template kendoExpansionPanelTitleDirective>
+
+      <div class="header-content">
+        Spend Reports
+      </div>
+    </ng-template>
+    <div class="col-md-12">
+      <div class="row">
+
+        <div class="col-md-6">
+          <kendo-buttongroup selection="single">
+            <button kendoButton [toggleable]="true" (click)="viewBy='Total';bindChartData();">Total </button>
+            <button kendoButton [selected]="true" [toggleable]="true" (click)="viewBy='ByBranch';bindChartData();">By
+              Branch</button>
+          </kendo-buttongroup>
+        </div>
+        <div class="col-md-6">
+          <kendo-buttongroup selection="single" class="float-right">
+            <button kendoButton [toggleable]="true" #anchor (click)="filterBy='Custom';openpopup();">Custom</button>
+            <button kendoButton [toggleable]="true" (click)="filterBy='YTD';bindChartData();">YTD</button>
+            <button kendoButton [selected]="true" [toggleable]="true" (click)="filterBy='Last12';bindChartData();">Last
+              12</button>
+          </kendo-buttongroup>
+        </div>
+        <div class="custom_slider_popup" *ngIf="show">
+          <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+            <div class="content">
+              <div class="row no-gutters mt-1 mr-2">
+                <div class="col-md-4 text-right">
+                  <label style="margin: 10px;"> From date:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-datepicker class="form-control form-control-round" [(ngModel)]="fromDate" kendo-datepicker>
+                  </kendo-datepicker>
+                </div>
+              </div>
+              <div class="row no-gutters mt-1 mr-2">
+                <div class="col-md-4 text-right">
+                  <label style="margin: 10px;"> To date:</label>
+                </div>
+                <div class="col-md-8">
+                  <kendo-datepicker class="form-control form-control-round" [(ngModel)]="toDate" kendo-datepicker>
+                  </kendo-datepicker>
+                </div>
+              </div>
+              <div class="row no-gutters mt-1 mr-2">
+                <div class="col-md-4">
+                  <button class="k-button mr-2" (click)="bindChartData()" type="button">Submit</button>
+                  <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+                </div>
+
+              </div>
+            </div>
+          </kendo-popup>
+        </div>
+      </div>
+    </div>
+    <h3 class="text-center"></h3>
+    <div *ngIf="isChartData">
+
+
+      <kendo-chart>
+        <kendo-chart-title text="Spend by {{viewBy=='ByBranch'? 'Branch':viewBy}}" color="black" background="#ffffff"
+          font="19pt sans-serif">
+        </kendo-chart-title>
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item [categories]="['branch']">
+          </kendo-chart-category-axis-item>
+        </kendo-chart-category-axis>
+        <kendo-chart-value-axis>
+          <kendo-chart-value-axis-item [labels]="valueAxisLables">
+            <kendo-chart-value-axis-item-labels>
+            </kendo-chart-value-axis-item-labels>
+          </kendo-chart-value-axis-item>
+        </kendo-chart-value-axis>
+        <kendo-chart-series>
+          <kendo-chart-series-item color="#3469a9" field="total" categoryField="branch" [data]="seriesData">
+            <kendo-chart-series-item-tooltip>
+              <ng-template let-value="value" let-dataItem="dataItem">
+                {{convertData(dataItem)}}
+              </ng-template>
+            </kendo-chart-series-item-tooltip>
+          </kendo-chart-series-item>
+        </kendo-chart-series>
+      </kendo-chart>
+    </div>
+
+  </kendo-expansionpanel>
+</div>

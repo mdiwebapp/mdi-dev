@@ -1,0 +1,58 @@
+<form [formGroup]="readytorentForm">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Ready to Rent</h4>
+            </div>
+        </div>
+        <div style="max-height: 80vh; overflow: auto;">
+            <div class="row justify-content-center m-3 no-gutters">
+                <div class="col-md-6">
+                    <div class="card">
+                        <h4 class="text-center mt-3">Ready to Rent Report</h4>
+                        <hr>
+                        <div class="d-flex flex-column align-self-center mt-3">
+                            <div>
+                                <input type="checkbox" formControlName="greentag" kendoCheckBox />
+                                <label class="col-form-label pl-2">Green Tag</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" formControlName="redtag" kendoCheckBox />
+                                <label class="col-form-label pl-2">Red Tag</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" kendoCheckBox formControlName="onjoboffrent" />
+                                <label class="col-form-label pl-2">On a Job - Off Rent</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" kendoCheckBox formControlName="majorrepairs" />
+                                <label class="col-form-label pl-2">Major Repairs</label>
+                            </div>
+                            <div class="row justify-content-center mt-2 mb-5">
+                                <div class="col-md-12 text-center">
+                                    <button class="k-button w-100" style="font-size: 12px;"
+                                        (click)="onSubmitReadyToRent()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="{{error_title}}" *ngIf="isErrorDialogVisible" (close)="onHandleDialog('submit')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{error_msg}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleDialog('error')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

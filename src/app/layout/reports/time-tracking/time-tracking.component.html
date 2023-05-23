@@ -1,0 +1,285 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Time Tracking Report</h4>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <!-- <div class="text-center mt-3">
+                    <img src="assets/images/logo.png" />
+                </div> -->
+                <div class="card">
+                    <h2 class="text-center text-bold mt-3">Create Time Tracking Report</h2>
+                </div>
+                <form [formGroup]="timeTrackingForm">
+                    <div class="row mb-3">
+                        <div class="col-md-1"></div>
+
+                        <div class="col-md-3">
+                            <fieldset>
+                                <legend>Report Type</legend>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType" value="Weekly"
+                                            (change)="onReportTypeChange($event)" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2"> Weekly</label>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType" value="Union"
+                                            (change)="onReportTypeChange($event)" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2">Union</label>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType" value="Pump Watch"
+                                            (change)="onReportTypeChange($event)" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2">Pump Watch</label>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType"
+                                            (change)="onReportTypeChange($event)" value="Certified" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2">Certified</label>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType"
+                                            (change)="onReportTypeChange($event)" value="324" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2"> 324</label>
+                                    </span>
+                                </div>
+                                <div class="row no-gutters">
+                                    <span class="p-2 pl-3 pr-3">
+                                        <input type="radio" formControlName="reportType"
+                                            (change)="onReportTypeChange($event)" value="Complete" kendoRadioButton />
+                                        <label class="k-label ml-2 mr-2"> Complete</label>
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-2"><label class="col-form-label">From Date</label></div>
+                                <div class="col-md-8">
+                                    <kendo-datepicker calendarType="classic" formControlName="fromDate">
+                                    </kendo-datepicker>
+                                    <!-- <div class="required-text" *ngIf="validation?.fromDate">
+                                        Please select a date!
+                                    </div> -->
+                                    <!-- <div class="required-text"
+                                        *ngIf="timeTrackingForm.get('fromDate').hasError('required') && timeTrackingForm.get('fromDate').touched">
+                                        This field is required!
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-2"><label class="col-form-label">To Date</label></div>
+                                <div class="col-md-8">
+                                    <kendo-datepicker calendarType="classic" formControlName="toDate">
+                                    </kendo-datepicker>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-center justify-content-around">
+                                        <fieldset *ngIf="timeTrackingForm.get('reportType').value === 'Complete'">
+                                            <legend>Type</legend>
+                                            <div class="row no-gutters">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <input type="radio" formControlName="type" value="Detail"  [(ngModel)]="typeStatus"
+                                                    [ngModelOptions]="{standalone: true}"  kendoRadioButton />
+                                                    <label class="k-label ml-2 mr-2"> Detail</label>
+                                                </span>
+                                            </div>
+                                            <div class="row no-gutters">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <input type="radio" formControlName="type" value="Summary" [(ngModel)]="typeStatus"
+                                                    [ngModelOptions]="{standalone: true}"   kendoRadioButton />
+                                                    <label class="k-label ml-2 mr-2">Summary</label>
+                                                </span>
+                                            </div>
+                                        </fieldset>
+                                        <div class="d-flex flex-column">
+                                            <div class="col-md-12"
+                                                *ngIf="timeTrackingForm.get('reportType').value && timeTrackingForm.get('reportType').value !== 'Weekly' && timeTrackingForm.get('reportType').value !== 'Union' && timeTrackingForm.get('reportType').value !== '324'">
+                                                <button *ngIf="!isEmployeeVisible" class="k-button w-100" type="button"
+                                                    style="font-size: 12px;"
+                                                    (click)="onHandleOperation('employee')">Employee:
+                                                    {{timeTrackingForm.get('employee').value?.name || 'All' }}
+                                                </button>
+                                                <kendo-combobox [textField]="'name'" [valueField]="'eeid'"
+                                                    *ngIf="timeTrackingForm.get('reportType').value !== 'Complete' && isEmployeeVisible"
+                                                    [data]="employees" [suggest]="true" (filterChange)="employeehandleFilter($event)"  [filterable]="true"
+                                                    (valueChange)="onSelectionChange('employee', $event)">
+                                                </kendo-combobox>
+                                                <button class="k-button w-100 mt-2" type="button"
+                                                    *ngIf="!isJobNumberVisible" style="font-size: 12px;"
+                                                    (click)="onHandleOperation('job_number')">Job
+                                                    Number:
+                                                    {{timeTrackingForm.get('job').value?.jobName || 'All'}}
+                                                </button>
+                                                <kendo-combobox class="mt-2" [textField]="'id'" [valueField]="'value'"
+                                                    *ngIf="timeTrackingForm.get('reportType').value !== 'Complete' && isJobNumberVisible"
+                                                    [data]="jobNumbers"  [suggest]="true" (filterChange)="jobhandleFilter($event)"  [filterable]="true"
+                                                    (valueChange)="onSelectionChange('job_number', $event)">
+                                                </kendo-combobox>
+                                            </div>
+                                        </div>
+                                        <fieldset *ngIf="timeTrackingForm.get('reportType').value === 'Complete'">
+                                            <legend>Group By</legend>
+                                            <div class="row no-gutters">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <input type="radio" formControlName="groupBy" value="Date"   [(ngModel)]="groupByStatus"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                        kendoRadioButton />
+                                                    <label class="k-label ml-2 mr-2">Date</label>
+                                                </span>
+                                            </div>
+                                            <div class="row no-gutters">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <input type="radio" formControlName="groupBy" value="Employee" [(ngModel)]="groupByStatus"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                        kendoRadioButton />
+                                                    <label class="k-label ml-2 mr-2">Employee</label>
+                                                </span>
+                                            </div>
+                                            <div class="row no-gutters">
+                                                <span class="p-2 pl-3 pr-3">
+                                                    <input type="radio" formControlName="groupBy" value="Job" [(ngModel)]="groupByStatus"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                        kendoRadioButton />
+                                                    <label class="k-label ml-2 mr-2">Job</label>
+                                                </span>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mb-5">
+                        <div class="col-md-2">
+                            <button class="k-button w-100 mt-2" type="button" (click)="generateReport()">View
+                                Report</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<kendo-dialog title="Select Employee" *ngIf="isEmployeeDialogVisible" (close)="onHandleOperation('employee')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+            Search
+        </div>
+        <div class="col-md-6 p-1">
+            <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                placeholder="" (input)="onFilterRequestsEmployee($event.target.value)">
+            </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+            Count: {{employeesGrid.length}}
+        </div>
+    </div>
+    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'employee')"
+        [data]="employeesGrid" [sort]="employeeSort" (sortChange)="onSortChange($event, 'employee')" kendoGridSelectBy
+        [selectedKeys]="employeeSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="false">
+        <input placeholder="Type here to filter branches" kendoTextBox class="col-md-8" />
+        <kendo-grid-spacer></kendo-grid-spacer>
+        <span> Total : {{employeesGrid?.length}}</span>
+        <kendo-grid-spacer></kendo-grid-spacer>
+        <kendo-grid-column *ngFor="let column of employeeColumns" [width]="column.width" field="{{column.Name}}"
+            title="{{column.Text}}">
+        </kendo-grid-column>
+    </kendo-grid>
+</kendo-dialog>
+
+<kendo-dialog title="Select Job" *ngIf="isJobNumberDialogVisible" (close)="onHandleOperation('job_number')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+            Search
+        </div>
+        <div class="col-md-6 p-1">
+            <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                placeholder="" (input)="onFilterRequestsJob($event.target.value)">
+            </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+            Count: {{jobNumbersGrid.length}}
+        </div>
+    </div>
+    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'job_number')"
+        [data]="jobNumbersGrid" [sort]="jobNumberSort" (sortChange)="onSortChange($event, 'job_number')"
+        kendoGridSelectBy [selectedKeys]="employeeSelections" [sortable]="true"
+        (columnReorder)="onReOrderColumns($event)" [skip]="skip" 
+        (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <input placeholder="Type here to filter branches" kendoTextBox class="col-md-8" />
+        <kendo-grid-spacer></kendo-grid-spacer>
+        <span> Total : {{jobNumbersGrid?.length}}</span>
+        <kendo-grid-spacer></kendo-grid-spacer>
+        <kendo-grid-column *ngFor="let column of jobNumberColumns" [width]="column.width" field="{{column.Name}}"
+            title="{{column.Text}}">
+        </kendo-grid-column>
+    </kendo-grid>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('close')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('close')">No</button>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog
+  title="No Records Found"
+  *ngIf="opened"
+  (close)="opened"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p style="margin: 30px; text-align: center" class="fs-16">
+   No Records Found!
+  </p>
+  <kendo-dialog-actions>
+    <button
+      kendoButton
+      (click)="openPopup()"
+      class="w-100"
+      themeColor="primary"
+    >
+      OK
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Weekly Summary Report" *ngIf="isRunWeekly" (close)="closechangeWeeklyReport('no')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Run Weekly Summary Report?
+    </p>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closechangeWeeklyReport('yes')" type="button"
+            primary="true">Yes</button>
+        <button class="k-button k-secondary" (click)="closechangeWeeklyReport('no')" type="button">No</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>

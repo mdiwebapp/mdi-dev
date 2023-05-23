@@ -1,0 +1,167 @@
+
+<kendo-grid  [data]="data" [sortable]="true" [height]="410" [ngClass]="(isEdit) ? '' :  'k-state-disabled'"
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+    <ng-template kendoGridToolbarTemplate>
+        <input class="col-md-9" placeholder="Search in all columns..." kendoTextBox  (input)="onFilter($event.target.value)"/>
+        <kendo-grid-spacer></kendo-grid-spacer>
+    </ng-template>
+    <kendo-grid-column field="field" title="" [width]="130"></kendo-grid-column>
+    <kendo-grid-column field="dEviceID" title="Info" [width]="130" >
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <div *ngIf="equipmentChackBox">
+                <div class="employee-grid-input">
+                <input *ngIf=" dataItem.field == 'CreditCard' || dataItem.field == 'CLC' || dataItem.field == 'Uniforms' || dataItem.field == 'FuelCard' || dataItem.field == 'DoorCode' " 
+                [checked]="dataItem.dEviceID == 'NO' || dataItem.dEviceID == 'X' ? '' : dataItem.dEviceID" type="checkbox" kendoCheckBox (click)="onClick($event,dataItem)"/>
+                <div *ngIf=" dataItem.field == 'Computer' || dataItem.field =='GateCode' || dataItem.field =='Phone' || dataItem.field =='HotSpot' || dataItem.field == 'Tablet'" >
+                    <kendo-textbox *ngIf="dataItem.dEviceID == 'NO' || dataItem.dEviceID == 'X' ? '' : dataItem.dEviceID" [(ngModel)]="dataItem.dEviceID"></kendo-textbox>
+                </div>
+                <lable *ngIf=" dataItem.field == 'CreditCard' || dataItem.field == 'CLC' || dataItem.field == 'Other' || dataItem.field == 'Uniforms' || dataItem.field == 'FuelCard' " > {{dataItem.dEviceID == 'NO' || dataItem.dEviceID == 'X' ? '' : dataItem.dEviceID}}</lable>
+                    <kendo-textbox *ngIf=" dataItem.field == 'DoorCode'" [(ngModel)]="doorCodeTextBoxValue"></kendo-textbox>
+                </div>
+            </div>
+            </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="issuedDate" title="Assigned" [width]="130" >
+        <ng-template kendoGridCellTemplate let-dataItem >
+        <div>
+            <kendo-textbox style="border: none;" (click)="onSinglClick($event,dataItem)" (click)="onAssignedClick($event,dataItem)" date='dd-MM-yyyy' [value]="dataItem.issuedDate | date:'MM/dd/yyyy'" ></kendo-textbox>
+        </div>
+
+      </ng-template></kendo-grid-column>
+    <kendo-grid-column title="Returned" [width]="130"></kendo-grid-column>
+    <!-- <kendo-grid-column field="equipmentType" title="Info" [width]="130">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <div *ngIf="!dataItem.isSerialize">
+                <kendo-textbox [(ngModel)]="dataItem.equipmentType" [value]="dataItem.equipmentType"
+                    class="form-control form-control-round">
+                </kendo-textbox>
+            </div>
+            <div *ngIf="dataItem.isSerialize">
+                <input type="checkbox" *ngIf="dataItem.equipment != 'Door/Alarm code'"
+                    [(ngModel)]="dataItem.isCheckboxValue" (change)="SerializeCheckBoxChange(dataItem)" kendoCheckBox />
+                <input type="checkbox" *ngIf="dataItem.equipment == 'Door/Alarm code'"
+                    (change)="open('dialog', dataItem)" [(ngModel)]="dataItem.isCheckboxValue" kendoCheckBox />
+                <label>{{dataItem.equipmentType}}</label>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="equipmentAssignDate" title="Assigned" [width]="130">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <kendo-datepicker [(ngModel)]="dataItem.equipmentAssignDate" kendo-datepicker
+                [value]="DateConvert(dataItem.equipmentAssignDate)"
+                *ngIf="dataItem.isCheckboxValue && dataItem.equipment != 'Door/Alarm code'"
+                class="form-control form-control-round"></kendo-datepicker>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column title="Returned" [width]="130">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <kendo-textbox [(ngModel)]="dataItem.equipmentReturnBy" [value]="dataItem.equipmentReturnBy"
+                class="form-control form-control-round">
+            </kendo-textbox>
+        </ng-template>
+    </kendo-grid-column> -->
+</kendo-grid>
+
+
+<!-- <ng-template #doorcode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Door Code</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="dateOfBirth">Enter Door Code</label>
+            <div class="input-group">
+                <input class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="SaveDoorCode()">Save</button>
+    </div>
+</ng-template> -->
+
+<kendo-dialog title="Please confirm" *ngIf="dialogOpened" (close)="close('dialog')" [minWidth]="250" [width]="450">
+    <div class="form-group">
+        <label for="dateOfBirth">Enter Door Code</label>
+        <div class="input-group">
+            <input class="form-control">
+        </div>
+    </div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="DoorAction('cancel')">Cancel</button>
+        <button kendoButton (click)="DoorAction('Ok')" primary="true">
+            Ok
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Select i-9 completon date for"
+  *ngIf="isEverifyCalendar" (close)="onHandleOperations('everifyCalendar')" [minWidth]="600" [width]="1000">
+  <kendo-scheduler (slotClick)="slotClickHandler($event)" [selectedDate]="selectedDate" class="schedule-calender"
+     [kendoSchedulerBinding]="events" style="height: 70h;">
+    <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate">
+      <ng-template kendoSchedulerMonthDaySlotTemplate let-date="date" ng-disabled="all">
+        <div style="background-color: inherit;"> {{getCalendarDate(date)}}</div>
+      </ng-template>
+      <div kendoschedulertoolbarnavigation class="d-flex justify-content-center w-100">
+        <div class=" row justify-content-center">
+          <div class="col-md-4 d-flex justify-content-center">
+            <button kendoButton class="k-nav-today k-button" icon="arrow-60-left" (click)="setPrevMonth()"></button>
+
+            <div class="d-flex justify-content-between align-items-center pl-1 pr-1">
+              <kendo-datepicker class="scheduler-date form-control form-control-round"
+                (valueChange)="datechange($event)" style="width: 5% !important;" [(value)]="datepickerdate"
+                calendarType="classic" bottomView="year" topView="decade" format="MMMM yyyy">
+              </kendo-datepicker>
+              <span class="pt-1 pl-1" style="font-weight: bold;">
+                {{selectedDate | date:
+                'MMMM yyyy'}}
+              </span>
+            </div>
+            <div kendoschedulertoolbarnavigation style="display: flex;justify-content: end;">
+              <button kendoButton class="k-nav-today k-button" icon="arrow-60-right" (click)="setNextMonth()"></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+    <kendo-scheduler-month-view> </kendo-scheduler-month-view>
+  </kendo-scheduler>
+  <div>
+    <lable>{{equipDate}}</lable>
+    <button (click)="onAssignedClick($event,dataItem)" style="margin-left: 770px;
+  font-size: 16px;
+  /* padding: 4px; */
+  padding-top: 6px;
+  margin-top: 3px;
+  width: 113px;" class="k-button" type="button">Select</button>
+  </div>
+  <div>
+  </div>
+</kendo-dialog>
+<kendo-dialog title="Exit?" *ngIf="isI9DateAlert" (close)="onHandleOperations('alertClose')" [minWidth]="250"
+  [width]="450">
+  <p>No Date Will Be Selected</p>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('calanderExit')">OK</button>
+    <button kendoButton (click)="onHandleOperations('calanderCancle')">Cancel</button>
+
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog *ngIf="doreCodeVisibale" title="MDI3.0"
+   (close)="onHandleOperations('doorCodeClose')" [minWidth]="250" [width]="450">
+  <p>Enter Door code.</p>
+  <kendo-textbox  [(ngModel)]="doorCodeValue"></kendo-textbox>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('dooreCodeExit')">OK</button>
+    <button kendoButton (click)="onHandleOperations('dooreCodeCancel')">Cancel</button>
+
+  </kendo-dialog-actions>
+</kendo-dialog>

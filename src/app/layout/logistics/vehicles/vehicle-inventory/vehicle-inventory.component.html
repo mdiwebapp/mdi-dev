@@ -1,0 +1,148 @@
+<div style="height: 70vh;">
+    <div class="col-md-12">
+        <div class="custom_slider_popup" *ngIf="show" style="width: 800px !important;">
+            <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+                <!-- <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Select Parts</h5>
+            </div> -->
+                <div class="row m-0">
+                    <kendo-grid [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true" [sortable]="true"
+                        [selectable]="true" kendoGridSelectBy [selectedKeys]="mySelection" [height]="400"
+                        [resizable]="true" [columnMenu]="{ filter: true }">
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search in all columns..." kendoTextBox
+                                (input)="onFilter($event.target.value)" />
+                        </ng-template>
+                        <kendo-grid-column field="invType" title="Inventory Type" [width]="150">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="row ml-2">
+                    <div class="k-actions k-actions-end">
+                        <div class="k-columnmenu-actions">
+                            <kendo-numerictextbox class="col-md-6" [(ngModel)]="quantity" placeholder="Qty"
+                                [decimals]="'0'" [format]="'n0'"></kendo-numerictextbox>
+                            <button class="k-button" type="button" (click)="AddPart()">Add</button>
+                            <button class="k-button k-primary" (click)="closepopup()" type="button">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </kendo-popup>
+        </div>
+        <kendo-dialog title="Please confirm" *ngIf="opened" (close)="close('cancel')" [minWidth]="250" [width]="450">
+            <p style="margin: 30px; text-align: center;">
+                {{lblAlert}}
+            </p>
+            <kendo-dialog-actions>
+                <button kendoButton (click)="close('no')">No</button>
+                <button kendoButton (click)="close('yes')" themeColor="primary">Yes</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+        <kendo-dialog title="Please confirm" *ngIf="openedOffload" (close)="closeOffload('cancel')" [minWidth]="250"
+            [width]="450">
+            <p style="margin: 30px; text-align: center;">
+                Are you sure you want to remove all items from the vehicle?
+            </p>
+            <kendo-dialog-actions>
+                <button kendoButton (click)="closeOffload('no')">No</button>
+                <button kendoButton (click)="closeOffload('yes')" themeColor="primary">Yes</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <kendo-grid [data]="loadItems" [sortable]="true" [resizable]="true" [sort]="sort"
+                        style="height: 34vh;" kendoGridSelectBy [(selectedKeys)]="loadSelection"
+                        (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <ng-template kendoGridToolbarTemplate>
+                            <button kendoButton title="Select an Item" #anchor (click)="onToggle()">Select an
+                                Item</button>
+                            <button kendoButton title="Delete" (click)="deleteSelected()"
+                                *ngIf="loadItems.length>0">Delete</button>
+                            <button kendoButton title="Delete All" (click)="open(0)" *ngIf="loadItems.length>0">Delete
+                                All</button>
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <button kendoButton title="Load with Scanner">Load with Scanner</button>
+                        </ng-template>
+
+                        <kendo-grid-column field="invType" title="Inventory Type" [width]="100">
+
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Inv#" [width]="100">
+                           
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <kendo-combobox class="form-control form-control-round" [value]="dataItem.invNumber"
+                                    *ngIf="dataItem.invNumberList && dataItem.serialized"
+                                    (valueChange)="changeInvNumber(dataItem,$event)" style="width: 150px;"
+                                    [data]="dataItem.invNumberList.toString().split(',')" [suggest]="true"
+                                    (filterChange)="handleFilter($event,dataItem)" [filterable]="true">
+                                </kendo-combobox>
+                                <div *ngIf="!dataItem.serialized">{{dataItem.invNumber}} </div>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description" [width]="150">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="available" title="On Hand" [width]="50">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="quantity" title="Load Qty" [width]="50">
+
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+            <div class="col-md-12"
+                style="padding-right:0px !important;padding-left: 0px !important;text-align: center;">
+                <div class="d-flex justify-content-around">
+                    <span>Load onto Vehicle <br>
+                        <button kendoButton title="Load onto Vehicle" id="btnRight" class="btn_icon"
+                            (click)="loadOnVehicle()"></button>
+                    </span>
+                    <div style="width: 200px;">
+                        <kendo-datepicker [(ngModel)]="loadingDate" class="form-control form-control-round"
+                            calendarType="classic">
+                        </kendo-datepicker>
+                    </div>
+                    <span>Unload from Vehicle <br>
+                        <button kendoButton title="Load with Scanner" id="btnLeft" class="btn_icon"
+                            (click)="unloadOnVehicle()">
+                        </button>
+                    </span>
+                    <span> Offload Entire Vehicle <br>
+                        <button kendoButton title="Load with Scanner" id="btnDouble" class="btn_icon"
+                            (click)="openOffload()">
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <kendo-grid [data]="unloadItems" [sortable]="true" [resizable]="true" [sort]="sort"
+                        style="height: 34vh;" (cellClick)="unloadCellClickHandler($event)"
+                        (cellClose)="unloadCellCloseHandler($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search" kendoTextBox class="col-md-5" />
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <!-- <button kendoButton title="Load with Scanner">Unload with Scanner</button> -->
+                        </ng-template>
+                        <kendo-grid-column field="invType" title="Inventory Type" [width]="100">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="invNumber" title="Inv#" [width]="100">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description" [width]="150">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="quantity" title="On Vehicle" [width]="50">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="returnQty" title="Unload Qty" [width]="50">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

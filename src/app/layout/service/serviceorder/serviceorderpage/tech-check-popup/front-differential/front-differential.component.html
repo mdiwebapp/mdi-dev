@@ -1,0 +1,155 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>front/DIFFERENTIAL - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayNoLeaks" class="w-100" (click)="onHandleOperations('no_leaks')"
+                                kendoTooltip kendoRippleContainer kendoButton>NO LEAKS: {{f.noLeaks.value}}
+                            </button> --><label class="col-form-label">NO LEAKS:</label>
+                            <kendo-combobox *ngIf="!displayNoLeaks" [suggest]="true"
+                                (valueChange)="onHandleOperations('no_leaks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="noLeaks">
+                            </kendo-combobox>
+                            <div class="required-text"
+                                    *ngIf="form.get('noLeaks').hasError('required') && form.get('noLeaks').touched">
+                                    This field is required!
+                                </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayUJoints" class="w-100" (click)="onHandleOperations('u_joints')"
+                                kendoTooltip kendoRippleContainer kendoButton>U-JOINTS: {{f.uJoints.value}}
+                            </button> --><label class="col-form-label">U-JOINTS:</label>
+                            <kendo-combobox *ngIf="!displayUJoints" [suggest]="true"
+                                (valueChange)="onHandleOperations('u_joints')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="uJoints">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('uJoints').hasError('required') && form.get('uJoints').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayFluidCleans" class="w-100" (click)="onHandleOperations('fluid_clean')"
+                                kendoTooltip kendoRippleContainer kendoButton>FLUID CLEANS: {{f.fluidCleans.value}}
+                            </button> --><label class="col-form-label">FLUID CLEANS:</label>
+                            <kendo-combobox *ngIf="!displayFluidCleans" [suggest]="true"
+                                (valueChange)="onHandleOperations('fluid_clean')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="fluidCleans">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('fluidCleans').hasError('required') && form.get('fluidCleans').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayAxleBearingsSeals" class="w-100"
+                                (click)="onHandleOperations('axle_bearings_seals')" kendoTooltip kendoRippleContainer
+                                kendoButton>AXLE BEARINGS AND SEALS: {{f.axleBearingSeals.value}}
+                            </button> --><label class="col-form-label">AXLE BEARINGS AND SEALS:</label>
+                            <kendo-combobox *ngIf="!displayAxleBearingsSeals" [suggest]="true"
+                                (valueChange)="onHandleOperations('axle_bearings_seals')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="axleBearingSeals">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('axleBearingSeals').hasError('required') && form.get('axleBearingSeals').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayfrontBrakes" class="w-100" (click)="onHandleOperations('front_breaks')"
+                                kendoTooltip kendoRippleContainer kendoButton>Front BRAKES: {{f.frontBrakes.value}}
+                            </button> --><label class="col-form-label">Front BRAKES:</label>
+                            <kendo-combobox *ngIf="!displayfrontBrakes" [suggest]="true"
+                                (valueChange)="onHandleOperations('front_breaks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="frontBrakes">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('frontBrakes').hasError('required') && form.get('frontBrakes').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayfrontShocks" class="w-100" (click)="onHandleOperations('front_shocks')"
+                                kendoTooltip kendoRippleContainer kendoButton>Front SHOCKS: {{f.frontShocks.value}}
+                            </button> --><label class="col-form-label">Front SHOCKS:</label>
+                            <kendo-combobox *ngIf="!displayfrontShocks" [suggest]="true"
+                                (valueChange)="onHandleOperations('front_shocks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="frontShocks">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('frontShocks').hasError('required') && form.get('frontShocks').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaySteeringDamper" class="w-100"
+                                (click)="onHandleOperations('steering_damper')" kendoTooltip kendoRippleContainer
+                                kendoButton>STEERING DAMPER: {{f.steeringDamper.value}}
+                            </button> --><label class="col-form-label">STEERING DAMPER:</label>
+                            <kendo-combobox *ngIf="!displaySteeringDamper" [suggest]="true"
+                                (valueChange)="onHandleOperations('steering_damper')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="steeringDamper">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('steeringDamper').hasError('required') && form.get('steeringDamper').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBallJointsUpper" class="w-100"
+                                (click)="onHandleOperations('ball_joints_upper')" kendoTooltip kendoRippleContainer
+                                kendoButton>BALL JOINTS UPPER: {{f.ballJointsUpper.value}}
+                            </button> --><label class="col-form-label">BALL JOINTS UPPER:</label>
+                            <kendo-combobox *ngIf="!displayBallJointsUpper" [suggest]="true"
+                                (valueChange)="onHandleOperations('ball_joints_upper')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="ballJointsUpper">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('ballJointsUpper').hasError('required') && form.get('ballJointsUpper').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayBallJointsLower" class="w-100"
+                                (click)="onHandleOperations('ball_joints_lower')" kendoTooltip kendoRippleContainer
+                                kendoButton>BALL JOINTS LOWER: {{f.ballJointsLower.value}}
+                            </button> --><label class="col-form-label">BALL JOINTS LOWER:</label>
+                            <kendo-combobox *ngIf="!displayBallJointsLower" [suggest]="true"
+                                (valueChange)="onHandleOperations('ball_joints_lower')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="ballJointsLower">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('ballJointsLower').hasError('required') && form.get('ballJointsLower').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displaySteeringComponents" class="w-100"
+                                (click)="onHandleOperations('steering_components')" kendoTooltip kendoRippleContainer
+                                kendoButton>STEERING COMPONENTS: {{f.steeringComponents.value}}
+                            </button> --><label class="col-form-label">STEERING COMPONENTS:</label>
+                            <kendo-combobox *ngIf="!displaySteeringComponents" [suggest]="true"
+                                (valueChange)="onHandleOperations('steering_components')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="steeringComponents">
+                            </kendo-combobox><div class="required-text"
+                            *ngIf="form.get('steeringComponents').hasError('required') && form.get('steeringComponents').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

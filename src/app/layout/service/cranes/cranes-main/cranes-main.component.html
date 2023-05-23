@@ -1,0 +1,173 @@
+<form [formGroup]="cranesForm">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Maintain Cranes</h4>
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="menuService.isAddRight && !isAdd">
+                    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" *ngIf="!isAdd"
+                        (click)="onHandleOperation('new')">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="menuService.isEditRight && !isEdit">
+                    <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button" *ngIf="!isEdit"
+                        (click)="onHandleOperation('edit')">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10"
+                    *ngIf="(menuService.isAddRight || menuService.isEditRight) && !isCancel">
+                    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                        *ngIf="!isCancel" (click)="onHandleOperation('cancel')">
+                    </button>
+                </div>
+                <div class="wp-50 p-l-10 p-r-10" *ngIf="(menuService.isAddRight || menuService.isEditRight) && !isSave">
+                    <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+                        (click)="onHandleOperation('save')">
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+                <div class="form-control1 displayFlex alignFlexEnd">
+                    <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+                        <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"
+                            (click)="onHandleOperation('folder')">
+                        </button>
+                        <button kendoTooltip title="Picture" id="btnPicture" class="btn_icon" filter="button"
+                            (click)="onHandleOperation('picture')">
+                        </button>
+                    </div>
+                    <label>Active</label>
+                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" formControlName="active"
+                        [disabled]="isActiveDisabled">
+                    </kendo-switch>
+                </div>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="row">
+                <kendo-splitter orientation="vertical">
+                    <kendo-splitter-pane>
+                        <kendo-splitter>
+                            <kendo-splitter-pane [collapsible]="true" size="35%">
+                                <form [formGroup]="filterForm">
+                                    <div class="row m-2">
+                                        <div class="col-md-2">
+                                            <label>Branch:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                                (click)="onHandleOperation('branch')" [disabled]="isDisable">
+                                                {{branchfullName}}</button>
+                                        </div>
+                                        <div>
+                                            <label>Status</label>
+                                            <kendo-switch onLabel="Active" offLabel="All" class="ml-2"
+                                                style="width: 100px;" formControlName="status"
+                                                (valueChange)="onStatusChange($event)" [disabled]="isDisable">
+                                            </kendo-switch>
+                                        </div>
+                                    </div>
+                                    <kendo-grid [navigable]="true" [resizable]="true" [reorderable]="true"
+                                        (columnResize)="onResizeColumn($event)"
+                                        (selectionChange)="onSelectionChange($event)" [data]="cranes"
+                                        [sort]="cranesSort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                        [selectedKeys]="cranesSelection" [sortable]="true"
+                                        (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+                                        (dataStateChange)="onDataStateChange($event)"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                        [selectable]="{enabled: selectable}">
+                                        <kendo-grid-column *ngFor="let column of cranecolumns" [width]="column.width"
+                                            field="{{column.Name}}" title="{{column.Text}}"
+                                            (input)="onFilter($event.target.value)">
+                                        </kendo-grid-column>
+                                        <ng-template kendoGridToolbarTemplate>
+                                            <kendo-textbox placeholder=" Search in all columns..." class="col-md-12"
+                                                (valueChange)="onSearchCranes($event)" formControlName="searchText"
+                                                [disabled]="isDisable"></kendo-textbox>
+                                        </ng-template>
+                                    </kendo-grid>
+                                </form>
+                            </kendo-splitter-pane>
+                            <kendo-splitter-pane>
+                                <kendo-tabstrip (tabSelect)="onTabChange($event)">
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Crane Info'" *ngIf="!isTab1"
+                                        [selected]="true">
+                                        <ng-template kendoTabContent>
+                                            <app-crane-info [cranes]="cranesForm" [disableCranes]='!isDisable'
+                                                [disabledCranesVehicle]='!isDisabledCraneVehicle' [branches]="branches"
+                                                [craneType]="craneType" [vehicleNumberValue]="vehicleNumberValue">
+                                            </app-crane-info>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Activity'" *ngIf="!isTab2">
+                                        <ng-template kendoTabContent>
+                                            <app-crane-activity [selectedCrane]="selectedCrane" [disableCranes]='isAdd'>
+                                            </app-crane-activity>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Notes'" *ngIf="!isTab3">
+                                        <ng-template kendoTabContent>
+                                            <app-crane-notes [disableCranes]='disableCranes'
+                                                [selectedCrane]="selectedCrane">
+                                            </app-crane-notes>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab class="text-success" [title]="'History'" *ngIf="!isTab4">
+                                        <ng-template kendoTabContent>
+                                            <app-crane-history [selectedCrane]="selectedCrane"
+                                                [disableCranes]='disableCranes'>
+                                            </app-crane-history>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                </kendo-tabstrip>
+                            </kendo-splitter-pane>
+                        </kendo-splitter>
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select Branch" *ngIf="isBranchVisible" (close)="onHandleOperation('branch')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="branchFilter"
+                        class="form-control form-control-round" (valueChange)="onSearchBranch($event)">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{branches.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'branch')"
+                [data]="branches" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [sortable]="true"
+                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of branchColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

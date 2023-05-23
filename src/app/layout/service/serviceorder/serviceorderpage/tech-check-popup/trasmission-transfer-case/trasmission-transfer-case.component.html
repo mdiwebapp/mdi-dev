@@ -1,0 +1,75 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+        <div class="card-block p-0">
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>TRANSMISSION/TRANSFER CASE - <span class="pl-1">
+                        <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                            [(ngModel)]="markAll" [ngModelOptions]="{standalone: true}"
+                            (valueChange)="changeMarkAll($event)">
+                        </kendo-switch>
+                        Mark All N/A
+                    </span></legend>
+                    <div class="row no-gutters p-2">
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayOilCoolerClean" class="w-100"
+                                (click)="onHandleOperations('oil_cooler_clean')" kendoTooltip kendoRippleContainer
+                                kendoButton>OIL COOLER CLEAN: {{f.oilCoolerClean.value}}
+                            </button> --> <label class="col-form-label">OIL COOLER CLEAN:</label>
+                            <kendo-combobox *ngIf="!displayOilCoolerClean" [suggest]="true"
+                                (valueChange)="onHandleOperations('oil_cooler_clean')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="oilCoolerClean">
+                            </kendo-combobox> <div class="required-text"
+                            *ngIf="form.get('oilCoolerClean').hasError('required') && form.get('oilCoolerClean').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayNoTransmissionLeaks" class="w-100"
+                                (click)="onHandleOperations('no_transmission_leaks')" kendoTooltip kendoRippleContainer
+                                kendoButton>NO TRANSMISSION LEAKS: {{f.noTransmissionLeaks.value}}
+                            </button> --> <label class="col-form-label">NO TRANSMISSION LEAKS:</label>
+                            <kendo-combobox *ngIf="!displayNoTransmissionLeaks" [suggest]="true"
+                                (valueChange)="onHandleOperations('no_transmission_leaks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"  [valueField]="'value'" formControlName="noTransmissionLeaks">
+                            </kendo-combobox> <div class="required-text"
+                            *ngIf="form.get('noTransmissionLeaks').hasError('required') && form.get('noTransmissionLeaks').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayNoTransferCaseLeaks" class="w-100"
+                                (click)="onHandleOperations('no_trasnfer_case_leaks')" kendoTooltip kendoRippleContainer
+                                kendoButton>NO TRANSFER CASE LEAKS: {{f.noTransferCaseLeaks.value}}
+                            </button> --> <label class="col-form-label">NO TRANSFER CASE LEAKS:</label>
+                            <kendo-combobox *ngIf="!displayNoTransferCaseLeaks" [suggest]="true"
+                                (valueChange)="onHandleOperations('no_trasnfer_case_leaks')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="noTransferCaseLeaks">
+                            </kendo-combobox> <div class="required-text"
+                            *ngIf="form.get('noTransferCaseLeaks').hasError('required') && form.get('noTransferCaseLeaks').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <!-- <button *ngIf="displayDriveShaft" class="w-100" (click)="onHandleOperations('drive_shaft')"
+                                kendoTooltip kendoRippleContainer kendoButton>DRIVE SHAFT: {{f.driveShaft.value}}
+                            </button> --> <label class="col-form-label">DRIVE SHAFT:</label>
+                            <kendo-combobox *ngIf="!displayDriveShaft" [suggest]="true"
+                                (valueChange)="onHandleOperations('drive_shaft')" placeholder="Select Choice"
+                                class="form-control form-control-round" [textField]="'value'" [data]="vehicleOptions"
+                                [valuePrimitive]="true"   [valueField]="'value'" formControlName="driveShaft">
+                            </kendo-combobox>
+                            <div class="required-text"
+                            *ngIf="form.get('driveShaft').hasError('required') && form.get('driveShaft').touched">
+                            This field is required!
+                        </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,139 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Videos</h4>
+        </div>
+    </div>
+    <form [formGroup]="videosForm">
+        <div class="card-block table-border-style">
+            <div>
+                <div>
+                    <div>
+                        <div class="col-md-3">
+                            <div class="row justify-content-between">
+                                <label kendoTooltip title="Click to filter files">File
+                                    Extension:
+                                    <kendo-switch onLabel="All" offLabel="Common" class="extensionSwitch"
+                                        style="width: 95px;" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="filterExtension" (valueChange)="OnChangeFormat($event)">
+                                    </kendo-switch>
+                                </label>
+                                <div *ngIf="addExtensionRights">
+                                    <button kendoTooltip title="Click here to View and add file extension" class="btn"
+                                        kendoRippleContainer kendoButton
+                                        (click)="onHandleOperation('Extension')">Extension
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <kendo-textbox #customInput (valueChange)="handleFilter($event)" [clearButton]="true"
+                        (keydown.enter)="$event.preventDefault();"    tabindex="5"  placeholder="Filter...">
+                            <ng-template kendoTextBoxPrefixTemplate>
+                                <span class="k-input-icon k-icon k-i-search"></span>
+                            </ng-template>
+                        </kendo-textbox>
+                        <kendo-treeview textField="name" kendoTreeViewExpandable [nodes]="data" [children]="children"
+                          [hasChildren]="hasChildren">
+                            <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                                <div class="w-100 fontweight-bold">
+                                    <div *ngIf="dataItem.files">
+                                        {{dataItem.name}}
+                                    </div>
+                                    <div *ngIf="!dataItem.files">
+                                        <div (click)="downloadVideofile(dataItem)" class="download-now">
+                                            <a href="javascript:void(0);">{{dataItem.name}}</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </kendo-treeview>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <kendo-dialog title="Extension" *ngIf="isExtensionVisible" (close)="onHandleOperation('Extension')"
+            [minWidth]="250" [height]="550" [width]="550">
+            <div class="row m-0">
+                <div class="col-md-12 m-0">
+                    <div class="row no-gutters m-0">
+                        <div class="col-md-3 p-1">
+                            Search
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="searchExtension"
+                                class="form-control form-control-round" placeholder=""
+                                (keyup)="onExtensionDataFilter($event.target.value)">
+                            </kendo-textbox>
+                        </div>
+                        <div class="col-md-3 p-1 text-right">
+                            Count: {{extensionData.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0">
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'extension')"
+                        [data]="extensionData" [sort]="sort" (sortChange)="onExtensionSortChange($event)"
+                        kendoGridSelectBy [selectedKeys]="Extensionselections" [sortable]="true"
+                        (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 35vh;"
+                        (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <kendo-grid-column field="extension" title="Extension">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <label>{{ dataItem.extension }}</label>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <label>{{ dataItem.description }}</label>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="delete" title="" class="text-center">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <label>
+                                    <i class="fa fa-trash fa-lg" (click)="deleteExtension(dataItem.pk)"></i>
+                                </label>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid>
+                    <div class="row m-0 mt-3 justify-content-between">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Extension:</label>
+                                    <kendo-textbox formControlName="extension" class="form-control form-control-round "
+                                        placeholder=""></kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="videosForm.get('extension').hasError('required') && videosForm.get('extension').touched">
+                                        This field is required!
+                                    </div>
+                                    <div class="required-text"
+                                        *ngIf="videosForm.get('extension').hasError('pattern') && videosForm.get('extension').touched">
+                                        This field must is invalid!
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Description:</label>
+                                    <kendo-textbox formControlName="description" class="form-control form-control-round"
+                                        placeholder=""></kendo-textbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center">
+                            <button class="k-button w-100" type="button" (click)="AddExtension()">Add</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </kendo-dialog>
+
+    </form>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

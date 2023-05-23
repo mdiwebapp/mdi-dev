@@ -1,0 +1,162 @@
+<form [formGroup]="bomCostingForm">
+    <div class="card">
+        <div class="card-header d-flex flex-row justify-content-start">
+            <div class="d-flex justify-content-between">
+                <h4 class="p-r-10">Bom Costing</h4>
+            </div>
+        </div>
+        <div style="max-height: 80vh; overflow: auto;">
+            <div class="row justify-content-center m-3">
+                <div class="col-md-2 d-flex">
+                    <div class="d-flex flex-column align-items-center justify-content-center p-5">
+                        <label class="col-form-label pl-2 d-flex justify-items-center">Materials</label>
+                        <label class="col-form-label pl-2 d-flex justify-items-center">Labor</label>
+                        <label class="col-form-label pl-2 d-flex justify-items-center">Total</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="d-flex align-items-start flex-column" style="height: 400px;">
+                            <div class="mb-auto pl-3 pt-3">
+                                <div>
+                                    <label class="col-form-label pl-2">Custom Build</label>
+                                </div>
+                                <div>
+                                    <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                        (click)="onHandleOperations('production_order')" [disabled]="disable">
+                                        {{production_btn}}</button>
+                                    <div *ngIf="isProductitonOrder">
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">Build Qty -
+                                            1</label>
+                                    </div>
+                                </div>
+                                <div *ngIf="isProductitonOrder">
+                                    <div class="d-flex flex-column mt-5">
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $6,385.39
+                                        </label>
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $671.30 (19.18)
+                                        </label>
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $7,056.69
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="pb-3 pl-3"><button kendoTooltip title="Excel" id="btnPrint" class="btn_icon"
+                                    filter="button" [disabled]="disable || !isProductitonOrder">
+                                </button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ">
+                        <div class="d-flex align-items-start flex-column" style="height: 400px;">
+                            <div class=""></div>
+                            <div class="mb-auto pl-3 pt-3">
+                                <div>
+                                    <label class="col-form-label pl-2">Standard Build</label>
+                                </div>
+                                <div>
+                                    <button class="k-button w-100" type="submit" style="font-size: 12px;"
+                                        (click)="onHandleOperations('select_bom')" [disabled]="disable">
+                                        {{select_btn}}</button>
+                                </div>
+                                <div *ngIf="isSelectOrder">
+                                    <div class="d-flex flex-column mt-5 pt-4">
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $6,385.39
+                                        </label>
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $671.30 (19.18)
+                                        </label>
+                                        <label class="col-form-label pl-2 d-flex justify-items-center">
+                                            $7,056.69
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pb-3 pl-3"><button kendoTooltip title="Excel" id="btnPrint" class="btn_icon"
+                                    filter="button" [disabled]="disable || !isSelectOrder">
+                                </button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end pb-5 pr-2">
+                    <div>
+                        <input type="checkbox" kendoCheckBox (change)="onCheckboxChecked($event)" />
+                        <label class="col-form-label pl-2" (click)="onHandleOperations('select_bom')">Pump End
+                            Costing</label>
+                        <button class="k-button w-100" type="button" style="font-size: 12px;" (click)="onReset()">Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="Select BOM" *ngIf="isSelectVisible" (close)="onHandleOperations('select_bom')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{selectBomData.length}}
+                </div>
+            </div>
+        </div>
+        <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+            (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'select')"
+            [data]="selectBomData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+            [selectedKeys]="selections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+            style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+            <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+                title="{{column.Text}}">
+            </kendo-grid-column>
+        </kendo-grid>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Production Order" *ngIf="isProductionOrderVisible"
+    (close)="onHandleOperations('production_order')" [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{productionOrderData.length}}
+                </div>
+            </div>
+        </div>
+        <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+            (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'production')"
+            (selectionChange)="onSelectionChange($event)" [data]="productionOrderData" [sort]="productionOrderSort"
+            (sortChange)="onSortChange($event,'production_order')" kendoGridSelectBy [selectedKeys]="selections"
+            [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 25vh;"
+            (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <kendo-grid-column *ngFor="let column of productionOrderColumns" [width]="column.width"
+                field="{{column.Name}}" title="{{column.Text}}">
+            </kendo-grid-column>
+        </kendo-grid>
+    </div>
+</kendo-dialog>

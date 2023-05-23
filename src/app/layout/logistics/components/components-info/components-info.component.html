@@ -1,0 +1,1588 @@
+<div style="height: 70vh;">
+    <div class="register-box box-shadow-none card mb-0">
+        <form [formGroup]="form" class="cust-form">
+            <div class="card-block p-0">
+                <div class="row no-gutters">
+                    <div class="col-md-12 row">
+                        <div class="col-md-6 p-1">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Component<em></em>:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-combobox class="form-control form-control-round" [data]="componentList"
+                                        [disabled]="isDisabled" [suggest]="true" [textField]="'inventoryType'"
+                                        [(ngModel)]="componentId" [ngModelOptions]="{standalone: true}"
+                                        [kendoDropDownFilter]="FilterOptions" [valueField]="'inventoryType'"
+                                        [filterable]="true" (valueChange)="onComponentChange($event)" required
+                                        [valuePrimitive]="true">
+                                    </kendo-combobox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('component').hasError('required') && form.get('component').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 p-1" *ngIf="!displayMessenger && !isAdd">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Make<em></em>:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="make"
+                                        *ngIf="displayChassis || displayPrimingSystem || displayGenset || displayCompressor"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                    <kendo-combobox class="form-control form-control-round" [data]="makeList"
+                                        [valueField]="'value'" [textField]="'value'" [valuePrimitive]="true"
+                                        [allowCustom]="true"
+                                        *ngIf="displayControlPanel || displayGearBox || displayPumpEnd || displayEngine || displayMotor || displayDiaPump || displayVaccumPump"
+                                        formControlName="make">
+                                    </kendo-combobox>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-md-6 p-1" *ngIf="!displayMessenger && !isAdd">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Serial #<em></em>:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" [disabled]="isdisableSN"
+                                        (change)="checkSerialNo($event.target.value)" required
+                                        formControlName="serialNumber" placeholder="">
+                                    </kendo-textbox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('serialNumber').hasError('required') && form.get('serialNumber').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-1" *ngIf="!displayMessenger && !isAdd">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Model<em></em>:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-textbox class="form-control form-control-round" formControlName="model"
+                                        placeholder="">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3" style="width:100%;" *ngIf="componentName && !isAdd">
+                        <fieldset style="padding-bottom: 20px;">
+                            <legend>{{componentName}} </legend>
+                            <div class="row" *ngIf="displayEngine">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Muffler Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineMufflerPartNum" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Radiator Hose Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineRadHose" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Fan Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineFanPart" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Radiator Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineRad" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Solenoid Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineSolenoid" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Coolant Type<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineCoolant" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Fan Belt<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_fanBelt" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Coolant
+                                                    Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engineCoolantCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Horse Power<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_horsePower" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_oilCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Fuel Filter<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_fuelFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Fuel Filter 2<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_fuelFilter2" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Air Filter<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_airFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Air Filter 2<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_airFilter2" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Filter<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="engine_oilFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Voltage<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <kendo-combobox formControlName="engine_voltage" [data]="voltageList"
+                                                    [valueField]="'value'" [textField]="'value'" placeholder=""
+                                                    [valuePrimitive]="true" class="form-control form-control-round">
+                                                </kendo-combobox>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Engine Tier<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="tierList" *ngIf="displayEngine" [suggest]="true"
+                                                    formControlName="engineTier" [filterable]="true"
+                                                    [valueField]="'value'" [textField]="'value'"
+                                                    [valuePrimitive]="true">
+                                                </kendo-combobox>
+
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Engine Mounted
+                                                    Compressor<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <kendo-switch formControlName="engineMountComp" onLabel="Yes"
+                                                    offLabel="No">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Engine
+                                                    Registered<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <kendo-switch formControlName="engineRegistration" onLabel="Yes"
+                                                    (valueChange)="isRegister($event)" offLabel="No">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="isRegisterFlag">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">Registered Date<em></em>:</label>
+                                        </div>
+                                        <div class="col-md-8 p-1 ">
+                                            <kendo-datepicker (click)="onRegBtn()" formControlName="engineRegDate"
+                                                calendarType="classic" class="form-control form-control-round">
+                                            </kendo-datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayPumpEnd">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Water Pump
+                                                    Material<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="waterPumpMaterial" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Casing Material<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="casingMaterialList" [suggest]="true"
+                                                    formControlName="casingMaterial" [filterable]="true"
+                                                    [valueField]="'value'" [textField]="'value'"
+                                                    [valuePrimitive]="true">
+                                                </kendo-combobox>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Type<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="pumpOilType" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Impeller
+                                                    Material<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="impellerMaterialList" [suggest]="true"
+                                                    formControlName="impellerMaterial" [filterable]="true"
+                                                    [valueField]="'value'" [textField]="'value'"
+                                                    [valuePrimitive]="true">
+                                                </kendo-combobox>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="pumpOilCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Impeller Size<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox class="form-control form-control-round"
+                                                    [data]="impellerSizelList" [suggest]="true" [valueField]="'value'"
+                                                    [textField]="'value'" formControlName="impellerSize"
+                                                    [valuePrimitive]="true" [filterable]="true">
+                                                </kendo-combobox>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Has Cutter
+                                                    blades<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-switch formControlName="pumpCutterBlades" onLabel="Yes"
+                                                    offLabel="No">
+                                                </kendo-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayPrimingSystem">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Compressor Air
+                                                    Filter<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="compressorAirFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Valve Cover Gasket Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="valveCoverGasketPart" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Compressor Belt<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="compressorBelt" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Discharge Valve Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="dischargeValvePart" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Compressor Type<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="compressorOilType" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Intake Valve Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="intakeValvePart" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Compressor Oil
+                                                    Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="compressorOilFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Compressor Oil
+                                                    Filter<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="compressorOilFilter" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayGearBox">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Gear Ratio<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearRation" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Key Size<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxKeySize" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Type<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxOil" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxOilcap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Primary Shaft Spline
+                                                    Hub<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxPrimShaft" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">SAE Housing<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="saeHousing" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Primary Shaft Oil
+                                                    Seal<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxPrimShaftOil" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Adapter Plate Spline
+                                                    Hub<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxAdapterPlate" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Seconday Shaft Oil
+                                                    Seal<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="gearBoxSecondOilSeal" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayControlPanel">
+                                <div class="col-md-6 p-1">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">Throttle Type<em></em>:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <kendo-combobox formControlName="throttleType" [data]="throttleTypeList"
+                                                [valueField]="'value'" [textField]="'value'" placeholder=""
+                                                [valuePrimitive]="true" class="form-control form-control-round">
+                                            </kendo-combobox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayMessenger">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">SIM Card #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="messengerSimCard" placeholder="">
+                                                </kendo-textbox>
+                                                <div class="required-text"
+                                                    *ngIf="form.get('messengerSimCard').hasError('required') && form.get('messengerSimCard').touched">
+                                                    This field is required!
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Phone #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-maskedtextbox formControlName="messengerPhone"
+                                                    [mask]="'(000) 000-0000'">
+                                                </kendo-maskedtextbox>
+
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">IMEI<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="messengerIMEI" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="displayChassis">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Trailer Package<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-switch formControlName="chasis_trailerPackage" onLabel="Yes"
+                                                    offLabel="No">
+                                                </kendo-switch>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Sound Enclosuer<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-switch formControlName="chasis_soundAttenuation" onLabel="Yes"
+                                                    offLabel="No">
+                                                </kendo-switch>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Length<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="chasis_chassisLength" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Fuel Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="chasis_chassisFuelCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Width<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="chasis_chassisWidth" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Height<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="chasis_chassisHeight" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" *ngIf="displayGenset">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Frame<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="genSetFrame" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Phase<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox formControlName="genSetPhase" [data]="phaseList"
+                                                    [valueField]="'value'" [textField]="'value'" placeholder=""
+                                                    [valuePrimitive]="true" class="form-control form-control-round">
+                                                </kendo-combobox>
+
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Bearing #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="genSetBearing" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Voltage Setting<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-combobox formControlName="genSetVoltage" [valueField]="'value'"
+                                                    [textField]="'value'" [data]="voltageSettingList" placeholder=""
+                                                    [valuePrimitive]="true" class="form-control form-control-round">
+                                                </kendo-combobox>
+
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" *ngIf="displayVaccumPump">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacOilCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacOil" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">O-Ring Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacOringPartNum" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Vanes Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacVanesPartNum" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">.002 Shim End Cover Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacShimEndCover02" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Lip Seal Part #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacLipSeal" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">.003 Shim End Cover Part
+                                                    #<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="vacShimEndCover03" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="displayMotor">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Horse Power<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="horsePower" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Enclosure<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorEnclosure" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Frame Size<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorFrameSize" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">AMPS<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorAmps" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Hertz(HZ)<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorHertz" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">RPM<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorRPM" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Service Factor
+                                                    Rating<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorRating" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Thermal Class<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorThermal" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Duty<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorDuty" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Power Factor<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorPowerFactor" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Ambient Temp.
+                                                    Range<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorTemp" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">NEMA Design<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorNemaDesign" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">NEMA Nom Eff.<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorNEMA" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Phase<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorNEMA" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Code<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorCode" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Weight<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorWeight" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Inverty Duty<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorInvertyDuty" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">CSE<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorCSE" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">UL<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="motorUL" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Voltage<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+
+                                                <kendo-combobox formControlName="voltage" [data]="voltageList"
+                                                    [valueField]="'value'" [textField]="'value'" placeholder=""
+                                                    [valuePrimitive]="true" class="form-control form-control-round">
+                                                </kendo-combobox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="displayDiaPump">
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Type<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="diaOilType" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 p-1">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-right">
+                                                <label class="col-form-label pr-2">Oil Capacity<em></em>:</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <kendo-textbox class="form-control form-control-round"
+                                                    formControlName="diaOilCap" placeholder="">
+                                                </kendo-textbox>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6 p-1" *ngIf="!isAdd">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Branch<em></em>:</label>
+                            </div>
+                            <div class="col-md-8" style="padding:7px ;">
+
+                                <kendo-combobox class="form-control form-control-round" placeholder="Branches"
+                                    [data]="branch" [disabled]="isDisabled" [suggest]="true" [textField]="'value'" [valueField]="'code'"
+                                    [ngModelOptions]="{standalone: true}" [kendoDropDownFilter]="FilterOptions"
+                                       formControlName="branch" [filterable]="true" required
+                                    [valuePrimitive]="true">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('branch').hasError('required') && form.get('branch').touched">
+                                    This field is required!
+                                </div>
+                                <!-- <kendo-textbox class="form-control form-control-round" formControlName="location"
+                                    placeholder="">
+                                </kendo-textbox> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1" *ngIf="!isAdd">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Purchase Price<em></em>:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-numerictextbox formControlName="purchasePrice" placeholder="Qty" [decimals]="'0'"
+                                    min="0" [format]="'c0'">
+                                </kendo-numerictextbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-1" *ngIf="!isAdd">
+
+                        <div class="row no-gutters">
+
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Major Repairs<em></em>:</label>
+                            </div>
+                            <div class="col-md-2 p-1 ">
+                                <label>
+                                    <kendo-switch formControlName="majorRepairs" onLabel="Yes" offLabel="No"
+                                        (valueChange)="isMajorRepairchange($event)" class="mr-2">
+                                    </kendo-switch>
+                                </label>
+                            </div>
+                            <div class="col-md-8 p-1  text-right" *ngIf="isMajorchange">
+                                <kendo-textbox class="form-control form-control-round" formControlName="comments"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 p-1" *ngIf="!isAdd">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Global Parts<em></em>:</label>
+                            </div>
+                            <div class="col-md-8">
+                                {{globalPartname}}
+                                <button class="k-button" [disabled]="isParts" (click)="openParts()" type="button">Select Part</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1"
+                        *ngIf="(displayEngine || displayPumpEnd || displayPrimingSystem || displayGearBox||displayControlPanel || displayMessenger || displayChassis|| displayAll) && !isAdd">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label pr-2">Keyword(s)<em></em>:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <kendo-textbox class="form-control form-control-round" formControlName="keywords"
+                                    placeholder="">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="form.value.inactive" class="row col-md-12">
+                        <div class="col-md-3 p-1">
+                            <div class="row no-gutters">
+                                <div class="col-md-5 text-right">
+                                    <label class="col-form-label pr-2">Inactive Date<em></em>:</label>
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="col-form-label pr-2"> {{form.value.inactiveDate |date}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Inactive By<em></em>:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="col-form-label pr-2">{{form.value.inactiveBy}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-1">
+                            <div class="row no-gutters">
+                                <div class="col-md-3 text-right">
+                                    <label class="col-form-label pr-2">Inactive Reason<em></em>:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label class="col-form-label pr-2"> {{form.value.inactiveReason}} </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <kendo-dialog *ngIf="openInventoryType" (close)="close('cancel')" [minWidth]="700" [width]="700">
+            <div class="row m-0">
+                <kendo-grid [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true" [sortable]="true"
+                    kendoGridSelectBy [selectable]="true" [height]="400" [resizable]="true" [selectedKeys]="mySelection"
+                    (selectionChange)="selectionChange()" (dblclick)="dblClickEvent($event)"
+                    [columnMenu]="{ filter: true }">
+                    <ng-template kendoGridToolbarTemplate>
+                        <input placeholder="Search in all columns..." kendoTextBox
+                            (input)="onFilter($event.target.value)" />
+                    </ng-template>
+                    <kendo-grid-column field="invType" title="Inventory Type" [width]="150">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="description" title="Description">
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+            <div class="row ml-2">
+                <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                        <button class="k-button" type="button" (click)="addInventoryItem()">Add</button>
+                        <button class="k-button k-primary" (click)="close('cancel')" type="button">Close</button>
+                    </div>
+                    <div>
+                        <label style="color: red;">{{errorMsg}}</label>
+                    </div>
+                </div>
+            </div>
+        </kendo-dialog>
+    </div>
+</div>

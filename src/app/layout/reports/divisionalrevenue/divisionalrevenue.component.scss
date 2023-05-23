@@ -1,0 +1,20 @@
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #e9ecef;
+    color: red;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+a:focus, a:hover {
+    text-decoration: none;
+    color: green !important;
+    background-color:#e9ecef;
+}
+.height-chart{
+    height: 76vh !important; overflow: scroll;
+}

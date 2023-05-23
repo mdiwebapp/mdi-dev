@@ -1,0 +1,63 @@
+<div id="pcoded" class="pcoded iscollapsed">
+    <div class="pcoded-overlay-box"></div>
+    <div class="pcoded-container navbar-wrapper">
+        <app-header></app-header>
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <!-- <app-sidebar></app-sidebar> -->
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <div class="page-body" style="max-height: 90vh !important; overflow-y:auto ;">
+                                    <router-outlet></router-outlet>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <kendo-appbar class="bottom-appbar" position="bottom" themeColor="dark"
+                    style="justify-content: center;z-index:99;">
+                    <kendo-appbar-section style="width:90%"
+                        *ngIf="routName=='/vendor' || routName=='/fleet' || routName=='/parts' || routName=='/projects' || routName =='/serviceorder' || routName =='/cyclecount' || routName =='/physicalinventory' ||  routName =='/inventorytransfer' || routName =='/spareparts'">
+                        <div class="col-md-8" style="border-right: 2px solid #de2b22;">
+                            <ul>
+                                <li><span>IT Trouble Tickets</span></li>
+                                <li><span>HR Requests</span></li>
+                                <li><span>Building Requests</span></li>
+                                <li><span>Doc Search</span></li>
+                                <li><span>Price Look Up</span></li>
+                                <li><span>Address List</span></li>
+                                <li><span>Phone List</span></li>
+
+                            </ul>
+                        </div>
+
+                        <div class="col-md-4">
+                            <app-vendor-footer></app-vendor-footer>
+                            <app-fleet-footer *ngIf="routName=='/fleet'"></app-fleet-footer>
+                            <app-partfooter></app-partfooter>
+                            <app-service-footer *ngIf="routName=='/serviceorder'"></app-service-footer>
+                        </div>
+                    </kendo-appbar-section>
+                    <kendo-appbar-section style="width:90%;display: content !important;"
+                        *ngIf="routName !='/vendor' && routName !='/fleet' && routName!='/parts' && routName !='/projects' && routName !='/serviceorder'&& routName !='/cyclecount'&&  routName !='/physicalinventory'&&  routName !='/inventorytransfer' && routName !='/spareparts'">
+                        <div class="col-md-8" style="border-right: 2px solid #de2b22;">
+                            <ul>
+                                <li><span>IT Trouble Tickets</span></li>
+                                <li><span>HR Requests</span></li>
+                                <li><span>Building Requests</span></li>
+                                <li><span>Doc Search</span></li>
+                                <li><span>Price Look Up</span></li>
+                                <li><span>Address List</span></li>
+                                <li><span>Phone List</span></li>
+
+                            </ul>
+                        </div>
+                    </kendo-appbar-section>
+                </kendo-appbar>
+
+            </div>
+        </div>
+    </div>
+</div>

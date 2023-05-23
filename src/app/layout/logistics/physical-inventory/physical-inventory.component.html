@@ -1,0 +1,144 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Physical Inventory</h4>
+        </div>
+        <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+            <div class="form-control1 displayFlex alignFlexEnd">
+                <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+                    <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button"
+                        (click)="onFolderToggle()">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style pane-content">
+        <form [formGroup]="form" class="cust-form">
+            <div class="row no-gutters ">
+                <div class="col-md-12 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-3">
+                            <label class="pr-2">Branch</label>
+                            <kendo-combobox [(ngModel)]="branchCode" [suggest]="true" placeholder="Select Branch"
+                                (valueChange)="loadInventory()" class="form-control form-control-round"
+                                [ngModelOptions]="{standalone: true}" [textField]="'value'" [data]="branch"
+                                [valuePrimitive]="true" [valueField]="'code'" style="width: auto;">
+                            </kendo-combobox>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-1 pt-2 text-right pr-1">Inventory Type:</div>
+                        <div class="col-md-4">
+                            <button type="submit" (click)="onInventoryType()"
+                                class="btn   btn-md btn-block text-center">
+                                Click here to add an inventory type
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <kendo-grid [data]="physicalInventoryData" kendoGridSelectBy class="h-grid" [navigable]="true"
+                        (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+                        style="height: 55vh;" [resizable]="true" [reorderable]="true" [sort]="sort"
+                        (sortChange)="sortChange($event)" kendoGridSelectBy [selectedKeys]="mainSelection"
+                        [sortable]="true" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <ng-template kendoGridToolbarTemplate>
+                            <kendo-grid-spacer></kendo-grid-spacer>
+                            <span> Total : {{physicalInventoryData.length}}</span>
+                        </ng-template>
+                        <kendo-grid-column field="action" title="Action" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <i class="fa fa-2x fa-trash mr-2" (click)="removeItem(dataItem)"></i>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="inventoryType" title="Inventory Type" [width]="50"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="inventoryNumber" title="Inventory Number" [width]="50"
+                            editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description" [width]="200" editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="onHandQty" title="On Hand" [width]="50" editable="editable">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="countedQty" title="Counted" [width]="50">
+                            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                                <kendo-numerictextbox class="form-control form-control-round" [min]="0" format="n"
+                                    formControlName="countedText">
+                                </kendo-numerictextbox>
+                            </ng-template> -->
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="row">
+                        <div class="col-md-2"> <label>Approved
+                                <kendo-switch onLabel="Yes" offLabel="No" class="w-auto ml-2"
+                                    formControlName="approved">
+                                </kendo-switch>
+                            </label></div>
+                        <div class="col-md-1 text-right pt-2"> <label>Comments:</label></div>
+                        <div class="col-md-9">
+                            <kendo-textbox formControlName="comments" class="form-control form-control-round" required
+                                placeholder="">
+                            </kendo-textbox>
+                            <div class="required-text"
+                                *ngIf="form.get('comments').hasError('required') && form.get('comments').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2"> <button class="btn  w-auto  btn-md btn-block text-center"
+                            *ngIf="showSubmit"    (click)="onSubmit()">
+                                Submit
+                            </button></div>
+                        <div class="col-md-5"></div>
+                    </div>
+                </div>
+            </div>
+            <kendo-dialog *ngIf="openInventoryType" (close)="close('cancel')" [minWidth]="700" [width]="700">
+                <div class="row m-0">
+                    <!-- (selectionChange)='onGridSelectionChange($event)' -->
+                    <kendo-grid [kendoGridBinding]="gridView" [pageSize]="20" [pageable]="true" [sortable]="true"
+                        [selectable]="true" kendoGridSelectBy [selectedKeys]="mySelection" [height]="400"
+                        (dblclick)="dblClickEvent($event)" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (selectionChange)="selectionChange()" [columnMenu]="{ filter: true }">
+                        <ng-template kendoGridToolbarTemplate>
+                            <input placeholder="Search in all columns..." kendoTextBox
+                                (input)="onFilter($event.target.value)" />
+                        </ng-template>
+                        <kendo-grid-column field="invType" title="Inventory Type" [width]="150">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="description" title="Description">
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+                <div class="row ml-2">
+                    <div class="k-actions k-actions-end">
+                        <div class="k-columnmenu-actions">
+                            <button class="k-button" type="button" (click)="addInventoryItem()">Add</button>
+                            <button class=" k-button k-primary" (click)="close('cancel')" type="button">Close</button>
+                        </div>
+                        <div>
+                            <label style="color: red;">{{errorMsg}}</label>
+                        </div>
+                    </div>
+                </div>
+            </kendo-dialog>
+        </form>
+        <div class="custom_slider_popup" *ngIf="showFolder" style="width: 90% !important;height: 650px;">
+            <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+                <div class="content" style="float: right;">
+                    <i class="fa fa-2x fa-close mr-2" (click)="showFolder=false;"></i>
+                </div>
+                <!--    <div class="row m-0"> -->
+                <app-networkdirectry></app-networkdirectry>
+                <!-- </div> -->
+            </kendo-popup>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="row no-gutters">
+    <div class="col-md-12 mb-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <kendo-combobox [(ngModel)]="jobId" placeholder="Select Job" (valueChange)="changeJob()"
+                            class="form-control form-control-round" [textField]="'value'" [data]="dataJob"
+                            (filterChange)="jobToFilter($event)" [valueField]="'value'" [filterable]="true"
+                            [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-md-5">
+                        <kendo-combobox [(ngModel)]="driverId" placeholder="Select Driver"
+                            (valueChange)="changeDriver()" class="form-control form-control-round" [textField]="'value'"
+                            (filterChange)="driverToFilter($event)" [data]="dataDrivers" [valueField]="'value'"
+                            [filterable]="true" [valuePrimitive]="true">
+                        </kendo-combobox>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row no-gutters">
+    <kendo-grid [selectable]="true" [data]="data" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+        [selectedKeys]="mySelection" [sortable]="true" [skip]="skip" style="height: 65vh;"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." kendoTextBox class="col-md-9"
+                (input)="onFilter($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{data?.length}}</span>
+        </ng-template>
+        <kendo-grid-column field="vehicleDate" title="Date">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.vehicleDate | date}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="job" title="Job">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.job}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="employeeDriver" title="Driver">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.employeeDriver}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="startMileage" title="Start">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.startMileage}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="endMileage" title="End">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.endMileage}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="miles" title="Miles">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.miles}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+    <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+</div>

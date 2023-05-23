@@ -1,0 +1,207 @@
+<div>
+    <form [formGroup]="form" class="cust-form">
+        <div class="card">
+            <div class="card-header d-flex flex-row justify-content-start">
+                <div class="d-flex justify-content-between">
+                    <h4 class="p-r-10">Inventory View</h4>
+                </div>
+                <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+                    <div class="form-control1 displayFlex alignFlexEnd">
+                        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+                            <button  kendoTooltip kendoTooltip title="Print" id="btnPrint" class="btn_icon"
+                             filter="button" (click)="downloadFile()">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block table-border-style">
+                <div class="row no-gutters m-0">
+                    <div class="col-md-12">
+                        <div class="row  no-gutters m-0">
+                            <div class="col-md-3 p-1">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-md-4 p-0 text-center">
+                                        <label>Branch</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <kendo-combobox formControlName="branch" [suggest]="true"
+                                            placeholder="Select Branch" class="form-control form-control-round"
+                                            [textField]="'value'" [data]="branch" [valueField]="'value'"
+                                            (valueChange)="branchChange($event)">
+                                        </kendo-combobox>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3 p-1">
+                                <kendo-multiselect [textField]="'value'" class="form-control form-control-round"
+                                    [valueField]="'value'" [valuePrimitive]="true" #multiselect
+                                    formControlName="inventoryType" placeholder="Search Inventory Type"
+                                    [data]="inventoryTypeList" [filterable]="true">
+                                </kendo-multiselect>
+                            </div> -->
+                            <!-- <div class="col-md-3 p-1">
+                                <kendo-combobox formControlName="invNumber" [suggest]="true"
+                                    placeholder="Select Inventory Number" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="invNumberList" [valueField]="'value'">
+                                </kendo-combobox>
+                            </div> -->
+                            <div class="col-md-3 p-1">
+                                <kendo-textbox formControlName="description" class="form-control form-control-round"
+                                (keydown.enter)="$event.preventDefault();onSearchClick();" placeholder="Search">
+                                </kendo-textbox>
+
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <i class="fa fa-search fa-2x" (click)="onSearchClick();"></i>
+                                <!-- <button type="submit" class="btn   btn-md btn-block text-center"
+                                    (click)="onSearchClick()" style="height: 38px;">
+                                    Search
+                                </button> -->
+                            </div>
+                            <!-- <div class="col-md-3 p-1">
+                                <kendo-combobox formControlName="location" [suggest]="true"
+                                    placeholder="Select Location" class="form-control form-control-round"
+                                    [textField]="'value'" [data]="locationList" [valueField]="'value'">
+                                </kendo-combobox>
+                            </div> -->
+                            <div class="col-md-0 p-1">
+                                <label class="k-checkbox-label" for="rentalfleetonly">
+                                    Rental Fleet Only
+                                </label>
+                                <kendo-switch onLabel="Yes" offLabel="No" class="ml-2" style="width: auto;"
+                                    formControlName="checkrentalfleetonly" (valueChange)="changeRental($event)">
+                                </kendo-switch>
+                            </div>
+                            <div class="col-md-0 p-1">
+                                <label class="k-checkbox-label" for="yardonly">
+                                    Yard Only
+                                </label>
+                                <kendo-switch onLabel="Yes" offLabel="No" class="ml-2" style="width: auto;"
+                                    formControlName="checkyardonly" (valueChange)="changeYardStatus($event)">
+                                </kendo-switch>
+                            </div>
+                            <div class="col-md-0 p-2  text-right">
+                                <label>Records: <b>{{totalData}}</b></label>
+                            </div>
+                            <div class="col-md-3 p-0 text-right">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <kendo-grid [data]="inventoryViewData" kendoGridSelectBy [sort]="sort"
+                            (sortChange)="sortChange($event)" [sortable]="true"
+                            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [navigable]="true"
+                            [resizable]="true" [reorderable]="true" (columnResize)="resizeColumns($event)"
+                            style="height: 65vh;">
+                            <!-- <kendo-grid-column field="branchLocation" title="branchLocation"></kendo-grid-column> -->
+                            <kendo-grid-column field="branchName" title="Branch Name" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.branchName}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="invType" title="Inventory Type" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.invType}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="invNumber" title="Inventory Number" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.invNumber}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="hours" title="Hours" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.hours}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="description" title="Description" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.description}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="quantity" title="Quantity" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.quantity}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="location" title="Location" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.location}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="porCost" title="POR Cost" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.porCost | currency}}
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="offRent" title="Off Rent" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <input type="checkbox" [checked]="dataItem.offRent" [disabled]="true" kendoCheckBox />
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="status" title="Green" [width]="50" class="text-center">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <input type="checkbox" [checked]="dataItem.status === 'GREEN'" [disabled]="true" kendoCheckBox />
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    {{dataItem.status}}
+                                </ng-template>
+                            </kendo-grid-column>
+                           
+                            <!-- <kendo-grid-column field="avgCost" title="Avg Cost">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <kendo-numerictextbox class="form-control form-control-round" format="c0"
+                                        formControlName="avgCost" placeholder="Enter Credit Limit" min="0"
+                                        disabled="disabled">
+                                    </kendo-numerictextbox>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="porCost" title="POR Cost">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <kendo-numerictextbox class="form-control form-control-round" format="c0"
+                                        formControlName="porCost" placeholder="Enter Credit Limit" min="0"
+                                        disabled="disabled">
+                                    </kendo-numerictextbox>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="offRent" title="Off Rent">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                        disabled="disabled" formControlName="checkInventory">
+                                    </kendo-switch>
+                                </ng-template>
+                            </kendo-grid-column> -->
+                        </kendo-grid>
+
+                    </div>
+
+                </div>
+            </div>
+            <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+                (pageChange)="onPageChange($event)">
+                <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                    </kendo-datapager-numeric-buttons>
+                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                    <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                        [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+                        (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+                        [valueField]="'value'">
+                    </kendo-dropdownlist>
+                    <!-- <kendo-datapager-info></kendo-datapager-info>
+                Current page: {{currentPage}} -->
+                </ng-template>
+            </kendo-datapager>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

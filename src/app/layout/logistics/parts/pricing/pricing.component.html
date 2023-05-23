@@ -1,0 +1,108 @@
+<div class="col-md-12 mb-3" style="height: 120vh;">
+
+    <h5>Part Pricing <i class="fa fa-question-circle" aria-hidden="true"></i></h5>
+    <div class="row no-gutters">
+        <kendo-grid [selectable]="true" [data]="partPricing" [sort]="sort" [resizable]="true" [reorderable]="true"
+            [sortable]="true" [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+            (sortChange)="sortChange($event)" style="height: 30vh;"
+            (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)" kendoGridSelectBy>
+            <!-- *ngIf="partType=='Rental'" -->
+            <kendo-grid-column title="Branch" field="branchName">
+            </kendo-grid-column>
+            <kendo-grid-column title="List Price" field="listPrice" format="{0:c}">
+            </kendo-grid-column>
+            <kendo-grid-column title="Last POR Cost" field="lastPORPrice" format="{0:c}">
+            </kendo-grid-column>
+            <kendo-grid-column *ngIf="partType=='Service'" title="Last POR #" field="lastPORNumber">
+            </kendo-grid-column>
+            <kendo-grid-column *ngIf="partType=='Rental'" title="Daily Rate" field="dailyRate" format="{0:c}">
+                    </kendo-grid-column>
+            <kendo-grid-column *ngIf="partType=='Rental'" title="Weekly Rate" field="weeklyRate" format="{0:c}">
+                         </kendo-grid-column>
+            <kendo-grid-column *ngIf="partType=='Rental'" title="Monthly Rate" field="monthlyRate" format="{0:c}">
+                           </kendo-grid-column>
+        </kendo-grid>
+
+        <kendo-expansionpanel *ngIf="!pricingTab" id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    Pricing History <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </div>
+            </ng-template>
+            <kendo-grid [selectable]="true" [data]="pricinghistory" [sort]="sort" kendoGridSelectBy
+                [selectedKeys]="mySelection" [sortable]="true" [skip]="skip" style="height: 40vh;" [resizable]="true"
+                [sort]="sort" (sortChange)="sortChangeHistory($event)" [reorderable]="true"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column title="Branch" field="branchName">
+                    <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.branch}}</lable>
+                    </ng-template> -->
+                </kendo-grid-column>
+                <kendo-grid-column title="Field Modified" field="field">
+                    <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.field}}</lable>
+                    </ng-template> -->
+                </kendo-grid-column>
+                <kendo-grid-column title="Old Value" field="oldValue">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable *ngIf="dataItem.field!='ROP' && dataItem.field!='ROQ'">$ {{dataItem.oldValue | number :
+                            '1.2-2'}}</lable>
+                        <lable *ngIf="dataItem.field=='ROP' || dataItem.field=='ROQ'">{{dataItem.oldValue}}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column title="New Value" field="newValue">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable *ngIf="dataItem.field!='ROP' && dataItem.field!='ROQ'">$ {{dataItem.newValue | number :
+                            '1.2-2'}}</lable>
+                        <lable *ngIf="dataItem.field=='ROP' || dataItem.field=='ROQ'">{{dataItem.newValue}}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column title="Modified By" field="createdBy">
+                    <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.createdBy}}</lable>
+                    </ng-template> -->
+                </kendo-grid-column>
+                <kendo-grid-column title="Modified Date" field="createdDate" format="{0:yyyy-MM-dd}">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.createdDate | date}}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </kendo-expansionpanel>
+        <kendo-expansionpanel *ngIf="!expandedPricingTab" id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    Expanded Pricing <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </div>
+            </ng-template>
+            <kendo-grid [data]="expandedPricing" [resizable]="true" [reorderable]="true" [sort]="sort"
+                kendoGridSelectBy>
+
+                <kendo-grid-column title="Average POR Cost">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <label>$ {{expandedPricing[0].averagePORPrice | number :
+                            '1.2-2'}}</label>
+                    </ng-template>lowestPORNumber
+                </kendo-grid-column>
+                <kendo-grid-column title="Lowest POR">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <label>$ {{expandedPricing[0].lowestPORPrice | number :
+                            '1.2-2'}}</label>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column title="Lowest POR#">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <label> {{expandedPricing[0].lowestPORNumber}} </label>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column title="On Hand Cost">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <label> $ {{expandedPricing[0].onHandPrice | number :
+                            '1.2-2'}} </label>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </kendo-expansionpanel>
+    </div>
+    <br>
+</div>

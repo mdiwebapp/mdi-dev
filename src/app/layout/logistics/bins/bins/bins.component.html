@@ -1,0 +1,112 @@
+<div class="register-box box-shadow-none card mb-0">
+    <form [formGroup]="form" class="cust-form">
+      <div class="card-block p-0">
+        <div class="row no-gutters">
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Branch<em>*</em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+                <div class="required-text"
+                  *ngIf="form.get('vendorName').hasError('required') && form.get('vendorName').touched">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Location:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Area:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Rack:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                class="form-control form-control-round">
+             </kendo-combobox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Shelf:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                class="form-control form-control-round">
+             </kendo-combobox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">ROP:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="qbNameGPC"
+                  placeholder="ROP">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">ROMAX:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="qbNameGPC"
+                  placeholder="ROMAX">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Inventory Type:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-combobox formControlName="vendorType" [suggest]="true" [data]="VendorType" [filterable]="true"
+                   class="form-control form-control-round">
+                </kendo-combobox>
+              </div>
+            </div>
+          </div>
+       
+        </div>
+      </div>
+    </form>
+  </div>

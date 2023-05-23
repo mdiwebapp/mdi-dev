@@ -1,0 +1,213 @@
+<app-common-headers></app-common-headers>
+<section class="login-block">
+  <!-- Container-fluid starts -->
+  <div class="full_block">
+    <!-- Authentication card start -->
+    <div class="leftSide">
+      <form [formGroup]="loginForm" class="cust-form" *ngIf="isLogin">
+        <div class="auth-box card">
+          <div class="card-block">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="text-center">Sign In</h3>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-12">
+                  <label class="col-form-label">Username<em>*</em>:</label>
+                </div>
+                <div class="col-md-12">
+                  <kendo-textbox style=" margin-left: 0px !important" formControlName="email"
+                    class="form-control form-control-round" placeholder="Username"></kendo-textbox>
+
+                  <div class="required-text" style="color: red" *ngIf="
+                      loginForm.get('email').hasError('required') &&
+                      loginForm.get('email').touched
+                    ">
+                    This field is required!
+                  </div>
+                  <!-- <div class="required-text" style="color: red" *ngIf="
+                      loginForm.get('email').hasError('email') &&
+                      loginForm.get('email').touched
+                    ">
+                    This value is not valid!
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-12">
+                  <label class="col-form-label">Password<em>*</em>:</label>
+                </div>
+                <div class="col-md-12">
+                  <input style="padding: 0.375rem 0.75rem !important; margin-left: 0px !important;" kendoTextBox
+                    type="password" formControlName="password" placeholder="Password"
+                    class="form-control form-control-round" />
+                  <div class="required-text" style="color: red" *ngIf="
+                      loginForm.get('password').hasError('required') &&
+                      loginForm.get('password').touched
+                    ">
+                    This field is required!
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 my-3">
+              <div class="checkbox-fade fade-in-primary d-">
+                <label class="mb-0">
+                  <input type="checkbox" value="" formControlName="rememberMe" />
+                  <span class="cr"><i class="cr-icon fa fa-check txt-primary"></i></span>
+                  <span class="text-inverse">Remember me</span>
+                </label>
+              </div>
+              <div class="forgot-phone text-right f-right">
+                <a [routerLink]="['/auth/forgot/']" class="text-right f-w-600">
+                  Forgot Password?</a>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="submit" (click)="onLogin()" [disabled]="loginForm.invalid" class="
+                  btn btn-primary btn-md btn-block
+                  waves-effect waves-light
+                  text-center">
+                Sign in
+              </button>
+            </div>
+
+            <div class="col-md-12 mt-3 mb-2">
+              <p class="text-center mb-0">Version 1.0</p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form [formGroup]="otpForm" class="cust-form" *ngIf="isOtpSend">
+        <div class="auth-box card">
+          <div class="card-block">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="text-center">Verify OTP</h3>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-12">
+                  <label class="col-form-label">Enter OTP<em>*</em>:</label>
+                </div>
+                <div class="col-md-12">
+                  <kendo-textbox style=" margin-left: 0px !important" formControlName="otp"
+                    class="form-control form-control-round" placeholder="Enter OTP"></kendo-textbox>
+
+                  <div class="required-text" style="color: red" *ngIf="
+                  otpForm.get('otp').hasError('required') &&
+                  otpForm.get('otp').touched ">
+                    This field is required!
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-3">
+              <button type="submit" (click)="submitOTP()" [disabled]="otpForm.invalid" class="
+                  btn btn-primary btn-md btn-block
+                  waves-effect waves-light
+                  text-center
+                ">
+                Submit
+              </button>
+
+              <button type="submit" [disabled]="(countdown/1000)!=0" (click)="resendOTP()"
+                class="btn btn-primary btn-md btn-block waves-effect waves-light text-center">
+                <span *ngIf="(countdown/1000)!=0"> Wait {{countdown/1000}} second for resend OTP</span>
+                <span *ngIf="(countdown/1000)==0">Resend OTP</span>
+              </button>
+            </div>
+            <div class="col-md-12 mt-3 mb-2">
+              <p class="text-center mb-0">Version 1.0</p>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- <form [formGroup]="contactForm" class="cust-form" *ngIf="isContact">
+        <div class="auth-box card">
+          <div class="card-block">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="text-center">Update Contact</h3>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-12">
+                  <label class="col-form-label">Email Address<em>*</em>:</label>
+                </div>
+                <div class="col-md-12">
+                  <kendo-textbox style=" margin-left: 0px !important" formControlName="email"
+                    class="form-control form-control-round" placeholder="Email Address"></kendo-textbox>
+                  <div class="required-text" style="color: red" *ngIf="
+                  contactForm.get('email').hasError('required') &&
+                  contactForm.get('email').touched">
+                    This field is required!
+                  </div>
+                  <div class="required-text" style="color: red" *ngIf="
+                  contactForm.get('email').hasError('email') &&
+                  contactForm.get('email').touched">
+                    This value is not valid!
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row no-gutters">
+                <div class="col-md-12">
+                  <label class="col-form-label">Phone<em>*</em>:</label>
+                </div>
+                <div class="col-md-12">
+                  <kendo-textbox style=" margin-left: 0px !important" formControlName="phoneNumber"
+                    class="form-control form-control-round" placeholder="Phone Number"></kendo-textbox>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-3">
+              <button type="submit" (click)="updateContactInfo()" [disabled]="contactForm.invalid" class="
+                  btn btn-primary btn-md btn-block waves-effect waves-light text-center ">
+                Submit
+              </button>
+            </div>
+            <div class="col-md-12 mt-3 mb-2">
+              <p class="text-center mb-0">Version 1.0</p>
+            </div>
+          </div>
+        </div>
+
+      </form> -->
+    </div>
+    <div class="rightSide">
+      <div class="text-center logo">
+        <img src="assets/images/logo.png" alt="logo.png" />
+        <div class="social_icons">
+          <a class="fb" href="https://www.facebook.com/mersinodewatering/" target="_blank"><i
+              class="fa fa-facebook"></i></a>
+          <a class="twitter" href="https://www.twitter.com/mersinodewater" target="_blank"><i
+              class="fa fa-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="text-center logo bottom">
+        <img src="assets/images/red-global-pump-a-mersino.png" alt="logo.png" />
+        <div class="social_icons">
+          <a class="fb" href="https://www.facebook.com/GlobalPumpCo/" target="_blank"><i class="fa fa-facebook"></i></a>
+          <a class="twitter" href="https://www.twitter.com/PumpGlobal" target="_blank"><i class="fa fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container-fluid -->
+</section>

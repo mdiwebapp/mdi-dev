@@ -1,0 +1,139 @@
+<div style="max-height: 70vh;">
+<div class="row">
+    <div class="col-md-12">
+        <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+            (columnResize)="onResizeColumn($event)" style="height: 40vh;"
+            (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)" [kendoGridBinding]="subInvoices"
+            [sort]="sort" kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+            (columnReorder)="onReOrderColumns($event)" [skip]="skip" (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <kendo-grid-column *ngFor="let column of subInvoicesColumns" [width]="column.width" field="{{column.Name}}"
+                title="{{column.Text}}">
+            </kendo-grid-column>
+
+        </kendo-grid>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <kendo-expansionpanel [expanded]="consignmentGrid">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    Invoices
+                </div>
+            </ng-template>
+            <div class="row">
+                <div class="col-md-12">
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" [kendoGridBinding]="invoicesData" [sort]="sort"
+                        kendoGridSelectBy [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                        (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <!-- <kendo-grid-column *ngFor="let column of invoicesColumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column> -->
+                        <kendo-grid-column field="jobNumber" title="Job#" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.jobNumber}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="inventoryNumber" title="Inv#" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.inventoryNumber}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="invoiceNumber" title="Invoice Number" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.invoiceNumber}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="startDate" title="Start Date" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.startDate | date:'MM/dd/yyyy'}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="endDate" title="End Date" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.endDate | date:'MM/dd/yyyy'}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="lineTotal" title="Line Total" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.lineTotal | currency}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="days" title="Days" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.days}}
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="invoiceDate" title="Invoice Date" [width]="50">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                {{dataItem.invoiceDate | date:'MM/dd/yyyy'}}
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <kendo-expansionpanel [expanded]="consignmentGrid">
+            <ng-template kendoExpansionPanelTitleDirective>
+                <div class="header-content">
+                    On Rent Periods With Invoicing
+                </div>
+            </ng-template>
+            <div class="row">
+                <div class="col-md-12">
+                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" [kendoGridBinding]="rentData" [sort]="sort"
+                        kendoGridSelectBy [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                        (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                        <!-- <kendo-grid-column *ngFor="let column of rentColumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column> -->
+                        <kendo-grid-column field="status" title="Status">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.status }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="toggleDate" title="Toggle Date">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.toggleDate | date:'MM/dd/yyyy' }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="lastDate" title="Last Date">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.lastDate | date:'MM/dd/yyyy' }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="days" title="Days">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.days }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="daysInvoiced" title="Days Invoiced">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.daysInvoiced }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="Invoices" title="Invoices">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.invoices }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </kendo-expansionpanel>
+    </div>
+</div>
+</div>

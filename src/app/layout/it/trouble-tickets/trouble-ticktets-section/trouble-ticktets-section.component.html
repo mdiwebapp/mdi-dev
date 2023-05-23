@@ -1,0 +1,117 @@
+<div class="row">
+    <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+            <kendo-splitter>
+                <kendo-splitter-pane [collapsible]="true" size="60%">
+                    <div>
+                        <div class="row no-gutters m-2">
+                            <div class="col-md-12 pl-2">
+                                <kendo-combobox placeholder="" [suggest]="true" class="form-control form-control-round"
+                                    [textField]="'label'" [valueField]="'value'" [filterable]="true"
+                                    [valuePrimitive]="true" [data]="filters" value="Open">
+                                </kendo-combobox>
+                            </div>
+                        </div>
+                        <div class="row no-gutters m-3">
+                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                                [data]="troubleTickets" [sort]="sort" (sortChange)="onSortChange($event)"
+                                kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+                                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 60vh;"
+                                (dataStateChange)="onDataStateChange($event)"
+                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                <kendo-grid-column *ngFor="let column of troubleTicketsColumns.slice(0, 2)"
+                                    [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="closed" title="Closed" [width]="60">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <input type="checkbox" kendoCheckBox checked="{{dataItem.closed}}" />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column
+                                    *ngFor="let column of troubleTicketsColumns.slice(3, troubleTicketsColumns.length)"
+                                    [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                </kendo-grid-column>
+                                <ng-template kendoGridToolbarTemplate>
+                                    Filter:<input placeholder="Search in all columns..." kendoTextBox class="col-md-6"
+                                        (input)="onFilter($event.target.value)" />
+                                    <div>
+                                        <button kendoTooltip title="Refresh" id="btnRefresh" class="btn_icon">
+                                        </button>
+                                    </div>
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                    <span> Total : {{troubleTickets.length }}</span>
+                                    <kendo-grid-spacer></kendo-grid-spacer>
+                                </ng-template>
+                            </kendo-grid>
+                        </div>
+
+                    </div>
+                </kendo-splitter-pane>
+                <kendo-splitter-pane style="max-height: 70vh;">
+                    <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+                        <div class="pane-content" *ngIf="selectedTicket">
+                            <div class="row no-gutters m-2 justify-content-center">
+                                {{selectedTicket.itRequestsPK}} - {{selectedTicket.createdBy}} -
+                                {{selectedTicket.branch}} - {{selectedTicket.createdAt | date: 'MM/dd/yyyy'}}
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <label class="col-form-label">User Input:</label>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <kendo-textarea placeholder="" [cols]="130" [rows]="8" [disabled]="disable"
+                                    class="form-control form-control-round" formControlName="userInput">
+                                </kendo-textarea>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <label class="col-form-label">Response:</label>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <kendo-textarea placeholder="Comments" [cols]="130" [rows]="5"
+                                    class="form-control form-control-round" [disabled]="disable"
+                                    formControlName="response">
+                                </kendo-textarea>
+                            </div>
+                            <div class="row no-gutters m-2">
+                                <div class="col-md-3 mx-2">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        *ngIf="selectedTicket.screenshots.length">{{"View Screenshot"}}</button>
+                                </div>
+                                <div class="col-md-3 mx-2">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="disable" (click)="onHandleTickets('reply')">{{"Reply"}}</button>
+                                </div>
+                                <div class="col-md-3 mx-2">
+                                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                                        [disabled]="disable" (click)="onHandleTickets('close')">{{"Close
+                                        Ticket"}}</button>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <label class="col-form-label">Notes:</label>
+                            </div>
+                            <div class="row no-gutters mx-2">
+                                <kendo-textarea placeholder="" [cols]="130" [rows]="5"
+                                    class="form-control form-control-round" [value]="" [disabled]="disable"
+                                    formControlName="notes">
+                                </kendo-textarea>
+                            </div>
+                        </div>
+                    </form>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </kendo-splitter-pane>
+    </kendo-splitter>
+</div>
+
+<kendo-dialog title="{{error_title}}" *ngIf="isErrorVisible" (close)="onHandleTickets('error')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{error_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleTickets('error')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

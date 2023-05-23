@@ -1,0 +1,39 @@
+<div class="row no-gutters">
+    <div class="col-md-12 mb-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="mt-1"> Active</label>
+                    </div>
+                    <div class="col-md-6">
+                        <kendo-switch [disabled]="userId == 0 || (userId > 0 && !isEdit) ? false :  true"
+                            (valueChange)="UserInActive($event)" [(ngModel)]="status" onLabel="Yes" offLabel="All">
+                        </kendo-switch>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <kendo-grid [selectable]="true" [ngClass]="userId == 0 || (userId > 0 && !isEdit) ? '' :  'k-state-disabled'"
+        [navigable]="true" [resizable]="true" [reorderable]="true"
+        (selectionChange)="editClick($event.selectedRows[0].dataItem.id)" [data]="data" kendoGridSelectBy
+        [selectedKeys]="mySelection" [sort]="sort" (sortChange)="sortChange($event)" [sortable]="true"
+        (dataStateChange)="dataStateChange($event)" [skip]="skip" style="height: 75vh;"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <ng-template kendoGridToolbarTemplate>
+            <input class="col-md-9" placeholder="Type here to filter users" [(ngModel)]="filterText" kendoTextBox
+                (input)="onFilter($event.target.value)" />
+            <kendo-grid-spacer></kendo-grid-spacer>
+            <span> Total : {{totalUsers}}</span>
+        </ng-template>
+        <kendo-grid-column field="name" title="Name" [width]="130">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <lable>{{dataItem.name}}</lable>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+</div>
+<!-- <div *ngIf="loader" class="k-i-loading"></div> -->

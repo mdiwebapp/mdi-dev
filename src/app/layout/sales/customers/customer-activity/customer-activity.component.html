@@ -1,0 +1,80 @@
+<div class="table-responsive p-2">
+
+  <!-- <kendo-grid [data]="activity" [sortable]="true" [skip]="skip" 
+    [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+   
+    <ng-template kendoGridToolbarTemplate>
+      <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)" />
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <kendo-buttongroup selection="single">
+        <button kendoButton [toggleable]="true" class="btn-primary">Sales Call</button>
+        <button kendoButton [toggleable]="true" class="btn-success">Notes</button>
+        <button kendoButton [toggleable]="true" class="btn-info">All Jobs</button>
+        <button kendoButton [toggleable]="true" class="btn-danger">Activated Jobs</button>
+        <button kendoButton [toggleable]="true">Add Note</button>
+      </kendo-buttongroup>
+    </ng-template>
+    <kendo-grid-column field="dateCalled" title="Date Called" [width]="130">
+      <ng-template kendoGridCellTemplate let-dataItem>
+
+        <lable>{{dataItem.dateCalled | date}}</lable>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="mdiRep" title="MDI Rep" [width]="130">
+    </kendo-grid-column>
+    <kendo-grid-column field="contactType" title="Contact Type" [width]="130">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <lable class="dist-table-td bg-success" style="padding: 2px 10px;border-radius: 4px;">{{dataItem.contactType}}
+        </lable>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="activityType" title="Activity Type" [width]="130">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <lable  >{{dataItem.activityType}}
+        </lable>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <div style="float: right;margin-bottom: 5px;">
+    <button kendoButton class="callLog" (click)="calllog()" [ngClass]="iscalllog ? 'callLog' : 'noclick'">Sales Call </button>
+    <button kendoButton (click)="notes()" class="notes" [ngClass]="isnotes ? 'notes' : 'noclick'">Notes</button>
+    <button kendoButton (click)="alljobs()" class="alljobs" [ngClass]="isalljobs ? 'alljobs' : 'noclick'">All
+      Jobs</button>
+    <button kendoButton (click)="activatedjobs()" class="activatedjobs"
+      [ngClass]="isactivatedjobs ? 'activatedjobs' : 'noclick'">Activated Jobs</button>
+  </div>
+  <table class="table  mt-2">
+    <tr>
+      <th>
+        Date Called
+      </th>
+      <th>
+        M D I Rep
+      </th>
+      <th>
+        Contact Type
+      </th>
+      <th>
+        Activity Type
+      </th>
+    </tr>
+    <tr *ngFor="let d of activity"
+      [ngClass]="d.activityType == 'Call Log' ? 'callLog': 
+                                              d.activityType == 'Notes' ? 'notes':  
+                                              d.id.charAt(0) == 'J' &&  d.status == null ? 'alljobs': 
+                                              d.id.charAt(0) == 'J' &&  d.status != null ? 'activatedjobs' : 'table-dark'">
+      <td>
+        {{d.dateCalled | date}}
+      </td>
+      <td>
+        {{ d.mdiRep }}
+      </td>
+      <td>
+        {{ d.contactType }}
+      </td>
+      <td>
+        {{ d.activityType }}
+      </td>
+    </tr>
+  </table>
+</div>

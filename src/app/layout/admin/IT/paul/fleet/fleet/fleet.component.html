@@ -1,0 +1,392 @@
+<div class="card">
+  <!--HEADER-->
+  <div class="card-header d-flex flex-row justify-content-start">
+    <div class="d-flex justify-content-between">
+      <h4 class="p-r-10">Maintain Fleet</h4>
+      <div class="wp-50 p-l-10 p-r-10" *ngIf="selectedTab == 'Unit Info' && !isAdd ">
+        <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+        *ngIf="menuService.isAddRight" (click)="btnAdd();">
+        </button>
+      </div>
+      <div class="wp-50 p-l-10 p-r-10" *ngIf="selectedTab == 'Unit Info' && !isEdit">
+        <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon"  filter="button"
+        *ngIf="menuService.isEditRight"  (click)="btnEdit();">
+        </button>
+      </div>
+
+      <div class="wp-50 p-l-10 p-r-10" *ngIf="selectedTab == 'Unit Info' && !isCancel">
+        <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" (click)="btnCancel();"
+          *ngIf="!isCancel">
+        </button>
+      </div>
+      <div class="wp-50 p-l-10 p-r-10" *ngIf="selectedTab == 'Unit Info' && !isSave">
+        <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" *ngIf="!isSave"
+          (click)="onSave();">
+        </button>
+      </div>
+    </div>
+    <div class="d-flex ml-auto justify-content-between alignItemsCenter mt-1" style="width: 70%;">
+      <div class="form-control1 displayFlex alignFlexEnd">
+        <div style="border-right: 1px solid #878786;" class="m-r-20 p-r-20">
+          <button kendoTooltip title="Folder" id="btnFolder" class="btn_icon m-r-20" filter="button" #anchor
+            (click)="btnFolder()">
+          </button>
+          <button kendoTooltip title="Print" id="btnPrint" class="btn_icon" filter="button" (click)="downloadFile()">
+          </button>
+
+        </div>
+        <div *ngIf="inactivateAccess">
+          <label>Active</label>
+          <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" [(ngModel)]="inactive"
+          [disabled]="isDisabled || !menuService.isAddRight" [ngModelOptions]="{standalone: true}">
+          </kendo-switch>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--GRID-->
+  <div class="card-block table-border-style">
+    <div class="row">
+      <kendo-splitter orientation="vertical">
+        <kendo-splitter-pane>
+          <kendo-splitter>
+            <kendo-splitter-pane [collapsible]="true" size="30%">
+              <div class="pane-content">
+                <div class="col-md-12 mb-3">
+                  <div class="row no-gutters">
+                    <div class="col-md-12 mb-3">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="d-flex flex-wrap align-items-center">
+                            <div class="col-md-2 text-right">
+                              <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                              <kendo-multiselect class="form-control form-control-round" [data]="branchData"
+                                [(ngModel)]="selectedBranch" textField="value" [kendoMultiSelectSummaryTag]="1"
+                                (ngModelChange)="onFilterBranchChange($event)" #multiselect
+                                [ngModelOptions]="{standalone: true}" style="width: 300px;padding: 0px;height: 35px;"
+                                placeholder="Branch" valueField="id">
+
+                              </kendo-multiselect>
+                            </div>
+                            <div class="col-md-2 text-right pr-1 pt-1">
+                              <label class="col-form-label pr-0">Active:</label>
+                            </div>
+                            <div class="col-md-2 p-0 pt-1">
+                              <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;"
+                                [(ngModel)]="filterCollection.activeFilter" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="onActiveFilterChange($event)">
+                              </kendo-switch>
+                            </div>
+                            <div class="col-md-2 text-right pr-1 pt-1">
+                              <label class="col-form-label pr-0">Pump:</label>
+                            </div>
+                            <div class="col-md-2 p-0 pt-1">
+                              <kendo-switch onLabel="Yes" offLabel="All" class="" style="width: auto;"
+                                [(ngModel)]="filterCollection.pumpFilter" [ngModelOptions]="{standalone: true}"
+                                (valueChange)="onPumpFilterChange($event)">
+                              </kendo-switch>
+                            </div>
+                            <div class="col-md-2 text-right pr-1 pt-1">
+                              <label class="col-form-label pr-0">Yard:</label>
+                            </div>
+                            <div class="col-md-2 p-0 pt-1">
+                              <kendo-switch style="margin-left: 0px;" (valueChange)="YardFilter($event)"
+                                [(ngModel)]="filterCollection.yardFilter" onLabel="Yes" offLabel="ALL">
+                              </kendo-switch>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div style="margin-left: 13px;">
+                          <span *ngIf="filterRnD" class="filterSpan pr-3">R&D:
+                            {{filterCollection.rdFilter==true ? 'Yes' : 'No'}} <i style="margin-bottom: 4px;"
+                              class="k-icon k-icon k-i-close-outline" (click)="resetRnD();columnApply();"></i></span>
+                          <span *ngIf="filterSold" class="filterSpan pr-3">Sold:
+                            {{filterCollection.soldFilter==true ? 'Yes' : 'No'}} <i style="margin-bottom: 4px;"
+                              class="k-icon k-icon k-i-close-outline" (click)="resetSold();columnApply();"></i></span>
+                          <span *ngIf="filterMajorRepairs" class="filterSpan">Major Repairs:
+                            {{filterCollection.majorRepairsFilter==true ? 'Yes' : 'ALL'}} <i style="margin-bottom: 4px;"
+                              class="k-icon k-icon k-i-close-outline"
+                              (click)="resetMajorRepairs();columnApply();"></i></span>
+                          <span *ngIf="filterTag" class="filterSpan">Tag:
+                            {{filterCollection.tagFilter==true ? 'Green' : 'All'}} <i style="margin-bottom: 4px;"
+                              class="k-icon k-icon k-i-close-outline" (click)="resetTag();columnApply();"></i></span>
+                          <span *ngIf="filterUnAssigned" class="filterSpan">Unassigned:
+                            {{filterCollection.uaFilter==true ? 'Yes' : 'All'}} <i style="margin-bottom: 4px;"
+                              class="k-icon k-icon k-i-close-outline"
+                              (click)="resetUnAssigned();columnApply();"></i></span>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row no-gutters">
+                    <kendo-grid [data]="viewData" [selectable]="true" [navigable]="true" [resizable]="true"
+                      [ngClass]="isDisableGrid==false  ? '' :  'k-state-disabled'" [reorderable]="true"
+                      style="height: 65vh;" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                      [selectedKeys]="mySelection" [sortable]="true"
+                      [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                      (selectionChange)='editClickWithoutLoader($event.selectedRows[0].dataItem.invNumber)'
+                      (columnReorder)="reorderColumns($event)" (columnResize)="resizeColumns($event)"
+                      (change)="hideColumn()">
+                      <ng-template kendoGridToolbarTemplate>
+                        <div class="">
+                          <a #anchor (click)="onToggle()">
+                            <span class="k-icon k-i-more-vertical"></span>
+                          </a>
+                        </div>
+                        <div class="col-md-6 p-0">
+                          <kendo-textbox [(ngModel)]="searchText" class="form-control form-control-round"
+                          (keydown.enter)="onFilter()"  placeholder="Search in all columns...">
+                          </kendo-textbox>
+                        </div>
+                        <div class="col-md-1 p-0">
+                          <i class="fa fa-search fa-2x" (click)="onFilter()"></i>
+                        </div>
+                        <div class="col-md-3 p-0">
+                          Total : {{totalData}}
+                        </div>
+                      </ng-template>
+                      <kendo-grid-column *ngFor="let column of ViewColumnsFleetList" [width]="column.width"
+                        field="{{column.Name}}" title="{{column.Text}}">
+                      </kendo-grid-column>
+                    </kendo-grid>
+                    <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                      style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                      <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                        <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                        <kendo-datapager-numeric-buttons [buttonCount]="5">
+                        </kendo-datapager-numeric-buttons>
+                        <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                        <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+                          [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+                          (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+                          [valueField]="'value'">
+                        </kendo-dropdownlist>
+                      </ng-template>
+                    </kendo-datapager>
+                  </div>
+                </div>
+              </div>
+            </kendo-splitter-pane>
+            <kendo-splitter-pane>
+              <div class="col-md-12">
+                <hr>
+                <kendo-tabstrip class="custom mt-2" (tabSelect)="onTabSelect($event)" [keepTabContent]="true">
+                  <kendo-tabstrip-tab class="text-success" [title]="'Unit Info'" [selected]="true" *ngIf="isTab1">
+                    <ng-template kendoTabContent>
+                      <app-fleet-info [InvNumber]="InvNumber" (fleetEvent)="emitLoadItems()"
+                        (isDataSaved)="isDataSaved($event)"></app-fleet-info>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Service History'" *ngIf="isTab4"
+                    [disabled]="(blAdd && !isEdit) || (!blAdd && isEdit)">
+                    <ng-template kendoTabContent>
+                      <app-fleet-service-history [visible]="visible"></app-fleet-service-history>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Activity'" *ngIf="isTab5"
+                    [disabled]="(blAdd && !isEdit) || (!blAdd && isEdit)">
+                    <ng-template kendoTabContent>
+                      <app-fleet-activity></app-fleet-activity>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'Notes'" *ngIf="isTab2"
+                    [disabled]="(blAdd && !isEdit) || (!blAdd && isEdit)">
+                    <ng-template kendoTabContent>
+                      <app-fleet-notes></app-fleet-notes>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <kendo-tabstrip-tab [title]="'History'" *ngIf="isTab3"
+                    [disabled]="(blAdd && !isEdit) || (!blAdd && isEdit)">
+                    <ng-template kendoTabContent>
+                      <app-fleet-history></app-fleet-history>
+                    </ng-template>
+                  </kendo-tabstrip-tab>
+                  <!-- <kendo-tabstrip-tab [title]="'BOM'"
+                                      [disabled]="(isTab5 || blEdit || blAdd)">
+                    <ng-template kendoTabContent>
+                      <app-fleet-bom></app-fleet-bom>
+                    </ng-template>
+                  </kendo-tabstrip-tab> -->
+                </kendo-tabstrip>
+              </div>
+            </kendo-splitter-pane>
+          </kendo-splitter>
+        </kendo-splitter-pane>
+      </kendo-splitter>
+      <div class="backdrop" [style.display]="blShow ? 'block' : 'none'" style="z-index: 333333;">
+      </div>
+      <div class="custom_slider_popup" *ngIf="showFolder" style="width: 90% !important;height: 650px;">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+            <div class="content" style="float: right;">
+                <i class="fa fa-2x fa-close mr-2" (click)="showFolder=false;"></i>
+            </div> 
+            <app-networkdirectry></app-networkdirectry> 
+        </kendo-popup>
+    </div>
+      <div class="custom_slider_popup" *ngIf="blShow">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+          <div class="content">
+            <h5>Advanced Filters</h5>
+            <div class="row m-0">
+              <div class="col-md-8 p-0">
+                <div class="row no-gutters mt-1">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label">R&D<em></em>:</label>&nbsp;
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch onLabel="Yes" offLabel="No" style="width: auto;"
+                      [(ngModel)]="filterCollection.rdFilter" (valueChange)="btnRDFilter($event);">
+                    </kendo-switch>
+                  </div>
+                </div>
+                <div class="row no-gutters mt-1">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label">Sold<em></em>:</label>&nbsp;
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch onLabel="Yes" offLabel="No" style="width: auto;"
+                      [(ngModel)]="filterCollection.soldFilter" (valueChange)="btnSoldFilter($event);">
+                    </kendo-switch>
+                  </div>
+                </div>
+                <div class="row no-gutters mt-1">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">Major Repairs:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch [(ngModel)]="filterCollection.majorRepairsFilter" style="width: auto;"
+                      (valueChange)="MajorRepairsFilter($event)" onLabel="Yes" offLabel="All">
+                    </kendo-switch>
+                  </div>
+                </div>
+                <div class="row no-gutters mt-1">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">Tag:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch (valueChange)="TagFilter($event)" style="width: 85px;"
+                      [(ngModel)]="filterCollection.tagFilter" onLabel="Green" offLabel="All">
+                    </kendo-switch>
+                  </div>
+                </div>
+                <div class="row no-gutters mt-1">
+                  <div class="col-md-4 text-right pt-1">
+                    <label class="col-form-label pr-2">Unassigned:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch (valueChange)="UnassignedFilter($event)" [(ngModel)]="filterCollection.uaFilter"
+                      onLabel="Yes" offLabel="All">
+                    </kendo-switch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 p-0">
+                <div class="waves-effect waves-light" style="padding: 5px; border-radius: 5px; margin-top: 3px;">
+                  <div *ngFor="let column of tempviewColumns" class="col-xs-12 example-col">
+                    <input type="checkbox" id="{{ column.Name }}" class="k-checkbox" [disabled]="column.isDisable"
+                      [checked]="column.isCheck" [(ngModel)]="column.isCheck" (change)="hideColumn()" />
+                    <label class="k-checkbox-label" for="{{ column.Name }}">
+                      {{
+                      column.Text
+                      }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row ml-2">
+              <div class="col-md-8 p-0">
+                <div class="k-columnmenu-actions">
+                  <button class="k-button" type="button" (click)="resetpopup()">
+                    Reset
+                  </button>
+                  <button class="k-button" (click)="columnApply()" type="button">
+                    Apply
+                  </button>
+                  <button class="k-button k-primary" (click)="closepopup()" type="button">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </kendo-popup>
+      </div>
+      <kendo-dialog title="Inactive Reason" *ngIf="active" (close)="closeActiveDialog('cancel')" [minWidth]="250"
+        [width]="650">
+        <div class="row no-gutters m-0">
+          <div class="col-md-12 p-1">
+            <kendo-textarea class="form-control form-control-round" [cols]="130" [rows]="3"
+              [(ngModel)]="majorRepairNeededText" placeholder="" [ngModelOptions]="{standalone: true}">
+            </kendo-textarea>
+          </div>
+          <div class="col-md-12 p-1">
+            <div class="row no-gutters m-0">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <kendo-datepicker class="form-control form-control-round">
+                </kendo-datepicker>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+          </div>
+          <div class="col-md-12 p-1">
+            <div class="row no-gutters m-0">
+              <div class="col-md-6 p-1 text-right">
+                <label class="pr-3">Sold</label>
+              </div>
+              <div class="col-md-6 p-1">
+                <kendo-switch [(ngModel)]="soldSwitch" onLabel="Yes" offLabel="No" (valueChange)="onSoldSwitch($event)"
+                  [ngModelOptions]="{standalone: true}">
+                </kendo-switch>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 p-1" *ngIf="soldSwitchDisplay">
+            <div class="row no-gutters m-0">
+              <div class="col-md-1 p-1 text-right"><label>SO #</label></div>
+              <div class="col-md-3 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-1 p-1 text-right"><label>QB #</label></div>
+              <div class="col-md-3 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-1 p-1 text-right"><label>Price</label></div>
+              <div class="col-md-3 p-1">
+                <kendo-textbox class="form-control form-control-round" placeholder="">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+        </div>
+        <kendo-dialog-actions>
+          <button kendoButton (click)="closeActiveDialog('yes')" primary="true">Ok</button>
+        </kendo-dialog-actions>
+      </kendo-dialog>
+    </div>
+  </div>
+
+  <kendo-dialog title="Export To Excel" *ngIf="displayExcelConfirmationDialog" (close)="CloseExcelDialog('cancel')"
+    [minWidth]="250" [width]="550">
+    <div class="p-5 text-center">
+      Do you want to export all fleet info to Excel?
+    </div>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="CloseExcelDialog('Ok')" primary="true">Yes</button>
+      <button kendoButton (click)="CloseExcelDialog('No')">No</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>

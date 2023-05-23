@@ -1,0 +1,463 @@
+<div style="height: 70vh;">
+
+  <div class="register-box box-shadow-none card mb-0">
+    <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+    <form [formGroup]="form" class="cust-form">
+      <div class="card-block p-0">
+        <div class="row no-gutters">
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Vendor Name<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="vendorName"
+                  placeholder="Vendor Name" required>
+                </kendo-textbox>
+                <div class="required-text"
+                  *ngIf="form.get('vendorName').hasError('required') && form.get('vendorName').touched">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Vendor Type<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-multiselect [textField]="'value'" [valueField]="'value'" [valuePrimitive]="true" #multiselect
+                  [disabled]="isDisabled" placeholder="Vendor Type" [data]="VendorType" [filterable]="true"
+                  [(ngModel)]="value" (valueChange)="this.form.markAsDirty()" [ngModelOptions]="{standalone: true}">
+                </kendo-multiselect>
+                <div class="required-text" *ngIf="(value=='' || value==null) && saveClick==true">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-2 text-right align-self-center">
+                <label class="col-form-label pr-2">Billing Address: </label>
+              </div>
+              <div class="col-md-10 d-flex justify-content-between">
+                <kendo-expansionpanel [expanded]="isExpanded">
+                  <ng-template kendoExpansionPanelTitleDirective>
+                    <div class="header-content">
+                      <span>{{!fullAdressLable?' -- Enter an address below --':fullAdressLable}} </span>
+                    </div>
+                  </ng-template>
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                          <label class="col-form-label">Address<em></em>:</label>&nbsp;
+                        </div>
+                        <div class="col-md-9">
+                          <app-google-map-address [text]="fullAddress" [isDisabled]="this.isDisabled"
+                            (getAddress)="GetAddress($event)">
+                          </app-google-map-address>
+                          <div class="required-text"
+                            *ngIf="form.get('billingAddress_address').hasError('required') && form.get('billingAddress_address').touched">
+                            This field is required!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                      <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                          <label class="col-form-label">Address 2<em></em>:</label>&nbsp;
+                        </div>
+                        <div class="col-md-9">
+
+                          <kendo-textbox formControlName="billingAddress_address2"
+                            class="form-control form-control-round" placeholder="Address 2">
+                          </kendo-textbox>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="row no-gutters pb-2">
+                        <div class="col-md-3 text-right">
+                          <label class="col-form-label">City<em></em>:</label>&nbsp;
+                        </div>
+                        <div class="col-md-9">
+                          <kendo-textbox formControlName="billingAddress_city" class="form-control form-control-round"
+                            placeholder="City">
+                          </kendo-textbox>
+                          <div class="required-text"
+                            *ngIf="form.get('billingAddress_city').hasError('required') && form.get('billingAddress_city').touched">
+                            This field is required!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                      <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                          <label class="col-form-label">State<em></em>:</label>&nbsp;
+                        </div>
+                        <div class="col-md-9">
+                          <kendo-combobox class="form-control form-control-round" [data]="stateList"
+                            [textField]="'value'" (filterChange)="billStateFilter($event)"
+                            formControlName="billingAddress_state" [valueField]="'value'" [filterable]="true"
+                            [valuePrimitive]="true">
+                          </kendo-combobox>
+                          <div class="required-text"
+                            *ngIf="form.get('billingAddress_state').hasError('required') && form.get('billingAddress_state').touched">
+                            This field is required!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="row no-gutters">
+                        <div class="col-md-3 text-right">
+                          <label class="col-form-label">ZIP<em></em>:</label>&nbsp;
+                        </div>
+                        <div class="col-md-9">
+                          <div class="row no-gutters">
+                            <kendo-textbox formControlName="billingAddress_zip" class="form-control form-control-round"
+                              placeholder="ZIP">
+                            </kendo-textbox>
+                            <div class="required-text"
+                              *ngIf="form.get('billingAddress_zip').hasError('required') && form.get('billingAddress_zip').touched">
+                              This field is required!
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </kendo-expansionpanel>
+                <i (click)="copyContent()" class="k-icon k-i-globe m-10 align-self-center"
+                  style="font-size: 20px;margin-left: 10px;margin-top: 15px; cursor:pointer !important;"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Phone<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-maskedtextbox class="form-control form-control-round" formControlName="phone" placeholder="Phone"
+                  (change)="checkPhoneNo($event.target.value)" [mask]="mask">
+                </kendo-maskedtextbox>
+                <div class="required-text" *ngIf="form.get('phone').hasError('required') && form.get('phone').touched">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Terms<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <!-- <kendo-textbox class="form-control form-control-round" formControlName="terms" placeholder="Terms">
+              </kendo-textbox> -->
+                <kendo-combobox class="form-control form-control-round" [data]="TermsData" [suggest]="true"
+                  [textField]="'value'" formControlName="terms" [valueField]="'value'" [filterable]="true"
+                  [valuePrimitive]="true" (filterChange)="termshandleFilter($event)">
+                </kendo-combobox>
+                <div class="required-text" *ngIf="form.get('terms').hasError('required') && form.get('terms').touched">
+                  This field is required!
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Fax<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" formControlName="fax" placeholder="Fax">
+                </kendo-textbox>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">Email<em></em>:</label>
+              </div>
+              <div class="col-md-8">
+                <kendo-textbox class="form-control form-control-round" style="width: 87% !important;"
+                  formControlName="email" placeholder="email">
+                </kendo-textbox>
+                <a href="mailto:{{form.value.email}}" id="hlEmail">
+                  <i class="k-icon k-i-email m-10 align-self-center"
+                    style="font-size: 20px;margin-left: 10px;margin-top: 15px;"></i>
+                </a>
+
+                <div class="required-text" *ngIf="form.get('email').hasError('required') && form.get('email').touched">
+                  This field is required!
+                </div>
+                <div class="required-text" *ngIf="form.get('email').hasError('email')">
+                  This field is not valid value!
+                </div>
+                <div class="required-text" *ngIf="form.get('email').hasError('maxlength') && form.get('email').touched">
+                  Maximum length is 50 charecter.
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters">
+              <div class="col-md-4 text-right">
+                <label class="col-form-label pr-2">
+                  National Vendor<em></em>:
+                </label>
+              </div>
+              <div class="col-md-8">
+                <kendo-switch class="" formControlName="isNational" onLabel="Yes" offLabel="No">
+                </kendo-switch>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6 mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4 text-right">
+              <label class="col-form-label pr-2">QB Name GPC<em></em>:</label>
+            </div>
+            <div class="col-md-8">
+              <kendo-textbox class="form-control form-control-round" formControlName="qbNameGPC"
+                placeholder="QB Name GPC">
+              </kendo-textbox>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4 text-right">
+              <label class="col-form-label pr-2">Comments<em></em>:</label>
+            </div>
+            <div class="col-md-8">
+              <kendo-textbox class="form-control form-control-round" formControlName="comments" placeholder="Comments">
+              </kendo-textbox>
+            </div>
+          </div>
+        </div> -->
+          <kendo-expansionpanel [expanded]="isExpanded" [disabled]="isMoreDisabled" id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+              <div class="header-content">
+                More Info
+              </div>
+            </ng-template>
+            <div class="row">
+              <!-- <app-vendor-more-info></app-vendor-more-info> -->
+              <div class="col-md-6 mb-3">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">QB Name<em></em>:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-textbox class="form-control form-control-round" formControlName="moreInfo_qbName"
+                      placeholder="QB Name MDI">
+                    </kendo-textbox>
+                    <div class="required-text"
+                      *ngIf="form.get('moreInfo_qbName').hasError('required') && form.get('moreInfo_qbName').touched">
+                      This field is required!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">Account #<em></em>:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-textbox class="form-control form-control-round" formControlName="moreInfo_accountNumber"
+                      placeholder="Account Number">
+                    </kendo-textbox>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">Credit Limit<em></em>:</label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-textbox class="form-control form-control-round" formControlName="moreInfo_creditLimit"
+                      placeholder="Credit Limit">
+                    </kendo-textbox>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">
+                      Portal Info<em></em>:
+                    </label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-textbox formControlName="moreInfo_portalInfo" class="form-control form-control-round"
+                      placeholder="Portal Info">
+                    </kendo-textbox>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">
+                      Same as Billing<em></em>:
+                    </label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch class="" (valueChange)="cloneAddress($event)" [(ngModel)]="isClone"
+                      formControlName="isClone" onLabel="Yes" offLabel="No">
+                    </kendo-switch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">
+                      Default
+                      Shipper<em></em>:
+                    </label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-combobox class="form-control form-control-round" [data]="shippingData" [textField]="'value'"
+                      formControlName="moreInfo_defaultShipper" [valueField]="'value'" [filterable]="true"
+                      (filterChange)="defaultShipperFilter($event)" [valuePrimitive]="true">
+                    </kendo-combobox>
+                    <!-- <kendo-dropdowntree kendoDropDownTreeExpandable
+                          [kendoDropDownTreeHierarchyBinding]="shippingData" textField="text"
+                          valueField="id" childrenField="items" class="furniture">
+                      </kendo-dropdowntree> -->
+                    <!-- <kendo-textbox class="form-control form-control-round"
+                          formControlName="defaultShipper" placeholder="Default Shipper">
+                      </kendo-textbox> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="row no-gutters">
+                  <div class="col-md-2 text-right align-self-center">
+                    <label class="col-form-label pr-2">Shipping Address: </label>
+                  </div>
+                  <div class="col-md-10 d-flex justify-content-between">
+                    <kendo-expansionpanel [expanded]="isExpanded">
+                      <ng-template kendoExpansionPanelTitleDirective>
+                        <div class="header-content">
+                          <span>{{!shipfullAdressLable?' -- Enter an address below --':shipfullAdressLable}} </span>
+                        </div>
+                      </ng-template>
+                      <div class="row">
+
+                        <div class="col-md-12 mb-2">
+                          <div class="row no-gutters">
+                            <div class="col-md-3 text-right">
+                              <label class="col-form-label">Address<em></em>:</label>&nbsp;
+                            </div>
+                            <div class="col-md-9">
+                              <app-google-map-address [text]="shipfullAddress" [isDisabled]="this.isDisabled"
+                                (getAddress)="shipGetAddress($event)">
+                              </app-google-map-address>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                          <div class="row no-gutters">
+                            <div class="col-md-3 text-right">
+                              <label class="col-form-label">Address 2<em></em>:</label>&nbsp;
+                            </div>
+                            <div class="col-md-9">
+
+                              <kendo-textbox formControlName="shippingAddress_address2"
+                                class="form-control form-control-round" placeholder="Address 2">
+                              </kendo-textbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="row no-gutters pb-2">
+                            <div class="col-md-3 text-right">
+                              <label class="col-form-label">City<em></em>:</label>&nbsp;
+                            </div>
+                            <div class="col-md-9">
+                              <kendo-textbox formControlName="shippingAddress_city"
+                                class="form-control form-control-round" placeholder="City">
+                              </kendo-textbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                          <div class="row no-gutters">
+                            <div class="col-md-3 text-right">
+                              <label class="col-form-label">State<em></em>:</label>&nbsp;
+                            </div>
+                            <div class="col-md-9">
+                              <kendo-combobox class="form-control form-control-round" [data]="stateList"
+                                (filterChange)="shippstateFilter($event)" [textField]="'value'"
+                                formControlName="shippingAddress_state" [valueField]="'value'" [filterable]="true"
+                                [valuePrimitive]="true">
+                              </kendo-combobox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="row no-gutters">
+                            <div class="col-md-3 text-right">
+                              <label class="col-form-label">ZIP<em></em>:</label>&nbsp;
+                            </div>
+                            <div class="col-md-9">
+                              <div class="row no-gutters">
+                                <kendo-textbox formControlName="shippingAddress_zip"
+                                  class="form-control form-control-round" placeholder="ZIP">
+                                </kendo-textbox>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </kendo-expansionpanel>
+
+                    <i (click)="copyContent()" class="k-icon k-i-globe m-10 align-self-center"
+                      style="font-size: 20px;margin-left: 10px;margin-top: 15px; cursor:pointer !important;"></i>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" *ngIf="isSSGRight">
+                <div class="row no-gutters">
+                  <div class="col-md-4 text-right">
+                    <label class="col-form-label pr-2">
+                      SSG Vendor<em></em>:
+                    </label>
+                  </div>
+                  <div class="col-md-8">
+                    <kendo-switch class="" [(ngModel)]="ssgVendor" formControlName="ssg" onLabel="Yes" offLabel="No">
+                    </kendo-switch>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+          </kendo-expansionpanel>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

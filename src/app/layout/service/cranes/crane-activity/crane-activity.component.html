@@ -1,0 +1,135 @@
+<form [formGroup]="activityForm">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="text-center">Monthly Inspection</h4>
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'monthly')"
+                [data]="monthlyInspections" [sort]="" (sortChange)="onSortChange($event,'personalTime')"
+                kendoGridSelectBy [selectedKeys]="monthlySelection" [sortable]="true"
+                (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 25vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column field="insDate" title="Inspection Date" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.inspDate | date: 'MM/dd/yyyy'}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="inspBy" title="Inspected By" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.inspBy}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+            <div class="mt-2">
+                <label>Inspection Date:</label>
+                <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                    formControlName="inspDate" [disabled]="!disableCranes">
+                </kendo-datepicker>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="text-center">Annual Inspection</h4>
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event, 'annual')"
+                [data]="annualInspections" [sort]="annualInspetionSort"
+                (sortChange)="onSortChange($event,'annualnspection')" kendoGridSelectBy [selectedKeys]="annualSelection"
+                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 25vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column field="insDate" title="Inspection Date" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.inspDate | date: 'MM/dd/yyyy'}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="inspBy" title="Inspected By" [width]="100">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>
+                            {{dataItem.inspBy}}
+                        </lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+            <div class="mt-2">
+                <label>Inspected by:</label>
+                <button class="k-button w-100 text-ce" type="button" style="font-size: 12px;"
+                    (click)="onHandleOperation('inspected')" [disabled]="!disableCranes">Selected By:
+                    {{activityForm.get('inspBy').value}}</button>
+            </div>
+            <div class="form-control1 displayFlex alignFlexEnd mt-2">
+                <label>Annual Inspection</label>
+                <kendo-switch onLabel="Yes" offLabel="No" class="" style="width: auto;" formControlName="annual"
+                    [disabled]="!disableCranes">
+                </kendo-switch>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <div class="col-md-3">
+                <label class="col-form-labels">Note:</label>
+            </div>
+            <div class="col-md-12">
+                <kendo-textarea [cols]="130" [rows]="3" class="form-control form-control-round" formControlName="note"
+                    [disabled]="!disableCranes">
+                </kendo-textarea>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row justify-content-center mt-2">
+        <div class="col-md-6">
+            <button class="k-button w-100 text-ce" type="button" style="font-size: 12px;"
+                (click)="onHandleOperation('submit')">SUBMIT</button>
+        </div>
+    </div> -->
+</form>
+
+<kendo-dialog title="Employees" *ngIf="isInspectdVisible" (close)="onHandleOperation('inspected')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="inspectedByfilter"
+                        class="form-control form-control-round" placeholder=""
+                        (input)="onFilterInspectedBy($event.target.value)" (keydown.enter)="$event.preventDefault()">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{inspectedData.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'inspected')"
+                [data]="inspectedData" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="employeeSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 50vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <kendo-grid-column *ngFor="let column of inspectionColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('confirm')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

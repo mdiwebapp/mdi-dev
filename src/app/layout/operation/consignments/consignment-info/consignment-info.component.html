@@ -1,0 +1,115 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Consignment Jobs</h4>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="row">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="35%">
+                            <div class="pane-content">
+                                <div class="row no-gutters m-3">
+                                    <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                        [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                        (selectionChange)="onSelectionChange($event.selectedRows[0].dataItem)"
+                                        [data]="jobs" [sort]="sort" (sortChange)="onSortChange($event)"
+                                        kendoGridSelectBy [selectedKeys]="selections" [sortable]="true"
+                                        (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 74vh;"
+                                        (dataStateChange)="onDataStateChange($event)"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                        <ng-template kendoGridToolbarTemplate>
+                                            <!-- <div class="example-config">
+                                                <a #anchor (click)="onToggle()">
+                                                    <span class="k-icon k-i-more-vertical"></span>
+                                                </a>
+                                            </div> -->
+                                            <input placeholder="Search in all columns..." kendoTextBox class="col-md-8"
+                                                (change)="onFilter($event.target.value)" />
+                                            <kendo-grid-spacer></kendo-grid-spacer>
+                                            <i class="fa fa-search" (click)="loadItems();"></i>
+                                            <span> Total : {{totalData}}</span>
+                                            <kendo-grid-spacer></kendo-grid-spacer>
+                                        </ng-template>
+
+                                        <kendo-grid-column *ngFor="let column of jobColumns" [width]="column.width"
+                                            field="{{column.Name}}" title="{{column.Text}}">
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                    <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip"
+                                        style="width: 100% !important;" (pageChange)="onPageChange($event)">
+                                        <ng-template kendoDataPagerTemplate let-totalPages="totalPages"
+                                            let-currentPage="currentPage">
+                                            <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                                            <kendo-datapager-numeric-buttons [buttonCount]="5">
+                                            </kendo-datapager-numeric-buttons>
+                                            <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+
+                                        </ng-template>
+                                    </kendo-datapager>
+                                    <kendo-grid *ngIf="isInvoiceVisible" [selectable]="true" [navigable]="true"
+                                        [resizable]="true" [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                        (selectionChange)="onSelectionChange($event)" [data]="subinvoiceData"
+                                        [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                                        [selectedKeys]="selections" [sortable]="true"
+                                        (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                        (dataStateChange)="onDataStateChange($event)"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                        <kendo-grid-column *ngFor="let column of subinvoiceColumns"
+                                            [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                        </kendo-grid-column>
+
+                                    </kendo-grid>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane>
+                            <div class="col-md-12 pane-content">
+                                <hr />
+                                <kendo-tabstrip class="custom mt-2" (tabSelect)="onTabChange($event)">
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Inventory'" [selected]="true"
+                                        *ngIf="!isTab1">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-inventory [jobs]="jobs"></app-consignment-inventory>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Invoices'" *ngIf="!isTab2">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-invoice></app-consignment-invoice>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <!-- <kendo-tabstrip-tab class="text-success" [title]="'Pricing'">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-pricing></app-consignment-pricing>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab> -->
+                                    <kendo-tabstrip-tab class="text-success" [title]="'Reports'" *ngIf="!isTab3">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-reports></app-consignment-reports>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab [title]="'Notes'" *ngIf="!isTab4">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-notes [jobNumber]="jobNumber"></app-consignment-notes>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab>
+                                    <!-- <kendo-tabstrip-tab [title]="'History'" *ngIf="!isTab5">
+                                        <ng-template kendoTabContent>
+                                            <app-consignment-history [jobNumber]="jobNumber"></app-consignment-history>
+                                        </ng-template>
+                                    </kendo-tabstrip-tab> -->
+                                </kendo-tabstrip>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </div>
+    </div>
+</div>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

@@ -1,0 +1,469 @@
+<form [formGroup]="form" class="cust-form">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row-mt-2">
+        <button [disabled]="isDisabled" class="k-button col-md-12 w-100" type="button" style="font-size: 12px"
+          (click)="onHandleOperations('account')">
+          Account: {{form.get('employeeAccount').value}}
+        </button>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <button class="k-button col-md-12 w-100" type="button" [disabled]="isDisabled" style="font-size: 12px"
+            (click)="onHandleOperations('employer')">
+            Employer: {{form.get('employer').value}}
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button class="k-button col-md-12 w-100" type="button" [disabled]="isDisabled" style="font-size: 12px"
+            (click)="onHandleOperations('department')">
+            Department: {{form.get('department').value}}
+          </button>
+        </div>
+      </div>
+      <div class="mt-2">
+        <button class="k-button col-md-12 w-100" type="button" [disabled]="isDisabled" style="font-size: 12px"
+          (click)="onHandleOperations('title')">
+          Title: {{titles.length > 1 ? form.get('title').value + " +" : form.get('title').value}}
+        </button>
+      </div>
+      <div class="mt-2">
+        <button class="k-button col-md-12 w-100 mt-2" type="button" [disabled]="isDisabled" style="font-size: 12px"
+          *ngIf="!isADPVisible" (click)="onHandleOperations('adp')"
+          [ngStyle]="allButtonadpNumber( form.get('adpNumber')?.value, 'color')">
+          ADP#: {{allButtonadpNumber( form.get('adpNumber')?.value)}}
+        </button>
+        <div class="row" *ngIf="isADPVisible">
+          <div class="col-md-9 mt-1">
+            <kendo-textbox formControlName="adpNumber">
+            </kendo-textbox>
+          </div>
+          <div class="col-md-3">
+            <button class="k-button col-md-12" type="button" style="font-size: 12px"
+              (click)="onHandleOperations('adp')">
+              OK
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-6">
+      <button [disabled]="isDisabledEVerify" class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+        (click)="onHandleOperations('e-verify')" *ngIf="!isVerifyContentVisible"
+        [ngStyle]="allButtonQB( form.get('i9Completed')?.value, 'color')">E-Verify
+        Completed: {{form.get('i9Completed').value== true ? (form.get('i9Date').value | date: 'MM/dd/yyyy') :
+        eVerifyButton(form.get('i9Completed')?.value)}}
+      </button>
+
+      <div class="row no-gutters" *ngIf="isVerifyContentVisible">
+        <div class="col-md-9 mt-1">
+          <kendo-textarea [disabled]="isDisabledI9Comment" formControlName="i9Comment">
+          </kendo-textarea>
+          <!-- <label class="pr-2">Completed by on {{(form.get('i9Date').value | date: 'MM/dd/yyyy')}}</label> -->
+        </div>
+        <div class="col-md-3 mt-1"><button class="k-button w-100" type="button" style="font-size: 12px;"
+            (click)="onHandleOperations('e-verify-confirm-i9Comment-close')">OK</button>
+        </div>
+      </div>
+
+      <button class="k-button col-md-12 w-100 mt-2" type="button" style="font-size: 12px;" *ngIf="!isQBRepVisible"
+        [disabled]="isDisabled" (click)="onHandleOperations('QBRep')"
+        [ngStyle]="allButtonQB( form.get('qbRep')?.value, 'color')">QB
+        Rep: {{allButtonQB( form.get('qbRep')?.value)}}
+      </button>
+      <div class="row" *ngIf="isQBRepVisible">
+        <div class="col-md-9 mt-1">
+          <kendo-textbox formControlName="qbRep">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+            (click)="onHandleOperations('QBRep')">OK</button>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="pr-2">Account Manager:</label>
+            <kendo-switch onLabel="Yes" offLabel="No" formControlName="accountManager">
+            </kendo-switch>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-6">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="pr-2">Union Labor:</label>
+            <kendo-switch onLabel="Yes" offLabel="No" formControlName="unionLabor">
+            </kendo-switch>
+          </div>
+        </div> -->
+        <div class="col-md-6">
+          <div style="margin-top: -8px;" class="d-flex justify-content-between align-items-center">
+            <button [disabled]="isDisableSubUnionLabor" class="k-button col-md-12 w-100 mt-2" type="button"
+              style="font-size: 12px;" *ngIf="disableUnionLabor"
+              [ngStyle]="allButtonQB( form.get('unionLabor')?.value, 'color')"
+              (click)="onChangeUnionButton($event)">Union Labor: {{otherColorInfo( form.get('unionLabor')?.value)}}
+            </button>
+
+            <div *ngIf="disableSubUnionLabor">
+              <div>
+                <button [disabled]="isDisableSubUnionLabor" class="k-button col-md-12 w-100 mt-2" type="button"
+                  style="font-size: 12px; padding-inline: 5px;" *ngIf="disableSubUnionLabor"
+                  [ngStyle]="allButtonQB( form.get('unionLabor')?.value, 'color')"
+                  (click)="onChangeUnionSubButtonEvent($event)">Union Labor: {{otherColorInfo(
+                  form.get('unionLabor')?.value)}}
+                </button>
+
+              </div>
+            </div>
+            <div>
+              <div *ngIf="disableYardBtn">
+                <button [disabled]="isDisableSubUnionLabor" class="k-button col-md-12 w-100 mt-2" type="button"
+                  (click)="onClickYardeeBtn($event)" style="font-size: 12px; padding-inline: 30px"
+                  *ngIf="disableSubUnionLabor">Yard EE: {{form.get('yardEmployee').value}}
+                </button>
+              </div>
+            </div>
+            <!-- <button class="k-button col-md-12 w-100" type="button" [disabled]="isDisabled" style="font-size: 12px"
+            (click)="onHandleOperations('department')">
+            Department: {{form.get('department').value}}
+          </button> -->
+            <div class="col-md-9 mt-1" *ngIf="disableYardEEtext">
+              <kendo-textbox formControlName="yardEmployee" (keydown.enter)="disableTextbox(event)">
+              </kendo-textbox>
+            </div>
+            <!-- <div *ngIf="unionLaborVisible" style="width: 110px; height: 27px;">
+              <kendo-textbox style="width: 103px;" >
+              </kendo-textbox>
+            </div>
+            <div *ngIf="unionLaborVisible" class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+              >OK</button> -->
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="pr-2">Contract Labor:</label>
+            <kendo-switch onLabel="Yes" offLabel="No" formControlName="contractLabor">
+            </kendo-switch>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div style="margin-top: -8px;" class="d-flex justify-content-between align-items-center">
+            <button [disabled]="isDisabledHourlyEE" class="k-button col-md-12 w-100 mt-2" type="button"
+              style="font-size: 12px;" *ngIf="disableHourlyButton"
+              [ngStyle]="otherColorInfo( form.get('hourly')?.value, 'color')"
+              (click)="onChangeHourlyButtonEvent($event)">Hourly
+              EE: {{otherColorInfo( form.get('hourly')?.value)}}
+            </button>
+            <div class="row" *ngIf="isHourlyVisible">
+              <div class="col-md-9 mt-1">
+                <kendo-textbox formControlName="hourlyRate">
+                </kendo-textbox>
+              </div>
+              <div class="col-md-3 mt-1"><button class="k-button col-md-12" type="button" style="font-size: 12px;"
+                  (click)="onButton()">OK</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+<kendo-dialog title="Select Account" *ngIf="isAccountVisible" (close)="onHandleOperations('account')" [minWidth]="250"
+  [height]="500" [width]="550">
+  <div class="row m-0">
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+          Search
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" placeholder=""
+            (input)="accounthandleFilter($event.target.value)">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+          Count: {{accountList.length}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'account')" [data]="accountList"
+        [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+        [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+        <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</kendo-dialog>
+<kendo-dialog title="Select Employer" *ngIf="isEmployerVisible" (close)="onHandleOperations('employer')"
+  [minWidth]="250" [height]="500" [width]="550">
+  <div class="row m-0">
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+          Search
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" placeholder="">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+          Count: {{employerList.length}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'employer')"
+        [data]="employerList" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+        [selectedKeys]="employeerEelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+        <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</kendo-dialog>
+<kendo-dialog title="Select Employer" *ngIf="isEmployerVisible" (close)="onHandleOperations('employer')"
+  [minWidth]="250" [height]="500" [width]="550">
+  <div class="row m-0">
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+          Search
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" placeholder=""
+            (input)="handleFilter($event.target.value)">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+          Count: {{employerList.length}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'employer')"
+        [data]="employerList" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+        [selectedKeys]="employeerEelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+        <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select a Department" *ngIf="isDepartmentVisible" (close)="onHandleOperations('department')"
+  [minWidth]="250" [height]="500" [width]="550">
+  <div class="row m-0">
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+          Search
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" placeholder=""
+            (input)="handleFilterDepartment($event.target.value)">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+          Count: {{department.length}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'department')"
+        [data]="department" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+        [selectedKeys]="departmentSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+        style="height: 75vh;" (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+        <kendo-grid-column *ngFor="let column of " [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</kendo-dialog>
+
+<kendo-dialog title="Employee Titles" *ngIf="isTitleVisible" (close)="onHandleOperations('titleClose')" [minWidth]="250"
+  [width]="550">
+  <div class="row m-0  justify-content-center">
+    <div class="d-flex align-items-center">
+      <h4>Employee Titles - {{employeeForm.get('firstName').value}} {{employeeForm.get('lastName').value}}</h4>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid (dblclick)="rowDbClick($event)" [selectedKeys]="employeeTitlesSelections" [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'title')" [data]="titles"
+        [sort]="sort" (sortChange)="onSortChange($event)" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+        [skip]="skip" style="height:35vh;" (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <kendo-grid-column *ngFor="let column of titletypecolumns" [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters mt-4">
+        <div class="col-md-6 p-1">
+          <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+            (click)="onHandleOperations('addTitle')">{{'ADD TITLE'}}</button>
+        </div>
+        <div class="col-md-6 p-1">
+          <button class="k-button col-md-12 w-100" type="button" style="font-size: 12px;"
+            (click)="employeeTitlespupop($event, 'title')">DONE</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Title" *ngIf="isAddTitleVisible" (close)="onHandleOperations('addTitle')" [minWidth]="250"
+  [width]="550">
+  <div class="row m-0">
+    <div class="col-md-12 m-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-3 p-1">
+          Search
+        </div>
+        <div class="col-md-6 p-1">
+          <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round" placeholder=""
+            (input)="onSearchTitles($event)">
+          </kendo-textbox>
+        </div>
+        <div class="col-md-3 p-1 text-right">
+          Count: {{titleList.length}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 m-0">
+      <kendo-grid (dblclick)="titlesDbClick($event)" [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+        (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'addTitle')" [data]="titleList"
+        [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="titleSelections"
+        [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 75vh;"
+        (dataStateChange)="onDataStateChange($event)"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+        <kendo-grid-column *ngFor="let column of titletypecolumns" [width]="column.width" field="{{column.Name}}"
+          title="{{column.Text}}">
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</kendo-dialog>
+<kendo-dialog title="MDI3.0" *ngIf="iseVerifyCompletedVisible" (close)="onHandleOperations('e-verify')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    Did you put the filled out I-9 form in the employee's I-9 folder?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('sub-verify')">Yes</button>
+    <button kendoButton (click)="onVerifyI9Close()">{{'No'}}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="MDI3.0" *ngIf="isSubVerifyVisible " (close)="onHandleOperations('sub-verify')" [minWidth]="250"
+  [width]="450">
+  <p style="margin: 30px; text-align: center;">
+    Use today's date for I-9 completion?
+  </p>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('e-verify-confirm')">Yes</button>
+    <button kendoButton (click)="onVerifyClose()">No</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="{{employeeForm.get('lastName').value }} {{employeeForm.get('firstName').value}} I-9 Info"
+  *ngIf="isEverifyConfirmVisible" (close)="onHandleOperations('e-verify-confirm')" [minWidth]="250" [width]="450">
+  <p>I-9 Notes</p>
+  <kendo-textbox [(ngModel)]="i9Notes"></kendo-textbox>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('e-verify-confirm-close')">OK</button>
+    <button kendoButton (click)="onHandleOperations('e-verify-confirm-i9Notes-close')">Cancel</button>
+
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog
+  title="Select i-9 completon date for {{employeeForm.get('firstName').value}} {{employeeForm.get('lastName').value}}."
+  *ngIf="isEverifyCalendar" (close)="onHandleOperations('everifyCalendar')" [minWidth]="600" [width]="1000">
+  <kendo-scheduler [selectedDate]="selectedDate" class="schedule-calender" (slotClick)="slotClickHandler($event)"
+    (slotDblClick)="slotDblClickHandler($event)" [kendoSchedulerBinding]="events" style="height: 70h;">
+    <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate">
+      <ng-template kendoSchedulerMonthDaySlotTemplate let-date="date" ng-disabled="all">
+        <div style="background-color: inherit;"> {{getCalendarDate(date)}}</div>
+      </ng-template>
+      <div kendoschedulertoolbarnavigation class="d-flex justify-content-center w-100">
+        <div class=" row justify-content-center">
+          <div class="col-md-4 d-flex justify-content-center">
+            <button kendoButton class="k-nav-today k-button" icon="arrow-60-left" (click)="setPrevMonth()"></button>
+
+            <div class="d-flex justify-content-between align-items-center pl-1 pr-1">
+              <kendo-datepicker class="scheduler-date form-control form-control-round"
+                (valueChange)="datechange($event)" style="width: 5% !important;" [(value)]="datepickerdate"
+                calendarType="classic" bottomView="year" topView="decade" format="MMMM yyyy">
+              </kendo-datepicker>
+              <span class="pt-1 pl-1" style="font-weight: bold;">
+                {{selectedDate | date:
+                'MMMM yyyy'}}
+              </span>
+            </div>
+            <div kendoschedulertoolbarnavigation style="display: flex;justify-content: end;">
+              <button kendoButton class="k-nav-today k-button" icon="arrow-60-right" (click)="setNextMonth()"></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+    <kendo-scheduler-month-view> </kendo-scheduler-month-view>
+  </kendo-scheduler>
+  <div>
+    <lable>{{subVerifyDate}}</lable>
+    <button (click)="onHandleOperations('completeionSelectedDate')" style="margin-left: 770px;
+  font-size: 16px;
+  /* padding: 4px; */
+  padding-top: 6px;
+  margin-top: 3px;
+  width: 113px;" class="k-button" type="button">Select</button>
+  </div>
+  <div>
+  </div>
+</kendo-dialog>
+<kendo-dialog title="Exit?" *ngIf="isI9DateAlert" (close)="onHandleOperations('alertClose')" [minWidth]="250"
+  [width]="450">
+  <p>No Date Will Be Selected</p>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('calanderExit')">OK</button>
+    <button kendoButton (click)="onHandleOperations('calanderCancle')">Cancel</button>
+
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="MDI3.0" *ngIf="isTitlesAlert" (close)="onHandleOperations('titleAlertClose')" [minWidth]="250"
+  [width]="450">
+  <p>Each employee must have at least one title</p>
+  <kendo-dialog-actions>
+    <button kendoButton primary="true" (click)="onHandleOperations('titleExit')">OK</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

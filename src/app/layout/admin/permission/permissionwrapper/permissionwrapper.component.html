@@ -1,0 +1,42 @@
+<div class="card">
+
+  
+    <div class="card-block table-border-style pb-0">
+        <kendo-splitter orientation="vertical">
+            <kendo-splitter-pane>
+                <kendo-splitter>
+                    <kendo-splitter-pane [collapsible]="true">
+                        <div class="card-header titleHeader">
+                            <h4 class="col-md-12">Manage Department</h4>
+                        </div>
+                        <div class="col-md-12 pane-content">
+                            <div class="table-responsive">
+                                <app-permissiondepartment></app-permissiondepartment>
+                            </div>
+                        </div>
+                    </kendo-splitter-pane>
+                    <kendo-splitter-pane [collapsible]="true" size="35%">
+                        <div class="card-header titleHeader">
+                            <h4 class="col-md-12">Manage Module</h4>
+                        </div>
+                        <div class="col-md-12 pane-content">
+                            <div class="table-responsive">
+                                <app-permissionmodule></app-permissionmodule>
+                            </div>
+                        </div>
+                    </kendo-splitter-pane>
+                    <kendo-splitter-pane [collapsible]="true" size="40%">
+                        <div class="card-header titleHeader">
+                            <h4 class="col-md-12">Manage Module Tab</h4>
+                        </div>
+                        <div class="col-md-12 pane-content">
+                            <div class="table-responsive">
+                                <app-permissionmoduletab></app-permissionmoduletab>
+                            </div>
+                        </div>
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </kendo-splitter-pane>
+        </kendo-splitter>
+    </div>
+</div>

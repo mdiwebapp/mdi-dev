@@ -1,0 +1,73 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Company Forms</h4>
+    </div>
+    <div class="card-block table-border-style pb-10">
+        <kendo-splitter orientation="vertical">
+            <kendo-splitter-pane>
+                <kendo-splitter>
+                    <kendo-splitter-pane [collapsible]="true" size="30%">
+                        <div class="pane-content">
+                            <!-- {{expandedKeys.join(",")}} -->
+                            <div class="table-responsive">
+                                
+                                <!-- <span> Total : {{data?.length}}</span> -->
+                                <ul class="a">
+                                    <li *ngFor="let item of lstItems" style="padding: 5px;">
+                                        {{item.directoryName}}
+                                    </li>
+                                </ul>
+                                <kendo-treeview [nodes]="data" textField="name" [filterable]="false"
+                                    (filterChange)="handleFilter($event)" kendoTreeViewHierarchyBinding
+                                    kendoTreeViewExpandable [expandBy]="'name'" [(expandedKeys)]="expandedKeys"
+                                    childrenField="items">
+                                    <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                                        <div style="width: 100%;">
+                                            <span [ngClass]="iconClass(dataItem)"></span>
+                                            <lable *ngIf="dataItem.fileType=='File'">
+                                                <a [href]="" (click)="clickFile(dataItem)"
+                                                    style="color: rgb(76, 76, 235)">{{dataItem.name}}</a>
+
+                                            </lable>
+                                            <lable *ngIf="dataItem.fileType=='Directory'">
+                                                {{dataItem.name}}
+                                            </lable>
+                                            <!-- <span title="Download" style="float: right;margin-right: 5px;cursor: pointer;" *ngIf="dataItem.name!='All Files' && dataItem.fileType=='File'">                                            
+                                            <a [href]="dataItem.filePath" download><i class="fa fa-1x fa-download"></i></a>
+                                        </span>
+                                        <span title="Preivew" style="float: right;margin-right: 5px;cursor: pointer;" *ngIf="dataItem.name!='All Files'  && dataItem.fileType=='File'"
+                                        (click)="previewSelectedFile(dataItem)">
+                                             <i class="fa fa-1x fa-eye"></i>
+                                        </span> -->
+
+                                        </div>
+                                        <!-- (nodeClick)="onNodeClick($event)"
+                                             <div (click)="handleCollapse(dataItem)" style="width: 100%;">
+        <span [ngClass]="iconClass(dataItem)"></span>
+        {{ dataItem.name }}
+        <span (click)="bindAddFolder(dataItem)" *ngIf="dataItem.name!='All Files'"
+            style="float: right;">
+            <i class="fa fa-1x fa-pencil"></i></span>
+    </div> -->
+                                    </ng-template>
+                                </kendo-treeview>
+                                <kendo-contextmenu #treemenu [items]="items" (select)="previewFile($event);">
+                                </kendo-contextmenu>
+                            </div>
+                        </div>
+                    </kendo-splitter-pane>
+                    <kendo-splitter-pane>
+                        <img id="image" [src]="UserPhoto">
+
+                        <!-- <div class="pane-content" style="background-color:lightgray;">
+                            <ngx-doc-viewer [url]="DemoDoc" [viewer]="viewer" *ngIf="!isImage"
+                                style="width:100%;height:100vh;"></ngx-doc-viewer>
+                            <img [src]="DemoDoc" style="width: 100%;" *ngIf="isImage">
+                        </div> -->
+
+                    </kendo-splitter-pane>
+                </kendo-splitter>
+            </kendo-splitter-pane>
+        </kendo-splitter>
+    </div>
+</div>

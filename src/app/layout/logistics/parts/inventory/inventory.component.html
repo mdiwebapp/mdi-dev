@@ -1,0 +1,735 @@
+<div style="height: 70vh;">
+
+    <h5>Quantities <i class="fa fa-question-circle" aria-hidden="true" #anchor (click)="showQues=true"></i></h5>
+    <div class="mt-1">
+
+        <kendo-tabstrip [tabPosition]="position">
+            <kendo-tabstrip-tab title="On Hand: {{onHandQty}}" [selected]="true">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="onHandQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="onHandQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="Available: {{availableQty}}">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="availableQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="availableQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="Required: {{requireQty}}" *ngIf="partType=='Service' || partType=='GPC'">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="requireQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="requireQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="On Order: {{onOrderQty}}">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="onOrderQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="onOrderQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="Allocated: {{allocatedQty}}">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="allocatedQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="allocatedQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="Back Ordered: {{backOrderQty}}" *ngIf="partType=='Service' || partType=='GPC'">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="backOrderQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="backOrderQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="On Jobs: {{onjobQty}}" *ngIf="partType=='Rental'">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="onjobQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="onjobQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab title="In Transit: {{transitQty}}" *ngIf="partType=='Rental'">
+                <ng-template kendoTabContent>
+
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Branch:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-multiselect class="form-control form-control-round" placeholder="Branch"
+                                    [data]="branch" #multiselect (filterChange)="branchFilter($event)"
+                                    (valueChange)="branchChange($event)" [(ngModel)]="branchIds" [valueField]="'id'"
+                                    [textField]="'value'" [filterable]="true" [valuePrimitive]="true"
+                                    [ngModelOptions]="{standalone: true}">
+                                </kendo-multiselect>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <kendo-grid [selectable]="true" [data]="transitQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Rental'" kendoGridSelectBy [sortable]="true"
+                        [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                    <kendo-grid [selectable]="true" [data]="transitQtyList" [sort]="sort"
+                        (sortChange)="sortChange($event)" *ngIf="partType=='Service' || partType=='GPC'"
+                        kendoGridSelectBy [sortable]="true" [skip]="skip" style="width: 100%;height: 35vh;"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+
+                        <kendo-grid-column title="Branch">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.branchName}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Location">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.location}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column title="Yard Qty">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{dataItem.quantity}}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                    </kendo-grid>
+                </ng-template>
+            </kendo-tabstrip-tab>
+
+        </kendo-tabstrip>
+    </div>
+    <div class="row no-gutters mt-3">
+        <h5>Last 20 inventory transactions</h5>
+        <button #anchor kendoTooltip title="Run Inventory Transaction report on only this inventory type." id="btnPrint"
+            (click)="viewPrint()" class="btn_icon m-r-20" filter="button"></button>
+        <kendo-grid [selectable]="true" [data]="lstTransactions" [sort]="sort" (sortChange)="sortChange($event)"
+            kendoGridSelectBy [sortable]="true" [skip]="skip" style="height: 40vh;" [resizable]="true"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+            <ng-template kendoGridToolbarTemplate>
+                <input class="col-md-9" placeholder="Search in all columns..." [(ngModel)]="filterText" kendoTextBox
+                    (input)="onFilter($event.target.value)" />
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <span> Total : {{lstTransactions?.length}}</span>
+            </ng-template>
+            <kendo-grid-column title="Description" [width]="150" field="description">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.description}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="Transaction Date" [width]="50" field="tranDate">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.tranDate | date}}</lable>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column title="Branch" [width]="50" field="branchName">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.branchLocation}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="Location" [width]="50" field="location">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.location}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+            <kendo-grid-column title="UserId" [width]="50" field="userID">
+                <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                    <lable>{{dataItem.createdBy}}</lable>
+                </ng-template> -->
+            </kendo-grid-column>
+        </kendo-grid>
+        <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+    </div>
+</div>
+
+<div class="custom_slider_popup" *ngIf="showPrint" style="width: 800px !important;">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <form [formGroup]="form" class="cust-form">
+            <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Inventory Transactions</h5>
+            </div>
+            <div class="col-md-12 m-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <fieldset>
+                            <legend>Date Range</legend>
+                            <kendo-formfield showHints="initial">
+                                <ul class="k-radio-list m-2">
+                                    <li class="k-radio-item">
+                                        <input type="radio" #td value="30" kendoRadioButton
+                                            [ngModelOptions]="{standalone: true}" (change)="changeDateRange('30')"
+                                            [(ngModel)]="dateRange" />
+                                        <label [for]="td"> 30 Days</label>
+                                    </li>
+
+                                    <li class="k-radio-item">
+                                        <input type="radio" #sd kendoRadioButton value="60"
+                                            [ngModelOptions]="{standalone: true}" (change)="changeDateRange('60')"
+                                            [(ngModel)]="dateRange" />
+                                        <label [for]="sd"> 60 Days</label>
+                                    </li>
+
+                                    <li class="k-radio-item">
+                                        <input type="radio" #nd kendoRadioButton value="90"
+                                            [ngModelOptions]="{standalone: true}" (change)="changeDateRange('90')"
+                                            [(ngModel)]="dateRange" />
+                                        <label [for]="nd"> 90 Days</label>
+                                    </li>
+                                    <li class="k-radio-item">
+                                        <input type="radio" #YTD kendoRadioButton value="YTD"
+                                            [ngModelOptions]="{standalone: true}" (change)="changeDateRange('YTD')"
+                                            [(ngModel)]="dateRange" />
+                                        <label [for]="YTD"> YTD</label>
+                                    </li>
+                                    <li class="k-radio-item">
+                                        <input type="radio" #Custom kendoRadioButton value="Custom"
+                                            [ngModelOptions]="{standalone: true}" (change)="changeDateRange('Custom')"
+                                            [(ngModel)]="dateRange" />
+                                        <label [for]="Custom"> Custom</label>
+                                    </li>
+                                </ul>
+                            </kendo-formfield>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row m-3">
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">From:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <kendo-datepicker formControlName="from" calendarType="classic"
+                                    class="form-control form-control-round" required>
+                                </kendo-datepicker>
+                                <div class="required-text"
+                                    *ngIf="form.get('from').hasError('required') && form.get('from').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="col-form-label pr-2">To:</label>
+                            </div>
+                            <div class="col-md-5">
+                                <kendo-datepicker formControlName="to" calendarType="classic"
+                                    class="form-control form-control-round" required>
+                                </kendo-datepicker>
+                                <div class="required-text"
+                                    *ngIf="form.get('to').hasError('required') && form.get('to').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 m-3">
+                            <div class="row">
+                                <div class="col-md-1 text-right">
+                                    <label class="col-form-label pr-2">Filter:</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <kendo-combobox class="form-control form-control-round" [data]="filterData"
+                                        formControlName="filter" [valueField]="'value'" [textField]="'value'"
+                                        [filterable]="true" [valuePrimitive]="true"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                    </kendo-combobox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('filter').hasError('required') && form.get('filter').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 m-3">
+                            <div class="row">
+                                <div class="col-md-1 text-right">
+                                    <label class="col-form-label pr-2">Branch:</label>
+                                </div>
+                                <div class="col-md-10" style="margin: 7px;">
+                                    {{selectedBranch}}
+                                    <!-- <kendo-combobox class="form-control form-control-round" placeholder="Branch"
+                                        [data]="branchData" (filterChange)="branchFilter($event)"
+                                        formControlName="branch" [valueField]="'value'" [textField]="'value'"
+                                        [filterable]="true" [valuePrimitive]="true"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                    </kendo-combobox>
+                                    <div class="required-text"
+                                        *ngIf="form.get('branch').hasError('required') && form.get('branch').touched">
+                                        This field is required!
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-2">
+                <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                        <button class="k-button k-primary" (click)="filterInventoryData()" type="button">Print</button>
+                        <button class="k-button k-primary" (click)="resetForm();showPrint=false;"
+                            type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </kendo-popup>
+</div>
+<div class="custom_slider_popup" *ngIf="showQues" style="width: 800px !important;">
+    <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+        <div class="content">
+            <h5 class="k-window-titlebar k-dialog-titlebar">Quantities</h5>
+        </div>
+        <div class="row m-3" *ngIf="partType=='Rental' || !partType">
+
+            <p><b> On Hand</b> - Total of all parts on hand at a branch. This is a sum of parts: </p>
+
+            <p>- On the shelf that are available.</p>
+            <p>- On the shelf but are allocated to a job but not dispatched. </p>
+            <p>- Assigned to a pump that is located in your yard (both red tag and green tag pumps) </p>
+            <p>- Assigned to any trucks at the branch. </p>
+            <p><b> Available</b> - This is a total of parts that are on the shelf not dedicated to any job, pump, or
+                on
+                a truck. These are parts that are not currently committed for use. </p>
+
+            <p><b>On Order</b> - This is a total of parts that are on an approved POR with a vendor which have not
+                been
+                received. This does NOT include POR's that have been created and not approved.</p>
+
+            <p><b>Allocated</b> - This is a sum of parts that are dedicated to a job or are "spoken for". These
+                parts
+                have not been dispatched to jobs, but are supposed to be reserved for that job. Jobs must be active
+                for
+                a part to be allocated to it. </p>
+
+            <p><b> On Jobs</b> - This is the quantity of items on jobs. Items in this count can also include items
+                on
+                pumps that are on that job. </p>
+
+            <p><b>In Transit</b> - This is the quantity that are on the way to and from jobs and also what is on
+                transfers from branch to branch. </p>
+        </div>
+        <div class="row m-3" *ngIf="partType=='Service' || partType=='GPCParts' || !partType">
+            <p><b> On Hand</b> - Total of all parts on hand at a branch. This is a sum of parts: </p>
+            <br>
+            <p>- On the shelf that are available.</p>
+            <p>- On the shelf but are allocated to a service order but have not been consumed yet.</p>
+            <p>- That are assigned to any trucks at the branch.</p>
+            <p> <b>Available</b> - This is a total of parts that are on the shelf not dedicated to any service
+                orders/customer sale. These are parts that are not currently committed for use.
+            </p>
+            <p>
+                <b> Required</b> - This is a total of all parts needed to complete all orders. All orders consist of:
+            </p>
+
+            <p>- Service orders that need the part, but the part is not on hand at the branch.</p>
+            <p>- Service orders that have the part allocated to it but have not yet consumed the part.</p>
+            <p>- Customer orders that parts have been marked as being required but have not been dispatched to the job.
+            </p>
+            <p> <i> Think of it as Customer orders + Service orders = Required</i></p>
+
+            <p> <b> On Order</b> - This is a total of parts that are on an approved POR with a vendor which have not
+                been received. This does NOT include POR's that have been created and not approved.</p>
+
+            <p> <b> Allocated </b>- This is a sum of parts that are dedicated to orders or are "spoken for.” These parts
+                have not been picked and are not on the service floor.</p>
+
+            <p> <b> Backorder </b>- This is the amount that we are short for what we need to fulfill all orders. This is
+                not what is on backorder with a vendor this is what we have on backorder with our customers, service
+                orders.</p>
+
+            <p> <i> Think of it as Required - On hand = Backordered</i></p>
+        </div>
+        <div class="row ml-2">
+            <div class="k-actions k-actions-end">
+                <div class="k-columnmenu-actions">
+                    <button class="k-button k-primary" (click)="showQues=false;" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </kendo-popup>
+</div>

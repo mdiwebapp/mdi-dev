@@ -1,0 +1,16 @@
+a:focus,
+a:hover {
+    /* color: #da0719; */
+    text-decoration: none;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.filterSpan {
+    border: 1px solid #dee2e6;
+    padding: 0px 10px;
+    // border-radius: 10px;
+    background-color: #BBBBBB;
+    color: #212529;
+}

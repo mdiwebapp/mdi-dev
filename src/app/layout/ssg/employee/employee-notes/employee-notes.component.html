@@ -1,0 +1,95 @@
+<div class="card-header d-flex flex-row justify-content-start">
+  <div class="wp-50 p-l-10 p-r-10" *ngIf="isDisable">
+    <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" [disabled]="!isDisable" *ngIf="isAdd"
+      (click)="onHanleOperation('new')">
+    </button>
+  </div>
+  <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable">
+    <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button" [disabled]="isDisable"
+      (click)="onHanleOperation('cancel')">
+    </button>
+  </div>
+  <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable">
+    <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button" [disabled]="isDisable"
+      (click)="onHanleOperation('save')">
+    </button>
+  </div>
+</div>
+<form style="padding-top: 12px;" [formGroup]="form" class="cust-form">
+  <!-- <app-toast-popup [dialogOpened]="dialogOpened" [errorMsg]="errorMsg"></app-toast-popup> -->
+  <div class="col-md-12">
+    <div class="form-group row no-gutters">
+      <div class="col-md-2 text-right">
+        <label class="col-form-label pr-2">Subject</label>
+      </div>
+      <div class="col-md-10">
+        <kendo-combobox class="form-control form-control-round" [valuePrimitive]="true" [disabled]="isDisable"
+          formControlName="subject" [data]="subjectData" [textField]="'text'" [valueField]="'id'">
+        </kendo-combobox>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group row no-gutters">
+      <div class="col-md-2 text-right">
+        <label class="col-form-label pr-2">Notes:</label>
+      </div>
+      <div class="col-md-10">
+        <kendo-textarea placeholder="Notes" [cols]="130" [disabled]="isDisable" formControlName="note" [rows]="3"
+          class="form-control form-control-round">
+        </kendo-textarea>
+      </div>
+    </div>
+  </div>
+</form>
+<hr>
+<!-- <div class="row text-center justify-content-center mx-0 text-right">
+    <button  class="col-md-2 mx-2 btn waves-effect waves-light btn-primary btn-outline-primary"
+        title="Add" (click)="btnAdd()"><i class="fa fa-2x fa-plus"></i></button>
+    <button [disabled]="isCancel" class="col-md-2 mx-2 btn waves-effect waves-light btn-primary btn-outline-primary"
+        title="Cancel" (click)="btnCancel()"><i class="fa fa-2x fa-times"></i></button>
+    <button [disabled]="form.invalid || form.pristine" class="col-md-2 ml-2 btn waves-effect waves-light btn-primary btn-outline-primary"
+        title="Save" (click)="onSave()"><i class="fa fa-2x fa-floppy-o"></i></button>
+</div> -->
+<div class="row mt-3">
+  <div class="col-md-12 border-right">
+    <div class="table-responsive">
+      <kendo-grid [ngClass]="(!isEdit) ? '' :  'k-state-disabled'" [selectable]="true" [data]="data" [sort]="sort"
+        (sortChange)="sortChange($event)" [sortable]="true" [skip]="skip" [height]="410"
+        (selectionChange)="onSelectionChange($event)" kendoGridSelectBy [selectedKeys]="selections"
+        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+        <!-- <ng-template kendoGridToolbarTemplate>
+          <input class="col-md-9" placeholder="Search in all columns..." kendoTextBox
+            (input)="onFilter($event.target.value)" />
+          <kendo-grid-spacer></kendo-grid-spacer>
+        </ng-template> -->
+        <kendo-grid-column field="createdDate" title="Created Date" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.createdDate | date}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="userName" title="User Name" [width]="130">
+          <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                            <lable>{{dataItem.userName}}
+                            </lable>
+                        </ng-template> -->
+        </kendo-grid-column>
+        <kendo-grid-column field="subject" title="Subject" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable *ngIf="dataItem.subject == 1"> IT </lable>
+            <lable *ngIf="dataItem.subject == 2">Visa</lable>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="note" title="Note" [width]="130">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <lable>{{dataItem.note}}
+            </lable>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+      <!-- <div *ngIf="loader" class="k-i-loading"></div> -->
+    </div>
+  </div>
+</div>

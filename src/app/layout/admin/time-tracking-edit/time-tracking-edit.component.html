@@ -1,0 +1,459 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Time Tracking Edit/Entry</h4>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div [class]="timeTrackingClass">
+        <div class="card">
+            <form [formGroup]="timeTrackingForm">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="wp-50 p-l-10 p-r-10" *ngIf="isAdd">
+                            <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button"
+                            *ngIf="menuService.isAddRight"      (click)="onHandleTimeTrackingOperation('new')">
+                            </button>
+                        </div>
+                        <div class="wp-50 p-l-10 p-r-10" *ngIf="isEdit">
+                            <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                            *ngIf="menuService.isEditRight"   (click)="onHandleTimeTrackingOperation('edit')">
+                            </button>
+                        </div>
+
+                        <div class="wp-50 p-l-10 p-r-10" *ngIf="isCancel">
+                            <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                            *ngIf="(menuService.isAddRight || menuService.isEditRight)"   (click)="onHandleTimeTrackingOperation('cancel')">
+                            </button>
+                        </div>
+                        <div class="wp-50 p-l-10 p-r-10" *ngIf="isSave">
+                            <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                            *ngIf="(menuService.isAddRight || menuService.isEditRight)"  (click)="onHandleTimeTrackingOperation('save')">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-control1 displayFlex alignFlexEnd">
+                        <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                            (click)="onHandleTimeTrackingOperation('retro')"
+                            [disabled]="timeTrackingretroDisable">Retro:
+                            {{retroValue}}</button>
+                        <input type="hidden" formControlName="retro">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="timeTrackingDisable"
+                                (click)="onHandleFilters('employee')">{{employeeValue}}</button>
+                            <input type="hidden" formControlName="employee">
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('employee').hasError('required') && timeTrackingForm.get('employee').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2 request-date" type="button" style="font-size: 12px;"
+                                [disabled]="timeTrackingdateDisable" (click)="req_date_btn.toggle()">{{dateValue}}
+                                <kendo-datepicker class="form-control form-control-round" calendarType="classic"
+                                    #req_date_btn (valueChange)="onHandleTimeTrackingOperation('date', $event)"
+                                    formControlName="date">
+                                </kendo-datepicker>
+                            </button>
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('date').hasError('required') && timeTrackingForm.get('date').touched">
+                                This field is required!
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-7">
+                            <button class="k-button  w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable" (click)="onHandleFilters('job')">{{jobValue}}</button>
+                            <input type="hidden" formControlName="job">
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('job').hasError('required') && timeTrackingForm.get('job').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable" (click)="onHandleFilters('hours')"
+                                *ngIf="!isHoursVisible">{{hoursValue}}</button>
+                            <input type="hidden" formControlName="hours">
+                            <div class="w-100 p-0" *ngIf="isHoursVisible">
+                                <kendo-numerictextbox class="form-control" [format]="'n'" [spinners]="false"
+                                    (blur)="onHandleFilters('hours')" [value]="timeTrackingForm.get('hours').value"
+                                    (valueChange)="onHandleTimeTrackingOperation('hours', $event)">
+                                </kendo-numerictextbox>
+                            </div>
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('hours').hasError('required') && timeTrackingForm.get('hours').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable"
+                                (click)="onHandleFilters('laborType')">{{laborTypeValue}}</button>
+                            <input type="hidden" formControlName="laborType">
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('laborType').hasError('required') && timeTrackingForm.get('laborType').touched">
+                                This field is required!
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable"
+                                (click)="onHandleFilters('laborTask')">{{laborTaskValue}}</button>
+                            <input type="hidden" formControlName="laborTask">
+                        </div>
+
+                        <div class="col-md-7">
+                            <button class="k-button w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable"
+                                (click)="onHandleFilters('unionCode')">Union Code {{unionCodeValue}}</button>
+                            <input type="hidden" formControlName="unionCode">
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('unionCode').hasError('required') && timeTrackingForm.get('unionCode').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <div style="position: relative;" class="col-md-7">
+                            <button class="k-button  w-100 my-2" type="button" style="font-size: 12px;"
+                                [disabled]="!timeTrackingDisable"
+                                (click)="onHandleFilters('unionClass')">Union Class {{unionClassValue}}</button>
+                            <span style="position: absolute;right: -50px;top: 15px;">{{unionRate}}</span>
+                            <div class="required-text"
+                                *ngIf="timeTrackingForm.get('unionClass').hasError('required') && timeTrackingForm.get('unionClass').touched">
+                                This field is required!
+                            </div>
+                        </div>
+                        <input type="hidden" formControlName="unionClass">
+                        <input type="hidden" formControlName="unionRate">
+
+
+                    </div>
+
+                    <kendo-grid [selectable]="true" [ngClass]="isDisableGrid==false  ? '' :  'k-state-disabled'"
+                        [navigable]="true" [resizable]="true" [reorderable]="true"
+                        (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+                        [data]="timeTrackings" [sort]="timeTrackingSort" (sortChange)="onSortChange($event)"
+                        kendoGridSelectBy [selectedKeys]="timeTrackingSelections" [sortable]="true"
+                        (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                        (dataStateChange)="onDataStateChange($event)"
+                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" style="height: 20vh;">
+                        <!-- <kendo-grid-column *ngFor="let column of timeTrackingColumns" [width]="column.width"
+                            field="{{column.Name}}" title="{{column.Text}}">
+                        </kendo-grid-column> -->
+
+                        <kendo-grid-column field="employeeNumber" title="Employee Number">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.eeid }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="objworkDate" title="Work Date">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.objworkDate }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="job" title="Job">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.job }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="hours" title="Hours">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.hours }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="jobName" title="Job Name">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.jobName }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="laborType" title="Labor Type">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.laborType }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="unionCode" title="Union Code">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.unionCode }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="unionClass" title="Union Type">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <lable>{{ dataItem.unionType }}</lable>
+                            </ng-template>
+                        </kendo-grid-column>
+
+
+                    </kendo-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<kendo-dialog title="Select Employee" *ngIf="isEmployeeVisible" (close)="onHandleFilters('employee')" [minWidth]="250"
+    [height]="500" [width]="550">
+    <div class="row m-0">
+        <!-- <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{employees.length}}
+                </div>
+            </div>
+        </div> -->
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'employee')"
+                [data]="employees" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="employeeSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of employeeColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" [(ngModel)]="filterEmployee"
+                        class="form-control form-control-round  col-md-9"
+                        (input)="onEmployeeFilter($event.target.value)" placeholder="Search">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{employees.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select Job" *ngIf="isjobVisible" (close)="onHandleFilters('job')" [minWidth]="250" [height]="550"
+    [width]="550">
+    <div class="row m-0">
+
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'job')" [data]="jobs"
+                [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy [selectedKeys]="jobSelections"
+                [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip" style="height: 40vh;"
+                (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of jobsColumns" [width]="column.width" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox [ngModelOptions]="{standalone: true}"
+                        class="form-control form-control-round  col-md-9" [(ngModel)]="filterCollection.searchText"
+                        (keydown.enter)="filterJobData()" placeholder="Search">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <i class="fa fa-search" (click)="filterJobData();"></i>
+                    <span> Total : {{totalJob}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+            </kendo-grid>
+            <kendo-datapager [total]="totalJob" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+                (pageChange)="onPageChange($event)">
+                <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+                    <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+                    <kendo-datapager-numeric-buttons [buttonCount]="5">
+                    </kendo-datapager-numeric-buttons>
+                    <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+                </ng-template>
+            </kendo-datapager>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select LaborType" *ngIf="isLabortypeVisible" (close)="onHandleFilters('laborType')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <!-- <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div> -->
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{laborTypes.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'laborType')"
+                [data]="laborTypes" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="laborTypesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 30vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of laborTypesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select LaborTask" *ngIf="islabortaskVisible" (close)="onHandleFilters('laborTask')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="" (keyup)="filterLaborTask($event.target.value)" [(ngModel)]="searchLaborTask">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{laborTasks?.length}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 m-0">
+
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'laborTask')"
+                [data]="laborTasks" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="laborTaskSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true">
+                <!-- <kendo-grid-column *ngFor="let column of laborTasksColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column> -->
+                <kendo-grid-column field="lookupValue" title="Labor Task">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <lable>{{dataItem.lookupValue}}</lable>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select UnionCode" *ngIf="isunioncodeVisible" (close)="onHandleFilters('unionCode')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <!-- <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{unionCodes.length}}
+                </div>
+            </div>
+        </div> -->
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'unionCode')"
+                [data]="unionCodes" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="unionCodesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of unionCodesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+                    <kendo-textbox [ngModelOptions]="{standalone: true}"
+                        class="form-control form-control-round  col-md-9" (input)="onFilter($event.target.value)"
+                        placeholder="Search">
+                    </kendo-textbox>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                    <span> Total : {{unionCodes.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Select UnionClass" *ngIf="isunionclassVisible" (close)="onHandleFilters('unionClass')"
+    [minWidth]="250" [height]="500" [width]="550">
+    <div class="row m-0">
+        <!-- <div class="col-md-12 m-0">
+            <div class="row no-gutters m-0">
+                <div class="col-md-3 p-1">
+                    Search
+                </div>
+                <div class="col-md-6 p-1">
+                    <kendo-textbox [ngModelOptions]="{standalone: true}" class="form-control form-control-round"
+                        placeholder="">
+                    </kendo-textbox>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    Count: {{unionClasses.length}}
+                </div>
+            </div>
+        </div> -->
+        <div class="col-md-12 m-0">
+            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+                (columnResize)="onResizeColumn($event)" (selectionChange)="onRowSelect($event, 'unionClass')"
+                [data]="unionClasses" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+                [selectedKeys]="unionClassesSelections" [sortable]="true" (columnReorder)="onReOrderColumns($event)"
+                [skip]="skip" style="height: 40vh;" (dataStateChange)="onDataStateChange($event)"
+                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                <kendo-grid-column *ngFor="let column of unionClassesColumns" [width]="column.width"
+                    field="{{column.Name}}" title="{{column.Text}}">
+                </kendo-grid-column>
+                <ng-template kendoGridToolbarTemplate>
+
+                    <kendo-grid-spacer></kendo-grid-spacer>
+
+                    <span> Total : {{unionClasses.length}}</span>
+                    <kendo-grid-spacer></kendo-grid-spacer>
+                </ng-template>
+            </kendo-grid>
+        </div>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog title="Reset Union Code, UnionClass, and Rate" *ngIf="isdialogUnionVisible"
+    (close)="closeUniondialog('no')" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        Changing Union Code will reset Union Class and Rate. Continue?
+    </p>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="closeUniondialog('yes')" type="button" primary="true">Yes</button>
+        <button class="k-button k-secondary" (click)="closeUniondialog('no')" type="button">No</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

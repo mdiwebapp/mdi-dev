@@ -1,0 +1,442 @@
+<div class="register-box box-shadow-none card mb-0 pane-content">
+  <div
+    class="d-flex ml-auto justify-content-between alignItemsCenter mt-1"
+    style="width: 70%"
+  >
+    <div *ngIf="selectedLog">
+      <label class="label label-primary label-mersino"
+        >Log ID # {{ selectedLog?.logId }}</label
+      >
+      <label class="label label-primary label-mersino"
+        >Log Date : {{ selectedLog?.logDate | date : "MM/dd/yyyy" }}</label
+      >
+      <label class="label label-primary label-mersino"
+        >Log By : {{ selectedLog?.logBy }}</label
+      >
+    </div>
+  </div>
+  <form class="cust-form" [formGroup]="form">
+    <div class="card-block p-0">
+      <div class="row justify-content-center m-3">
+       
+        <div class="font-weight-bold h5 px-5 mx-5 text-center">
+          Good morning (afternoon). Thank you for calling
+          {{ selectedLog?.company ? selectedLog?.company : "(Company)" }}. ({{currentUserDetail.userName }}) speaking. How may I help you ?
+        </div>
+      </div>
+      <div class="row no-gutters m-0">
+        <div class="col-md-8">
+          <div class="row no-gutters m-2">
+            <div class="col-md-3 text-right">
+              <label class="col-form-label pr-2">Assigned To:</label>
+            </div>
+            <div class="col-md-9">
+              <button
+                class="k-button w-100"
+                type="button"
+                style="font-size: 12px"
+                [disabled]="disable"
+                (click)="handleEmployeeDialog('emp_btn')"
+              >
+                {{ form.get("assignTo")?.value?.value || "Select Employee" }}
+              </button>
+              <!-- <div class="required-text" *ngIf="validation?.assignTo">
+                Please select an employee!
+              </div> -->
+              <div class="required-text" *ngIf="form.get('assignTo').hasError('required') &&form.get('assignTo').touched">
+                Please select an employee!
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row no-gutters m-2">
+            <label class="col-form-label pr-2">{{
+              form.get("assignToPhone")?.value
+            }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">CC:</label>
+          </div>
+          <div class="col-md-9">
+            <button
+              class="k-button w-100"
+              type="button"
+              style="font-size: 12px"
+              [disabled]="disable"
+              (click)="handleEmployeeDialog('cc_1_btn')"
+            >
+              {{ form.get("cC1")?.value?.value || "Select Employee" }}
+            </button>
+            <!-- <div class="required-text" *ngIf="validation?.cC1">
+              Please select an customer!
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row no-gutters m-2">
+          <label class="col-form-label pr-2">{{
+            form.get("phoneCC1").value
+          }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">CC:</label>
+          </div>
+          <div class="col-md-9">
+            <button
+              class="k-button w-100"
+              type="button"
+              style="font-size: 12px"
+              [disabled]="disable"
+              (click)="handleEmployeeDialog('cc_2_btn')"
+            >
+              {{ form.get("cC2")?.value?.value || "Select Employee" }}
+            </button>
+            <!-- <div class="required-text" *ngIf="validation?.cC2">
+              Please select an customer!
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row no-gutters m-2">
+          <label class="col-form-label pr-2">{{
+            form.get("phoneCC2").value
+          }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">CC:</label>
+          </div>
+          <div class="col-md-9">
+            <button
+              class="k-button w-100"
+              type="button"
+              style="font-size: 12px"
+              [disabled]="disable"
+              (click)="handleEmployeeDialog('cc_3_btn')"
+            >
+              {{ form.get("cC3")?.value?.value || "Select Employee" }}
+            </button>
+            <!-- <div class="required-text" *ngIf="validation?.cC3">
+              Please select an customer!
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row no-gutters m-2">
+          <label class="col-form-label pr-2">{{
+            form.get("phoneCC3").value
+          }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">CC:</label>
+          </div>
+          <div class="col-md-9">
+            <button
+              class="k-button w-100"
+              type="button"
+              style="font-size: 12px"
+              [disabled]="disable"
+              (click)="handleEmployeeDialog('cc_4_btn')"
+            >
+              {{ form.get("cC4")?.value?.value || "Select Employee" }}
+            </button>
+            <!-- <div class="required-text" *ngIf="validation?.cC4">
+              Please select an customer!
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row no-gutters m-2">
+          <label class="col-form-label pr-2">{{
+            form.get("phoneCC4").value
+          }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">Company:</label>
+          </div>
+          <div class="col-md-9">
+            <kendo-textbox
+              class="form-control form-control-round"
+              placeholder="Company name"
+              formControlName="company"
+              [disabled]="disable"
+            >
+            </kendo-textbox>
+            <div
+              class="required-text"
+              *ngIf="
+                form.get('company').hasError('required') &&
+                form.get('company').touched
+              "
+            >
+              Company is required!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">Contact:</label>
+          </div>
+          <div class="col-md-9">
+            <kendo-maskedtextbox
+              class="form-control form-control-round"
+              placeholder="Contact"
+              formControlName="contact"
+              [disabled]="disable"
+              [mask]="mask"
+            >
+            </kendo-maskedtextbox>
+            <div
+              class="required-text"
+              *ngIf="
+                form.get('contact').hasError('required') &&
+                form.get('contact').touched
+              "
+            >
+              Contact is required!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row no-gutters m-2">
+          <div class="col-md-5 text-right">
+            <label class="col-form-label pr-2">Caller Type:</label>
+          </div>
+          <div class="col-md-7">
+            <button class="k-button w-100" type="button" style="font-size: 12px" *ngIf="!isCallerTypeVisible" [disabled]="disable"
+            (click)="onHandleFilters('caller')" >
+             {{ form.get("callerType")?.value || "Select CallerType" }}
+          </button>
+            <kendo-combobox placeholder="Caller Type" [suggest]="true" [textField]="'value'"
+            [valueField]="'value'" [valuePrimitive]="true" formControlName="callerType"  [data]="CallerTypeData"
+            *ngIf="isCallerTypeVisible" (valueChange)="onValueChange('caller', $event)">
+          </kendo-combobox>
+          <div class="required-text" *ngIf="form.get('callerType').hasError('required') && form.get('callerType').touched">
+            Please select caller type!
+          </div>
+            <!-- <button class="k-button w-100" type="button" style="font-size: 12px" [disabled]="disable" (click)="handleCallerTypeDialog()" 
+            *ngIf="!isCallerTypeVisible"> {{ form.get("callerType")?.value || "Select CallerType" }}
+            </button>
+            <kendo-combobox placeholder="Caller Type" [suggest]="true" [textField]="'label'" [valueField]="'value'" 
+            [filterable]="true" [valuePrimitive]="true" formControlName="callerType" [data]="CallerTypeData" *ngIf="isCallerTypeVisible" 
+            (valueChange)="onSelectionChange('callerType', $event)">
+            </kendo-combobox>
+            --->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-12">
+        <div class="row no-gutters m-2">
+          <div class="col-md-2 text-right">
+            <label class="col-form-label pr-2">Reason:</label>
+          </div>
+          <div class="col-md-10">
+            <kendo-textarea
+              placeholder="Reason"
+              [cols]="130"
+              [rows]="3"
+              [disabled]="disable"
+              class="form-control form-control-round"
+              formControlName="note"
+            >
+            </kendo-textarea>
+            <div
+              class="required-text"
+              *ngIf="
+                form.get('note').hasError('required') &&
+                form.get('note').touched
+              "
+            >
+              Reason is required!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-6">
+        <div class="row no-gutters m-2">
+          <div class="col-md-4 text-right">
+            <label class="col-form-label pr-2">Phone #/ Email:</label>
+          </div>
+          <div class="col-md-8">
+            <kendo-textbox
+              class="form-control form-control-round"
+              placeholder="Phone  #/ Email"
+              [disabled]="disable"
+              formControlName="phone"
+            >
+            </kendo-textbox>
+            <div
+              class="required-text"
+              *ngIf="
+                form.get('phone').hasError('required') &&
+                form.get('phone').touched
+              "
+            >
+              Phone#/Email is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row no-gutters m-2">
+          <div class="col-md-8">
+            <div class="row no-gutters m-0">
+              <div class="col-md-2 text-right">
+                <label class="col-form-label pr-2">State:</label>
+              </div>
+              <div class="col-md-7">
+                <button class="k-button w-100" type="button" style="font-size: 12px" *ngIf="!isStateVisible" [disabled]="disable"
+                            (click)="onHandleFilters('stateBy')" >
+                             {{ form.get("state")?.value || "Select State" }}
+                          </button>
+                 <kendo-combobox placeholder="Select State" [suggest]="true" [textField]="'value'"
+                            [valueField]="'value'" [valuePrimitive]="true" formControlName="state"  [data]="stateList"
+                            *ngIf="isStateVisible" (valueChange)="onValueChange('stateSelectBy')">
+                          </kendo-combobox>
+                          <div
+                          class="required-text"
+                          *ngIf="
+                            form.get('state').hasError('required') &&
+                            form.get('state').touched
+                          "
+                        >
+                          State is required
+                        </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button
+              class="k-button w-100"
+              type="button"
+              style="font-size: 12px"
+              (click)="onDownloadResourceList()"
+            >
+              Resource List
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters m-0">
+      <div class="col-md-8">
+        <div class="row no-gutters m-2">
+          <div class="col-md-3 text-right">
+            <label class="col-form-label pr-2">Send Email:</label>
+          </div>
+          <div class="col-md-9">
+            <kendo-switch
+              onLabel="Yes"
+              offLabel="No"
+              class=""
+              style="width: auto"
+              formControlName="emailSent"
+              [disabled]="disable"
+            >
+            </kendo-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+    <kendo-dialog
+      title="Employees"
+      *ngIf="isEmployeeVisible"
+      (close)="handleEmployeeDialog()"
+      [minWidth]="250"
+      [height]="500"
+      [width]="550"
+    >
+      <div class="row m-0">
+        <div class="col-md-12 m-0">
+          <div class="row no-gutters m-0">
+            <div class="col-md-3 p-1">Employee Search</div>
+            <div class="col-md-6 p-1">
+              <kendo-textbox
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control form-control-round"
+                [(ngModel)]="employeeSearch"
+                (keyup)="filterEmployee()"
+                placeholder="Search Employee"
+              >
+              </kendo-textbox>
+            </div>
+            <div class="col-md-3 p-1 text-right">
+              EE Count: {{ allEmployees.length }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 m-0">
+          <kendo-grid
+            [selectable]="true"
+            [navigable]="true"
+            [resizable]="true"
+            [reorderable]="true"
+            (columnResize)="onResizeColumn($event)"
+            (selectionChange)="onSelectionChange($event)"
+            [data]="allEmployees"
+            [sort]="sort"
+            (sortChange)="onSortChange($event)"
+            kendoGridSelectBy
+            [selectedKeys]="selections"
+            [sortable]="true"
+            (columnReorder)="onReOrderColumns($event)"
+            [skip]="skip"
+            style="height: 35vh"
+            (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{
+              allowUnsort: false,
+              mode: multiple ? 'multiple' : 'single'
+            }"
+          >
+            <kendo-grid-column
+              *ngFor="let column of columns"
+              [width]="column.width"
+              field="{{ column.Name }}"
+              title="{{ column.Text }}"
+            >
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+    </kendo-dialog>
+  </form>
+</div>

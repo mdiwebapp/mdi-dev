@@ -1,0 +1,453 @@
+<div style="height: 70vh;">
+
+    <div class="register-box box-shadow-none card mb-0">
+        <form [formGroup]="form" class="cust-form">
+            <div class="card-block p-0">
+                <div class="row no-gutters">
+
+                    <div class="col-md-12">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <div class="col-md-12 mb-3">
+                                    <kendo-textbox class="form-control form-control-round" style="width: 99%;"
+                                        (change)="checkinventoryType($event.target.value)"
+                                        formControlName="inventoryType" maxlength="13" placeholder="Inventory Type"
+                                        required>
+                                    </kendo-textbox>
+                                    <div class="required-text" *ngIf="form.get('inventoryType').hasError('pattern')">The
+                                        first 12 can only be
+                                        numeric and the 13th can only be alphabetic.
+                                    </div>
+                                    <div class="required-text"
+                                        *ngIf="form.get('inventoryType').hasError('required') && form.get('inventoryType').touched">
+                                        This field is required!
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row no-gutters">
+
+                                        <div class="col-md-10">
+
+                                            <kendo-combobox formControlName="gpcPartNumber" [suggest]="true"
+                                                placeholder="Equivalent" class="form-control form-control-round"
+                                                (filterChange)="gpcPartFilter($event)" [textField]="'value'"
+                                                [data]="EquivalentData" [valueField]="'value'" [filterable]="true"
+                                                [valuePrimitive]="true">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <a #anchor (click)="showEqui=true"> <i class="fa fa-question-circle"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9" *ngIf="hideSubstitute">
+                                <!-- isGpcParts || isServiceParts -->
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <kendo-grid [selectable]="true" [data]="dataBarcode">
+                                                <kendo-grid-column title="Substitutes">
+
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <lable>{{dataItem.vendorName}}</lable>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                                <kendo-grid-column title="Substitute Type">
+                                                    <ng-template kendoGridHeaderTemplate let-column
+                                                        let-columnIndex="columnIndex">
+                                                        Substitute Type <a #anchor (click)="showSubstitute=true"> <i
+                                                                class="fa fa-question-circle"
+                                                                aria-hidden="true"></i></a>
+                                                    </ng-template>
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <lable>{{dataItem.vendorName}}<i class="fa fa-question-circle"
+                                                                aria-hidden="true"></i> </lable>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                            </kendo-grid>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="k-button">
+                                                Add Substitute
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <fieldset>
+                            <legend>Quantities: <a #anchor (click)="showQues=true"><i class="fa fa-question-circle"
+                                        aria-hidden="true"></i></a></legend>
+                            <div class="col-md-12">
+                                <div class="row mb-3">
+                                    <!-- <div class="col-md-3">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">Branch:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <kendo-multiselect class="form-control form-control-round"
+                                                placeholder="Branch" [data]="branch" #multiselect
+                                                (filterChange)="branchFilter($event)" [(ngModel)]="branchIds"
+                                                [valueField]="'id'" [textField]="'value'" [filterable]="true"
+                                                [valuePrimitive]="true" (valueChange)="branchChange($event)"
+                                                [ngModelOptions]="{standalone: true}">
+                                            </kendo-multiselect>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-4 text-right">
+                                            <label class="col-form-label pr-2">UOM:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <kendo-combobox [data]="UOM" formControlName="uom" [valueField]="'value'"
+                                                (filterChange)="uomFilter($event)" [filterable]="true"
+                                                [valuePrimitive]="true" [textField]="'value'" required>
+                                            </kendo-combobox>
+                                            <div class="required-text"
+                                                *ngIf="form.get('uom').hasError('required') && form.get('uom').touched">
+                                                This field is required!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">On Hand:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="qtyOnHand" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">Available:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="buildQty" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">Required:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="qtyRequired" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">On Order:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="qtyOnOrder" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">Allocated:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="qtyAllocated">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">Back Order:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="qtyBackOrder" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div>
+                                <!-- <div class="p-2">
+                                    <div class="row no-gutters mb-3">
+                                        <kendo-formfield>
+                                            <label class="col-form-label pr-2">In Transit:</label>
+                                            <kendo-textbox class="form-control form-control-round" [disabled]="true"
+                                                [(ngModel)]="qtyPicked" [ngModelOptions]="{standalone: true}">
+                                            </kendo-textbox>
+                                        </kendo-formfield>
+
+                                    </div>
+                                </div> -->
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="row" *ngIf="isGpcParts || isServiceParts">
+                        <div class="col-md-4 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Max Qty:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-numerictextbox class="form-control form-control-round" [min]="0"
+                                        formControlName="maxQty">
+                                    </kendo-numerictextbox>
+                                    <kendo-formerror *ngIf="form.controls.maxQty.errors">Qty should not be negative
+                                    </kendo-formerror>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Reorder point:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-numerictextbox class="form-control form-control-round" [min]="0"
+                                        formControlName="rop">
+                                    </kendo-numerictextbox>
+                                    <kendo-formerror *ngIf="form.controls.rop.errors">Qty should not be negative
+                                    </kendo-formerror>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4 text-right">
+                                    <label class="col-form-label pr-2">Reorder Qty:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <kendo-numerictextbox class="form-control form-control-round" [min]="0"
+                                        formControlName="roq">
+                                    </kendo-numerictextbox>
+                                    <kendo-formerror *ngIf="form.controls.roq.errors">Qty should not be negative
+                                    </kendo-formerror>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Purchasing Description:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round"
+                                    formControlName="purchaseDescription" placeholder="Purchasing Description" required>
+                                </kendo-textarea>
+                                <div class="required-text"
+                                    *ngIf="form.get('purchaseDescription').hasError('required') && form.get('purchaseDescription').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Sales Description:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round"
+                                    formControlName="salesDescription" placeholder="Sales Description" required>
+                                </kendo-textarea>
+                                <div class="required-text"
+                                    *ngIf="form.get('salesDescription').hasError('required') && form.get('salesDescription').touched">
+                                    This field is required!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-12 mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 text-right">
+                            <label class="col-form-label pr-2">Ext Description:</label>
+                        </div>
+                        <div class="col-md-10">
+                            <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round"
+                                formControlName="qbNameGPC" placeholder="Ext Description">
+                            </kendo-textarea>
+                        </div>
+                    </div>
+                </div> -->
+                    <div class="col-md-12 mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2 text-right">
+                                <label class="col-form-label pr-2">Search Keywords:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <kendo-textarea [cols]="170" [rows]="3" class="form-control form-control-round"
+                                    formControlName="keyword" placeholder="Search Keywords">
+                                </kendo-textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="custom_slider_popup" *ngIf="showEqui" style="width: 800px !important;">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+            <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Equivalent</h5>
+            </div>
+            <div class="row m-3" *ngIf="partType=='Rental'">
+                <p>This is the Global Pump equivalent to the rental code. When you place a POR to Global Pump, they will
+                    process (pick and ship) the order utilizing their part number, but when you receive the POR it will
+                    add
+                    qty to your rental code.</p>
+                <p> For example, if you order a qty of (1) FTQDFLF0404R on a POR to Global Pump, the POR will remove (1)
+                    325166000000 from Global Pump inventory when they process the order, even though that is not what is
+                    actually on the POR. When you receive the POR, it will add (1) FTQDFLF0404R to your branch
+                    inventory,
+                    NOT the Global Pump equivalent (325166000000).</p>
+            </div>
+            <div class="row m-3" *ngIf="partType=='Service'">
+                <p> This is the rental equivalent to this service inventory type.</p>
+
+                <p> If you need to take one from rentals inventory this is the rental inventory type you would adjust
+                    down
+                    when you
+                    are adding the service inventory type.</p>
+            </div>
+            <div class="row ml-2">
+                <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                        <button class="k-button k-primary" (click)="showEqui=false;" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </kendo-popup>
+    </div>
+    <div class="custom_slider_popup" *ngIf="showSubstitute" style="width: 800px !important;">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+            <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Substitute Types</h5>
+            </div>
+            <div class="row m-3">
+                <p> There are two different Types of substitutes</p>
+
+                <p> <b> Exact</b> - is a direct replacement that requires no machining or alterations to fit. These
+                    parts
+                    are usually just made from a different material but can have a different cost than the standard
+                    part.
+                </p>
+                <p><b> Conditional</b> - these substitutes require machining or alterations for them to fit or work.
+                    They
+                    can be made from the same or different material. </p>
+            </div>
+            <div class="row ml-2">
+                <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                        <button class="k-button k-primary" (click)="showSubstitute=false;" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </kendo-popup>
+    </div>
+    <div class="custom_slider_popup" *ngIf="showQues" style="width: 800px !important;">
+        <kendo-popup [anchor]="anchor" #popup popupClass="content" style="width: 100%;">
+            <div class="content">
+                <h5 class="k-window-titlebar k-dialog-titlebar">Quantities</h5>
+            </div>
+            <div class="row m-3" *ngIf="partType=='Rental' || !partType">
+
+                <p><b> On Hand</b> - Total of all parts on hand at a branch. This is a sum of parts: </p>
+
+                <p>- On the shelf that are available and that are allocated to a job but not dispatched. </p>
+                <p>- Assigned to a pump that is located in your yard (both red tag and green tag pumps) </p>
+                <p>- Assigned to any trucks at the branch. </p>
+                <p><b> Available</b> - This is a total of parts that are on the shelf not dedicated to any job, pump, or
+                    on
+                    a truck. These are parts that are not currently committed for use. </p>
+
+                <p><b>On Order</b> - This is a total of parts that are on an approved POR with a vendor which have not
+                    been
+                    received. This does NOT include POR's that have been created and not approved.</p>
+
+                <p><b>Allocated</b> - This is a sum of parts that are dedicated to a job or are "spoken for". These
+                    parts
+                    have not been dispatched to jobs, but are supposed to be reserved for that job. Jobs must be active
+                    for
+                    a part to be allocated to it. </p>
+
+                <p><b> On Jobs</b> - This is the quantity of items on jobs. Items in this count can also include items
+                    on
+                    pumps that are on that job. </p>
+
+                <p><b>In Transit</b> - This is the quantity that are on the way to and from jobs and also what is on
+                    transfers from branch to branch. </p>
+            </div>
+            <div class="row m-3" *ngIf="partType=='Service' || !partType">
+                <p><b> On Hand</b> - Total of all parts on hand at a branch. This is a sum of parts: </p>
+                <br>
+                <p>- On the shelf that are available</p>
+                <p>- On the shelf but are allocated to a service order.
+                    That have been picked to a service order but have not been consumed yet.</p>
+                <p>- That are assigned to any trucks at the branch.</p>
+                <p> <b>Available</b> - This is a total of parts that are on the shelf not dedicated to any service
+                    orders/customer
+                    sale. These are parts that are not currently committed for use.
+                </p>
+                <p> <b> Required</b> - This is a total of all parts needed to complete all orders. All orders consists
+                    of:
+                </p>
+
+                <p>- Service orders that need the part but it has not arrived at the branch.</p>
+                <p>- Service orders that the part is allocated to but have not yet consumed the part.</p>
+                <p>- Customer orders that parts have been marked as being required but have not been dispatched to the
+                    job.
+                </p>
+                <p> <i> Think of it as Customer orders + service orders = Required</i></p>
+
+                <p> <b> On Order</b> - This is a total of parts that are on an approved POR with a vendor which have not
+                    been
+                    received.
+                    This does NOT include POR's that have been created and not approved.</p>
+
+                <p> <b> Allocated </b>- this is a sum of parts that are dedicated to orders or are "spoken for". These
+                    parts
+                    have not
+                    been picked and are not on the service floor.</p>
+
+                <p> <b> Backorder </b>- this is the amount that we are short for what we need to fulfill all orders.
+                    This is
+                    not
+                    what is
+                    on backorder with a vendor this is what we have on backorder with our customers, service orders.</p>
+
+                <p> <i> Think of it as Required - On hand = Backordered</i></p>
+            </div>
+            <div class="row ml-2">
+                <div class="k-actions k-actions-end">
+                    <div class="k-columnmenu-actions">
+                        <button class="k-button k-primary" (click)="showQues=false;" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </kendo-popup>
+    </div>
+</div>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!isLoading">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>

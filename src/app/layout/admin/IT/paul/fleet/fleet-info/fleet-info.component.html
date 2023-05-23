@@ -1,0 +1,429 @@
+<div class="register-box box-shadow-none card mb-0 pane-content" style="max-height: 60vh; overflow: auto;">
+  <form [formGroup]="form" class="cust-form">
+    <div class="card-block p-0">
+      <div class="row no-gutters m-0">
+        <div class="col-md-4">
+          <div class="row no-gutters m-0">
+            <div class="col-md-5 p-1">
+              <label>Inv Type:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <button class="k-button w-100" (click)="DisplayInvBtn()" type="button" [disabled]="!blAdd || blEdit">
+                {{InvType}}
+              </button>
+              <div class="required-text" *ngIf="form.get('invType').hasError('required') && form.get('invType').touched">
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Inv Number:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              {{InvNumber}}
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Make:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <kendo-textbox class="form-control form-control-round" formControlName="make" type="text"
+                placeholder="Make" [disabled]="!blAdd || blEdit">
+              </kendo-textbox>
+              <div class="required-text" *ngIf="form.get('make').hasError('required') && form.get('make').touched">
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Model:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <kendo-textbox class="form-control form-control-round" formControlName="model" placeholder="Model"  [disabled]="!blAdd || blEdit">
+              </kendo-textbox>
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Model #:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <kendo-textbox class="form-control form-control-round" formControlName="modelNumber"
+                placeholder="Model Number"  [disabled]="!blAdd || blEdit">
+              </kendo-textbox>
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Serial #:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <kendo-textbox class="form-control form-control-round" formControlName="serialNumber"
+                placeholder="Serial Number" [disabled]="isdisableSN" >
+              </kendo-textbox>
+              <div class="required-text"
+                *ngIf="form.get('serialNumber').hasError('required') && form.get('serialNumber').touched">
+                This field is required!
+              </div>
+            </div>
+            <div class="col-md-5 p-1">
+              <label>Ref #:</label>
+            </div>
+            <div class="col-md-7 p-1">
+              <kendo-textbox class="form-control form-control-round" formControlName="ref1" placeholder=""  [disabled]="!blAdd || blEdit">
+              </kendo-textbox>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-md-8">
+          <div class="row no-gutters">
+            <div class="col-md-3 p-1">
+              <button class="k-button w-100" type="button" (click)="displayMovementFiles()"
+                [disabled]="blAdd || blEdit || disableMovementList">
+                Movement
+              </button>
+            </div>
+            <div class="col-md-3 p-1">
+              <button class="k-button w-100" type="button" (click)="displayPicturesFiles()"
+                [disabled]="blAdd || blEdit || disablePicturesList">
+                Pics
+              </button>
+            </div>
+            <div class="col-md-3 p-1">
+              <button class="k-button w-100" type="button" (click)="displayCurveFiles()"
+                [disabled]="blAdd || blEdit || disableCurveList">
+                Curve
+              </button>
+            </div>
+            <div class="col-md-3 p-1">
+              <button class="k-button w-100" type="button" (click)="displayBuildSheetFiles()"
+                [disabled]="blAdd || blEdit || disableBuildSheetList">
+                Build Sheet
+              </button>
+            </div>
+            <div class="col-md-3 p-1">
+              <label>
+                Pictures uploaded on:</label>
+            </div>
+            <div class="col-md-6 p-1">
+              <kendo-datepicker class="form-control form-control-round" formControlName="picturesDate"
+                calendarType="classic" [disabled]="!blAdd">
+              </kendo-datepicker>
+            </div>
+            <div class="col-md-3 p-1">
+              <!-- <button class="k-button w-100" type="button" (click)="loadFleetSheetFiles(InvNumber)">
+                Fleet Books
+              </button> -->
+            </div>
+            <div class="col-md-12 p-1">
+              <h5>Assigned Fleet# on: <span *ngIf="purchaseDate!= 'N/A'">{{purchaseDate| date}}</span><span
+                  *ngIf="purchaseDate== 'N/A'">{{purchaseDate}}</span></h5>
+            </div>
+            <div class="col-md-12 p-1">
+              <kendo-grid [data]="invGridData" kendoGridSelectBy [navigable]="true" [resizable]="true" height="175"
+                [reorderable]="true" [sort]="sort" (sortChange)="sortChange($event)" kendoGridSelectBy
+                [selectedKeys]="mySelection">
+                <kendo-grid-column *ngFor=" let column of invGridColumn" [width]="column.width" field="{{column.Name}}"
+                  title="{{column.Text}}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <span *ngIf="column.Name!='tranDate'">{{dataItem[column.Name]}}</span>
+                    <span *ngIf="column.Name=='tranDate' && dataItem.tranDate">
+                      {{dataItem.tranDate | date}}
+                    </span>
+                  </ng-template>
+                </kendo-grid-column>
+              </kendo-grid>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+        <div class="row">
+        <div class="col-md-3 pr-0 pt-4 pb-2">
+          <label class="mb-0">Location:</label>
+        </div>
+        <div class="col-md-7 pl-0 pt-4 pb-2">
+          <label class="mb-0">{{branchLocation}} <span *ngIf="branchLocation !='' && location!='' ">-</span> {{location}}
+          <span *ngIf="jobName != '' && jobName != null">-</span> {{jobName}}
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 pr-0 pt-2 pb-4">
+          <label class="mb-0">Customer:</label>
+        </div>
+        <div class="col-md-7 pl-0 pt-2 pb-4">
+          <label class="mb-0">{{customerName}}</label>
+        </div>
+      </div>
+    </div>
+        <div class="col-md-12">
+          <div class="row no-gutters m-0">
+            <div class="col-md-9 p-1">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-2 text-right pr-1">
+                      <label>Major Repairs Needed</label>
+                    </div>
+                    <div class="col-md-2 pl-1 ">
+                      <kendo-switch (valueChange)="changeMajorRepairNeeded($event)" formControlName="majorRepairs"
+                        [disabled]="!blAdd || !blEdit" onLabel="Yes" offLabel="No">
+                      </kendo-switch>
+                    </div>
+                    <div class="col-md-5 ">
+                      <kendo-textarea class="form-control form-control-round" [cols]="130" [rows]="2"
+                        *ngIf="displayMajorRepairNeededDiv" formControlName="comments" placeholder="">
+                      </kendo-textarea>
+                    </div>
+                    <div class="col-md-2 text-right pr-1">
+                      <label class="text-right">This item is insured</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="insured" onLabel="Yes" offLabel="No"
+                        [disabled]="!blAdd || !blEdit">
+                      </kendo-switch>
+                    </div>
+                  </div>
+                  <div class="row mt-3 pr-1">
+                    <div class="col-md-1 text-right pr-1">
+                      <label class="text-right">Sold</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="sold" onLabel="Yes" offLabel="No" [disabled]="!blAdd || !blEdit">
+                      </kendo-switch>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <label class="text-right">Registration for Cali</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="Registered" onLabel="Yes" offLabel="No"
+                        [disabled]="!blAdd || !blEdit">
+                      </kendo-switch>
+                    </div>
+                    <div class="col-md-1 text-right pr-1">
+                      <label class="">Correct</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="correct" onLabel="Yes" offLabel="No"
+                        [disabled]="!blAdd || !blEdit">
+                      </kendo-switch>
+                    </div>
+                    <div class="col-md-2 text-right pr-1">
+                      <label class="text-right">In Production</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="inProduction" onLabel="Yes" offLabel="No" disabled>
+                      </kendo-switch>
+                    </div>
+                    <div class="col-md-1 text-right pr-1">
+                      <label class="text-right">RD</label>
+                    </div>
+                    <div class="col-md-1 pl-1">
+                      <kendo-switch formControlName="RD" onLabel="Yes" offLabel="No" [disabled]="!blAdd || !blEdit">
+                      </kendo-switch>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 p-1 pl-5">
+              <div class="row no-gutters m-0">
+                <div class="col-md-12 p-0">
+                  <label class="mb-0">{{lblLastInv}}</label>
+                </div>
+                <div class="col-md-12 p-0">
+                  <label class="mb-0">{{lblYTD}}</label>
+                </div>
+                <div class="col-md-12 p-0">
+                  <label class="mb-0">{{lblCostYTD}}</label>
+                </div>
+                <div class="col-md-12 mt-2" *ngIf="displayAssignToFleet">
+                  <div class="row">
+                    <div class="col-md-6"><button class="btn col-md-12 text-center" type="button" kendoButton
+                        [disabled]="!blEdit" (click)="onHandleActivateInventoryDialog('yes')">Assign to
+                        Fleet</button></div>
+                    <div class="col-md-6"><button [disabled]="!blEdit" class="btn col-md-12 text-center" type="button"
+                        (click)="prepareForSale()" kendoButton>Prepare
+                        for Sale</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row no-gutters m-0">
+        <div class="col-md-12 p-1">
+          <kendo-expansionpanel [expanded]="isExpanded" id="expPanel">
+            <ng-template kendoExpansionPanelTitleDirective>
+              <div class="header-content">
+                Component
+              </div>
+            </ng-template>
+            <div class="row">
+              <div class="col-md-12">
+                <kendo-grid kendoGridExpandGroupBy [data]="componentListData" [hideHeader]="true" kendoGridExpandGroupBy
+                  [group]="state.group" kendoGridSelectBy [(expandedGroupKeys)]="expandedGroupKeys"
+                  (groupChange)="groupChange()" [groupable]="false">
+                  <kendo-grid-column *ngFor="let column of viewGridColumnsComponents" field="{{column.Name}}"
+                    title="{{column.Text}}">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="name" [hidden]="true">
+                    <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                      {{value}}
+                    </ng-template>
+                  </kendo-grid-column>
+                </kendo-grid>
+              </div>
+            </div>
+          </kendo-expansionpanel>
+        </div>
+      </div>
+    </div>
+  </form>
+  <kendo-dialog title="Select Screen" *ngIf="displayInvDialog" (close)="close('cancel')" [minWidth]="250" 
+    [width]="550">
+    <div class="row no-gutters m-0">
+      <div class="col-md-2 p-1">
+        <label>Search</label>
+      </div>
+      <div class="col-md-5 p-1">
+        <kendo-textbox class="form-control form-control-round" [(ngModel)]="searchInvText" placeholder=""
+          [ngModelOptions]="{standalone: true}">
+        </kendo-textbox>
+      </div>
+      <div class="col-md-1 p-1">
+        <i class="fa fa-search fa-2x" (click)="searchInvType();"></i>
+      </div>
+      <div class="col-md-4 p-1 text-right">
+        <label class="">Count: {{totalData}}</label>
+      </div>
+      <div class="col-md-12 p-1 mt-2">
+        <kendo-grid [data]="invData" kendoGridSelectBy [navigable]="true" [resizable]="true" [reorderable]="true"
+          (selectionChange)='onGridSelectionChange($event)' [hideHeader]="true" height="220">
+          <kendo-grid-column *ngFor=" let column of invColumn" [width]="column.width" field="{{column.Name}}"
+            title="{{column.Text}}">
+          </kendo-grid-column>
+        </kendo-grid>
+        <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" style="width: 100% !important;"
+          (pageChange)="onPageChange($event)">
+          <ng-template kendoDataPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+            <kendo-datapager-prev-buttons></kendo-datapager-prev-buttons>
+            <kendo-datapager-numeric-buttons [buttonCount]="5">
+            </kendo-datapager-numeric-buttons>
+            <kendo-datapager-next-buttons></kendo-datapager-next-buttons>
+            <kendo-dropdownlist class="form-control form-control-round" style="width: 16% !important;"
+              [data]="pageSizeList" [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}"
+              (valueChange)="onPageSizechange($event)" [valuePrimitive]="true" [textField]="'value'"
+              [valueField]="'value'">
+            </kendo-dropdownlist>
+          </ng-template>
+        </kendo-datapager>
+      </div>
+    </div>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="close('no')">No</button>
+      <button kendoButton (click)="close('yes')" primary="true">Ok</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+  <kendo-dialog title="{{imageName}}" *ngIf="displayMovementDialog" (close)="closeMovementDialog('cancel')"
+    [minWidth]="250" [width]="550">
+
+    <div class="content imgcon">
+      <img *ngIf="displayImage" class="img-preview-size" [src]="imagUrl" />
+      <div *ngIf="!displayImage" style="height: 100px;text-align: center;">
+        No Movement Pictures on File for this unit.</div>
+
+      <div class="imnav">
+        <a href="javascript:void(0)" (click)="previous()">
+          <div class="prim control"></div>
+        </a>
+
+        <a href="javascript:void(0)" (click)="next()">
+          <div class="neim control"></div>
+        </a>
+
+      </div>
+    </div>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="closeMovementDialog('yes')" primary="true">Ok</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+  <kendo-dialog title="MDI3.0" *ngIf="displayBuildSheetDialog" (close)="closeBuildSheetDialog('cancel')"
+    [minWidth]="250" [width]="550">
+    <p style="margin: 30px; text-align: center;">
+      No Build Sheet on File for this unit
+    </p>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="closeBuildSheetDialog('yes')" primary="true">Ok</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+  <kendo-dialog title="{{imageName}}" *ngIf="displayImageDialog" (close)="closePicsDialog('cancel')" [minWidth]="300"
+    [width]="650">
+    <div class="content imgcon">
+      <img *ngIf="displayImage" class="img-preview-size" [src]="imagUrl" />
+      <div *ngIf="!displayImage" style="height: 100px;text-align: center;">
+        No preview available.</div>
+
+      <div class="imnav">
+        <a href="javascript:void(0)" (click)="previous()">
+          <div class="prim control"></div>
+        </a>
+
+        <a href="javascript:void(0)" (click)="next()">
+          <div class="neim control"></div>
+        </a>
+
+      </div>
+    </div>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="closePicsDialog('yes')" primary="true">Ok</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+
+</div>
+
+<kendo-dialog title="Activate Inventory Item" *ngIf="isActivateInventoryDialogVisible"
+  (close)="onHandleActivateInventoryDialog('no')" [minWidth]="550" [width]="650">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        <img src="../../../../../../../assets/images/logo.png" />
+      </div>
+      <h5 class="text-center">{{InvDescription}}</h5>
+      <div class="row m-5">
+        <p>Select Inventory Number from list below to generate new number from</p>
+        <div class="col-md-9">
+          <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true" [reorderable]="true"
+            (columnResize)="onResizeColumn($event)" (selectionChange)="onSelectionChange($event)"
+            [data]="activateInventoriesAllList" [sort]="sort" (sortChange)="onSortChange($event)" kendoGridSelectBy
+            [selectedKeys]="mySelection" [sortable]="true" (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+            (dataStateChange)="onDataStateChange($event)"
+            [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}" [hideHeader]="true"
+            style="height: 20vh;">
+            <kendo-grid-column *ngFor="let column of activateInventoryColumns" [width]="column.width"
+              field="{{column.Name}}" title="{{column.Text}}">
+            </kendo-grid-column>
+
+          </kendo-grid>
+        </div>
+        <div class="col-md-3">
+          <button class="btn col-md-12 text-center" type="button" kendoButton (click)="getAllActiveInvNumber()">Show All
+            Inv Numbers</button>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn col-md-3 text-center" type="button" kendoButton (click)="generateINVNumber()">Generate Inv
+          Number</button>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-6 mt-3">
+          <kendo-textbox class="form-control form-control-round" type="text" [(ngModel)]="textInvNumber">
+          </kendo-textbox>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn col-md-2 text-center" type="button" kendoButton
+          (click)="acceptAssignToFleet()">Accept</button>
+      </div>
+    </div>
+  </div>
+</kendo-dialog>
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+  <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+  </kendo-loader>
+</div>

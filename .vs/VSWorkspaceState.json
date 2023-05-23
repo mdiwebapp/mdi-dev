@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\layout",
+    "\\src\\app\\layout\\ssg",
+    "\\src\\app\\layout\\ssg\\hr",
+    "\\src\\app\\layout\\ssg\\hr\\vacation-days-reports"
+  ],
+  "SelectedNode": "\\src\\app\\layout\\ssg\\hr\\vacation-days-reports\\vacation-days-reports.component.html",
+  "PreviewInSolutionExplorer": false
+}

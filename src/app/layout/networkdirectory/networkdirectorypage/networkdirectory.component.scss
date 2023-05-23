@@ -1,0 +1,115 @@
+.btn-red {
+  background-color: #fff;
+  color: #de2b22;
+  padding: 5px 15px;
+  border: 1px solid #de2b22;
+  font-size: 18px;
+}
+
+.btn-red:hover {
+  background-color: #de2b22;
+  color: white;
+  padding: 5px 15px;
+  border: 1px solid #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.fontweight-bold {
+  font-weight: 600;
+}
+
+.table-header {
+  background-color: #de2b22;
+  color: #fff;
+  height: 50px;
+}
+
+.verticalalign-center {
+  vertical-align: middle !important;
+}
+
+.table td,
+.table th {
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.k-treeview .k-in {
+  border-radius: 0.25rem;
+  margin: 0;
+  padding: 0rem !important;
+}
+
+.pl-20 {
+  padding-right: 15px !important;
+}
+
+.ta-end {
+  text-align: end !important;
+}
+
+.br-left {
+  border-left: 1px solid #000000;
+}
+
+.img-preview-size {
+  height: 700px;
+  width: 100%;
+}
+
+.k-treeview .k-in.k-state-selected {
+  border-color: #2c2e30 !important;
+  color: #ffffff;
+  background-color: #a5aaaf !important;
+}
+
+
+.imnav {
+  color: #ffffff;
+  margin-top: 10%;
+  opacity: 7;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  width: 100%;
+  height: 90%;
+
+}
+
+.prim {
+  background: url('../../../../assets/images/PNG-48/arrow_left1.png')left center no-repeat;
+}
+
+.neim {
+  background: url('../../../../assets/images/PNG-48/arrow_right1.png')right center no-repeat;
+}
+
+.imgcon {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  height: 700px !important;
+}
+
+.control {
+  float: left;
+  height: 100%;
+  width: 50%;
+  opacity: 0;
+}
+
+.control:hover {
+  opacity: 0.6;
+}
+
+
+
+.k-animation-container-shown,
+.k-animation-container>.k-popup {
+  left: 0 !important;
+  min-height: 500px !important;
+  height: 500px !important;
+  width: 700px !important;
+}

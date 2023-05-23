@@ -1,0 +1,187 @@
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <label class="col-md-3 col-form-label text-right">Customer Name:</label>
+                <div class="col-md-9">
+                    <kendo-textbox formControlName="customerName" [disabled]="disableCustomer"> </kendo-textbox>
+                    <div class="required-text"
+                        *ngIf="form.get('customerName').hasError('required')  && form.get('customerName').touched">
+                        Must have a customer name for.
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-md-3 col-form-label text-right">Address:</label>
+                <div class="col-md-9 d-flex justify-content-between">
+                    <kendo-expansionpanel [expanded]="addressExpanded">
+                        <ng-template kendoExpansionPanelTitleDirective>
+                            <div class="header-content">
+                                <span>{{form.get('address').value}}, {{form.get('city').value}},
+                                    {{form.get('state').value}}-{{form.get('zip').value}} </span>
+                            </div>
+                        </ng-template>
+                        <div class="row">
+                            <label class="col-md-3 col-form-label text-right">Address:</label>
+                            <div class="col-md-9">
+                                <app-google-map-address [text]="fullAddress" [isDisabled]="this.disableCustomer"
+                                    (getAddress)="GetAddress($event)">
+                                </app-google-map-address>
+                                <!-- <kendo-textbox formControlName="address" [disabled]="disableCustomer"> </kendo-textbox> -->
+                                <div class="required-text"
+                                    *ngIf="form.get('address').hasError('required')  && form.get('address').touched">
+                                    Must have a customer address.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-md-3 col-form-label text-right">Address 2:</label>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="address2" [disabled]="disableCustomer"> </kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-md-3 col-form-label text-right">City:</label>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="city" [disabled]="disableCustomer"> </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('city').hasError('required')  && form.get('city').touched">
+                                    Must have a customer city.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-md-3 col-form-label text-right">Country:</label>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="country" [disabled]="disableCustomer"> </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('country').hasError('required')  && form.get('country').touched">
+                                    Must have a customer country.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-md-3 col-form-label text-right">State:</label>
+                            <div class="col-md-9">
+                                <kendo-combobox class="form-control form-control-round" [disabled]="disableCustomer" [textField]="'value'"
+                                    formControlName="state" [valueField]="'value'" [filterable]="true" [data]="states"
+                                    [valuePrimitive]="true" (valueChange)="onSelectionChange('state', $event)">
+                                </kendo-combobox>
+                                <div class="required-text"
+                                    *ngIf="form.get('state').hasError('required')  && form.get('state').touched">
+                                    Must have a customer state.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-md-3 col-form-label text-right">Zip:</label>
+                            <div class="col-md-9">
+                                <kendo-textbox formControlName="zip" [disabled]="disableCustomer"> </kendo-textbox>
+                                <div class="required-text"
+                                    *ngIf="form.get('zip').hasError('required')  && form.get('zip').touched">
+                                    Must have a customer ZIP code.
+                                </div>
+                            </div>
+                        </div>
+                    </kendo-expansionpanel>
+                    <i (click)="copyContent()" class="k-icon k-i-globe m-10 align-self-center"
+                        style="font-size: 20px;margin-left: 10px;margin-top: 15px; cursor:pointer !important;"></i>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <label class="col-md-3 col-form-label text-right">Phone:</label>
+                <div class="col-md-9">
+                    <kendo-maskedtextbox formControlName="phone" [disabled]="disableCustomer" [mask]="'(000) 000-0000'">
+                    </kendo-maskedtextbox>
+                    <div class="required-text"
+                        *ngIf="form.get('phone').hasError('required')  && form.get('phone').touched">
+                        Must have a phone number.
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <label class="col-md-3 col-form-label text-right">Fax:</label>
+                <div class="col-md-9">
+                    <kendo-maskedtextbox formControlName="fax" [disabled]="disableCustomer" [mask]="'(000) 000-0000'">
+                    </kendo-maskedtextbox>
+                    <div class="required-text" *ngIf="form.get('fax').hasError('required')  && form.get('fax').touched">
+                        Must have a customer fax.
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <label class="col-md-3 col-form-label text-right">Web:</label>
+                <div class="col-md-9">
+                    <kendo-textbox formControlName="website" [disabled]="disableCustomer"> </kendo-textbox>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="k-button w-100" type="button" style="font-size: 12px;" *ngIf="!branchVisible"
+                        (click)="onHandleOperation('branch')" [disabled]="disableCustomer">
+                        Branch:
+                        {{form.get('branchName').value}} </button>
+                    <kendo-combobox placeholder="" [suggest]="true" [textField]="'value'" [valueField]="'code'"
+                        [filterable]="true" [valuePrimitive]="true" formControlName="branch" [data]="allBranches"
+                        *ngIf="branchVisible" (valueChange)="onSelectionChange('branch', $event)"
+                        [kendoDropDownFilter]="customerInfoFilterOptions">
+                    </kendo-combobox>
+                    <div class="required-text"
+                        *ngIf="form.get('branch').hasError('required')  && form.get('branch').touched">
+                        Must have a customer branch.
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 mt-2">
+                    <button class="k-button w-100" type="button" style="font-size: 12px;" *ngIf="!customerTypeVisible"
+                        (click)="onHandleOperation('customer_type')" [disabled]="disableCustomer">Customer
+                        Type: {{form.get('customerType').value}}</button>
+                    <kendo-combobox placeholder="" [suggest]="true" [textField]="'value'" [valueField]="'value'"
+                        [filterable]="true" [valuePrimitive]="true" formControlName="customerType"
+                        [data]="customerTypes" *ngIf="customerTypeVisible"
+                        (valueChange)="onSelectionChange('customer_type', $event)"
+                        [kendoDropDownFilter]="customerInfoFilterOptions">
+                    </kendo-combobox>
+                    <div class="required-text"
+                        *ngIf="form.get('customerType').hasError('required')  && form.get('customerType').touched">
+                        Must select a customer type.
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 mt-2">
+                    <button class="k-button w-100" type="button" style="font-size: 12px;" *ngIf="!accountManagerVisible"
+                        (click)="onHandleOperation('account_manager')" [disabled]="disableCustomer">AM:
+                        {{form.get('employeeName').value}} </button>
+                    <kendo-combobox placeholder="" [suggest]="true" [textField]="'value'" [valueField]="'id'"
+                        [filterable]="true" [valuePrimitive]="true" formControlName="employeeNumber"
+                        [data]="accountManagers" *ngIf="accountManagerVisible"
+                        (valueChange)="onSelectionChange('account_manager', $event)"
+                        [kendoDropDownFilter]="customerInfoFilterOptions">
+                    </kendo-combobox>
+                    <div class="required-text"
+                        *ngIf="form.get('employeeNumber').hasError('required')  && form.get('employeeNumber').touched">
+                        Must have a customer employee number.
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 d-flex mt-2">
+                    <button class="k-button w-100" type="button" style="font-size: 12px;"
+                        (click)="redirectOnCallLog()">New Call Log </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<kendo-dialog title="MDIEXULT - CRM Call Log" *ngIf="isCalllogFormVisible" (close)="handlecalllogFormDialog()"
+    [minWidth]="250" [height]="800" [width]="1160">
+    <app-call-logform [customer]="customer"></app-call-logform>
+</kendo-dialog>

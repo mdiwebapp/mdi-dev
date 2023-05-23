@@ -1,0 +1,265 @@
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-start">
+        <div class="d-flex justify-content-between">
+            <h4 class="p-r-10">Time Approval</h4>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable && !isFormVisible">
+                <button kendoTooltip title="Add" id="btnAdd" class="btn_icon" filter="button" [disabled]="isDisable"
+                *ngIf="menuService.isAddRight"  (click)="onHandleOperation('new')">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="!isDisable && !isFormVisible && timeApprovals.length>0">
+                <button kendoTooltip title="Edit" id="btnEdit" class="btn_icon" filter="button"
+                *ngIf="menuService.isEditRight"   (click)="onHandleOperation('edit')">
+                </button>
+            </div>
+
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="isFormVisible">
+                <button kendoTooltip title="Cancel" id="btnCancel" class="btn_icon" filter="button"
+                *ngIf="(menuService.isAddRight || menuService.isEditRight)"  (click)="onHandleOperation('cancel')">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10" *ngIf="isFormVisible">
+                <button kendoTooltip title="Save" id="btnSave" class="btn_icon" filter="button"
+                *ngIf="(menuService.isAddRight || menuService.isEditRight)"  [disabled]="!isFormVisible" (click)="onHandleOperation('save')">
+                </button>
+            </div>
+        </div>
+        <div class="form-control1 displayFlex alignFlexEnd">
+            <div class="wp-50 p-l-10 p-r-10">
+                <button kendoTooltip title="Excel" id="btnPrint" class="btn_icon" filter="button" (click)="onExcel()">
+                </button>
+            </div>
+            <div class="wp-50 p-l-10 p-r-10">
+                <button kendoTooltip title="Print" id="btnPrinter" class="btn_icon" filter="button"
+                    (click)="timeApprovalPrint()">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-block table-border-style">
+        <div class="row">
+            <kendo-splitter orientation="vertical">
+                <kendo-splitter-pane>
+                    <kendo-splitter>
+                        <kendo-splitter-pane [collapsible]="true" size="25%">
+                            <div class="pane-content">
+                                <form [formGroup]="filterForm">
+                                    <div class="row justify-content-center">
+                                        <div class="col-12 text-center mt-2">
+                                            <span>
+                                                <input type="radio" value="day" kendoRadioButton
+                                                    formControlName="dateOptions"
+                                                    (change)="onDateOptionChange('day')" />
+                                                <label class="k-label ml-2 mr-2"> Day</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" formControlName="sort" value="week" kendoRadioButton
+                                                    formControlName="dateOptions"
+                                                    (change)="onDateOptionChange('week')" />
+                                                <label class="k-label ml-2"> Week</label>
+                                            </span>
+                                        </div>
+                                        <div class="col-11 mt-2">
+                                            <kendo-datepicker *ngIf="filterForm.get('dateOptions').value === 'day'"
+                                                formControlName="from" class="form-control form-control-round"
+                                                (valueChange)="onDateOptionChange('day')"   calendarType="classic" formControlName="selectedDate">
+                                            </kendo-datepicker>
+                                            <kendo-daterange *ngIf="filterForm.get('dateOptions').value === 'week'">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <kendo-datepicker class="form-control form-control-round"  calendarType="classic"
+                                                        [disabled]="isFormVisible" (valueChange)="changeDateRange($event)"  [(value)]="filterForm.get('startDate').value">
+                                                        </kendo-datepicker>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <kendo-datepicker class="form-control form-control-round"
+                                                             [disabled]="true"  calendarType="classic"
+                                                            [(value)]="filterForm.get('endDate').value">
+                                                        </kendo-datepicker>
+                                                    </div>
+                                                </div>
+                                            </kendo-daterange>
+                                        </div>
+                                        <div class="col-11 mt-2">
+                                            <label class="col-form-label pr-2">Branch</label>
+                                            <kendo-combobox placeholder="" [suggest]="true"
+                                                class="form-control form-control-round" [textField]="'value'"
+                                                [valueField]="'code'" [filterable]="true" [valuePrimitive]="true"
+                                                formControlName="filter" [data]="branches" formControlName="branch"
+                                                (valueChange)="onBranchChange($event)">
+                                            </kendo-combobox>
+                                        </div>
+                                        <div class="col-11 mt-2">
+                                            <div class="d-flex align-items-center">
+                                                <input type="checkbox" kendoCheckBox [checked]="allEmpTimeList"
+                                                    [(ngModel)]="allEmpTimeList" [ngModelOptions]="{standalone: true}"
+                                                    [disabled]="isFormVisible"  (change)="changesEmpTimeChange($event,'showall')" />
+                                                <label class="col-form-label p-2">Show All</label>
+                                                
+                                                <input type="checkbox" kendoCheckBox [checked]="hideApproved"
+                                                    [(ngModel)]="hideApproved" [ngModelOptions]="{standalone: true}"
+                                                    [disabled]="isFormVisible"  (change)="changesEmpTimeChange($event,'showapprove')" />
+                                                <label class="col-form-label p-2">Hide Approved</label>
+                                                <button class="k-button col-md-4 w-100 mx-2" type="button"
+                                                style="font-size: 12px;" [disabled]="isFormVisible"
+                                                (click)="onHandleOperation('time-edit-entry')">Time
+                                                Edit/Entry</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-11 mt-2">
+                                            <div><label class="col-form-label pr-2">Approve All</label></div>
+                                            <button class="k-button col-md-5 w-100 mx-2" type="button"
+                                            [disabled]="isFormVisible"   style="font-size: 12px;" (click)="onHandleOperation('am')">AM</button>
+                                            <button class="k-button col-md-5 w-100 mx-2" type="button"
+                                            [disabled]="isFormVisible"   style="font-size: 12px;"
+                                                (click)="onHandleOperation('admin')">Admin</button>
+                                        </div>
+                                        <div class="col-11 mt-2">
+                                            <kendo-grid [selectable]="true" [navigable]="true" [resizable]="true"
+                                                style="height: 60vh;" [reorderable]="true"
+                                                [ngClass]="isFormVisible==false? '' :  'k-state-disabled'"
+                                                  (columnResize)="onResizeColumn($event)"
+                                                (selectionChange)="onSelectionChange($event)" [data]="employees"
+                                                [sort]="employeeSort" (sortChange)="onSortChange($event)"
+                                                kendoGridSelectBy [selectedKeys]="employeeSelections" [sortable]="true"
+                                                (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                                (dataStateChange)="onDataStateChange($event)"
+                                                [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}">
+                                                <kendo-grid-column field="ee" title="Employee Name" >
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <lable>{{dataItem.ee}}</lable>
+                                                    </ng-template>
+                                                </kendo-grid-column>
+                                                <kendo-grid-column field="hours" title="Hours" >
+                                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                                        <lable>{{dataItem.hours | number : '1.2-2'}}</lable>
+                                                    </ng-template>
+                                                </kendo-grid-column>                                                
+                                            </kendo-grid>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </kendo-splitter-pane>
+                        <kendo-splitter-pane>
+                            <div class="pane-content">
+                                <div class="card-body">
+                                    <app-time-approval-form *ngIf="isFormVisible" [selectedRow]="selectedKeyEE"
+                                  (onHandleCancel)="onHandleOperation('cancel')"></app-time-approval-form>
+                                    <kendo-grid *ngIf="!isFormVisible" [selectable]="true" [navigable]="true"
+                                        [resizable]="true" [reorderable]="true" (columnResize)="onResizeColumn($event)"
+                                        (selectionChange)="onTimeSelectionChange($event)" [data]="timeApprovals"
+                                        [sort]="timeApprovalSort" (sortChange)="onTimeSortChange($event)" kendoGridSelectBy
+                                        [selectedKeys]="timeSelections" [sortable]="true"
+                                        (columnReorder)="onReOrderColumns($event)" [skip]="skip"
+                                        (dataStateChange)="onDataStateChange($event)"
+                                        [sortable]="{allowUnsort: false, mode: multiple ? 'multiple' : 'single'}"
+                                        style="height: 55vh;">
+                                        <kendo-grid-column [width]="40" field="am" title="AM Approve">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <div class="text-center"><input class="text-center" type="checkbox"
+                                                    [(disabled)]="dataItem.adminApprove"  [(checked)]="dataItem.amApprove"    (change)="departmentChange($event,dataItem,'AM')"      kendoCheckBox /></div>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="60" field="admin" title="Admin Approve">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <div class="text-center"><input class="text-center" type="checkbox"
+                                                    [(disabled)]="dataItem.adminApprove"   [(checked)]="dataItem.adminApprove"  (change)="departmentChange($event,dataItem,'entityAdmin')"    kendoCheckBox /></div>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column *ngFor="let column of timeApprovalsColumns.slice(0,10)"
+                                            [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <span *ngIf="column.Name=='timeInStore'">
+                                                    {{dataItem.date | date :'MM-dd-yyyy'}}
+                                                </span>
+                                                <span *ngIf="column.Name=='timeOutStore'">
+                                                    {{dataItem.dateOut}}
+                                                </span>
+                                                <span *ngIf="column.Name!='timeInStore' && column.Name!='timeOutStore'">
+                                                    {{dataItem[column.Name]}}
+                                                </span>
+
+
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="60" field="perDiem" title="Per Diem">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <div class="text-center"><input class="text-center" type="checkbox"
+                                                    [(disabled)]="dataItem.adminApprove"   [(checked)]="dataItem.perDiem"  (change)="departmentChange($event,dataItem,'PerDiem')"       kendoCheckBox /></div>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column [width]="60" field="lunch" title="Lunch">
+                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                <div class="text-center"><input class="text-center" type="checkbox"
+                                             [(disabled)]="dataItem.adminApprove"    [(checked)]="dataItem.lunch"   (change)="departmentChange($event,dataItem,'Lunch')"     kendoCheckBox /></div>
+                                            </ng-template>
+                                        </kendo-grid-column>
+                                        <kendo-grid-column
+                                            *ngFor="let column of timeApprovalsColumns.slice(10, timeApprovalsColumns.length)"
+                                            [width]="column.width" field="{{column.Name}}" title="{{column.Text}}">
+                                        </kendo-grid-column>
+                                    </kendo-grid>
+                                </div>
+                            </div>
+                        </kendo-splitter-pane>
+                    </kendo-splitter>
+                </kendo-splitter-pane>
+            </kendo-splitter>
+        </div>
+    </div>
+</div>
+
+<kendo-dialog title="{{error_title}}" *ngIf="isErrorDialogVisible" (close)="onHandleOperation('error')" [minWidth]="250"
+    [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{error_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('error')">OK</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{confirm_title}}" *ngIf="isConfirmDialogVisible" (close)="onHandleOperation('close')"
+    [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">
+        {{confirm_message}}
+    </p>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="onHandleOperation('close')">No</button>
+        <button kendoButton (click)="onHandleOperation('confirm')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Time Tracking" *ngIf="isTimeTrackingDialogVisible"
+    (close)="onHandleOperation('time-edit-entry-close')" [minWidth]="550" [width]="800">
+    <app-time-tracking-edit [timeTrackingClass]="'col-md-12'" [allEmployee]="flag"
+        [startDate]="filterForm.value.startDate" [endDate]="filterForm.value.endDate" [isFromTimeApproval]="true"></app-time-tracking-edit>
+</kendo-dialog>
+
+<div class="overlay" style="background-color: #f0f8ff52; z-index: 9999;" [hidden]="!visible">
+    <kendo-loader class="spinner" [type]="'converging-spinner'" [themeColor]="'error'" [size]="'large'">
+    </kendo-loader>
+</div>
+<kendo-dialog
+  title="No Records Found"
+  *ngIf="opened"
+  (close)="opened"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p style="margin: 30px; text-align: center" class="fs-16">
+   No Records Found!
+  </p>
+  <kendo-dialog-actions>
+    <button
+      kendoButton
+      (click)="openPopup()"
+      class="w-100"
+      themeColor="primary"
+    >
+      OK
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
