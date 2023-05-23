@@ -54,7 +54,7 @@ import { LineItemsComponent } from './purchasing/lineitems/lineitems.component';
 import { PurchaseOrderComponent } from './purchasing/purchase-order/purchase-order.component';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 import { PurchasingNotesComponent } from './purchasing/purchasing-notes/purchasing-notes.component';
-import { PurchaseOrderHistoryComponent } from './purchasing/history/PurchaseOrderhistory.component';
+import { PurchaseOrderHistoryComponent } from './purchasing/history/PurchaseOrderHistory';
 import { TreeViewModule } from '@progress/kendo-angular-treeview';
 import { TreeListModule } from '@progress/kendo-angular-treelist';
 import { BuildingTicketsComponent } from './building-tickets/building-tickets.component';

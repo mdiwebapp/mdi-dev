@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs';
 import { PurchaseOrderComponent } from '../purchase-order/purchase-order.component';
 import { LineItemsComponent } from '../lineitems/lineitems.component';
 import { PurchasingNotesComponent } from '../purchasing-notes/purchasing-notes.component';
-import { PurchaseOrderHistoryComponent } from '../history/PurchaseOrderhistory.component';
+import { PurchaseOrderHistoryComponent } from '../history/PurchaseOrderHistory';
 import { PartsModel } from '../../parts/partlist/parts.model';
 import * as fileSaver from 'file-saver';
 import { PurchaseOrderExcelFileViewResultModel } from '../purchase-order/purchase-orderRequestModel.model';

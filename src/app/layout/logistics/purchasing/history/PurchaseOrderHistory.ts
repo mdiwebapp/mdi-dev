@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { orderBy, process, SortDescriptor } from '@progress/kendo-data-query';
 import { PurchasingService } from '../purchasing.service';
-import { ModuleNames, ErrorMessages } from '../../../../../app/core/constant';
-import { ErrorHandlerService } from '../../../../../app/core/services';
+import { ModuleNames, ErrorMessages } from '../../../../core/constant';
+import { ErrorHandlerService } from '../../../../core/services';
 
 @Component({
   selector: 'app-PurchaseOrderHistory',
