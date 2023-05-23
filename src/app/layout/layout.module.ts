@@ -13,7 +13,7 @@ import { NavigationModule } from '@progress/kendo-angular-navigation';
 import { IconModule } from '@progress/kendo-angular-icons';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 import { VendorFooterComponent } from './logistics/vendor/vendor-footer/vendor-footer.component';
-import { FleetFooterComponent } from './admin/it/paul/fleet/fleet-footer/fleet-footer.component';
+import { FleetFooterComponent } from './admin/IT/paul/fleet/fleet-footer/fleet-footer.component';
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { PartfooterComponent } from './logistics/parts/partfooter/partfooter.component';
